@@ -2,3 +2,6 @@
 - Two separate windows
   -The first window is the gridPane. User can specifiy size of this GridPane on initialization.
   - The second window is the user controls. User can not change size. 
+
+  Simulation Class -> extended by specific simulations
+  Cell Class -> extended by specific cells for each simulation
