@@ -1,1 +1,4 @@
-
+- Starting prompt where user chooses size of GridPane. 
+- Two separate windows
+  -The first window is the gridPane. User can specifiy size of this GridPane on initialization.
+  - The second window is the user controls. User can not change size. 
