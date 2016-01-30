@@ -23,6 +23,9 @@ Duke CompSci 308 Cell Society Project
 	* Fields: List<Cell> theCells, Group group? 
 * The Grid class will recieve a list of cells from CellManager and allow them to be displayed 
 --- Is it redudndant to have both a grid and a cellManager? 
+--- I say this because the CellManager itself could be the Grid because we could have it contain a Group
+--- This is especially true if we have each individual Cell holding its own X and Y value
+
 
 ### User Interface
 The user interface will consist of one larger rectangular screen of a fixed size that will contain two smaller screens 
@@ -71,5 +74,33 @@ Basic flow:
 * AbstractSimulation 
 
 ### Design Considerations 
-
+We ran into several issues that could not be fully decided until a deeper understanding of the project has been reached through coding.
+1. Is it redundant to have both a Grid and a CellManager?
+	* Reasons for consideration: inexperience with creating a Grid, dryness of code
+	* This issue came about because we currently do not know what the Grid will look like. 
+  * If each Cell holds its own X and Y value, then we need some external class to determine its neighbors 
+    	(hence the Grid or CellManager). 
+  * The Grid might already be able to do exactly what the CellManager would do simply by holding a list of Cells.
+2. Is it neccessary to have different Simulation classes?
+	* Reasons for consideration: dryness of code, Little knowledge of XML, little knowledge of how simulations differ from each other
+	* Each Cell subclass will hold the rules for its simulation.
+  * However, is it possible to bind the initial configuration without first knowing what the configuration
+  parameters actually are?
+  	* For example, the parameters for a Fire Simulation might be very different from a Water simulation.
+  * We are currently leaning towards having separate Simulation classes: each one will parse its specific
+  XML file, and binds its known parameters. 
+  * Another question: Can we dynamically determine parameters at runtime using XML?
+3. Clashing of coding styles	
+	* Should we have a Constants class?
+  	* Dependa on whether many clases will need to access these constants, how many constants we will have
+    * Group decided no for now, but open to changing in future
+  * Standard coding styles
+  	* camelCase
+    * everything private until needed by another class
+4. GitHub standards
+	* Major changes to another group member's code must be approved by that group member 
+  	* If clash, other group member mediates.
+  * Small refactoring approval is not rrequired, but is nice.
+  * Big edits should happen in individual branches; small refactoring may be done directly on master.
+  
 ### Team Responsibilities 
