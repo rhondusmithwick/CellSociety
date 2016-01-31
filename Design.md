@@ -131,7 +131,7 @@ box/console on the right screen will also be used to display error messages.
     cells from the rest of the program, as it will have to frequently loop through the cell list it manages to update cells and 
     remove cells when simulations switch. We wanted to keep these functions separate from the rest of the program and wanted to 
     code them to work for any cell type in a separate class. 
-* abstract class Simulation 
+* abstract Simulation class 
 	* Extended by all implemented simulations
 	* Each Simulation subclass will have its own specific parameters that it will parse from its specific XML file.	
 	* Manages XML file reading and loads initial simulation parameter. It uses these parameters to create simulation specific cells. 
@@ -157,12 +157,7 @@ box/console on the right screen will also be used to display error messages.
   	Meant to work with any cell or simulation type and specialize in handeling cell display, by controlling all the x and y 
     positions in the grid created and knowing where it is that cells can go to be correctly displayed on the grid.  
   * Unsure if needed (see design considerations)
-- what it does
-- what it uses
-- who interacts with it 
-- how it can be extended
-- why we designed it such
-* GUI 
+* public GUI class 
 	* Displays user interface for the right screen (See the User Interface section). Handles the displaying of the drop down 
   	menu, simulation control buttons, and error messages. Listens to user input and reacts to it accordingly by calling the 
     correct CellSociety method
@@ -170,8 +165,13 @@ box/console on the right screen will also be used to display error messages.
   	display messages.
   * Interacts with the CellSociety class which instigates it. Interacts with the user by displaying user options and listening 
   	to user input. 
-    
-* abstract class Cell extends Rectangle
+  * The GUI class will be coded with distinct methods for each button it controls and listens to. Should one want to add a button
+  	a completely new method must be made, thus keeping the old code closed, but allowing extension with the simple addtion of 
+    another button and method to control it.
+  * We decided on the GUI design in order to dedicate one class to monitoring user input and the display that the user interacts 
+  	with. This separates reacting to the user from the main class thus making the code cleaner and puts all display concerns within
+    one convenient class. 
+* abstract Cell class extends Rectangle
 	* Extended by all cells (Eg. Fire, Segregation etc...)
   * New Fields 
   	* private final Collection<Cell> neighbors
@@ -190,16 +190,17 @@ box/console on the right screen will also be used to display error messages.
 
 Basic flow:
 - Main is run
-- Main starts cell society
-- Cell society gets input from the user via the gui of the simulation type and size of the grid
-- Cell society runs the chosen simulation, with the cell manager and grid size as a parameter
+- Main starts CellSociety
+- CellSociety gets input from the user for the simulaiton type and size via the GUI class which displays user options and monitors
+	user input. 
+- CellSociety runs the chosen simulation by creating an instance of that simulation, with the cell manager and grid size as a parameter.
 - The simulation loads the simulation's xml file and then creates the cells with the properties defined in the xml file
 - The simulation adds the cells to cell manager and returns cell manager to cell society
-- Cell society loads the initial cells onto the grid
-- Cell society listens from input from the gui to start the simulation
+- Cell society loads the initial cells onto the grid by passing cell manager to the grid class
+- Cell society listens for input from the GUI to start or alter a new or existing simulation 
 - Cell society calls updateCells on cellManager
 - CellManager calls updateProperties on each cell
-- Cell society updates new cells onto the grid
+- Cell society updates new cells onto the grid which the Grid class displays
 - Simulation countinues until end conditions are met (either time limit or certain cell conditions)
 
 Use Cases
