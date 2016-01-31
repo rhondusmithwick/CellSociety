@@ -45,9 +45,13 @@ Duke CompSci 308 Cell Society Project
   * private void createCells(String cellType, double gridWidth, double gridHdeight, int cellsPerRow, int cellPerColumn)
   * private static Cell createCell(String cellType, double width, double height, double x, double y) 
   	* switch statements based on cellType?
+    * returns a Cell of subclass cellType
 * The Grid class will recieve a list of cells from CellManager and allow them to be displayed 
+*	The GUI class will display the options screen and monitor user input. It will redirect user signals to the appropriate 
+	CellSociety class method. 
 
 Below is a diagram of the program's classes with some of their basic methods and how they will interact with each other.
+Note that the 'Options class' has been changed to be called the 'GUI class' in order to more clearly denote its functions.  
 ![Design Diagram](Design_Images/Cell_Society_Class_Diagram.jpg "Class Diagram")
 
 ### User Interface
@@ -100,27 +104,89 @@ box/console on the right screen will also be used to display error messages.
 * Entering a number before a simulation has been selected/is running. 
 
 ### Design Details
-
-
+* public class Main
+	* Used to run the program 
+  * Hands a stage to a Cell Society instance
+  * A basic class needed for most programs
+* public class CellSociety
+	* The "real" main class
+  * Center of everything
+  * Controls a GUI that the user will interact with 
+  		* Passes this information to other classes such as Simulation subclasses and CellManager
+  * Instantiates a CellManager and acts as the mediator between this object and the Simulation subclass
+  * Displays the grid to the user by passing it to the GUI interface
+  * Begins a Simulations loop
+  * Designed as such so that each of the other classes have as little interaction as possible; instead, CellManager acts as a central hub, allowing for exstensibility of code and dryness
+* public class CellManager
+	* Manages the cells on the grid and updates their properites. 
+  *	Handles and maintains a cell list of cells matching the simulation type which is running. 
+  * Interacts with the simulation class to generate necessary cells with the correct update function for the current simulation.
+  	Initialized by the Cell Society class, which keeps the cell manager object. Passes the cell list to the Grid class so that 
+    the cells can be displayed.
+  * CellManager will be coded to handle the Abstract Cell class. It's functions can be extended to act on new kinds of cells
+  	simply by creating a new cell class, thus the CellManager class can be extended by creating new derivative of the abstraction 
+    Cell class it is based on. 
+  * CellManager will be designed such that it can work with any cell and simulation type, since both of these classes are 
+  	abstract and will be extended for the specific simulations. CellManager is meant to separate the detailed naunces of handeling 
+    cells from the rest of the program, as it will have to frequently loop through the cell list it manages to update cells and 
+    remove cells when simulations switch. We wanted to keep these functions separate from the rest of the program and wanted to 
+    code them to work for any cell type in a separate class. 
+* abstract class Simulation 
+	* Extended by all implemented simulations
+	* Each Simulation subclass will have its own specific parameters that it will parse from its specific XML file.	
+	* Manages XML file reading and loads initial simulation parameter. It uses these parameters to create simulation specific cells. 
+  * Uses XML files to define and set simulation parameters. It is passed in the CellManager which it uses to add its cells to. 
+  * This class is initialized by CellSociety and interacts with the CellManager class by passing in newly initialized cells and 
+  	with the Abstract Cell class in order to create new cells matching its simulation type.  
+  * Abstract Simulation will be extended by simulation subclasses which will be designed to handle rules and parameters of 
+  	new simulations that are to be incorporated into the program.
+  * An Abstract simulation class was designed like this so that it can easily be extended to add new simulations with 
+  	distinct parameters and rules. All classes that interact with the simulation class will be designed to simply work with 
+    simulation and not its specific subclasses thus making the rest of the program very adaptable to new simulations. 
+* public Grid class (May not be needed if its functions are incorporated into CellManager)
+	* Displays CellManager's cells to users and holds some data structure to keep track of each cell's x and y values. Creates
+  	the grid seen by the user where the simulation is run on. 
+  * Uses a list of cells passed in by the Cell Manager to know which cells to display.
+  * Interacts with CellManager which passes it the structure keeping all the cells. Interacts with CellSociety which passes 
+  	it a size input given by the user. Grid then returns the calculated size of the cells and each square based on this size 
+    input. 
+  * Will be designed to work with any cell or simulation type thus allowing the class to be extended by creating new derivative of
+  	cell and simulation subclasses. While the module's code will technically be closed and will not need to be modified for 
+    extensions, the function of this class can be extended by creating new instances of the mentioned subclasses. 
+  * Designed to separate the displying of the individual cells from the larger program. 
+  	Meant to work with any cell or simulation type and specialize in handeling cell display, by controlling all the x and y 
+    positions in the grid created and knowing where it is that cells can go to be correctly displayed on the grid.  
+  * Unsure if needed (see design considerations)
 - what it does
 - what it uses
 - who interacts with it 
 - how it can be extended
 - why we designed it such
-
-* CellManager
-	Manages the cells and their properites. Only class that interacts with cell. 
-  Used by simulation to set the approriate rules to a cell, and by cell society to load cells onto the grid. 
-  
-  It can be extended to handle new types of cells with unique fields and properties, and potentially to manage the grid itself.
-	
-* CellSociety
-	
-* AbstractSimulation 
-* Grid
-* Cell
-* Main
-
+* GUI 
+	* Displays user interface for the right screen (See the User Interface section). Handles the displaying of the drop down 
+  	menu, simulation control buttons, and error messages. Listens to user input and reacts to it accordingly by calling the 
+    correct CellSociety method
+  * Uses user input to decide the next steps the program will take. Uses resouce files to display error messages and any other 
+  	display messages.
+  * Interacts with the CellSociety class which instigates it. Interacts with the user by displaying user options and listening 
+  	to user input. 
+    
+* abstract class Cell extends Rectangle
+	* Extended by all cells (Eg. Fire, Segregation etc...)
+  * New Fields 
+  	* private final Collection<Cell> neighbors
+    	* This cell's neighbors (passed in by CellManager/Grid)
+  * Inherited methods that will be used 
+  	* setX(double x)
+    * setY(double y)
+    * setFill(Paint c)
+  * New methods:
+  	* private void setImage(Image image) which puts an Image onto this cell
+    	* Uses setFill(ImagePattern)
+    * private void handleUpdate(double elapsedTime)
+    	* Will update this cell so that it follows the rules defined by its simulation
+  * Designed it as such because the Cells seem to be pretty similar to rectangles and this allows us to have a lot of flexibility
+  * Could have maybe used something like gridPane but that doesn't allow us much freedom in mainupulating the cells
 
 Basic flow:
 - Main is run
@@ -137,18 +203,21 @@ Basic flow:
 - Simulation countinues until end conditions are met (either time limit or certain cell conditions)
 
 Use Cases
-- Segregation
-- Predator-prey
-- Fire
-- Game of life
-
-### Use Cases
 * Apply the rules to a middle cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle (i.e., with all its neighbors)
+	* This will be done by allowing each cell a list of its neighbors. This list of neighbors will be initialized by CellManager and will be a field of every cell. 
+  * The state of a cell will be publicly available with a getter (so its neighbors can view it), but will only be able to set within the Cell itself. 
 * Apply the rules to an edge cell: set the next state of a cell to live by counting its number of neighbors using the Game of Life rules for a cell on the edge (i.e., with some of its neighbors missing)
+	* Doable from our design, since each Cell will have access to a list of its neighbors 
 * Move to the next generation: update all cells in a simulation from their current state to their next state and display the result graphically
+	* Doable from our design, since handleUpdate is called on each Cell during each step
+  * handleUpdate (specific to each Cell subclass) will handle the rules of how a cell should be updated
 * Set a simulation parameter: set the value of a parameter, probCatch, for a simulation, Fire, based on the value given in an XML fire
+	* Doable from our design, since each Simulation subclass reads its own XML file
+  * Will allow parameters of simulation to be changeable to allow for user input in future
 * Switch simulations: use the GUI to change the current simulation from Game of Life to Wator
-
+	* Doable from our design, since users will be able to select from a dropdown a simulation
+  * Cell Society will instantize a new Simulation
+  
 ### Design Considerations 
 We ran into several issues that could not be fully decided until a deeper understanding of the project has been reached through coding.
 * Is it redundant to have both a Grid and a CellManager?
@@ -169,20 +238,20 @@ We ran into several issues that could not be fully decided until a deeper unders
 ### Group Practices
 * Clashing of coding styles	
 	* Should we have a Constants class?
-  	* Dependa on whether many clases will need to access these constants, how many constants we will have
-    * Group decided no for now, but open to changing in future
+	  	* Depends on whether many classes will need to access these constants, how many constants we will have
+	    * Group decided no for now, but open to changing in future
   * Standard coding styles
-  	* camelCase
-    * everything private until needed by another class
+	  	* camelCase
+	    * everything private until needed by another class
 * GitHub standards
 	* Major changes to another group member's code must be approved by that group member 
-  	* If clash, third group member mediates.
+  	- If clash, third group member mediates.
   * Small refactoring approval is not required, but is nice.
   * Big edits should happen in individual branches; small refactoring may be done directly on master.
 * Packages 
 	* Cell: Contains Cell, Cell Subclasses, CellManager
   * Main: Contains CellSociety, Main
-  * GUI: User Interface and Options Class
+  * GUI: User Interface and GUI Class
   * Simulation: Contains Simulation, Simulation subclasses, XML Parser?
   * Config: Resources class, Constants class if needed 
   
