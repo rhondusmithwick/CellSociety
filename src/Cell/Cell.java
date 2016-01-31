@@ -5,6 +5,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**
  * Created by rhondusmithwick on 1/30/16.
  *
@@ -12,16 +15,14 @@ import javafx.scene.shape.Rectangle;
  */
 public class Cell extends Rectangle {
 
-    public Cell(double width, double height) {
-        super(width, height);
+    private final Collection<Cell> neighbors;
+
+    public Cell() {
+        super();
+        neighbors = new LinkedList<>();
         init();
     }
 
-    public Cell(double x, double y, double width, double height) {
-        super(x, y, width, height);
-        init();
-
-    }
 
     public void setImage(Image image) {
         ImagePattern imagePattern = new ImagePattern(image);
@@ -31,5 +32,9 @@ public class Cell extends Rectangle {
     public void init() {
         this.setFill(Color.WHITE);
         this.setStroke(Color.BLACK);
+    }
+
+    public void addNeighbor(Cell neighbor) {
+        neighbors.add(neighbor);
     }
 }
