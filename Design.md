@@ -1,4 +1,6 @@
-### cellsociety
+cellsociety
+===============
+
 Duke CompSci 308 Cell Society Project
 
 Bruna Liborio (bml27), Rhondu Smithwick (rs44), Tavo Loaiza
@@ -21,12 +23,12 @@ Bruna Liborio (bml27), Rhondu Smithwick (rs44), Tavo Loaiza
 	* Another class will be in charge of the cells and updating their states. 
   * A third major class is in charge of the grid, including monitoring cell locations and applying any new statuses to the 
     user interface. 
-	* The options screen will be handeled by yet another class which will throw exceptions to the user and handle the options display. 
+	* The options screen will be handled by yet another class which will throw exceptions to the user and handle the options display. 
   * Separate classes will exist for the simulation types which will all be extensions from a template abstract class. 
   * Each simulation type will have different customized cells which will again exist for all simulation types and 
-    which will again be extenstions of the same abstract class. 
+    which will again be extensions of the same abstract class. 
   * Overall, there will be one class monitoring the program flow. Separate classes will handle each user interface screen 
-    (See the User Interface seciton), and simulation and cell types will exist for each implemented simulation and will
+    (See the User Interface section), and simulation and cell types will exist for each implemented simulation and will
     be extensions of the same abstract base classes. 
 
 ### Overview
@@ -34,7 +36,7 @@ Bruna Liborio (bml27), Rhondu Smithwick (rs44), Tavo Loaiza
 * CellSociety.java will hold a GUI and run simulations based on user input
 	* Fields: cellManager, grid, GUI
   * Methods: init, getSimulation, beginSimulation
-* The Simulation will be a base class that all Simulations (Fire, Segregation, ec...) will extend from
+* The Simulation will be a base class that all Simulations (Fire, Segregation, etc...) will extend from
 	* Each simulation subclass will parse its required XML file and sets its properties based on that
   * Each simulation subclass will have methods to change its properties 
   * Methods: init, updateCells
@@ -44,11 +46,11 @@ Bruna Liborio (bml27), Rhondu Smithwick (rs44), Tavo Loaiza
   * Methods: handleUpdate(double elapsedTime), setImage(Image image)
 * The CellManager will manage the cells so that they can be easily changed
 	* Fields: Collection<Cell> theCells
-  * private void createCells(String cellType, double gridWidth, double gridHdeight, int cellsPerRow, int cellPerColumn)
-  * private static Cell createCell(String cellType, double width, double height, double x, double y) 
+  * private void createCells(String cellType, double gridWidth, double gridHeight, int cellsPerRow, int cellPerColumn)
+  * private static Cell createCell(String cellType, double width, double height, double x, double y) receive
   	* switch statements based on cellType?
     * returns a Cell of subclass cellType
-* The Grid class will recieve a list of cells from CellManager and allow them to be displayed 
+* The Grid class will receive a list of cells from CellManager and allow them to be displayed 
 *	The GUI class will display the options screen and monitor user input. It will redirect user signals to the appropriate 
 	CellSociety class method. 
 
@@ -58,11 +60,11 @@ Note that the 'Options class' has been changed to be called the 'GUI class' in o
 
 ### User Interface
 The user interface will be handled mainly by the GUI class and will consist of one larger rectangular screen of a fixed size that will contain two smaller screens
-within it side by side. The screen on the left will be the grid for the simlation. 
+within it side by side. The screen on the left will be the grid for the simulation. 
 > **This left screen will...**
 > 
-*  Display a grid made up of state-changing squares controled by simulation parameters and rules specificed within 
-the update method of the grid squares (ie. cells) defined in the Cell class for the simulation type.
+*  Display a grid made up of state-changing squares controlled by simulation parameters and rules specified within 
+the update method of the grid squares (i.e.. cells) defined in the Cell class for the simulation type.
 *  Be a fixed overall size, with the number and size of the squares/cells within the grid varying based on user input. 
 
 The screen on the right will be the options menu for the user. 
@@ -74,17 +76,17 @@ the left screen, but which will not change the overall size of the left screen. 
 display error messages indicating bad inputs or empty data errors. 
 * Contain a pause and resume button for users to be able to periodically stop the simulation.
 * Contain a step forward button which will allow users to skip the simulation forward a set number of steps at one time, 
-ie. a certain number of update steps will be called while the grid appearance is not updated. The grid appearance will 
+i.e.. a certain number of update steps will be called while the grid appearance is not updated. The grid appearance will 
 then be updated after the final state to reflect the new state. 
 * Include a fast-forward and a slow-down button which will increase the step rate or slow down the step rate respectively.
 
-Below are example images of what the simulation sceen with the two sub-screens described above will look like. 
+Below are example images of what the simulation screen with the two sub-screens described above will look like. 
 ![](Design_Images/User_Interface_Image_With_Many_Cells.png "User Interface Image With Many Cells")
 		A sample user interface screen showing a grid with many cells
 ![](Design_Images/User_Interface_Image _With_Less_Cells.png "User Interface Image With Less Cells")
 		A sample user interface screen showing a grid with fewer cells
 
-To first start the simulation program, a simulation must be choosen from the drop down menu. The initial size for the cells 
+To first start the simulation program, a simulation must be chosen from the drop down menu. The initial size for the cells 
 and grid will be initial parameters set in the XML file for each simulation and read into the program from these files.
 Selecting a simulation from the drop down menu while another is running will shut down the current simulation and begin 
 the newly selected one. The Cell Society class will be listening for inputs from the drop down menu and, when an input is 
@@ -98,7 +100,7 @@ box/console that is displayed on the right screen will reset the already selecte
 newly entered size (The size will be the number of squares per row on the grid). The selected simulation will play from 
 the beginning using initial simulation parameters but with the new size. Besides changing the grid size, the text 
 box/console on the right screen will also be used to display error messages. 
->  **Error messages will be displayed for the following erraneous situations...**
+>  **Error messages will be displayed for the following erroneous situations...**
 >  
 * Entering a negative number for the size.
 * Entering a number below the minimum size threshold.
@@ -118,9 +120,9 @@ box/console on the right screen will also be used to display error messages.
   * Instantiates a CellManager and acts as the mediator between this object and the Simulation subclass
   * Displays the grid to the user by passing it to the GUI interface
   * Begins a Simulations loop
-  * Designed as such so that each of the other classes have as little interaction as possible; instead, CellManager acts as a central hub, allowing for exstensibility of code and dryness
+  * Designed as such so that each of the other classes have as little interaction as possible; instead, CellManager acts as a central hub, allowing for extensibility of code and dryness
 * public class CellManager
-	* Manages the cells on the grid and updates their properites. 
+	* Manages the cells on the grid and updates their properties. 
   *	Handles and maintains a cell list of cells matching the simulation type which is running. 
   * Interacts with the simulation class to generate necessary cells with the correct update function for the current simulation.
   	Initialized by the Cell Society class, which keeps the cell manager object. Passes the cell list to the Grid class so that 
@@ -129,7 +131,7 @@ box/console on the right screen will also be used to display error messages.
   	simply by creating a new cell class, thus the CellManager class can be extended by creating new derivative of the abstraction 
     Cell class it is based on. 
   * CellManager will be designed such that it can work with any cell and simulation type, since both of these classes are 
-  	abstract and will be extended for the specific simulations. CellManager is meant to separate the detailed naunces of handeling 
+  	abstract and will be extended for the specific simulations. CellManager is meant to separate the detailed nuances of handling 
     cells from the rest of the program, as it will have to frequently loop through the cell list it manages to update cells and 
     remove cells when simulations switch. We wanted to keep these functions separate from the rest of the program and wanted to 
     code them to work for any cell type in a separate class. 
@@ -155,20 +157,20 @@ box/console on the right screen will also be used to display error messages.
   * Will be designed to work with any cell or simulation type thus allowing the class to be extended by creating new derivative of
   	cell and simulation subclasses. While the module's code will technically be closed and will not need to be modified for 
     extensions, the function of this class can be extended by creating new instances of the mentioned subclasses. 
-  * Designed to separate the displying of the individual cells from the larger program. 
-  	Meant to work with any cell or simulation type and specialize in handeling cell display, by controlling all the x and y 
+  * Designed to separate the displaying of the individual cells from the larger program. 
+  	Meant to work with any cell or simulation type and specialize in handling cell display, by controlling all the x and y 
     positions in the grid created and knowing where it is that cells can go to be correctly displayed on the grid.  
   * Unsure if needed (see design considerations)
 * public class GUI  
 	* Displays user interface for the right screen (See the User Interface section). Handles the displaying of the drop down 
   	menu, simulation control buttons, and error messages. Listens to user input and reacts to it accordingly by calling the 
     correct CellSociety method
-  * Uses user input to decide the next steps the program will take. Uses resouce files to display error messages and any other 
+  * Uses user input to decide the next steps the program will take. Uses resource files to display error messages and any other 
   	display messages.
   * Interacts with the CellSociety class which instigates it. Interacts with the user by displaying user options and listening 
   	to user input. 
   * The GUI class will be coded with distinct methods for each button it controls and listens to. Should one want to add a button
-  	a completely new method must be made, thus keeping the old code closed, but allowing extension with the simple addtion of 
+  	a completely new method must be made, thus keeping the old code closed, but allowing extension with the simple addition of 
     another button and method to control it.
   * We decided on the GUI design in order to dedicate one class to monitoring user input and the display that the user interacts 
   	with. This separates reacting to the user from the main class thus making the code cleaner and puts all display concerns within
@@ -188,12 +190,12 @@ box/console on the right screen will also be used to display error messages.
     * private void handleUpdate(double elapsedTime)
     	* Will update this cell so that it follows the rules defined by its simulation
   * Designed it as such because the Cells seem to be pretty similar to rectangles and this allows us to have a lot of flexibility
-  * Could have maybe used something like gridPane but that doesn't allow us much freedom in mainupulating the cells
+  * Could have maybe used something like gridPane but that doesn't allow us much freedom in manipulating the cells
 
 Basic flow:
 - Main is run.
 - Main starts CellSociety.
-- CellSociety gets input from the user for the simulaiton type and size via the GUI class which displays user options and monitors
+- CellSociety gets input from the user for the simulation type and size via the GUI class which displays user options and monitors
 	user input. 
 - CellSociety runs the chosen simulation by creating an instance of that simulation, with the cell manager and grid size as a parameter.
 - The simulation loads the simulation's xml file and then creates the cells with the properties defined in the xml file.
@@ -203,7 +205,7 @@ Basic flow:
 - CellSociety calls updateCells on CellManager.
 - CellManager calls updateProperties on each cell.
 - Cell society updates new cells onto the grid which the Grid class displays.
-- Simulation countinues until end conditions are met (either time limit or certain cell conditions).
+- Simulation continues until end conditions are met (either time limit or certain cell conditions).
 
 Use Cases
 * Apply the rules to a middle cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle (i.e., with all its neighbors)
@@ -218,8 +220,8 @@ Use Cases
 	* Doable from our design, since each Simulation subclass reads its own XML file
   * Will allow parameters of simulation to be changeable to allow for user input in future
 * Switch simulations: use the GUI to change the current simulation from Game of Life to Wator
-	* Doable from our design, since users will be able to select from a dropdown a simulation
-  * Cell Society will instantize a new Simulation
+	* Doable from our design, since users will be able to select from a drop-down a simulation
+  * Cell Society will  a new Simulation
   
 ### Design Considerations 
 We ran into several issues that could not be fully decided until a deeper understanding of the project has been reached through coding.
@@ -229,7 +231,7 @@ We ran into several issues that could not be fully decided until a deeper unders
   * If each Cell holds its own X and Y value, then we need some external class to determine its neighbors 
     	(hence the Grid or CellManager). 
   * The Grid might already be able to do exactly what the CellManager would do simply by holding a list of Cells.
-* Is it neccessary to have different Simulation classes?
+* Is it necessary to have different Simulation classes?
 	* Reasons for consideration: dryness of code, Little knowledge of XML, little knowledge of how simulations differ from each other
 	* Each Cell subclass will hold the rules for its simulation.
   * However, is it possible to bind the initial configuration without first knowing what the configuration
@@ -263,4 +265,3 @@ We ran into several issues that could not be fully decided until a deeper unders
 * Bruna: GUI Package 
 * Tavo: XML files, Simulation Package 
 * CellSociety - Group effort
-
