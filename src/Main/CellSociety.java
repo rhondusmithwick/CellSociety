@@ -1,5 +1,6 @@
 package Main;
 
+import Cell.CellManager;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,17 +12,21 @@ import javafx.stage.Stage;
  */
 public class CellSociety {
     private final Group group;
-    private final Grid grid;
+    private final CellManager cellManager;
+
     public CellSociety() {
         group = new Group();
-        grid = new Grid();
-        group.getChildren().add(grid);
+        cellManager = new CellManager(500, 500, 10, 10);
+        group.getChildren().add(cellManager);
 
     }
 
     public void init(Stage primaryStage) {
-        grid.init(500, 500);
-        Scene scene = new Scene(group, 500, 500);
+        cellManager.init("");
+        Scene scene = new Scene(group, cellManager.getWidth(), cellManager.getHeight());
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
     }
+
+
 }
