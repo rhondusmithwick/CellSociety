@@ -9,25 +9,26 @@ import javafx.scene.Group;
  * @author Rhondu Smithwick
  */
 public class Grid extends Group {
-    private final double width;
-    private final double height;
 
-    public Grid(double width, double height) {
+    public Grid() {
         super();
-        this.width = width;
-        this.height = height;
     }
 
+    public void init(double width, double height) {
+        int numCellsPerRow = (int) (width * .1);
+        int numCellsPerColumn = (int) (height * .1);
+        for (int r = 0; r < numCellsPerRow; r++) {
+            for (int c = 0; c < numCellsPerColumn; c++) {
+                Cell myCell = new Cell(numCellsPerRow, numCellsPerColumn);
+                myCell.setX(r * numCellsPerRow);
+                myCell.setY(c * numCellsPerColumn);
+                myCell.init();
+                addCell(myCell);
+            }
+        }
+    }
     public void addCell(Cell c) {
         this.getChildren().add(c);
     }
 
-    public double getWidth() {
-        return width;
-    }
-
-
-    public double getHeight() {
-        return height;
-    }
 }
