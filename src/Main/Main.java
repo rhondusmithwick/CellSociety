@@ -1,4 +1,8 @@
+package Main;
+
+import Cell.Cell;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -7,10 +11,10 @@ import javafx.stage.Stage;
  * @author Rhondu Smithwick
  */
 public class Main extends Application {
+
     public static void main(String[] args) {
         launch(args);
     }
-
     /**
      * Start the application.
      *
@@ -20,7 +24,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Cell Society");
         CellSociety cs = new CellSociety();
-        cs.begin();
+        cs.init(primaryStage);
         primaryStage.show();
     }
 }
