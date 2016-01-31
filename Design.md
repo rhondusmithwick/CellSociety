@@ -1,5 +1,6 @@
 ### cellsociety
 Duke CompSci 308 Cell Society Project
+
 ### Introduction
 * This project allows users to specify a simulation, which will then be carried out on a grid of Cell Automata.
 * The primary area of flexibility will be in the design of the cells and simulation. Each simulation
@@ -7,11 +8,11 @@ Duke CompSci 308 Cell Society Project
   parameters. Adding simulation and cell classes and writing XML files for these classes will allow the program to be 
   open and extended. 
 * The program will be closed in its interaction with the user and transition between different simulations. The code to listen
-and react correctly to user input will be closed as that process should be the same no matter the number of simulations 
-included or how the program is extended.
+	and react correctly to user input will be closed as that process should be the same no matter the number of simulations 
+	included or how the program is extended.
 * Adding a new option for user control may add something that the program has to 
-monitor and listen to and may add a method that the program will execute when it gets the new input, but any pre-existing 
-methods will not need to be changed and the way the program transitions between simulations will still be closed regardless.
+	monitor and listen to and may add a method that the program will execute when it gets the new input, but any pre-existing 
+	methods will not need to be changed and the way the program transitions between simulations will still be closed regardless.
 * In general...
 	* One class will handle transitions between simulations and will be connected to all other classes to monitor 
 		the flow of the program. 
@@ -37,14 +38,17 @@ methods will not need to be changed and the way the program transitions between 
   * Methods: init, updateCells
 * The Cell class will be a base class for all other cells (Fire, Segregation, etc...) to extend from
 	* Extended from Rectangle
-  * Key inherited methods: setX(double x), getX(), setY(double y), getY(), 
+  * Key inherited methods: setX(double x), setY(double y), setFill
   * Methods: handleUpdate(double elapsedTime), setImage(Image image)
 * The CellManager will manage the cells so that they can be easily changed
-	* Fields: List<Cell> theCells, Group group? 
+	* Fields: Collection<Cell> theCells
+  * private void createCells(String cellType, double gridWidth, double gridHdeight, int cellsPerRow, int cellPerColumn)
+  * private static Cell createCell(String cellType, double width, double height, double x, double y) 
+  	* switch statements based on cellType?
 * The Grid class will recieve a list of cells from CellManager and allow them to be displayed 
---- Is it redudndant to have both a grid and a cellManager? 
---- I say this because the CellManager itself could be the Grid because we could have it contain a Group
---- This is especially true if we have each individual Cell holding its own X and Y value
+
+Below is a diagram of the program's classes with some of their basic methods and how they will interact with each other.
+![Design Diagram](Design_Images/Cell_Society_Class_Diagram.jpg "Class Diagram")
 
 ### User Interface
 The user interface will consist of one larger rectangular screen of a fixed size that will contain two smaller screens
@@ -53,6 +57,7 @@ within it side by side. The screen on the left will be the grid for the simlatio
 > 
 *  Display a grid made up of state-changing squares controled by simulation parameters and rules specificed within 
 the update method of the grid squares (ie. cells) defined in the Cell class for the simulation type.
+*  Be a fixed overall size, with the number and size of the squares/cells within the grid varying based on user input. 
 
 The screen on the right will be the options menu for the user. 
 > **This right screen will...**
@@ -67,7 +72,11 @@ ie. a certain number of update steps will be called while the grid appearance is
 then be updated after the final state to reflect the new state. 
 * Include a fast-forward and a slow-down button which will increase the step rate or slow down the step rate respectively.
 
-> **See the Design_Images folder for the UserInterface diagrams and layout design.**
+Below are example images of what the simulation sceen with the two sub-screens described above will look like. 
+![](Design_Images/User_Interface_Image_With_Many_Cells.png "User Interface Image With Many Cells")
+		A sample user interface screen image showing a grid with many cells. 
+![](Design_Images/User_Interface_Image _With_Less_Cells.png "User Interface Image With Less Cells")
+		A sample user interface screen image showing a grid with fewer cells.
 
 To first start the simulation program, a simulation must be choosen from the drop down menu. The initial size for the cells 
 and grid will be initial parameters set in the XML file for each simulation and read into the program from these files.
@@ -91,6 +100,28 @@ box/console on the right screen will also be used to display error messages.
 * Entering a number before a simulation has been selected/is running. 
 
 ### Design Details
+
+
+- what it does
+- what it uses
+- who interacts with it 
+- how it can be extended
+- why we designed it such
+
+* CellManager
+	Manages the cells and their properites. Only class that interacts with cell. 
+  Used by simulation to set the approriate rules to a cell, and by cell society to load cells onto the grid. 
+  
+  It can be extended to handle new types of cells with unique fields and properties, and potentially to manage the grid itself.
+	
+* CellSociety
+	
+* AbstractSimulation 
+* Grid
+* Cell
+* Main
+
+
 Basic flow:
 - Main is run
 - Main starts cell society
@@ -103,16 +134,20 @@ Basic flow:
 - Cell society calls updateCells on cellManager
 - CellManager calls updateProperties on each cell
 - Cell society updates new cells onto the grid
-- Simulation countinues until end conditions are met ()
-- The simulation 
-* Main
-- Simply runs cell society, procedure remains constant for each kind of simulation
-* Cell Society 
-- Gets 
-* Cell Manager
-* Cell
-* Grid
-* AbstractSimulation 
+- Simulation countinues until end conditions are met (either time limit or certain cell conditions)
+
+Use Cases
+- Segregation
+- Predator-prey
+- Fire
+- Game of life
+
+### Use Cases
+* Apply the rules to a middle cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle (i.e., with all its neighbors)
+* Apply the rules to an edge cell: set the next state of a cell to live by counting its number of neighbors using the Game of Life rules for a cell on the edge (i.e., with some of its neighbors missing)
+* Move to the next generation: update all cells in a simulation from their current state to their next state and display the result graphically
+* Set a simulation parameter: set the value of a parameter, probCatch, for a simulation, Fire, based on the value given in an XML fire
+* Switch simulations: use the GUI to change the current simulation from Game of Life to Wator
 
 ### Design Considerations 
 We ran into several issues that could not be fully decided until a deeper understanding of the project has been reached through coding.
@@ -130,6 +165,8 @@ We ran into several issues that could not be fully decided until a deeper unders
   * We are currently leaning towards having separate Simulation classes: each one will parse its specific
   XML file, and binds its known parameters. 
   * Another question: Can we dynamically determine parameters at runtime using XML?
+  
+### Group Practices
 * Clashing of coding styles	
 	* Should we have a Constants class?
   	* Dependa on whether many clases will need to access these constants, how many constants we will have
@@ -140,7 +177,18 @@ We ran into several issues that could not be fully decided until a deeper unders
 * GitHub standards
 	* Major changes to another group member's code must be approved by that group member 
   	* If clash, third group member mediates.
-  * Small refactoring approval is not rrequired, but is nice.
+  * Small refactoring approval is not required, but is nice.
   * Big edits should happen in individual branches; small refactoring may be done directly on master.
+* Packages 
+	* Cell: Contains Cell, Cell Subclasses, CellManager
+  * Main: Contains CellSociety, Main
+  * GUI: User Interface and Options Class
+  * Simulation: Contains Simulation, Simulation subclasses, XML Parser?
+  * Config: Resources class, Constants class if needed 
   
 ### Team Responsibilities 
+* Rhondu: Cell Package 
+* Bruna: GUI Package 
+* Tavo: XML files, Simulation Package 
+* CellSociety - Group effort
+
