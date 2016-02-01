@@ -17,7 +17,7 @@ public class GameOfLifeCell extends Cell {
     }
 
     @Override
-    public void handleUpdate(double elapsedTime) {
+    public void handleUpdate() {
         int aliveNeighbors = countAliveNeighbors();
         if (aliveNeighbors < 2 || aliveNeighbors > 3) {
             destroy();

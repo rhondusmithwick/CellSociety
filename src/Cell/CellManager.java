@@ -68,9 +68,9 @@ public class CellManager extends Group {
     private static Cell createCell(String cellType, int cellWidth, int cellHeight, int r, int c) {
         Cell myCell;
         switch (cellType) {
-//            case "Segregation":
-//                myCell = new SegregationCell();
-//                break;
+            case "Segregation":
+                myCell = new SegregationCell();
+                break;
 //            case "FIRE":
 //                myCell = new FireCell();
 //                break;

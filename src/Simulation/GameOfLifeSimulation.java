@@ -13,6 +13,9 @@ import java.util.Random;
  */
 public class GameOfLifeSimulation extends Simulation {
 
+    /**
+     * NEEDED FROM XML!
+     */
     private final double probStartDead = .3;
 
     public GameOfLifeSimulation(Collection<Cell> theCells) {

@@ -3,6 +3,7 @@ package Main;
 import Cell.CellManager;
 import Simulation.GameOfLifeSimulation;
 import Simulation.Simulation;
+import Simulation.SegregationSimulation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,7 +26,7 @@ class CellSociety {
     }
 
     public void init(Stage primaryStage) {
-        Simulation sim = createSimulation("GameOfLife");
+        Simulation sim = createSimulation("Segregation");
         sim.init();
         Scene scene = new Scene(group, cellManager.getWidth(), cellManager.getHeight());
         primaryStage.setScene(scene);
@@ -37,6 +38,10 @@ class CellSociety {
     private Simulation createSimulation(String simType) {
         Simulation sim;
         switch (simType) {
+            case "Segregation":
+                cellManager.init("Segregation");
+                sim = new SegregationSimulation(cellManager.getCells());
+                break;
             default:
                 cellManager.init("GameOfLife");
                 sim = new GameOfLifeSimulation(cellManager.getCells());
