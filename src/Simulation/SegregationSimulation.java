@@ -15,22 +15,20 @@ import java.util.Random;
  * @author Rhondu Smithwick
  */
 public class SegregationSimulation extends Simulation {
-    List<Cell> emptyCells = new ArrayList<>();
-
-    public SegregationSimulation(Collection<Cell> theCells) {
-        super(theCells);
-    }
-
+    private final List<Cell> emptyCells = new ArrayList<>();
     /**
      * NEEDED FROM XML!
      */
-    double threshold = .3;
-    Color empty = Color.WHITE;
-    Color group1 = Color.RED;
-    Color group2 = Color.BLUE;
-    double emptyPercent = 20;
-    double group1Percent = 30;
-    double group2Percent = 50;
+    private final double threshold = 30;
+    private final Color empty = Color.WHITE;
+    private final Color group1 = Color.RED;
+    private final Color group2 = Color.BLUE;
+    private final double emptyPercent = 20;
+    private final double group1Percent = 50;
+    public SegregationSimulation(Collection<Cell> theCells) {
+        super(theCells);
+    }
+//    double group2Percent = 50;
 
     public void init() {
         Random rn = new Random();
@@ -44,7 +42,7 @@ public class SegregationSimulation extends Simulation {
         }
     }
 
-    public void assignGroup(Cell c, int randomNum) {
+    private void assignGroup(Cell c, int randomNum) {
         if (randomNum <= emptyPercent) {
             c.setFill(empty);
             emptyCells.add(c);

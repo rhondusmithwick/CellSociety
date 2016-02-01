@@ -31,7 +31,7 @@ public abstract class Cell extends Rectangle {
 
     public void init() {
         this.setFill(Color.WHITE);
-//        this.setStroke(Color.BLACK);
+        this.setStroke(Color.BLACK);
     }
 
     public void addNeighbor(Cell neighbor) {

@@ -30,6 +30,7 @@ public abstract class Simulation {
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     final Collection<Cell> theCells;
     private final Timeline simulationLoop;
+    private boolean isPlaying = false;
 
     Simulation(Collection<Cell> theCells) {
         this.theCells = theCells;
@@ -52,7 +53,25 @@ public abstract class Simulation {
 
     public abstract void init();
 
-    public void beginLoop() {
+    private void beginLoop() {
         simulationLoop.play();
+        isPlaying = true;
+    }
+
+    private void stopLoop() {
+        simulationLoop.stop();
+        isPlaying = false;
+    }
+
+    private boolean getPlaying() {
+        return isPlaying;
+    }
+
+    public void playOrStop() {
+        if (!getPlaying()) {
+            beginLoop();
+        } else {
+            stopLoop();
+        }
     }
 }

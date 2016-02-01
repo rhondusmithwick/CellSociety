@@ -17,15 +17,15 @@ public class SegregationCell extends Cell {
 
     public void handleUpdate() {
         double likeMe = countLikeMe();
-        if (likeMe < threshold) {
+        if (likeMe * 100 < threshold) {
             isSatisfied = false;
         }
     }
 
-    public double countLikeMe() {
+    private double countLikeMe() {
         int count = 0;
         int num = 0;
-        for (Cell c: neighbors) {
+        for (Cell c : neighbors) {
             if (c.getFill() != Color.WHITE) {
                 if (c.getFill() != this.getFill()) {
                     count++;
@@ -35,6 +35,7 @@ public class SegregationCell extends Cell {
         }
         return (double) count / num;
     }
+
     public void setThreshold(double t) {
         threshold = t;
     }
