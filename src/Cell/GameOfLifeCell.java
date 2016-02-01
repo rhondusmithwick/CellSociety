@@ -10,7 +10,8 @@ import javafx.scene.paint.Color;
  */
 public class GameOfLifeCell extends Cell {
     private boolean isAlive;
-
+    private boolean markForDeath = false;
+    private boolean markForRestore = false;
     public GameOfLifeCell() {
         super();
         isAlive = true;
@@ -20,13 +21,21 @@ public class GameOfLifeCell extends Cell {
     public void handleUpdate() {
         int aliveNeighbors = countAliveNeighbors();
         if (aliveNeighbors < 2 || aliveNeighbors > 3) {
-            destroy();
-        }
-        if (aliveNeighbors == 3 && !isAlive) {
-            restore();
+            markForDeath = true;
+        } else if (aliveNeighbors == 3 && !isAlive) {
+            markForRestore = true;
         }
     }
 
+
+    public void transform() {
+        if (markForDeath) {
+            destroy();
+        }
+        if (markForRestore) {
+            restore();
+        }
+    }
 
     private int countAliveNeighbors() {
         int count = 0;
@@ -45,11 +54,13 @@ public class GameOfLifeCell extends Cell {
 
     public void destroy() {
         isAlive = false;
+        markForDeath = false;
         setFill(Color.BLACK);
     }
 
-    private void restore() {
+    public void restore() {
         isAlive = true;
+        markForRestore = false;
         setFill(Color.WHITE);
     }
 

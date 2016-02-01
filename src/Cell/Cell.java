@@ -20,18 +20,13 @@ public abstract class Cell extends Rectangle {
     Cell() {
         super();
         neighbors = new LinkedList<>();
-        init();
+//        this.setStroke(Color.BLACK);
     }
 
 
     public void setImage(Image image) {
         ImagePattern imagePattern = new ImagePattern(image);
         this.setFill(imagePattern);
-    }
-
-    public void init() {
-        this.setFill(Color.WHITE);
-        this.setStroke(Color.BLACK);
     }
 
     public void addNeighbor(Cell neighbor) {

@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 import java.util.Collection;
+import java.util.Random;
 
 /**
  * Created by rhondusmithwick on 1/31/16.
@@ -28,6 +29,7 @@ public abstract class Simulation {
      * The game's second delay that will be used in its timers
      */
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+
     final Collection<Cell> theCells;
     private final Timeline simulationLoop;
     private boolean isPlaying = false;
@@ -40,7 +42,7 @@ public abstract class Simulation {
 
     private Timeline buildLoop() {
         EventHandler<ActionEvent> handler = (t -> step());
-        final KeyFrame keyFrame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), handler);
+        final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), handler);
         Timeline simulationLoop = new Timeline();
         simulationLoop.setCycleCount(Animation.INDEFINITE);
         simulationLoop.getKeyFrames().addAll(keyFrame);
@@ -50,8 +52,6 @@ public abstract class Simulation {
     protected void step() {
         theCells.forEach(c -> c.handleUpdate());
     }
-
-    public abstract void init();
 
     private void beginLoop() {
         simulationLoop.play();
@@ -74,4 +74,17 @@ public abstract class Simulation {
             stopLoop();
         }
     }
+
+    public void init() {
+        Random rn = new Random();
+        int minimum = 1;
+        int maximum = 100;
+        int range = maximum - minimum + 1;
+        for (Cell c : theCells) {
+            int randomNum = rn.nextInt(range) + minimum;
+            assignInitialState(randomNum, c);
+        }
+    }
+
+    protected abstract void assignInitialState(int randomNum, Cell c);
 }

@@ -23,34 +23,27 @@ public class SegregationSimulation extends Simulation {
     private final Color empty = Color.WHITE;
     private final Color group1 = Color.RED;
     private final Color group2 = Color.BLUE;
-    private final double emptyPercent = 20;
-    private final double group1Percent = 50;
+    private final double emptyPercent = 10;
+    private final double group1Percent = 40;
+//    double group2Percent = 50;
 
     public SegregationSimulation(Collection<Cell> theCells) {
         super(theCells);
     }
-//    double group2Percent = 50;
 
-    public void init() {
-        Random rn = new Random();
-        int minimum = 1;
-        int maximum = 100;
-        int range = maximum - minimum + 1;
-        for (Cell c : theCells) {
-            ((SegregationCell) c).setThreshold(threshold);
-            int randomNum = rn.nextInt(range) + minimum;
-            assignInitialGroup(c, randomNum);
-        }
-    }
 
-    private void assignInitialGroup(Cell c, int randomNum) {
+
+    @Override
+    protected void assignInitialState(int randomNum, Cell c) {
+        SegregationCell sc = (SegregationCell) c;
+        sc.setThreshold(threshold);
         if (randomNum <= emptyPercent) {
-            c.setFill(empty);
-            emptyCells.add(c);
+            sc.setFill(empty);
+            emptyCells.add(sc);
         } else if (randomNum > emptyPercent && randomNum <= emptyPercent + group1Percent) {
-            c.setFill(group1);
+            sc.setFill(group1);
         } else {
-            c.setFill(group2);
+            sc.setFill(group2);
         }
     }
 
