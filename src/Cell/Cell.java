@@ -38,7 +38,7 @@ public abstract class Cell extends Rectangle {
         neighbors.add(neighbor);
     }
 
-    public abstract void handleUpdate(double elapsedTime);
+    public abstract void handleUpdate();
 
 
 }
