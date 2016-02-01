@@ -25,6 +25,7 @@ public class SegregationSimulation extends Simulation {
     private final Color group2 = Color.BLUE;
     private final double emptyPercent = 20;
     private final double group1Percent = 50;
+
     public SegregationSimulation(Collection<Cell> theCells) {
         super(theCells);
     }
@@ -38,11 +39,11 @@ public class SegregationSimulation extends Simulation {
         for (Cell c : theCells) {
             ((SegregationCell) c).setThreshold(threshold);
             int randomNum = rn.nextInt(range) + minimum;
-            assignGroup(c, randomNum);
+            assignInitialGroup(c, randomNum);
         }
     }
 
-    private void assignGroup(Cell c, int randomNum) {
+    private void assignInitialGroup(Cell c, int randomNum) {
         if (randomNum <= emptyPercent) {
             c.setFill(empty);
             emptyCells.add(c);
