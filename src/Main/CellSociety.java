@@ -23,13 +23,13 @@ class CellSociety {
 
     public CellSociety() {
         group = new Group();
-        cellManager = new CellManager(500, 500, 50, 50);
+        cellManager = new CellManager(750, 750, 150, 150);
         group.getChildren().add(cellManager);
 
     }
 
     public void init(Stage primaryStage) {
-        sim = createSimulation("Segregation");
+        sim = createSimulation("GameOfLife");
         sim.init();
         Scene scene = new Scene(group, cellManager.getWidth(), cellManager.getHeight());
         primaryStage.setScene(scene);
@@ -39,9 +39,9 @@ class CellSociety {
     }
 
     private void handleKeyInput(KeyCode code) {
-        switch(code) {
+        switch (code) {
             case SPACE:
-                  sim.playOrStop();
+                sim.playOrStop();
                 break;
             default:
         }
@@ -50,6 +50,10 @@ class CellSociety {
     private Simulation createSimulation(String simType) {
         Simulation sim;
         switch (simType) {
+            case "GameOfLife" :
+                cellManager.init("GameOfLife");
+                sim = new GameOfLifeSimulation(cellManager.getCells());
+                break;
             case "Segregation":
                 cellManager.init("Segregation");
                 sim = new SegregationSimulation(cellManager.getCells());

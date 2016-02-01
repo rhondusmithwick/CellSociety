@@ -16,24 +16,29 @@ public class GameOfLifeSimulation extends Simulation {
     /**
      * NEEDED FROM XML!
      */
-    private final double probStartDead = .3;
+    private final double probStartDead = 30;
 
     public GameOfLifeSimulation(Collection<Cell> theCells) {
         super(theCells);
     }
 
 
-    public void init() {
-        Random rn = new Random();
-        int minimum = 1;
-        int maximum = 100;
-        int range = maximum - minimum + 1;
-        for (Cell c : theCells) {
-            int randomNum = rn.nextInt(range) + minimum;
-            if (randomNum <= probStartDead * 100) {
-                ((GameOfLifeCell) c).destroy();
-            }
+
+    public void assignInitialState(int randomNum, Cell c) {
+        GameOfLifeCell gc = (GameOfLifeCell) c;
+        if (randomNum <= probStartDead) {
+            gc.destroy();
+        } else {
+            gc.restore();
         }
     }
 
+    @Override
+    protected void step() {
+        super.step();
+        for (Cell c: theCells) {
+            GameOfLifeCell gc = (GameOfLifeCell) c;
+            gc.transform();
+        }
+    }
 }

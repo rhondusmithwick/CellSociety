@@ -111,7 +111,6 @@ public class CellManager extends Group {
         for (int r = 0; r < cellsPerRow; r++) {
             for (int c = 0; c < cellsPerColumn; c++) {
                 Cell myCell = createCell(cellType, cellWidth, cellHeight, r, c);
-                myCell.init();
                 grid[r][c] = myCell;
                 this.getChildren().add(myCell);
                 theCells.add(myCell);
