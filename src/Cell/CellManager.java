@@ -2,6 +2,9 @@ package Cell;
 
 import javafx.scene.Group;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**
  * The class for the CellManager, which contains all the cells.
  * Created by rhondusmithwick on 1/30/16.
@@ -32,6 +35,8 @@ public class CellManager extends Group {
      */
     private final int cellsPerColumn;
 
+    private final Collection<Cell> theCells;
+
     /**
      * Create a new CellManager.
      *
@@ -47,6 +52,7 @@ public class CellManager extends Group {
         this.cellsPerRow = cellsPerRow;
         this.cellsPerColumn = cellsPerColumn;
         grid = new Cell[cellsPerRow][cellsPerColumn];
+        theCells = new LinkedList<>();
     }
 
     /**
@@ -71,11 +77,11 @@ public class CellManager extends Group {
 //            case "PredatorPrey":
 //                myCell = new PredatorPreyCell();
 //                break;
-//            case "GameOfLife":
-//                myCell = new GameOfLifeCell();
-//                break;
+            case "GameOfLife":
+                myCell = new GameOfLifeCell();
+                break;
             default:
-                myCell = new Cell();
+                myCell = new GameOfLifeCell();
                 break;
         }
         myCell.setWidth(cellWidth);
@@ -87,7 +93,7 @@ public class CellManager extends Group {
         return myCell;
     }
 
-    public boolean inBounds(int r, int c) {
+    private boolean inBounds(int r, int c) {
         return (r >= 0)
                 && (r < cellsPerRow)
                 && (c >= 0)
@@ -108,6 +114,7 @@ public class CellManager extends Group {
                 myCell.init();
                 grid[r][c] = myCell;
                 this.getChildren().add(myCell);
+                theCells.add(myCell);
             }
         }
         populateNeighbors();
@@ -119,20 +126,25 @@ public class CellManager extends Group {
     private void populateNeighbors() {
         for (int r = 0; r < cellsPerRow; r++) {
             for (int c = 0; c < cellsPerColumn; c++) {
-                Cell myCell = grid[r][c];
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        if (!(j == 0 && i == 0)) {
-                            int neighborR = r + i;
-                            int neighborC = c + j;
-                            if (inBounds(neighborR, neighborC)) {
-                                Cell neighbor = grid[neighborR][neighborC];
-                                myCell.addNeighbor(neighbor);
-                            }
-                        }
+                traverseNeighbors(r, c);
+            }
+        }
+    }
 
+
+    private void traverseNeighbors(int r, int c) {
+        Cell myCell = grid[r][c];
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (!(j == 0 && i == 0)) {
+                    int neighborR = r + i;
+                    int neighborC = c + j;
+                    if (inBounds(neighborR, neighborC)) {
+                        Cell neighbor = grid[neighborR][neighborC];
+                        myCell.addNeighbor(neighbor);
                     }
                 }
+
             }
         }
     }
@@ -163,4 +175,7 @@ public class CellManager extends Group {
         return gridHeight;
     }
 
+    public Collection<Cell> getCells() {
+        return theCells;
+    }
 }

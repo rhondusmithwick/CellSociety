@@ -13,11 +13,11 @@ import java.util.LinkedList;
  *
  * @author Rhondu Smithwick
  */
-public class Cell extends Rectangle {
+public abstract class Cell extends Rectangle {
 
-    private final Collection<Cell> neighbors;
+    final Collection<Cell> neighbors;
 
-    public Cell() {
+    Cell() {
         super();
         neighbors = new LinkedList<>();
         init();
@@ -31,10 +31,14 @@ public class Cell extends Rectangle {
 
     public void init() {
         this.setFill(Color.WHITE);
-        this.setStroke(Color.BLACK);
+//        this.setStroke(Color.BLACK);
     }
 
     public void addNeighbor(Cell neighbor) {
         neighbors.add(neighbor);
     }
+
+    public abstract void handleUpdate(double elapsedTime);
+
+
 }
