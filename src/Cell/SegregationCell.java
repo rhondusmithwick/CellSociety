@@ -16,13 +16,13 @@ public class SegregationCell extends Cell {
     }
 
     public void handleUpdate() {
-        double likeMe = countLikeMe();
-        if (likeMe * 100 < threshold) {
+        double likeMePercent = getLikeMePercent();
+        if (likeMePercent < threshold) {
             isSatisfied = false;
         }
     }
 
-    private double countLikeMe() {
+    private double getLikeMePercent() {
         int count = 0;
         int num = 0;
         for (Cell c : neighbors) {
@@ -33,7 +33,7 @@ public class SegregationCell extends Cell {
                 num++;
             }
         }
-        return (double) count / num;
+        return ((double) count / num) * 100;
     }
 
     public void setThreshold(double t) {
