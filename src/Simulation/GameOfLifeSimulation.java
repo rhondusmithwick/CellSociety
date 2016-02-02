@@ -4,8 +4,6 @@ import Cell.Cell;
 import Cell.GameOfLifeCell;
 import org.w3c.dom.Element;
 
-import java.util.Collection;
-
 /**
  * Created by rhondusmithwick on 1/31/16.
  *
@@ -19,10 +17,6 @@ public class GameOfLifeSimulation extends Simulation {
 
     public GameOfLifeSimulation() {
         super();
-    }
-
-    public GameOfLifeSimulation(Collection<Cell> theCells) {
-        super(theCells);
     }
 
     public void assignInitialState(int randomNum, Cell c) {

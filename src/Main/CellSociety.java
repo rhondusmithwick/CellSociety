@@ -67,7 +67,7 @@ class CellSociety {
                 break;
             default:
                 cellManager.init("GameOfLife");
-                sim = new GameOfLifeSimulation(cellManager.getCells());
+                sim = new GameOfLifeSimulation();
         }
         return sim;
     }

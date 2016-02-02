@@ -40,10 +40,6 @@ public abstract class Simulation {
         rn = new Random();
     }
 
-    protected Simulation(Collection<Cell> theCells) {
-        this();
-        setTheCells(theCells);
-    }
 
     private Timeline buildLoop() {
         EventHandler<ActionEvent> handler = (t -> step());
@@ -108,8 +104,7 @@ public abstract class Simulation {
             getTypeProperties(simulationElem);
         } catch (ParserConfigurationException
                 | SAXException
-                | IOException pce)
-        {
+                | IOException pce) {
             pce.printStackTrace();
         }
     }
