@@ -7,6 +7,7 @@ import Simulation.Simulation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -40,7 +41,7 @@ class CellSociety {
         Scene scene = new Scene(group, cellManager.getWidth(), cellManager.getHeight());
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        
+
         scene.setOnMouseClicked(e -> sim.playOrStop());
         scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
     }
@@ -49,6 +50,15 @@ class CellSociety {
         switch (code) {
             case SPACE:
                 sim.playOrStop();
+                break;
+            case UP:
+                sim.increaseRate();
+                break;
+            case DOWN:
+                sim.decreaseRate();
+                break;
+            case SHIFT:
+                sim.resetRate();
                 break;
             default:
         }

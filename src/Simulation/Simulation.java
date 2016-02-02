@@ -174,4 +174,24 @@ public abstract class Simulation {
     public void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
+
+    public void increaseRate() {
+        double currentRate = simulationLoop.getRate();
+        if (currentRate <= 20) {
+            simulationLoop.setRate(currentRate + 1);
+        }
+    }
+
+    public void decreaseRate() {
+        double currentRate = simulationLoop.getRate();
+        if (currentRate > 0) {
+            simulationLoop.setRate(currentRate - 1);
+
+        }
+    }
+
+    public void resetRate() {
+        simulationLoop.setRate(1.0);
+    }
 }
+
