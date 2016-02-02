@@ -12,6 +12,7 @@ public class GameOfLifeCell extends Cell {
     private boolean isAlive;
     private boolean markForDeath = false;
     private boolean markForRestore = false;
+
     public GameOfLifeCell() {
         super();
         isAlive = true;

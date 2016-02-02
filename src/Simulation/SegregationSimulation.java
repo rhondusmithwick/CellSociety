@@ -3,11 +3,10 @@ package Simulation;
 import Cell.Cell;
 import Cell.SegregationCell;
 import javafx.scene.paint.Color;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by rhondusmithwick on 2/1/16.
@@ -15,22 +14,25 @@ import java.util.Random;
  * @author Rhondu Smithwick
  */
 public class SegregationSimulation extends Simulation {
+    private static final double DEFAULT_THRESHOLD = 30;
+    private static final Color DEFAULT_EMPTY = Color.WHITE;
+    private static final Color DEFAULT_GROUP1 = Color.RED;
+    private static final Color DEFAULT_GROUP2 = Color.BLUE;
+    private static final double DEFAULT_EMPTY_PERCENT = 10;
+    private static final double DEFAULT_GROUP1_PERCENT = 40;
+
+
     private final List<Cell> emptyCells = new ArrayList<>();
-    /**
-     * NEEDED FROM XML!
-     */
-    private final double threshold = 30;
-    private final Color empty = Color.WHITE;
-    private final Color group1 = Color.RED;
-    private final Color group2 = Color.BLUE;
-    private final double emptyPercent = 10;
-    private final double group1Percent = 40;
-//    double group2Percent = 50;
+    private double threshold = DEFAULT_THRESHOLD;
+    private Color empty = DEFAULT_EMPTY;
+    private Color group1 = DEFAULT_GROUP1;
+    private Color group2 = DEFAULT_GROUP2;
+    private double emptyPercent = DEFAULT_EMPTY_PERCENT;
+    private double group1Percent = DEFAULT_GROUP1_PERCENT;
 
-    public SegregationSimulation(Collection<Cell> theCells) {
-        super(theCells);
+    public SegregationSimulation() {
+        super();
     }
-
 
 
     @Override
@@ -50,7 +52,7 @@ public class SegregationSimulation extends Simulation {
     @Override
     protected void step() {
         super.step();
-        for (Cell c : theCells) {
+        for (Cell c : getTheCells()) {
             SegregationCell sc = (SegregationCell) c;
             if (!sc.getSatisfied()) {
                 move(sc);
@@ -66,4 +68,13 @@ public class SegregationSimulation extends Simulation {
         sc.setSatisfied(true);
         emptyCells.set(randomIndex, sc);
     }
+
+
+    @Override
+    protected void getTypeProperties(Element simElem) {
+        // TODO Auto-generated method stub
+
+    }
+
+
 }

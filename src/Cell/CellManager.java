@@ -12,30 +12,27 @@ import java.util.LinkedList;
  * @author Rhondu Smithwick
  */
 public class CellManager extends Group {
+    private final Collection<Cell> theCells;
     /**
      * The grid, whose purpose is to allow access for a cell's neighbors.
      */
-    private final Cell[][] grid;
+    private Cell[][] grid;
     /**
      * the width of the grid.
      */
-    private final int gridWidth;
+    private int gridWidth;
     /**
      * The height of the grid.
      */
-    private final int gridHeight;
-
+    private int gridHeight;
     /**
      * The number of cells per row.
      */
-    private final int cellsPerRow;
-
+    private int cellsPerRow;
     /**
      * The number of cells per column.
      */
-    private final int cellsPerColumn;
-
-    private final Collection<Cell> theCells;
+    private int cellsPerColumn;
 
     /**
      * Create a new CellManager.
@@ -45,13 +42,8 @@ public class CellManager extends Group {
      * @param cellsPerRow    the number of cells per row
      * @param cellsPerColumn the number of cells per column
      */
-    public CellManager(int gridWidth, int gridHeight, int cellsPerRow, int cellsPerColumn) {
+    public CellManager() {
         super();
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
-        this.cellsPerRow = cellsPerRow;
-        this.cellsPerColumn = cellsPerColumn;
-        grid = new Cell[cellsPerRow][cellsPerColumn];
         theCells = new LinkedList<>();
     }
 
@@ -91,6 +83,14 @@ public class CellManager extends Group {
         myCell.setX(x);
         myCell.setY(y);
         return myCell;
+    }
+
+    public void setGrid(int gridWidth, int gridHeight, int cellsPerRow, int cellsPerColumn) {
+        this.gridWidth = gridWidth;
+        this.gridHeight = gridHeight;
+        this.cellsPerRow = cellsPerRow;
+        this.cellsPerColumn = cellsPerColumn;
+        grid = new Cell[cellsPerRow][cellsPerColumn];
     }
 
     private boolean inBounds(int r, int c) {
