@@ -17,7 +17,7 @@ public class GameOfLifeSimulation extends Simulation {
 
     public GameOfLifeSimulation() {
         super();
-        super.parseXmlFile("resources/" + "GameOfLife.xml");
+        parseXmlFile("resources/" + "GameOfLife.xml");
     }
 
 

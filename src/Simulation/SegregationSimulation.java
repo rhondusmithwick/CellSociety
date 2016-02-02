@@ -32,7 +32,7 @@ public class SegregationSimulation extends Simulation {
 
     public SegregationSimulation() {
         super();
-        super.parseXmlFile("resources/" + "Segregation.xml");
+        parseXmlFile("resources/" + "Segregation.xml");
     }
 
 
@@ -43,7 +43,8 @@ public class SegregationSimulation extends Simulation {
         if (randomNum <= emptyPercent) {
             sc.setFill(empty);
             emptyCells.add(sc);
-        } else if (randomNum > emptyPercent && randomNum <= emptyPercent + group1Percent) {
+        } else if (randomNum > emptyPercent
+                && randomNum <= emptyPercent + group1Percent) {
             sc.setFill(group1);
         } else {
             sc.setFill(group2);
