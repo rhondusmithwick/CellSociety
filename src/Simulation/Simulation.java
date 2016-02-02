@@ -43,8 +43,7 @@ public abstract class Simulation {
 
 
     private Timeline buildLoop() {
-        EventHandler<ActionEvent> handler = (t -> step());
-        final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), handler);
+        final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), t -> step());
         Timeline simulationLoop = new Timeline();
         simulationLoop.setCycleCount(Animation.INDEFINITE);
         simulationLoop.getKeyFrames().addAll(keyFrame);
