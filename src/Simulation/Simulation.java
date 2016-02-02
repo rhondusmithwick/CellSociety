@@ -33,10 +33,12 @@ public abstract class Simulation {
     final Collection<Cell> theCells;
     private final Timeline simulationLoop;
     private boolean isPlaying = false;
+    protected final Random rn;
 
     Simulation(Collection<Cell> theCells) {
         this.theCells = theCells;
         simulationLoop = buildLoop();
+        rn = new Random();
     }
 
 
@@ -77,14 +79,16 @@ public abstract class Simulation {
 
     public void init() {
         Random rn = new Random();
-        int minimum = 1;
-        int maximum = 100;
-        int range = maximum - minimum + 1;
         for (Cell c : theCells) {
-            int randomNum = rn.nextInt(range) + minimum;
+            int randomNum = getRandomNum(1, 100);
             assignInitialState(randomNum, c);
         }
     }
 
     protected abstract void assignInitialState(int randomNum, Cell c);
+
+    protected int getRandomNum(int min, int max) {
+        int range = max - min + 1;
+        return rn.nextInt(range) + min;
+    }
 }

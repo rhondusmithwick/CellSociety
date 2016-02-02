@@ -59,15 +59,11 @@ public class SegregationSimulation extends Simulation {
     }
 
     private void move(SegregationCell sc) {
-        Random rn = new Random();
-        int minimum = 0;
-        int maximum = emptyCells.size() - 1;
-        int range = maximum - minimum + 1;
-        int randomNum = rn.nextInt(range) + minimum;
-        Cell c = emptyCells.get(randomNum);
+        int randomIndex = getRandomNum(0, emptyCells.size() - 1);
+        Cell c = emptyCells.get(randomIndex);
         c.setFill(sc.getFill());
         sc.setFill(empty);
         sc.setSatisfied(true);
-        emptyCells.set(randomNum, sc);
+        emptyCells.set(randomIndex, sc);
     }
 }
