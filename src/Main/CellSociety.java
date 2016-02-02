@@ -29,7 +29,7 @@ class CellSociety {
     }
 
     public void init(Stage primaryStage) {
-        sim = createSimulation("GameOfLife");
+        sim = createSimulation("Segregation");
         sim.init();
         Scene scene = new Scene(group, cellManager.getWidth(), cellManager.getHeight());
         primaryStage.setScene(scene);
