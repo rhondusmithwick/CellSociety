@@ -17,20 +17,27 @@ import javafx.stage.Stage;
 class CellSociety {
 
     private final Group group;
-    private final CellManager cellManager;
+    private CellManager cellManager;
 
     private Simulation sim;
 
+    private static final String SIM_TYPE = "GameOfLife";
+    private static final String XML_FILE = "SampleGameOfLifeSimulation.xml";
     public CellSociety() {
         group = new Group();
-        cellManager = new CellManager(750, 750, 150, 150);
-        group.getChildren().add(cellManager);
-
     }
 
     public void init(Stage primaryStage) {
-        sim = createSimulation("Segregation");
+    	cellManager = new CellManager();
+        sim = createSimulation(SIM_TYPE);
+        sim.parseXmlFile("resources/"+XML_FILE);
+        cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
+        							  sim.getCellsPerRow(), sim.getCellsPerColumn());
+        cellManager.init(SIM_TYPE);
+        group.getChildren().add(cellManager);
+        sim.setTheCells(cellManager.getCells());
         sim.init();
+
         Scene scene = new Scene(group, cellManager.getWidth(), cellManager.getHeight());
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -51,12 +58,12 @@ class CellSociety {
         Simulation sim;
         switch (simType) {
             case "GameOfLife" :
-                cellManager.init("GameOfLife");
-                sim = new GameOfLifeSimulation(cellManager.getCells());
+                //cellManager.init("GameOfLife");
+                sim = new GameOfLifeSimulation();
                 break;
             case "Segregation":
-                cellManager.init("Segregation");
-                sim = new SegregationSimulation(cellManager.getCells());
+                //cellManager.init("Segregation");
+                sim = new SegregationSimulation();
                 break;
             default:
                 cellManager.init("GameOfLife");

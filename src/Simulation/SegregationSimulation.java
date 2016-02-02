@@ -9,6 +9,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 /**
  * Created by rhondusmithwick on 2/1/16.
  *
@@ -31,6 +34,9 @@ public class SegregationSimulation extends Simulation {
         super(theCells);
     }
 
+    public SegregationSimulation() {
+        super();
+    }
 
 
     @Override
@@ -50,7 +56,7 @@ public class SegregationSimulation extends Simulation {
     @Override
     protected void step() {
         super.step();
-        for (Cell c : theCells) {
+        for (Cell c : getTheCells()) {
             SegregationCell sc = (SegregationCell) c;
             if (!sc.getSatisfied()) {
                 move(sc);
@@ -66,4 +72,15 @@ public class SegregationSimulation extends Simulation {
         sc.setSatisfied(true);
         emptyCells.set(randomIndex, sc);
     }
+
+
+
+	@Override
+	protected void getTypeProperties(Element simElem) {
+		// TODO Auto-generated method stub
+
+	}
+
+
+
 }
