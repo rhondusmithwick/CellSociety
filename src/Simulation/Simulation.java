@@ -27,6 +27,7 @@ import java.util.Random;
 public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
+
     private int gridWidth;
     private int gridHeight;
     private int cellsPerRow;

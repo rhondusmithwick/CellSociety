@@ -19,11 +19,11 @@ public class GameOfLifeSimulation extends Simulation {
         super();
     }
 
-    public void assignInitialState(int randomNum, Cell c) {
+    @Override
+    protected void assignInitialState(int randomNum, Cell c) {
         if (getType() == null || !getType().equals("GameOfLife")) {
             probStartDead = DEFAULT_START_DEAD;
         }
-
         GameOfLifeCell gc = (GameOfLifeCell) c;
         if (randomNum <= probStartDead) {
             gc.destroy();

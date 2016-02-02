@@ -18,15 +18,17 @@ public class SegregationSimulation extends Simulation {
     private static final Color DEFAULT_EMPTY = Color.WHITE;
     private static final Color DEFAULT_GROUP1 = Color.RED;
     private static final Color DEFAULT_GROUP2 = Color.BLUE;
-    private static final double DEFAULT_EMPTYPERCENT = 10;
-    private static final double DEFAULT_GROUP1PERCENT = 40;
+    private static final double DEFAULT_EMPTY_PERCENT = 10;
+    private static final double DEFAULT_GROUP1_PERCENT = 40;
+
+
     private final List<Cell> emptyCells = new ArrayList<>();
     private double threshold = DEFAULT_THRESHOLD;
     private Color empty = DEFAULT_EMPTY;
     private Color group1 = DEFAULT_GROUP1;
     private Color group2 = DEFAULT_GROUP2;
-    private double emptyPercent = DEFAULT_EMPTYPERCENT;
-    private double group1Percent = DEFAULT_GROUP1PERCENT;
+    private double emptyPercent = DEFAULT_EMPTY_PERCENT;
+    private double group1Percent = DEFAULT_GROUP1_PERCENT;
 
     public SegregationSimulation() {
         super();
