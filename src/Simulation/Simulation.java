@@ -36,7 +36,7 @@ public abstract class Simulation {
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
 
-    protected Simulation() {
+    Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
     }
@@ -51,7 +51,7 @@ public abstract class Simulation {
         return simulationLoop;
     }
 
-    protected void step() {
+    void step() {
         getTheCells().forEach(c -> c.handleUpdate());
     }
 
@@ -87,12 +87,12 @@ public abstract class Simulation {
 
     protected abstract void assignInitialState(int randomNum, Cell c);
 
-    protected int getRandomNum(int min, int max) {
+    int getRandomNum(int min, int max) {
         int range = max - min + 1;
         return rn.nextInt(range) + min;
     }
 
-    public void parseXmlFile(String xmlFilename) {
+    void parseXmlFile(String xmlFilename) {
         //get the factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
@@ -132,7 +132,7 @@ public abstract class Simulation {
         return textVal;
     }
 
-    protected int getIntValue(Element ele, String tagName) {
+    int getIntValue(Element ele, String tagName) {
         //in production application you would catch the exception
         return Integer.parseInt(getTextValue(ele, tagName));
     }
@@ -158,16 +158,16 @@ public abstract class Simulation {
     }
 
 
-    public String getType() {
+    String getType() {
         return type;
     }
 
 
-    public void setType(String type) {
+    private void setType(String type) {
         this.type = type;
     }
 
-    public Collection<Cell> getTheCells() {
+    Collection<Cell> getTheCells() {
         return theCells;
     }
 

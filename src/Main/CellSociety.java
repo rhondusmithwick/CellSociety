@@ -2,12 +2,10 @@ package Main;
 
 import Cell.CellManager;
 import Simulation.GameOfLifeSimulation;
-import Simulation.SegregationSimulation;
 import Simulation.Simulation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -27,12 +25,9 @@ class CellSociety {
     }
 
     public void init(Stage primaryStage) {
-        cellManager = new CellManager();
         sim = createSimulation(SIM_TYPE);
+        cellManager = createCellManager(SIM_TYPE);
 
-        cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
-                sim.getCellsPerRow(), sim.getCellsPerColumn());
-        cellManager.init(SIM_TYPE);
         group.getChildren().add(cellManager);
 
         sim.setTheCells(cellManager.getCells());
@@ -66,19 +61,23 @@ class CellSociety {
 
     private Simulation createSimulation(String simType) {
         Simulation sim;
-        switch (simType) {
-            case "GameOfLife":
-                //cellManager.init("GameOfLife");
-                sim = new GameOfLifeSimulation();
-                break;
-            case "Segregation":
-                //cellManager.init("Segregation");
-                sim = new SegregationSimulation();
-                break;
-            default:
-                cellManager.init("GameOfLife");
-                sim = new GameOfLifeSimulation();
+        try {
+            Class c = Class.forName("Simulation." + simType + "Simulation");
+            sim = (Simulation) c.newInstance();
+        } catch (InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException e) {
+            System.out.println(e);
+            sim = new GameOfLifeSimulation();
         }
         return sim;
+    }
+
+    private CellManager createCellManager(String simType) {
+        CellManager cellManager = new CellManager();
+        cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
+                sim.getCellsPerRow(), sim.getCellsPerColumn());
+        cellManager.init(simType);
+        return cellManager;
     }
 }

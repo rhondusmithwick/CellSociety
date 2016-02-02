@@ -44,7 +44,7 @@ public class SegregationCell extends Cell {
         return isSatisfied;
     }
 
-    public void setSatisfied(boolean t) {
-        isSatisfied = t;
+    public void makeSatisfied() {
+        isSatisfied = true;
     }
 }

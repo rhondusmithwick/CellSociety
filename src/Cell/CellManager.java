@@ -36,11 +36,6 @@ public class CellManager extends Group {
 
     /**
      * Create a new CellManager.
-     *
-     * @param gridWidth      the width of the grid
-     * @param gridHeight     the height of the grid
-     * @param cellsPerRow    the number of cells per row
-     * @param cellsPerColumn the number of cells per column
      */
     public CellManager() {
         super();
@@ -59,22 +54,13 @@ public class CellManager extends Group {
      */
     private static Cell createCell(String cellType, int cellWidth, int cellHeight, int r, int c) {
         Cell myCell;
-        switch (cellType) {
-            case "Segregation":
-                myCell = new SegregationCell();
-                break;
-//            case "FIRE":
-//                myCell = new FireCell();
-//                break;
-//            case "PredatorPrey":
-//                myCell = new PredatorPreyCell();
-//                break;
-            case "GameOfLife":
-                myCell = new GameOfLifeCell();
-                break;
-            default:
-                myCell = new GameOfLifeCell();
-                break;
+        try {
+            Class cellClass = Class.forName("Cell." + cellType + "Cell");
+            myCell = (Cell) cellClass.newInstance();
+        } catch (InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException e) {
+            myCell = new GameOfLifeCell();
         }
         myCell.setWidth(cellWidth);
         myCell.setHeight(cellHeight);

@@ -65,7 +65,7 @@ public class SegregationSimulation extends Simulation {
         Cell c = emptyCells.get(randomIndex);
         c.setFill(sc.getFill());
         sc.setFill(empty);
-        sc.setSatisfied(true);
+        sc.makeSatisfied();
         emptyCells.set(randomIndex, sc);
     }
 
