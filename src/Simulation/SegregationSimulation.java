@@ -3,14 +3,11 @@ package Simulation;
 import Cell.Cell;
 import Cell.SegregationCell;
 import javafx.scene.paint.Color;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Created by rhondusmithwick on 2/1/16.
@@ -19,16 +16,21 @@ import org.w3c.dom.Element;
  */
 public class SegregationSimulation extends Simulation {
     private final List<Cell> emptyCells = new ArrayList<>();
-    /**
-     * NEEDED FROM XML!
-     */
-    private final double threshold = 30;
-    private final Color empty = Color.WHITE;
-    private final Color group1 = Color.RED;
-    private final Color group2 = Color.BLUE;
-    private final double emptyPercent = 10;
-    private final double group1Percent = 40;
-//    double group2Percent = 50;
+
+    private static final double DEFAULT_THRESHOLD = 30;
+    private static final Color DEFAULT_EMPTY = Color.WHITE;
+    private static final Color DEFAULT_GROUP1 = Color.RED;
+    private static final Color DEFAULT_GROUP2 = Color.BLUE;
+    private static final double DEFAULT_EMPTYPERCENT = 10;
+    private static final double DEFAULT_GROUP1PERCENT = 40;
+
+
+    private double threshold = DEFAULT_THRESHOLD;
+    private Color empty = DEFAULT_EMPTY;
+    private Color group1 = DEFAULT_GROUP1;
+    private Color group2 = DEFAULT_GROUP2;
+    private double emptyPercent = DEFAULT_EMPTYPERCENT;
+    private double group1Percent = DEFAULT_GROUP1PERCENT;
 
     public SegregationSimulation(Collection<Cell> theCells) {
         super(theCells);
@@ -74,13 +76,11 @@ public class SegregationSimulation extends Simulation {
     }
 
 
+    @Override
+    protected void getTypeProperties(Element simElem) {
+        // TODO Auto-generated method stub
 
-	@Override
-	protected void getTypeProperties(Element simElem) {
-		// TODO Auto-generated method stub
-
-	}
-
+    }
 
 
 }

@@ -16,24 +16,24 @@ import javafx.stage.Stage;
  */
 class CellSociety {
 
-    private final Group group;
-    private CellManager cellManager;
-
-    private Simulation sim;
-
     private static final String SIM_TYPE = "GameOfLife";
     private static final String XML_FILE = "SampleGameOfLifeSimulation.xml";
+    private final Group group;
+    private CellManager cellManager;
+    private Simulation sim;
+
     public CellSociety() {
         group = new Group();
     }
 
     public void init(Stage primaryStage) {
-    	cellManager = new CellManager();
+        cellManager = new CellManager();
         sim = createSimulation(SIM_TYPE);
-        sim.parseXmlFile("resources/"+XML_FILE);
+        sim.parseXmlFile("resources/" + XML_FILE);
         cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
-        							  sim.getCellsPerRow(), sim.getCellsPerColumn());
+                sim.getCellsPerRow(), sim.getCellsPerColumn());
         cellManager.init(SIM_TYPE);
+
         group.getChildren().add(cellManager);
         sim.setTheCells(cellManager.getCells());
         sim.init();
@@ -57,7 +57,7 @@ class CellSociety {
     private Simulation createSimulation(String simType) {
         Simulation sim;
         switch (simType) {
-            case "GameOfLife" :
+            case "GameOfLife":
                 //cellManager.init("GameOfLife");
                 sim = new GameOfLifeSimulation();
                 break;
