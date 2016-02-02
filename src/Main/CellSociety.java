@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 class CellSociety {
 
     private static final String SIM_TYPE = "GameOfLife";
-    private static final String XML_FILE = "SampleGameOfLifeSimulation.xml";
     private final Group group;
     private CellManager cellManager;
     private Simulation sim;
@@ -29,18 +28,19 @@ class CellSociety {
     public void init(Stage primaryStage) {
         cellManager = new CellManager();
         sim = createSimulation(SIM_TYPE);
-        sim.parseXmlFile("resources/" + XML_FILE);
+
         cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
                 sim.getCellsPerRow(), sim.getCellsPerColumn());
         cellManager.init(SIM_TYPE);
-
         group.getChildren().add(cellManager);
+
         sim.setTheCells(cellManager.getCells());
         sim.init();
 
         Scene scene = new Scene(group, cellManager.getWidth(), cellManager.getHeight());
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+        
         scene.setOnMouseClicked(e -> sim.playOrStop());
         scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
     }

@@ -71,7 +71,7 @@ public class SegregationSimulation extends Simulation {
 
 
     @Override
-    protected void getTypeProperties(Element simElem) {
+    protected void setTypeProperties(Element simElem) {
         // TODO Auto-generated method stub
 
     }

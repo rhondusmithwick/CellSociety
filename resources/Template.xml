@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation SimulationType="None">
-	<gridWidth>800</gridWidth>
-	<gridHeight>800</gridHeight>
-	<numCellsPerRow>100</numCellsPerRow>
-	<numCellsPerColumn>100</numCellsPerColumn>
+    <gridWidth>800</gridWidth>
+    <gridHeight>800</gridHeight>
+    <numCellsPerRow>100</numCellsPerRow>
+    <numCellsPerColumn>100</numCellsPerColumn>
 </Simulation>

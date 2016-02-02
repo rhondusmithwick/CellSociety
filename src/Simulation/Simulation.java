@@ -101,8 +101,8 @@ public abstract class Simulation {
             //parse using builder to get DOM representation of the XML file
             Document xmlDoc = db.parse(xmlFilename);
             Element simulationElem = xmlDoc.getDocumentElement();
-            getGenericProperties(simulationElem);
-            getTypeProperties(simulationElem);
+            setGenericProperties(simulationElem);
+            setTypeProperties(simulationElem);
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {
@@ -110,15 +110,17 @@ public abstract class Simulation {
         }
     }
 
-    private void getGenericProperties(Element simElem) {
-        setType(simElem.getAttribute("SimulationType"));
+
+    private void setGenericProperties(Element simElem) {
+        String simType = simElem.getAttribute("SimulationType");
+        setType(simType);
         gridWidth = getIntValue(simElem, "gridWidth");
         gridHeight = getIntValue(simElem, "gridHeight");
         cellsPerRow = getIntValue(simElem, "numCellsPerRow");
         cellsPerColumn = getIntValue(simElem, "numCellsPerColumn");
     }
 
-    protected abstract void getTypeProperties(Element simElem);
+    protected abstract void setTypeProperties(Element simElem);
 
     private String getTextValue(Element ele, String tagName) {
         String textVal = null;

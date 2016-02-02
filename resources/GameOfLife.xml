@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation SimulationType="GameOfLife">
+    <gridWidth>500</gridWidth>
+    <gridHeight>500</gridHeight>
+    <numCellsPerRow>125</numCellsPerRow>
+    <numCellsPerColumn>125</numCellsPerColumn>
+    <probStartDead>30</probStartDead>
+</Simulation>
