@@ -17,13 +17,13 @@ public class GameOfLifeSimulation extends Simulation {
 
     public GameOfLifeSimulation() {
         super();
-        parseXmlFile("resources/" + "GameOfLife.xml");
+        super.parseXmlFile("resources/" + "GameOfLife.xml");
     }
 
 
     @Override
-    protected void assignInitialState(int randomNum, Cell c) {
-        GameOfLifeCell gc = (GameOfLifeCell) c;
+    void assignInitialState(int randomNum, Cell c) {
+        final GameOfLifeCell gc = (GameOfLifeCell) c;
         if (randomNum <= probStartDead) {
             gc.destroy();
         } else {
@@ -34,15 +34,16 @@ public class GameOfLifeSimulation extends Simulation {
     @Override
     protected void step() {
         super.step();
+        GameOfLifeCell gc;
         for (Cell c : getTheCells()) {
-            GameOfLifeCell gc = (GameOfLifeCell) c;
+            gc = (GameOfLifeCell) c;
             gc.transform();
         }
     }
 
 
     @Override
-    protected void setTypeProperties(Element simElem) {
+    void setTypeProperties(Element simElem) {
         if (getType() == null || !getType().equals("GameOfLife")) {
             probStartDead = DEFAULT_START_DEAD;
         } else {

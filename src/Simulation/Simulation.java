@@ -69,7 +69,7 @@ public abstract class Simulation {
         return isPlaying;
     }
 
-    public void playOrStop() {
+    public final void playOrStop() {
         if (!getPlaying()) {
             beginLoop();
         } else {
@@ -78,21 +78,21 @@ public abstract class Simulation {
     }
 
 
-    public void init() {
+    public final void init() {
         for (Cell c : getTheCells()) {
             int randomNum = getRandomNum(1, 100);
             assignInitialState(randomNum, c);
         }
     }
 
-    protected abstract void assignInitialState(int randomNum, Cell c);
+    abstract void assignInitialState(int randomNum, Cell c);
 
-    int getRandomNum(int min, int max) {
+    final int getRandomNum(int min, int max) {
         int range = max - min + 1;
         return rn.nextInt(range) + min;
     }
 
-    void parseXmlFile(String xmlFilename) {
+    final void parseXmlFile(String xmlFilename) {
         //get the factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
@@ -120,9 +120,9 @@ public abstract class Simulation {
         cellsPerColumn = getIntValue(simElem, "numCellsPerColumn");
     }
 
-    protected abstract void setTypeProperties(Element simElem);
+    abstract void setTypeProperties(Element simElem);
 
-    private String getTextValue(Element ele, String tagName) {
+    final String getTextValue(Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {
@@ -132,33 +132,32 @@ public abstract class Simulation {
         return textVal;
     }
 
-    int getIntValue(Element ele, String tagName) {
-        //in production application you would catch the exception
+    final int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
 
 
-    public int getGridWidth() {
+    public final int getGridWidth() {
         return gridWidth;
     }
 
 
-    public int getGridHeight() {
+    public final int getGridHeight() {
         return gridHeight;
     }
 
 
-    public int getCellsPerRow() {
+    public final int getCellsPerRow() {
         return cellsPerRow;
     }
 
 
-    public int getCellsPerColumn() {
+    public final int getCellsPerColumn() {
         return cellsPerColumn;
     }
 
 
-    String getType() {
+    final String getType() {
         return type;
     }
 
@@ -167,30 +166,30 @@ public abstract class Simulation {
         this.type = type;
     }
 
-    Collection<Cell> getTheCells() {
+    final Collection<Cell> getTheCells() {
         return theCells;
     }
 
-    public void setTheCells(Collection<Cell> theCells) {
+    public final void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
 
-    public void increaseRate() {
+    public final void increaseRate() {
         double currentRate = simulationLoop.getRate();
-        if (currentRate <= 20) {
-            simulationLoop.setRate(currentRate + 1);
+        if (currentRate <= 10) {
+            simulationLoop.setRate(currentRate + .1);
         }
     }
 
-    public void decreaseRate() {
+    public final void decreaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate > 0) {
-            simulationLoop.setRate(currentRate - 1);
+            simulationLoop.setRate(currentRate - .1);
 
         }
     }
 
-    public void resetRate() {
+    public final void resetRate() {
         simulationLoop.setRate(1.0);
     }
 }

@@ -23,12 +23,12 @@ public abstract class Cell extends Rectangle {
     }
 
 
-    public void setImage(Image image) {
+    public final void setImage(Image image) {
         ImagePattern imagePattern = new ImagePattern(image);
         this.setFill(imagePattern);
     }
 
-    public void addNeighbor(Cell neighbor) {
+    public final void addNeighbor(Cell neighbor) {
         neighbors.add(neighbor);
     }
 

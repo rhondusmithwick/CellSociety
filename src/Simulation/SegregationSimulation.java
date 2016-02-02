@@ -32,12 +32,13 @@ public class SegregationSimulation extends Simulation {
 
     public SegregationSimulation() {
         super();
+        super.parseXmlFile("resources/" + "Segregation.xml");
     }
 
 
     @Override
-    protected void assignInitialState(int randomNum, Cell c) {
-        SegregationCell sc = (SegregationCell) c;
+    void assignInitialState(int randomNum, Cell c) {
+        final SegregationCell sc = (SegregationCell) c;
         sc.setThreshold(threshold);
         if (randomNum <= emptyPercent) {
             sc.setFill(empty);
@@ -52,8 +53,9 @@ public class SegregationSimulation extends Simulation {
     @Override
     protected void step() {
         super.step();
+        SegregationCell sc;
         for (Cell c : getTheCells()) {
-            SegregationCell sc = (SegregationCell) c;
+            sc = (SegregationCell) c;
             if (!sc.getSatisfied()) {
                 move(sc);
             }
@@ -61,7 +63,7 @@ public class SegregationSimulation extends Simulation {
     }
 
     private void move(SegregationCell sc) {
-        int randomIndex = getRandomNum(0, emptyCells.size() - 1);
+        final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
         Cell c = emptyCells.get(randomIndex);
         c.setFill(sc.getFill());
         sc.setFill(empty);
@@ -71,7 +73,7 @@ public class SegregationSimulation extends Simulation {
 
 
     @Override
-    protected void setTypeProperties(Element simElem) {
+    void setTypeProperties(Element simElem) {
         // TODO Auto-generated method stub
 
     }
