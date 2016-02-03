@@ -14,21 +14,23 @@ import java.util.List;
  * @author Rhondu Smithwick
  */
 public class SegregationSimulation extends Simulation {
-    private static final double DEFAULT_THRESHOLD = 30;
+    private static final int DEFAULT_THRESHOLD = 30;
+    private static final int DEFAULT_EMPTY_PERCENT = 10;
+    private static final int DEFAULT_GROUP1_PERCENT = 40;
+
     private static final Color DEFAULT_EMPTY = Color.WHITE;
     private static final Color DEFAULT_GROUP1 = Color.RED;
     private static final Color DEFAULT_GROUP2 = Color.BLUE;
-    private static final double DEFAULT_EMPTY_PERCENT = 10;
-    private static final double DEFAULT_GROUP1_PERCENT = 40;
-
 
     private final List<Cell> emptyCells = new ArrayList<>();
-    private double threshold = DEFAULT_THRESHOLD;
+    private int threshold = DEFAULT_THRESHOLD;
+    private int emptyPercent = DEFAULT_EMPTY_PERCENT;
+    private int group1Percent = DEFAULT_GROUP1_PERCENT;
+
     private Color empty = DEFAULT_EMPTY;
     private Color group1 = DEFAULT_GROUP1;
     private Color group2 = DEFAULT_GROUP2;
-    private double emptyPercent = DEFAULT_EMPTY_PERCENT;
-    private double group1Percent = DEFAULT_GROUP1_PERCENT;
+
 
     public SegregationSimulation() {
         super();
@@ -75,8 +77,15 @@ public class SegregationSimulation extends Simulation {
 
     @Override
     void setTypeProperties(Element simElem) {
-        // TODO Auto-generated method stub
-
+//        if (getType() == null || !getType().equals("Segregation")) {
+//            threshold = DEFAULT_THRESHOLD;
+//            emptyPercent = DEFAULT_EMPTY_PERCENT;
+//            group1Percent = DEFAULT_GROUP1_PERCENT;
+//        } else {
+//            threshold = getIntValue(simElem, "threshold");
+//            emptyPercent = getIntValue(simElem, "emptyPercent");
+//            group1Percent = getIntValue(simElem, "group1Percent");
+//        }
     }
 
 

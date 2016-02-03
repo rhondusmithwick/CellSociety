@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * @author Rhondu Smithwick
  */
 public class SegregationCell extends Cell {
-    private double threshold;
+    private int threshold;
     private boolean isSatisfied;
 
     public SegregationCell() {
@@ -38,7 +38,7 @@ public class SegregationCell extends Cell {
         return ((double) count / num) * 100;
     }
 
-    public void setThreshold(double t) {
+    public void setThreshold(int t) {
         threshold = t;
     }
 
