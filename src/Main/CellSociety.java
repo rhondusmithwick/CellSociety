@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  *
  * @author Rhondu Smithwick
  */
-class CellSociety {
+public class CellSociety {
 
     private static final String SIM_TYPE = "GameOfLife";
     private final Group group;
