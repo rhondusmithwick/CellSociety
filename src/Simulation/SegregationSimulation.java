@@ -32,7 +32,7 @@ public class SegregationSimulation extends Simulation {
 
     public SegregationSimulation() {
         super();
-        parseXmlFile("resources/" + "Segregation.xml");
+        parseXmlFile("resources/" + "GameOfLife.xml");
     }
 
 

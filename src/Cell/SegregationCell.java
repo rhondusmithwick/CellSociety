@@ -16,9 +16,11 @@ public class SegregationCell extends Cell {
     }
 
     public void handleUpdate() {
-        double likeMePercent = getLikeMePercent();
-        if (likeMePercent < threshold) {
-            isSatisfied = false;
+        if (getFill() != Color.WHITE) {
+            double likeMePercent = getLikeMePercent();
+            if (likeMePercent < threshold) {
+                isSatisfied = false;
+            }
         }
     }
 

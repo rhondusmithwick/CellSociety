@@ -41,7 +41,8 @@ public class GameOfLifeCell extends Cell {
     private int countAliveNeighbors() {
         int count = 0;
         for (Cell c : neighbors) {
-            if (((GameOfLifeCell) c).getAlive()) {
+            GameOfLifeCell gc = (GameOfLifeCell) c;
+            if (gc.getAlive()) {
                 count++;
             }
         }
