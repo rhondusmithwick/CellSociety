@@ -45,6 +45,7 @@ public class SegregationSimulation extends Simulation {
         sc.setThreshold(threshold);
         if (randomNum <= emptyPercent) {
             sc.setFill(empty);
+            sc.setIsEmpty(true);
             emptyCells.add(sc);
         } else if (randomNum > emptyPercent
                 && randomNum <= emptyPercent + group1Percent) {
@@ -71,9 +72,9 @@ public class SegregationSimulation extends Simulation {
         final SegregationCell emptyCell = emptyCells.get(randomIndex);
         emptyCell.setFill(cellToMove.getFill());
         emptyCell.setIsEmpty(false);
-
+        emptyCell.setSatisfied(true);
         cellToMove.setFill(empty);
-        cellToMove.makeSatisfied();
+        cellToMove.setSatisfied(true);
         cellToMove.setIsEmpty(true);
         emptyCells.set(randomIndex, cellToMove);
     }

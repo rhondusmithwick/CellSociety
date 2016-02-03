@@ -17,10 +17,10 @@ public class SegregationCell extends Cell {
     }
 
     public void handleUpdate() {
-        if (getFill() != Color.WHITE) {
+        if (!isEmpty) {
             double likeMePercent = getLikeMePercent();
             if (likeMePercent < threshold) {
-                isSatisfied = false;
+                setSatisfied(false);
             }
         }
     }
@@ -28,8 +28,9 @@ public class SegregationCell extends Cell {
     private double getLikeMePercent() {
         int count = 0;
         int num = 0;
+        SegregationCell sc;
         for (Cell c : neighbors) {
-            SegregationCell sc = (SegregationCell) c;
+            sc = (SegregationCell) c;
             if (!sc.getIsEmpty()) {
                 if (sc.getFill() != this.getFill()) {
                     count++;
@@ -48,8 +49,8 @@ public class SegregationCell extends Cell {
         return isSatisfied;
     }
 
-    public void makeSatisfied() {
-        isSatisfied = true;
+    public void setSatisfied(boolean t) {
+        isSatisfied = t;
     }
 
     public void setIsEmpty(boolean t) {
