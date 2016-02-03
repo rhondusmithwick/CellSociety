@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 public class SegregationCell extends Cell {
     private int threshold;
     private boolean isSatisfied;
+    private boolean isEmpty = false;
 
     public SegregationCell() {
         super();
@@ -28,8 +29,9 @@ public class SegregationCell extends Cell {
         int count = 0;
         int num = 0;
         for (Cell c : neighbors) {
-            if (c.getFill() != Color.WHITE) {
-                if (c.getFill() != this.getFill()) {
+            SegregationCell sc = (SegregationCell) c;
+            if (!sc.getIsEmpty()) {
+                if (sc.getFill() != this.getFill()) {
                     count++;
                 }
                 num++;
@@ -48,5 +50,13 @@ public class SegregationCell extends Cell {
 
     public void makeSatisfied() {
         isSatisfied = true;
+    }
+
+    public void setIsEmpty(boolean t) {
+        isEmpty = t;
+    }
+
+    public boolean getIsEmpty() {
+        return isEmpty;
     }
 }

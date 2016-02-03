@@ -3,6 +3,7 @@ package Simulation;
 import Cell.Cell;
 import Cell.SegregationCell;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -18,18 +19,18 @@ public class SegregationSimulation extends Simulation {
     private static final int DEFAULT_EMPTY_PERCENT = 10;
     private static final int DEFAULT_GROUP1_PERCENT = 40;
 
-    private static final Color DEFAULT_EMPTY = Color.WHITE;
-    private static final Color DEFAULT_GROUP1 = Color.RED;
-    private static final Color DEFAULT_GROUP2 = Color.BLUE;
+    private static final Paint DEFAULT_EMPTY = Color.WHITE;
+    private static final Paint DEFAULT_GROUP1 = Color.RED;
+    private static final Paint DEFAULT_GROUP2 = Color.BLUE;
 
-    private final List<Cell> emptyCells = new ArrayList<>();
+    private final List<SegregationCell> emptyCells = new ArrayList<>();
     private int threshold = DEFAULT_THRESHOLD;
     private int emptyPercent = DEFAULT_EMPTY_PERCENT;
     private int group1Percent = DEFAULT_GROUP1_PERCENT;
 
-    private Color empty = DEFAULT_EMPTY;
-    private Color group1 = DEFAULT_GROUP1;
-    private Color group2 = DEFAULT_GROUP2;
+    private Paint empty = DEFAULT_EMPTY;
+    private Paint group1 = DEFAULT_GROUP1;
+    private Paint group2 = DEFAULT_GROUP2;
 
 
     public SegregationSimulation() {
@@ -59,24 +60,27 @@ public class SegregationSimulation extends Simulation {
         SegregationCell sc;
         for (Cell c : getTheCells()) {
             sc = (SegregationCell) c;
-            if (!sc.getSatisfied()) {
+            if (!sc.getIsEmpty() && !sc.getSatisfied()) {
                 move(sc);
             }
         }
     }
 
-    private void move(SegregationCell sc) {
+    private void move(SegregationCell cellToMove) {
         final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
-        Cell c = emptyCells.get(randomIndex);
-        c.setFill(sc.getFill());
-        sc.setFill(empty);
-        sc.makeSatisfied();
-        emptyCells.set(randomIndex, sc);
+        final SegregationCell emptyCell = emptyCells.get(randomIndex);
+        emptyCell.setFill(cellToMove.getFill());
+        emptyCell.setIsEmpty(false);
+
+        cellToMove.setFill(empty);
+        cellToMove.makeSatisfied();
+        cellToMove.setIsEmpty(true);
+        emptyCells.set(randomIndex, cellToMove);
     }
 
 
     @Override
-    void setTypeProperties(Element simElem) {
+    void setSpecificProperties(Element simElem) {
 //        if (getType() == null || !getType().equals("Segregation")) {
 //            threshold = DEFAULT_THRESHOLD;
 //            emptyPercent = DEFAULT_EMPTY_PERCENT;
