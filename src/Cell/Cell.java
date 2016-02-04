@@ -3,6 +3,7 @@ package Cell;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -22,15 +23,19 @@ public abstract class Cell extends Rectangle {
         neighbors = new LinkedList<>();
     }
 
-    void removeDiagonals() {
-        for (Cell c : neighbors) {
-            int rowDiff = Math.abs(c.getRow() - getRow());
-            int columnDiff = Math.abs(c.getColumn() - getColumn());
+    public void removeDiagonals() {
+        Iterator<Cell> iter = neighbors.iterator();
+        while (iter.hasNext()) {
+            Cell neighbor = iter.next();
+            int rowDiff = Math.abs(neighbor.getRow() - getRow());
+            int columnDiff = Math.abs(neighbor.getColumn() - getColumn());
             if (rowDiff == 1 && columnDiff == 1) {
-                neighbors.remove(c);
+                iter.remove();
             }
         }
     }
+
+
 
     public Collection<Cell> getNeighbors() {
         return neighbors;

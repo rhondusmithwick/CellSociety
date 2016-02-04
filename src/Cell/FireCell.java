@@ -16,7 +16,6 @@ public class FireCell extends Cell {
 
     public FireCell() {
         super();
-        removeDiagonals();
         this.setStroke(Color.BLACK);
     }
 

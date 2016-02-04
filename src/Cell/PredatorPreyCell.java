@@ -17,7 +17,6 @@ public class PredatorPreyCell extends Cell {
 
     public PredatorPreyCell() {
         super();
-        removeDiagonals();
     }
 
     public void handleUpdate() {

@@ -51,6 +51,7 @@ public class PredatorPreySimulation extends Simulation {
     @Override
     void assignInitialState(int randomNum, Cell c) {
         final PredatorPreyCell ppc = (PredatorPreyCell) c;
+        ppc.removeDiagonals();
         if (randomNum <= emptyPercent) {
             ppc.setFill(emptyVisual);
             ppc.setState(State.EMPTY);
@@ -63,6 +64,7 @@ public class PredatorPreySimulation extends Simulation {
             ppc.setFill(sharkVisual);
             ppc.setState(State.SHARK);
         }
+        ppc.removeDiagonals();
     }
 
     protected void step() {

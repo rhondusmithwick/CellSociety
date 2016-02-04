@@ -84,6 +84,8 @@ public class FireSimulation extends Simulation {
         } else {
             changeState(fc, State.TREE);
         }
+        fc.removeDiagonals();
+        System.out.println(fc.getNeighbors().size());
     }
 
 
