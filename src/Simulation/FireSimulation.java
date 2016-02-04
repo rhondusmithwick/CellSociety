@@ -25,16 +25,16 @@ public class FireSimulation extends Simulation {
     private static final Paint DEFAULT_BURNING_VISUAL = Color.RED;
     private static final Paint DEFAULT_TREE_VISUAL = Color.GREEN;
 
-    private int burnTime = DEFAULT_BURN_TIME;
-    private int probCatch = DEFAULT_PROB_CATCH;
+    private int burnTime;
+    private int probCatch;
 
-    private Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
-    private Paint burningVisual = DEFAULT_BURNING_VISUAL;
-    private Paint treeVisual = DEFAULT_TREE_VISUAL;
+    private Paint emptyVisual;
+    private Paint burningVisual;
+    private Paint treeVisual;
 
     public FireSimulation() {
         super();
-        parseXmlFile("resources/" + "GameOfLife.xml");
+        parseXmlFile("resources/" + "Fire.xml");
     }
 
     void step() {
@@ -87,22 +87,21 @@ public class FireSimulation extends Simulation {
     }
 
 
-
     @Override
     void setSpecificProperties(Element simElem) {
-//        if (getType() == null || !getType().equals("FIre")) {
-//            burnTime = DEFAULT_BURN_TIME;
-//            probCatch = DEFAULT_PROB_CATCH;
-//            emptyVisual = DEFAULT_EMPTY_VISUAL;
-//            burningVisual = DEFAULT_BURNING_VISUAL;
-//            treeVisual = DEFAULT_TREE_VISUAL;
-//        } else {
-//            burnTime = getIntValue(simElem, "burnTime");
-//            probCatch = getIntValue(simElem, "probCatch");
-//            emptyVisual = getPaintValue(simElem, "emptyVisual");
-//            burningVisual = getPaintValue(simElem, "burningVisual");
-//            treeVisual = getPaintValue(simElem, "treeVisual");
-//        }
+        if (getType() == null || !getType().equals("Fire")) {
+            burnTime = DEFAULT_BURN_TIME;
+            probCatch = DEFAULT_PROB_CATCH;
+            emptyVisual = DEFAULT_EMPTY_VISUAL;
+            burningVisual = DEFAULT_BURNING_VISUAL;
+            treeVisual = DEFAULT_TREE_VISUAL;
+        } else {
+            burnTime = getIntValue(simElem, "burnTime");
+            probCatch = getIntValue(simElem, "probCatch");
+            emptyVisual = getPaintValue(simElem, "emptyVisual");
+            burningVisual = getPaintValue(simElem, "burningVisual");
+            treeVisual = getPaintValue(simElem, "treeVisual");
+        }
     }
 
 

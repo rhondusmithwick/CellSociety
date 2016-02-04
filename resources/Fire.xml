@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation SimulationType="Fire">
+    <gridWidth>500</gridWidth>
+    <gridHeight>500</gridHeight>
+    <numCellsPerRow>25</numCellsPerRow>
+    <numCellsPerColumn>25</numCellsPerColumn>
+    <burnTime>3</burnTime>
+    <probCatch>40</probCatch>
+    <emptyVisual>black</emptyVisual>
+    <burningVisual>red</burningVisual>
+    <treeVisual>green</treeVisual>
+</Simulation>

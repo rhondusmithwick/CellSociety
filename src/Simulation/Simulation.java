@@ -4,7 +4,6 @@ import Cell.Cell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import org.w3c.dom.Document;
@@ -133,8 +132,7 @@ public abstract class Simulation {
     }
 
     final Paint getPaintValue(Element ele, String tagName) {
-        // TO DO
-        return Color.BLACK;
+        return Paint.valueOf(getTextValue(ele, tagName));
     }
 
     final int getIntValue(Element ele, String tagName) {

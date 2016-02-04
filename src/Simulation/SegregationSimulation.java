@@ -16,26 +16,27 @@ import java.util.List;
  */
 public class SegregationSimulation extends Simulation {
     private static final int DEFAULT_THRESHOLD = 30;
-    private static final int DEFAULT_EMPTY_PERCENT = 10;
+    private static final int DEFAULT_EMPTY_PERCENT = 30;
     private static final int DEFAULT_GROUP1_PERCENT = 45;
 
-    private static final Paint DEFAULT_EMPTY_VISUAL = Color.WHITE;
+    private static final Paint DEFAULT_EMPTY_VISUAL = Color.BLACK;
     private static final Paint DEFAULT_GROUP1_VISUAL = Color.RED;
     private static final Paint DEFAULT_GROUP2_VISUAL = Color.BLUE;
 
     private final List<SegregationCell> emptyCells = new ArrayList<>();
-    private int threshold = DEFAULT_THRESHOLD;
-    private int emptyPercent = DEFAULT_EMPTY_PERCENT;
-    private int group1Percent = DEFAULT_GROUP1_PERCENT;
 
-    private Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
-    private Paint group1Visual = DEFAULT_GROUP1_VISUAL;
-    private Paint group2Visual = DEFAULT_GROUP2_VISUAL;
+    private int threshold;
+    private int emptyPercent;
+    private int group1Percent;
+
+    private Paint emptyVisual;
+    private Paint group1Visual;
+    private Paint group2Visual;
 
 
     public SegregationSimulation() {
         super();
-        parseXmlFile("resources/" + "GameOfLife.xml");
+        parseXmlFile("resources/" + "Segregation.xml");
     }
 
 
@@ -125,21 +126,21 @@ public class SegregationSimulation extends Simulation {
 
     @Override
     void setSpecificProperties(Element simElem) {
-//        if (getType() == null || !getType().equals("Segregation")) {
-//            threshold = DEFAULT_THRESHOLD;
-//            emptyPercent = DEFAULT_EMPTY_PERCENT;
-//            group1Percent = DEFAULT_GROUP1_PERCENT;
-//            emptyVisual = DEFAULT_EMPTY_VISUAL;
-//            group1Visual = DEFAULT_GROUP1_VISUAL;
-//            group2Visual = DEFAULT_GROUP2_VISUAL;
-//        } else {
-//            threshold = getIntValue(simElem, "threshold");
-//            emptyPercent = getIntValue(simElem, "emptyPercent");
-//            group1Percent = getIntValue(simElem, "group1Percent");
-//            emptyVisual = getPaintValue(simElem, "emptyVisual");
-//            group1Visual = getPaintValue(simElem, "group1Visual");
-//            group2Visual = getPaintValue(simElem, "group2Visual");
-//        }
+        if (getType() == null || !getType().equals("Segregation")) {
+            threshold = DEFAULT_THRESHOLD;
+            emptyPercent = DEFAULT_EMPTY_PERCENT;
+            group1Percent = DEFAULT_GROUP1_PERCENT;
+            emptyVisual = DEFAULT_EMPTY_VISUAL;
+            group1Visual = DEFAULT_GROUP1_VISUAL;
+            group2Visual = DEFAULT_GROUP2_VISUAL;
+        } else {
+            threshold = getIntValue(simElem, "threshold");
+            emptyPercent = getIntValue(simElem, "emptyPercent");
+            group1Percent = getIntValue(simElem, "group1Percent");
+            emptyVisual = getPaintValue(simElem, "emptyVisual");
+            group1Visual = getPaintValue(simElem, "group1Visual");
+            group2Visual = getPaintValue(simElem, "group2Visual");
+        }
     }
 
 

@@ -13,15 +13,15 @@ import org.w3c.dom.Element;
  */
 public class GameOfLifeSimulation extends Simulation {
 
-    private static final double DEFAULT_START_DEAD = 30;
+    private static final double DEFAULT_START_DEAD = 50;
     private static final Paint DEFAULT_DEAD_VISUAL = Color.WHITE;
-    private static final Paint DEFAULT_ALIVE_VISUAL = Color.BLACK;
+    private static final Paint DEFAULT_ALIVE_VISUAL = Color.GREEN;
 
 
     private double probStartDead;
 
-    private Paint deadVisual = DEFAULT_DEAD_VISUAL;
-    private Paint aliveVisual = DEFAULT_ALIVE_VISUAL;
+    private Paint deadVisual;
+    private Paint aliveVisual;
 
     public GameOfLifeSimulation() {
         super();
@@ -52,14 +52,14 @@ public class GameOfLifeSimulation extends Simulation {
 
     @Override
     void setSpecificProperties(Element simElem) {
-//        if (getType() == null || !getType().equals("GameOfLife")) {
-//            probStartDead = DEFAULT_START_DEAD;
-//            deadVisual = DEFAULT_DEAD_VISUAL;
-//            aliveVisual = DEFAULT_ALIVE_VISUAL;
-//        } else {
-//            probStartDead = getIntValue(simElem, "probStartDead");
-//            deadVisual = getPaintValue(simElem, "deadVisual");
-//            aliveVisual = getPaintValue(simElem, "aliveVisual");
-//        }
+        if (getType() == null || !getType().equals("GameOfLife")) {
+            probStartDead = DEFAULT_START_DEAD;
+            deadVisual = DEFAULT_DEAD_VISUAL;
+            aliveVisual = DEFAULT_ALIVE_VISUAL;
+        } else {
+            probStartDead = getIntValue(simElem, "probStartDead");
+            deadVisual = getPaintValue(simElem, "deadVisual");
+            aliveVisual = getPaintValue(simElem, "aliveVisual");
+        }
     }
 }

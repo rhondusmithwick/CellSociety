@@ -25,7 +25,6 @@ public class PredatorPreyCell extends Cell {
     }
 
 
-
     public List<PredatorPreyCell> countNeighbors(State state) {
         List<PredatorPreyCell> neighborsOfState = new LinkedList<>();
         PredatorPreyCell neighbor;
