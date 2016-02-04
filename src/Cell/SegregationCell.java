@@ -10,14 +10,15 @@ import javafx.scene.paint.Color;
 public class SegregationCell extends Cell {
     private int threshold;
     private boolean isSatisfied;
-    private boolean isEmpty = false;
 
     public SegregationCell() {
         super();
+        this.setStroke(Color.BLACK);
+
     }
 
     public void handleUpdate() {
-        if (!isEmpty) {
+        if (!getIsEmpty()) {
             double likeMePercent = getLikeMePercent();
             if (likeMePercent < threshold) {
                 setSatisfied(false);
@@ -53,11 +54,5 @@ public class SegregationCell extends Cell {
         isSatisfied = t;
     }
 
-    public void setIsEmpty(boolean t) {
-        isEmpty = t;
-    }
 
-    public boolean getIsEmpty() {
-        return isEmpty;
-    }
 }

@@ -4,7 +4,6 @@ import Cell.Cell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -136,7 +135,7 @@ public abstract class Simulation {
     }
 
 
-//    final Paint getPaintValue(Element ele, String tagName) {}
+    //    final Paint getPaintValue(Element ele, String tagName) {}
     public final int getGridWidth() {
         return gridWidth;
     }
