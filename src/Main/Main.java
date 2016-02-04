@@ -1,5 +1,6 @@
 package Main;
 
+import GUI.GUI;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -15,10 +16,10 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Cell Society");
+    public void start(Stage controlStage) {
+        controlStage.setTitle("Cell Society");
         CellSociety cs = new CellSociety();
-        cs.init(primaryStage);
-        primaryStage.show();
+        cs.init(controlStage);
+        controlStage.show();
     }
 }
