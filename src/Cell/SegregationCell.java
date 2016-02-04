@@ -8,26 +8,32 @@ import javafx.scene.paint.Color;
  * @author Rhondu Smithwick
  */
 public class SegregationCell extends Cell {
-    private double threshold;
+    private int threshold;
     private boolean isSatisfied;
 
     public SegregationCell() {
         super();
+        this.setStroke(Color.BLACK);
+
     }
 
     public void handleUpdate() {
-        double likeMePercent = getLikeMePercent();
-        if (likeMePercent < threshold) {
-            isSatisfied = false;
+        if (!getIsEmpty()) {
+            double likeMePercent = getLikeMePercent();
+            if (likeMePercent < threshold) {
+                setSatisfied(false);
+            }
         }
     }
 
     private double getLikeMePercent() {
         int count = 0;
         int num = 0;
+        SegregationCell sc;
         for (Cell c : neighbors) {
-            if (c.getFill() != Color.WHITE) {
-                if (c.getFill() != this.getFill()) {
+            sc = (SegregationCell) c;
+            if (!sc.getIsEmpty()) {
+                if (sc.getFill() != this.getFill()) {
                     count++;
                 }
                 num++;
@@ -36,7 +42,7 @@ public class SegregationCell extends Cell {
         return ((double) count / num) * 100;
     }
 
-    public void setThreshold(double t) {
+    public void setThreshold(int t) {
         threshold = t;
     }
 
@@ -44,7 +50,9 @@ public class SegregationCell extends Cell {
         return isSatisfied;
     }
 
-    public void makeSatisfied() {
-        isSatisfied = true;
+    public void setSatisfied(boolean t) {
+        isSatisfied = t;
     }
+
+
 }

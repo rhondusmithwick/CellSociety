@@ -2,6 +2,8 @@ package Simulation;
 
 import Cell.Cell;
 import Cell.GameOfLifeCell;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
 /**
@@ -11,9 +13,15 @@ import org.w3c.dom.Element;
  */
 public class GameOfLifeSimulation extends Simulation {
 
-    private static final double DEFAULT_START_DEAD = 30;
+    private static final double DEFAULT_START_DEAD = 50;
+    private static final Paint DEFAULT_DEAD_VISUAL = Color.WHITE;
+    private static final Paint DEFAULT_ALIVE_VISUAL = Color.GREEN;
+
 
     private double probStartDead;
+
+    private Paint deadVisual;
+    private Paint aliveVisual;
 
     public GameOfLifeSimulation() {
         super();
@@ -25,9 +33,9 @@ public class GameOfLifeSimulation extends Simulation {
     void assignInitialState(int randomNum, Cell c) {
         final GameOfLifeCell gc = (GameOfLifeCell) c;
         if (randomNum <= probStartDead) {
-            gc.destroy();
+            gc.destroy(deadVisual);
         } else {
-            gc.restore();
+            gc.restore(aliveVisual);
         }
     }
 
@@ -37,18 +45,21 @@ public class GameOfLifeSimulation extends Simulation {
         GameOfLifeCell gc;
         for (Cell c : getTheCells()) {
             gc = (GameOfLifeCell) c;
-            gc.transform();
+            gc.transform(deadVisual, aliveVisual);
         }
     }
 
 
     @Override
-    void setTypeProperties(Element simElem) {
+    void setSpecificProperties(Element simElem) {
         if (getType() == null || !getType().equals("GameOfLife")) {
             probStartDead = DEFAULT_START_DEAD;
+            deadVisual = DEFAULT_DEAD_VISUAL;
+            aliveVisual = DEFAULT_ALIVE_VISUAL;
         } else {
             probStartDead = getIntValue(simElem, "probStartDead");
+            deadVisual = getPaintValue(simElem, "deadVisual");
+            aliveVisual = getPaintValue(simElem, "aliveVisual");
         }
-
     }
 }

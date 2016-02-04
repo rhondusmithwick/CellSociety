@@ -4,6 +4,7 @@ import Cell.Cell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,7 +43,7 @@ public abstract class Simulation {
 
     private Timeline buildLoop() {
         final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), t -> step());
-        Timeline simulationLoop = new Timeline();
+        final Timeline simulationLoop = new Timeline();
         simulationLoop.setCycleCount(Animation.INDEFINITE);
         simulationLoop.getKeyFrames().addAll(keyFrame);
         return simulationLoop;
@@ -76,8 +77,9 @@ public abstract class Simulation {
 
 
     public final void init() {
+        int randomNum;
         for (Cell c : getTheCells()) {
-            int randomNum = getRandomNum(1, 100);
+            randomNum = getRandomNum(1, 100);
             assignInitialState(randomNum, c);
         }
     }
@@ -99,7 +101,7 @@ public abstract class Simulation {
             Document xmlDoc = db.parse(xmlFilename);
             Element simulationElem = xmlDoc.getDocumentElement();
             setGenericProperties(simulationElem);
-            setTypeProperties(simulationElem);
+            setSpecificProperties(simulationElem);
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {
@@ -117,7 +119,7 @@ public abstract class Simulation {
         cellsPerColumn = getIntValue(simElem, "numCellsPerColumn");
     }
 
-    abstract void setTypeProperties(Element simElem);
+    abstract void setSpecificProperties(Element simElem);
 
     final String getTextValue(Element ele, String tagName) {
         String textVal = null;
@@ -127,6 +129,10 @@ public abstract class Simulation {
             textVal = el.getFirstChild().getNodeValue();
         }
         return textVal;
+    }
+
+    final Paint getPaintValue(Element ele, String tagName) {
+        return Paint.valueOf(getTextValue(ele, tagName));
     }
 
     final int getIntValue(Element ele, String tagName) {

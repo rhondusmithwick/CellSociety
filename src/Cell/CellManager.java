@@ -13,46 +13,18 @@ import java.util.LinkedList;
  */
 public class CellManager extends Group {
     private final Collection<Cell> theCells;
-    /**
-     * The grid, whose purpose is to allow access for a cell's neighbors.
-     */
     private Cell[][] grid;
-    /**
-     * the width of the grid.
-     */
     private int gridWidth;
-    /**
-     * The height of the grid.
-     */
     private int gridHeight;
-    /**
-     * The number of cells per row.
-     */
     private int cellsPerRow;
-    /**
-     * The number of cells per column.
-     */
     private int cellsPerColumn;
 
-    /**
-     * Create a new CellManager.
-     */
     public CellManager() {
         super();
         theCells = new LinkedList<>();
     }
 
-    /**
-     * Create a cell of type Celltype.
-     *
-     * @param cellType   the subclass of Cell to be created
-     * @param cellWidth  the width of the cell
-     * @param cellHeight the height of the cell
-     * @param r          this cell's row position
-     * @param c          this cell's column position
-     * @return a cell with the specified parameters
-     */
-    private static Cell createCell(String cellType, int cellWidth, int cellHeight, int r, int c) {
+    private static Cell createCell(String cellType, int cellWidth, int cellHeight, int row, int column) {
         Cell myCell;
         try {
             Class cellClass = Class.forName("Cell." + cellType + "Cell");
@@ -62,12 +34,9 @@ public class CellManager extends Group {
                 | ClassNotFoundException e) {
             myCell = new GameOfLifeCell();
         }
-        myCell.setWidth(cellWidth);
-        myCell.setHeight(cellHeight);
-        int x = r * cellWidth;
-        int y = c * cellHeight;
-        myCell.setX(x);
-        myCell.setY(y);
+        int x = row * cellWidth;
+        int y = column * cellHeight;
+        myCell.init(cellWidth, cellHeight, x, y, row, column);
         return myCell;
     }
 
@@ -86,18 +55,13 @@ public class CellManager extends Group {
                 && (c < cellsPerColumn);
     }
 
-    /**
-     * Create all the cells and populate their neighbors list.
-     *
-     * @param cellType the type of cell to be created
-     */
     public void init(String cellType) {
         int cellWidth = gridWidth / cellsPerRow;
         int cellHeight = gridHeight / cellsPerColumn;
-        for (int r = 0; r < cellsPerRow; r++) {
-            for (int c = 0; c < cellsPerColumn; c++) {
-                Cell myCell = createCell(cellType, cellWidth, cellHeight, r, c);
-                grid[r][c] = myCell;
+        for (int row = 0; row < cellsPerRow; row++) {
+            for (int column = 0; column < cellsPerColumn; column++) {
+                Cell myCell = createCell(cellType, cellWidth, cellHeight, row, column);
+                grid[row][column] = myCell;
                 this.getChildren().add(myCell);
                 theCells.add(myCell);
             }
@@ -105,9 +69,6 @@ public class CellManager extends Group {
         populateNeighbors();
     }
 
-    /**
-     * Populate the neighbors list of each cell.
-     */
     private void populateNeighbors() {
         for (int r = 0; r < cellsPerRow; r++) {
             for (int c = 0; c < cellsPerColumn; c++) {
@@ -134,29 +95,16 @@ public class CellManager extends Group {
         }
     }
 
-    /**
-     * Clear this cellManager.
-     */
     public void clear() {
         this.getChildren().clear();
         theCells.clear();
     }
 
 
-    /**
-     * Return the width of the grid.
-     *
-     * @return the width of the grid
-     */
     public int getWidth() {
         return gridWidth;
     }
 
-    /**
-     * Return the height of the grid.
-     *
-     * @return the height of the grid
-     */
     public int getHeight() {
         return gridHeight;
     }
