@@ -1,5 +1,7 @@
 package Cell;
 
+import javafx.scene.paint.Color;
+
 /**
  * Created by rhondusmithwick on 2/4/16.
  *
@@ -10,20 +12,27 @@ public class FireCell extends Cell {
 
     private State state;
 
-    public void setBurnTime(int burnTime) {
-        this.burnTime = burnTime;
-    }
-
     private int burnTime;
 
     public FireCell() {
         super();
         removeDiagonals();
+        this.setStroke(Color.BLACK);
     }
 
     @Override
     public void handleUpdate() {
         burnTime++;
+    }
+
+    public boolean hasBurningNeighbor() {
+        for (Cell c : neighbors) {
+            FireCell fc = (FireCell) c;
+            if (fc.getState() == State.BURNINING) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public enum State {
@@ -38,13 +47,14 @@ public class FireCell extends Cell {
         this.state = state;
     }
 
-    public boolean hasBurningNeighbor() {
-        for (Cell c : neighbors) {
-            FireCell fc = (FireCell) c;
-            if (fc.getState() == State.BURNINING) {
-                return true;
-            }
-        }
-        return false;
+
+
+
+    public int getBurnTime() {
+        return burnTime;
+    }
+
+    public void setBurnTime(int burnTime) {
+        this.burnTime = burnTime;
     }
 }

@@ -129,10 +129,16 @@ public class SegregationSimulation extends Simulation {
 //            threshold = DEFAULT_THRESHOLD;
 //            emptyPercent = DEFAULT_EMPTY_PERCENT;
 //            group1Percent = DEFAULT_GROUP1_PERCENT;
+//            emptyVisual = DEFAULT_EMPTY_VISUAL;
+//            group1Visual = DEFAULT_GROUP1_VISUAL;
+//            group2Visual = DEFAULT_GROUP2_VISUAL;
 //        } else {
 //            threshold = getIntValue(simElem, "threshold");
 //            emptyPercent = getIntValue(simElem, "emptyPercent");
 //            group1Percent = getIntValue(simElem, "group1Percent");
+//            emptyVisual = getPaintValue(simElem, "emptyVisual");
+//            group1Visual = getPaintValue(simElem, "group1Visual");
+//            group2Visual = getPaintValue(simElem, "group2Visual");
 //        }
     }
 

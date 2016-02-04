@@ -22,7 +22,7 @@ public abstract class Cell extends Rectangle {
         neighbors = new LinkedList<>();
     }
 
-    public void removeDiagonals() {
+    void removeDiagonals() {
         for (Cell c : neighbors) {
             int rowDiff = Math.abs(c.getRow() - getRow());
             int columnDiff = Math.abs(c.getColumn() - getColumn());
@@ -46,7 +46,7 @@ public abstract class Cell extends Rectangle {
         return row;
     }
 
-    void setRow(int row) {
+    private void setRow(int row) {
         this.row = row;
     }
 
@@ -54,7 +54,7 @@ public abstract class Cell extends Rectangle {
         return column;
     }
 
-    void setColumn(int column) {
+    private void setColumn(int column) {
         this.column = column;
     }
 
