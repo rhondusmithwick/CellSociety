@@ -1,8 +1,5 @@
 package Cell;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Created by rhondusmithwick on 2/4/16.
  *
@@ -41,15 +38,13 @@ public class FireCell extends Cell {
         this.state = state;
     }
 
-    public List<FireCell> countNeighbors(State state) {
-        List<FireCell> neighborsOfState = new LinkedList<>();
-        FireCell neighbor;
+    public boolean hasBurningNeighbor() {
         for (Cell c : neighbors) {
-            neighbor = (FireCell) c;
-            if (neighbor.getState() == state) {
-                neighborsOfState.add(neighbor);
+            FireCell fc = (FireCell) c;
+            if (fc.getState() == State.BURNINING) {
+                return true;
             }
         }
-        return neighborsOfState;
+        return false;
     }
 }

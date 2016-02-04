@@ -7,6 +7,9 @@ import org.w3c.dom.Element;
 import Cell.FireCell;
 import Cell.FireCell.State;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Created by rhondusmithwick on 2/4/16.
@@ -16,11 +19,15 @@ import Cell.FireCell.State;
 // TO FINISH
 public class FireSimulation extends Simulation {
     private static final int DEFAULT_BURN_TIME = 30;
+    private static final int DEFAULT_PROB_CATCH= 30;
+
     private static final Paint DEFAULT_EMPTY_VISUAL = Color.YELLOW;
     private static final Paint DEFAULT_BURNING_VISUAL = Color.RED;
     private static final Paint DEFAULT_TREE_VISUAL = Color.GREEN;
 
     private int burnTime = DEFAULT_BURN_TIME;
+    private int probCatch = DEFAULT_PROB_CATCH;
+
     private Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
     private Paint burningVisual = DEFAULT_BURNING_VISUAL;
     private Paint treeVisual = DEFAULT_TREE_VISUAL;
@@ -32,13 +39,20 @@ public class FireSimulation extends Simulation {
 
     void step() {
         super.step();
+        Map<FireCell, State>
         for (Cell c: getTheCells()) {
             FireCell fc = (FireCell) c;
             if (fc.getState() == State.TREE) {
+                if (fc.hasBurningNeighbor()) {
+                    int randomNum = getRandomNum(1, 100);
+                    if (randomNum < probCatch) {
 
+                    }
+                }
             }
         }
     }
+
     void assignInitialState(int randomNum, Cell c) {
         FireCell fc = (FireCell) c;
         fc.setBurnTime(burnTime);
