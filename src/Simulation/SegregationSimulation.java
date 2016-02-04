@@ -7,7 +7,9 @@ import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rhondusmithwick on 2/1/16.
@@ -57,62 +59,22 @@ public class SegregationSimulation extends Simulation {
     }
 
 
-    @Override
-    protected void step() {
-        super.step();
-        SegregationCell sc;
-        for (Cell c : getTheCells()) {
-            sc = (SegregationCell) c;
-            if (!sc.getIsEmpty() && !sc.getSatisfied()) {
-                move(sc);
-            }
-        }
-    }
-
-    private void move(SegregationCell cellToMove) {
-        final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
-        final SegregationCell emptyCell = emptyCells.get(randomIndex);
-
-        emptyCell.setFill(cellToMove.getFill());
-        emptyCell.setIsEmpty(false);
-        emptyCell.setSatisfied(true);
-
-        cellToMove.setFill(emptyVisual);
-        cellToMove.setSatisfied(true);
-        cellToMove.setIsEmpty(true);
-
-        emptyCells.set(randomIndex, cellToMove);
-    }
-
-//
 //    @Override
 //    protected void step() {
 //        super.step();
-//        Map<SegregationCell, SegregationCell> moveMap = new HashMap<>();
 //        SegregationCell sc;
 //        for (Cell c : getTheCells()) {
 //            sc = (SegregationCell) c;
 //            if (!sc.getIsEmpty() && !sc.getSatisfied()) {
-//                if (!emptyCells.isEmpty()) {
-//                    final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
-//                    final SegregationCell emptyCell = emptyCells.get(randomIndex);
-//                    emptyCells.remove(randomIndex);
-//                    moveMap.put(sc, emptyCell);
-//                }
+//                move(sc);
 //            }
 //        }
-//        doSwaps(moveMap);
 //    }
 //
+//    private void move(SegregationCell cellToMove) {
+//        final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
+//        final SegregationCell emptyCell = emptyCells.get(randomIndex);
 //
-//    private void doSwaps(Map<SegregationCell, SegregationCell> moveMap) {
-//        for (SegregationCell cellToMove : moveMap.keySet()) {
-//            SegregationCell emptyCell = moveMap.get(cellToMove);
-//            swap(cellToMove, emptyCell);
-//        }
-//    }
-//
-//    private void swap(SegregationCell cellToMove, SegregationCell emptyCell) {
 //        emptyCell.setFill(cellToMove.getFill());
 //        emptyCell.setIsEmpty(false);
 //        emptyCell.setSatisfied(true);
@@ -120,8 +82,48 @@ public class SegregationSimulation extends Simulation {
 //        cellToMove.setFill(emptyVisual);
 //        cellToMove.setSatisfied(true);
 //        cellToMove.setIsEmpty(true);
-//        emptyCells.add(cellToMove);
+//
+//        emptyCells.set(randomIndex, cellToMove);
 //    }
+
+//
+    @Override
+    protected void step() {
+        super.step();
+        Map<SegregationCell, SegregationCell> moveMap = new HashMap<>();
+        SegregationCell sc;
+        for (Cell c : getTheCells()) {
+            sc = (SegregationCell) c;
+            if (!sc.getIsEmpty() && !sc.getSatisfied()) {
+                if (!emptyCells.isEmpty()) {
+                    final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
+                    final SegregationCell emptyCell = emptyCells.get(randomIndex);
+                    emptyCells.remove(randomIndex);
+                    moveMap.put(sc, emptyCell);
+                }
+            }
+        }
+        doSwaps(moveMap);
+    }
+
+
+    private void doSwaps(Map<SegregationCell, SegregationCell> moveMap) {
+        for (SegregationCell cellToMove : moveMap.keySet()) {
+            SegregationCell emptyCell = moveMap.get(cellToMove);
+            swap(cellToMove, emptyCell);
+        }
+    }
+
+    private void swap(SegregationCell cellToMove, SegregationCell emptyCell) {
+        emptyCell.setFill(cellToMove.getFill());
+        emptyCell.setIsEmpty(false);
+        emptyCell.setSatisfied(true);
+
+        cellToMove.setFill(emptyVisual);
+        cellToMove.setSatisfied(true);
+        cellToMove.setIsEmpty(true);
+        emptyCells.add(cellToMove);
+    }
 
 
     @Override
