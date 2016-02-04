@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation SimulationType="Segregation">
+    <gridWidth>500</gridWidth>
+    <gridHeight>500</gridHeight>
+    <numCellsPerRow>25</numCellsPerRow>
+    <numCellsPerColumn>25</numCellsPerColumn>
+    <threshold>30</threshold>
+    <emptyPercent>30</emptyPercent>
+    <group1Percent>45</group1Percent>
+    <emptyVisual>black</emptyVisual>
+    <group1Visual>red</group1Visual>
+    <group2Visual>blue</group2Visual></Simulation>

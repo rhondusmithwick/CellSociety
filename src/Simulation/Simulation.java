@@ -4,6 +4,8 @@ import Cell.Cell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -130,12 +132,15 @@ public abstract class Simulation {
         return textVal;
     }
 
+    final Paint getPaintValue(Element ele, String tagName) {
+        return Paint.valueOf(getTextValue(ele, tagName));
+    }
+
     final int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
 
 
-    //    final Paint getPaintValue(Element ele, String tagName) {}
     public final int getGridWidth() {
         return gridWidth;
     }

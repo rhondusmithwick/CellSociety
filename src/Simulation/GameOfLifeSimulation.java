@@ -58,9 +58,8 @@ public class GameOfLifeSimulation extends Simulation {
             aliveVisual = DEFAULT_ALIVE_VISUAL;
         } else {
             probStartDead = getIntValue(simElem, "probStartDead");
-//            deadVisual = getPaintValue(simElem, "deadVisual");
-//            aliveVisual = getPaintValue(simElem, "aliveVisual");
+            deadVisual = getPaintValue(simElem, "deadVisual");
+            aliveVisual = getPaintValue(simElem, "aliveVisual");
         }
-
     }
 }

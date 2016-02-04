@@ -1,7 +1,6 @@
 package Cell;
 
-import java.util.LinkedList;
-import java.util.List;
+import javafx.scene.paint.Color;
 
 /**
  * Created by rhondusmithwick on 2/4/16.
@@ -13,15 +12,12 @@ public class FireCell extends Cell {
 
     private State state;
 
-    public void setBurnTime(int burnTime) {
-        this.burnTime = burnTime;
-    }
-
     private int burnTime;
 
     public FireCell() {
         super();
         removeDiagonals();
+        this.setStroke(Color.BLACK);
     }
 
     @Override
@@ -29,8 +25,18 @@ public class FireCell extends Cell {
         burnTime++;
     }
 
+    public boolean hasBurningNeighbor() {
+        for (Cell c : neighbors) {
+            FireCell fc = (FireCell) c;
+            if (fc.getState() == State.BURNING) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public enum State {
-        BURNINING, TREE, EMPTY
+        BURNING, TREE, EMPTY
     }
 
     public State getState() {
@@ -41,15 +47,14 @@ public class FireCell extends Cell {
         this.state = state;
     }
 
-    public List<FireCell> countNeighbors(State state) {
-        List<FireCell> neighborsOfState = new LinkedList<>();
-        FireCell neighbor;
-        for (Cell c : neighbors) {
-            neighbor = (FireCell) c;
-            if (neighbor.getState() == state) {
-                neighborsOfState.add(neighbor);
-            }
-        }
-        return neighborsOfState;
+
+
+
+    public int getBurnTime() {
+        return burnTime;
+    }
+
+    public void setBurnTime(int burnTime) {
+        this.burnTime = burnTime;
     }
 }
