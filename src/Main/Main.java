@@ -14,11 +14,6 @@ public class Main extends Application {
         launch(args);
     }
 
-    /**
-     * Start the application.
-     *
-     * @param primaryStage the primary stage
-     */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Cell Society");

@@ -2,6 +2,8 @@ package Simulation;
 
 import Cell.Cell;
 import Cell.GameOfLifeCell;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
 /**
@@ -12,38 +14,53 @@ import org.w3c.dom.Element;
 public class GameOfLifeSimulation extends Simulation {
 
     private static final double DEFAULT_START_DEAD = 30;
+    private static final Paint DEFAULT_DEAD_VISUAL = Color.WHITE;
+    private static final Paint DEFAULT_ALIVE_VISUAL = Color.BLACK;
+
 
     private double probStartDead;
 
+    private Paint deadVisual = DEFAULT_DEAD_VISUAL;
+    private Paint aliveVisual = DEFAULT_ALIVE_VISUAL;
+
     public GameOfLifeSimulation() {
         super();
+        parseXmlFile("resources/" + "GameOfLife.xml");
     }
 
+
     @Override
-    protected void assignInitialState(int randomNum, Cell c) {
-        if (getType() == null || !getType().equals("GameOfLife")) {
-            probStartDead = DEFAULT_START_DEAD;
-        }
-        GameOfLifeCell gc = (GameOfLifeCell) c;
+    void assignInitialState(int randomNum, Cell c) {
+        final GameOfLifeCell gc = (GameOfLifeCell) c;
         if (randomNum <= probStartDead) {
-            gc.destroy();
+            gc.destroy(deadVisual);
         } else {
-            gc.restore();
+            gc.restore(aliveVisual);
         }
     }
 
     @Override
     protected void step() {
         super.step();
+        GameOfLifeCell gc;
         for (Cell c : getTheCells()) {
-            GameOfLifeCell gc = (GameOfLifeCell) c;
-            gc.transform();
+            gc = (GameOfLifeCell) c;
+            gc.transform(deadVisual, aliveVisual);
         }
     }
 
 
     @Override
-    protected void getTypeProperties(Element simElem) {
-        probStartDead = getIntValue(simElem, "probStartDead");
+    void setSpecificProperties(Element simElem) {
+        if (getType() == null || !getType().equals("GameOfLife")) {
+            probStartDead = DEFAULT_START_DEAD;
+            deadVisual = DEFAULT_DEAD_VISUAL;
+            aliveVisual = DEFAULT_ALIVE_VISUAL;
+        } else {
+            probStartDead = getIntValue(simElem, "probStartDead");
+//            deadVisual = getPaintValue(simElem, "deadVisual");
+//            aliveVisual = getPaintValue(simElem, "aliveVisual");
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 package Cell;
 
-import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 
 /**
@@ -29,19 +29,19 @@ public class GameOfLifeCell extends Cell {
     }
 
 
-    public void transform() {
+    public void transform(Paint deadColor, Paint aliveColor) {
         if (markForDeath) {
-            destroy();
-        }
-        if (markForRestore) {
-            restore();
+            destroy(deadColor);
+        } else if (markForRestore) {
+            restore(aliveColor);
         }
     }
 
     private int countAliveNeighbors() {
         int count = 0;
         for (Cell c : neighbors) {
-            if (((GameOfLifeCell) c).getAlive()) {
+            GameOfLifeCell gc = (GameOfLifeCell) c;
+            if (gc.getAlive()) {
                 count++;
             }
         }
@@ -53,16 +53,16 @@ public class GameOfLifeCell extends Cell {
         return isAlive;
     }
 
-    public void destroy() {
+    public void destroy(Paint deadColor) {
         isAlive = false;
         markForDeath = false;
-        setFill(Color.BLACK);
+        setFill(deadColor);
     }
 
-    public void restore() {
+    public void restore(Paint aliveColor) {
         isAlive = true;
         markForRestore = false;
-        setFill(Color.WHITE);
+        setFill(aliveColor);
     }
 
 }

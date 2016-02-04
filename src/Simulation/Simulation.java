@@ -4,8 +4,6 @@ import Cell.Cell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,22 +34,21 @@ public abstract class Simulation {
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
 
-    protected Simulation() {
+    Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
     }
 
 
     private Timeline buildLoop() {
-        EventHandler<ActionEvent> handler = (t -> step());
-        final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), handler);
-        Timeline simulationLoop = new Timeline();
+        final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), t -> step());
+        final Timeline simulationLoop = new Timeline();
         simulationLoop.setCycleCount(Animation.INDEFINITE);
         simulationLoop.getKeyFrames().addAll(keyFrame);
         return simulationLoop;
     }
 
-    protected void step() {
+    void step() {
         getTheCells().forEach(c -> c.handleUpdate());
     }
 
@@ -69,7 +66,7 @@ public abstract class Simulation {
         return isPlaying;
     }
 
-    public void playOrStop() {
+    public final void playOrStop() {
         if (!getPlaying()) {
             beginLoop();
         } else {
@@ -78,21 +75,22 @@ public abstract class Simulation {
     }
 
 
-    public void init() {
+    public final void init() {
+        int randomNum;
         for (Cell c : getTheCells()) {
-            int randomNum = getRandomNum(1, 100);
+            randomNum = getRandomNum(1, 100);
             assignInitialState(randomNum, c);
         }
     }
 
-    protected abstract void assignInitialState(int randomNum, Cell c);
+    abstract void assignInitialState(int randomNum, Cell c);
 
-    protected int getRandomNum(int min, int max) {
+    final int getRandomNum(int min, int max) {
         int range = max - min + 1;
         return rn.nextInt(range) + min;
     }
 
-    public void parseXmlFile(String xmlFilename) {
+    final void parseXmlFile(String xmlFilename) {
         //get the factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
@@ -101,8 +99,8 @@ public abstract class Simulation {
             //parse using builder to get DOM representation of the XML file
             Document xmlDoc = db.parse(xmlFilename);
             Element simulationElem = xmlDoc.getDocumentElement();
-            getGenericProperties(simulationElem);
-            getTypeProperties(simulationElem);
+            setGenericProperties(simulationElem);
+            setSpecificProperties(simulationElem);
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {
@@ -110,17 +108,19 @@ public abstract class Simulation {
         }
     }
 
-    private void getGenericProperties(Element simElem) {
-        setType(simElem.getAttribute("SimulationType"));
+
+    private void setGenericProperties(Element simElem) {
+        String simType = simElem.getAttribute("SimulationType");
+        setType(simType);
         gridWidth = getIntValue(simElem, "gridWidth");
         gridHeight = getIntValue(simElem, "gridHeight");
         cellsPerRow = getIntValue(simElem, "numCellsPerRow");
         cellsPerColumn = getIntValue(simElem, "numCellsPerColumn");
     }
 
-    protected abstract void getTypeProperties(Element simElem);
+    abstract void setSpecificProperties(Element simElem);
 
-    private String getTextValue(Element ele, String tagName) {
+    final String getTextValue(Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {
@@ -130,46 +130,66 @@ public abstract class Simulation {
         return textVal;
     }
 
-    protected int getIntValue(Element ele, String tagName) {
-        //in production application you would catch the exception
+    final int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
 
 
-    public int getGridWidth() {
+    //    final Paint getPaintValue(Element ele, String tagName) {}
+    public final int getGridWidth() {
         return gridWidth;
     }
 
 
-    public int getGridHeight() {
+    public final int getGridHeight() {
         return gridHeight;
     }
 
 
-    public int getCellsPerRow() {
+    public final int getCellsPerRow() {
         return cellsPerRow;
     }
 
 
-    public int getCellsPerColumn() {
+    public final int getCellsPerColumn() {
         return cellsPerColumn;
     }
 
 
-    public String getType() {
+    final String getType() {
         return type;
     }
 
 
-    public void setType(String type) {
+    private void setType(String type) {
         this.type = type;
     }
 
-    public Collection<Cell> getTheCells() {
+    final Collection<Cell> getTheCells() {
         return theCells;
     }
 
-    public void setTheCells(Collection<Cell> theCells) {
+    public final void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
+
+    public final void increaseRate() {
+        double currentRate = simulationLoop.getRate();
+        if (currentRate <= 10) {
+            simulationLoop.setRate(currentRate + .1);
+        }
+    }
+
+    public final void decreaseRate() {
+        double currentRate = simulationLoop.getRate();
+        if (currentRate > 0) {
+            simulationLoop.setRate(currentRate - .1);
+
+        }
+    }
+
+    public final void resetRate() {
+        simulationLoop.setRate(1.0);
+    }
 }
+
