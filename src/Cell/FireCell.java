@@ -28,7 +28,7 @@ public class FireCell extends Cell {
     public boolean hasBurningNeighbor() {
         for (Cell c : neighbors) {
             FireCell fc = (FireCell) c;
-            if (fc.getState() == State.BURNINING) {
+            if (fc.getState() == State.BURNING) {
                 return true;
             }
         }
@@ -36,7 +36,7 @@ public class FireCell extends Cell {
     }
 
     public enum State {
-        BURNINING, TREE, EMPTY
+        BURNING, TREE, EMPTY
     }
 
     public State getState() {

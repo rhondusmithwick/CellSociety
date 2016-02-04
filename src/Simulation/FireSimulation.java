@@ -52,7 +52,7 @@ public class FireSimulation extends Simulation {
     private void getUpdate(Map<FireCell, State> changes, Cell c) {
         FireCell fc = (FireCell) c;
         if (treeShouldBurn(fc)) {
-            changes.put(fc, State.BURNINING);
+            changes.put(fc, State.BURNING);
         } else if (treeDoneBurning(fc)) {
             changes.put(fc, State.EMPTY);
         }
@@ -63,7 +63,7 @@ public class FireSimulation extends Simulation {
             case EMPTY:
                 fc.setFill(emptyVisual);
                 break;
-            case BURNINING:
+            case BURNING:
                 fc.setFill(burningVisual);
                 break;
             case TREE:
@@ -80,7 +80,7 @@ public class FireSimulation extends Simulation {
         if (checkOnEdge(fc)) {
             changeState(fc, State.EMPTY);
         } else if (checkInMiddle(fc)) {
-            changeState(fc, State.BURNINING);
+            changeState(fc, State.BURNING);
         } else {
             changeState(fc, State.TREE);
         }
@@ -116,7 +116,7 @@ public class FireSimulation extends Simulation {
     }
 
     private boolean treeDoneBurning(FireCell fc) {
-        return (fc.getState() == State.BURNINING)
+        return (fc.getState() == State.BURNING)
                 && (fc.getBurnTime() > burnTime);
     }
 
