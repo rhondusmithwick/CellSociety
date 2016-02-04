@@ -22,6 +22,16 @@ public abstract class Cell extends Rectangle {
         neighbors = new LinkedList<>();
     }
 
+    public void removeDiagonals() {
+        for (Cell c : neighbors) {
+            int rowDiff = Math.abs(c.getRow() - getRow());
+            int columnDiff = Math.abs(c.getColumn() - getColumn());
+            if (rowDiff == 1 && columnDiff == 1) {
+                neighbors.remove(c);
+            }
+        }
+    }
+
     public Collection<Cell> getNeighbors() {
         return neighbors;
     }

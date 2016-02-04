@@ -8,6 +8,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+// TO FINISH
 public class PredatorPreyCell extends Cell {
 
     private State state;
@@ -16,21 +17,14 @@ public class PredatorPreyCell extends Cell {
 
     public PredatorPreyCell() {
         super();
+        removeDiagonals();
     }
 
     public void handleUpdate() {
         turnsSurvived++;
     }
 
-    public void removeDiagonals() {
-        for (Cell c : neighbors) {
-            int rowDiff = Math.abs(c.getRow() - getRow());
-            int columnDiff = Math.abs(c.getColumn() - getColumn());
-            if (rowDiff == 1 && columnDiff == 1) {
-                neighbors.remove(c);
-            }
-        }
-    }
+
 
     public List<PredatorPreyCell> countNeighbors(State state) {
         List<PredatorPreyCell> neighborsOfState = new LinkedList<>();
