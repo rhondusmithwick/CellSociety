@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation SimulationType="Fire">
-    <gridWidth>800</gridWidth>
-    <gridHeight>800</gridHeight>
+    <gridWidth>500</gridWidth>
+    <gridHeight>500</gridHeight>
     <numCellsPerRow>100</numCellsPerRow>
     <numCellsPerColumn>100</numCellsPerColumn>
     <burnTime>3</burnTime>

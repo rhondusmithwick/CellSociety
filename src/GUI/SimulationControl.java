@@ -11,31 +11,36 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 
 public class SimulationControl {
-	
-	private static final String DEFAULT_TYPE = "GameOfLife";
+
+	private static final String DEFAULT_TYPE = "Fire";
+	private String simType;
     private CellManager cellManager;
     private Simulation sim;
-	
-	ObservableList<String> mySimulations = 
+    private GridPane display;
+
+	ObservableList<String> mySimulations =
 		    FXCollections.observableArrayList(
-		        "Game Of Life",
+		        "GameOfLife",
 		        "Segregation",
 		        "Fire"
 		    );
-	
-	public SimulationControl(GridPane display){
-		
-		
-		 sim = startSimulation(DEFAULT_TYPE);
-	     cellManager = createCellManager(DEFAULT_TYPE);
-	     GridPane.setConstraints(cellManager,0,0);
-	     display.getChildren().add(cellManager);
 
-	     sim.setTheCells(cellManager.getCells());
-	     sim.init();	
-	     
+	public SimulationControl(GridPane display){
+			simType = DEFAULT_TYPE;
+			this.display = display;
+			initNewSimulation();
 	}
-		
+
+	public void initNewSimulation(){
+	 sim = startSimulation(simType);
+	 display.getChildren().remove(cellManager);
+     cellManager = createCellManager(simType);
+     GridPane.setConstraints(cellManager,0,0);
+     display.getChildren().add(cellManager);
+
+     sim.setTheCells(cellManager.getCells());
+     sim.init();
+	}
 	public ObservableList<String> getSimulations(){
 		return mySimulations;
 	}
@@ -62,7 +67,8 @@ public class SimulationControl {
 	}
 
 		public Simulation startSimulation(Object o) {
-			String simType = o.toString();
+			simType = o.toString();
+			//System.out.println(simType);
 	        Simulation sim;
 	        try {
 	            Class c = Class.forName("Simulation." + simType + "Simulation");
@@ -75,8 +81,8 @@ public class SimulationControl {
 	        }
 	        return sim;
 	    }
-		
-		
+
+
 	    private CellManager createCellManager(String simType) {
 	        CellManager cellManager = new CellManager();
 	        cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
@@ -86,26 +92,27 @@ public class SimulationControl {
 	    }
 
 		public void switchSimulation(Object o) {
-			
-			String simType = o.toString();
+
+			simType = o.toString();
 	        Simulation sim;
 	        try {
 	            Class c = Class.forName("Simulation." + simType + "Simulation");
 	            sim = (Simulation) c.newInstance();
+	            initNewSimulation();
 	        } catch (InstantiationException
 	                | IllegalAccessException
 	                | ClassNotFoundException e) {
 	            System.out.println(e);
 	            sim = new GameOfLifeSimulation();
 	        }
-	        
+
 	        sim.setTheCells(cellManager.getCells());
 		    sim.init();
-	        
+
 		}
-		
-		
-		
+
+
+
 	}
-	
+
 
