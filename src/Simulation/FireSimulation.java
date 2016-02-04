@@ -62,15 +62,12 @@ public class FireSimulation extends Simulation {
         switch (state) {
             case EMPTY:
                 fc.setFill(emptyVisual);
-                fc.setState(State.EMPTY);
                 break;
             case BURNINING:
                 fc.setFill(burningVisual);
-                fc.setState(State.BURNINING);
                 break;
             case TREE:
                 fc.setFill(treeVisual);
-                fc.setState(State.TREE);
                 break;
         }
         fc.setState(state);
