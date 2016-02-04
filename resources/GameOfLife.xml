@@ -2,7 +2,8 @@
 <Simulation SimulationType="GameOfLife">
     <gridWidth>500</gridWidth>
     <gridHeight>500</gridHeight>
-    <numCellsPerRow>20</numCellsPerRow>
-    <numCellsPerColumn>20</numCellsPerColumn>
-    <probStartDead>30</probStartDead>
-</Simulation>
+    <numCellsPerRow>50</numCellsPerRow>
+    <numCellsPerColumn>50</numCellsPerColumn>
+    <probStartDead>50</probStartDead>
+    <deadVisual>white</deadVisual>
+    <aliveVisual>green</aliveVisual></Simulation>

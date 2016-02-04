@@ -133,8 +133,7 @@ public abstract class Simulation {
     }
 
     final Paint getPaintValue(Element ele, String tagName) {
-        // TO DO
-        return Color.BLACK;
+        return Paint.valueOf(getTextValue(ele, tagName));
     }
 
     final int getIntValue(Element ele, String tagName) {

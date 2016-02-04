@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation SimulationType="PredatorPrey">
+    <gridWidth>800</gridWidth>
+    <gridHeight>800</gridHeight>
+    <numCellsPerRow>100</numCellsPerRow>
+    <numCellsPerColumn>100</numCellsPerColumn>
+    <breedTime>5</breedTime>
+    <emptyPercent>10</emptyPercent>
+    <fishPercent>60</fishPercent>
+    <emptyVisual>blue</emptyVisual>
+    <fishVisual>yellow</fishVisual>
+    <sharkVisual>gray</sharkVisual></Simulation>

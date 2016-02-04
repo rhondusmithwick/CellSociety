@@ -34,7 +34,7 @@ public class FireSimulation extends Simulation {
 
     public FireSimulation() {
         super();
-        parseXmlFile("resources/" + "GameOfLife.xml");
+        parseXmlFile("resources/" + "Fire.xml");
     }
 
     void step() {
@@ -90,19 +90,19 @@ public class FireSimulation extends Simulation {
 
     @Override
     void setSpecificProperties(Element simElem) {
-//        if (getType() == null || !getType().equals("FIre")) {
-//            burnTime = DEFAULT_BURN_TIME;
-//            probCatch = DEFAULT_PROB_CATCH;
-//            emptyVisual = DEFAULT_EMPTY_VISUAL;
-//            burningVisual = DEFAULT_BURNING_VISUAL;
-//            treeVisual = DEFAULT_TREE_VISUAL;
-//        } else {
-//            burnTime = getIntValue(simElem, "burnTime");
-//            probCatch = getIntValue(simElem, "probCatch");
-//            emptyVisual = getPaintValue(simElem, "emptyVisual");
-//            burningVisual = getPaintValue(simElem, "burningVisual");
-//            treeVisual = getPaintValue(simElem, "treeVisual");
-//        }
+        if (getType() == null || !getType().equals("Fire")) {
+            burnTime = DEFAULT_BURN_TIME;
+            probCatch = DEFAULT_PROB_CATCH;
+            emptyVisual = DEFAULT_EMPTY_VISUAL;
+            burningVisual = DEFAULT_BURNING_VISUAL;
+            treeVisual = DEFAULT_TREE_VISUAL;
+        } else {
+            burnTime = getIntValue(simElem, "burnTime");
+            probCatch = getIntValue(simElem, "probCatch");
+            emptyVisual = getPaintValue(simElem, "emptyVisual");
+            burningVisual = getPaintValue(simElem, "burningVisual");
+            treeVisual = getPaintValue(simElem, "treeVisual");
+        }
     }
 
 

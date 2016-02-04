@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  */
 class CellSociety {
 
-    private static final String SIM_TYPE = "Fire";
+    private static final String SIM_TYPE = "Segregation";
     private final Group group;
     private CellManager cellManager;
     private Simulation sim;
