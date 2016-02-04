@@ -35,10 +35,6 @@ public class FireCell extends Cell {
         return false;
     }
 
-    public enum State {
-        BURNING, TREE, EMPTY
-    }
-
     public State getState() {
         return state;
     }
@@ -47,14 +43,15 @@ public class FireCell extends Cell {
         this.state = state;
     }
 
-
-
-
     public int getBurnTime() {
         return burnTime;
     }
 
     public void setBurnTime(int burnTime) {
         this.burnTime = burnTime;
+    }
+
+    public enum State {
+        BURNING, TREE, EMPTY
     }
 }

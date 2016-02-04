@@ -9,4 +9,5 @@
     <fishPercent>60</fishPercent>
     <emptyVisual>blue</emptyVisual>
     <fishVisual>yellow</fishVisual>
-    <sharkVisual>gray</sharkVisual></Simulation>
+    <sharkVisual>gray</sharkVisual>
+</Simulation>

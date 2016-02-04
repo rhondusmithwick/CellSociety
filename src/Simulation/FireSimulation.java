@@ -25,12 +25,12 @@ public class FireSimulation extends Simulation {
     private static final Paint DEFAULT_BURNING_VISUAL = Color.RED;
     private static final Paint DEFAULT_TREE_VISUAL = Color.GREEN;
 
-    private int burnTime = DEFAULT_BURN_TIME;
-    private int probCatch = DEFAULT_PROB_CATCH;
+    private int burnTime;
+    private int probCatch;
 
-    private Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
-    private Paint burningVisual = DEFAULT_BURNING_VISUAL;
-    private Paint treeVisual = DEFAULT_TREE_VISUAL;
+    private Paint emptyVisual;
+    private Paint burningVisual;
+    private Paint treeVisual;
 
     public FireSimulation() {
         super();
@@ -85,7 +85,6 @@ public class FireSimulation extends Simulation {
             changeState(fc, State.TREE);
         }
     }
-
 
 
     @Override
