@@ -13,6 +13,8 @@ public class PredatorPreyCell extends Cell {
 
     private State state;
     private int turnsSurvived;
+    private int breedCountdown;
+    private int starveCountdown;
     private boolean isEdible = false;
 
     public PredatorPreyCell() {
@@ -22,6 +24,26 @@ public class PredatorPreyCell extends Cell {
 
     public void handleUpdate() {
         turnsSurvived++;
+        breedCountdown--;
+        starveCountdown--;
+    }
+
+    public void setStarveCountdown(int countdown){
+    	starveCountdown = countdown;
+    }
+
+    public boolean isStarved()
+    {
+    	return (starveCountdown<1);
+    }
+
+    public void setBreedCountdown(int countdown){
+    	breedCountdown = countdown;
+    }
+
+    public boolean canBreed()
+    {
+    	return (breedCountdown<1);
     }
 
 

@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,12 +57,9 @@ public class PredatorPreySimulation extends Simulation {
             ppc.setState(State.EMPTY);
         } else if (randomNum > emptyPercent
                 && randomNum <= emptyPercent + fishPercent) {
-            ppc.setFill(fishVisual);
-            ppc.setState(State.FISH);
-            ppc.setEdible(true);
+        	setAsFish(ppc);
         } else {
-            ppc.setFill(sharkVisual);
-            ppc.setState(State.SHARK);
+           setAsShark(ppc);
         }
     }
 
@@ -85,14 +83,43 @@ public class PredatorPreySimulation extends Simulation {
         }
     }
 
-
+    private void setAsFish(PredatorPreyCell ppc){
+    	 ppc.setFill(fishVisual);
+         ppc.setState(State.FISH);
+         ppc.setEdible(true);
+    }
+    private void setAsShark(PredatorPreyCell ppc ){
+    	 ppc.setFill(sharkVisual);
+         ppc.setState(State.SHARK);
+    }
     private void fishUpdate(PredatorPreyCell fish) {
+    	fish.handleUpdate();
+    	List<PredatorPreyCell> freeSpace = fish.countNeighbors(State.EMPTY);
+
+    	if(freeSpace.size()>1){
+    		if(fish.canBreed()){
+        		setAsFish(freeSpace.get((int)(Math.random() * ( freeSpace.size() ))));
+        	}
+    		else{
+    			;//TODO: Move
+    		}
+    	}
 
     }
 
 
     private void sharkUpdate(PredatorPreyCell shark) {
+    	shark.handleUpdate();
+    	List<PredatorPreyCell> freeSpace = shark.countNeighbors(State.EMPTY);
 
+    	if(freeSpace.size()>1){
+    		if(shark.canBreed()){
+        		setAsShark(freeSpace.get((int)(Math.random() * ( freeSpace.size() ))));
+        	}
+    		else{
+    			;//TODO: Move
+    		}
+    	}
     }
 
     @Override
