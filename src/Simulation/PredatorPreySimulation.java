@@ -79,6 +79,9 @@ public class PredatorPreySimulation extends Simulation {
         emptyCells.addAll(emptyCellsToAdd);
     }
 
+    void sharkEatt() {
+        
+    }
 
     void fishUpdate(PredatorPreyCell fish) {
         if (fish.getTurnsSurvived() > breedTime) {
