@@ -105,7 +105,10 @@ public class Controls {
     
     private void setUpFileChooser(){
     	fileChooser = new FileChooser();
-    	fileChooser.setTitle("Load XML File");
+    	fileChooser.setTitle("Choose an XML File");
+    	fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("XML", "*.xml")
+            );
     	Stage dialogStage = new Stage();
         File file = fileChooser.showOpenDialog(dialogStage);
         if (file != null) {
