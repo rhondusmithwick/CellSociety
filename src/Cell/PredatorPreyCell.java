@@ -1,5 +1,8 @@
 package Cell;
 
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,13 +13,19 @@ import java.util.List;
  */
 // TO FINISH
 public class PredatorPreyCell extends Cell {
-
     private State state;
+    private Mark mark;
+
     private int turnsSurvived;
-    private boolean isEdible = false;
+    private boolean isEdible;
+
+    private Paint emptyVisual;
+    private Paint fishVisual;
+    private Paint sharkVisual;
 
     public PredatorPreyCell() {
         super();
+        setStroke(Color.BLACK);
     }
 
     public void handleUpdate() {
@@ -24,7 +33,7 @@ public class PredatorPreyCell extends Cell {
     }
 
 
-    public List<PredatorPreyCell> countNeighbors(State state) {
+    public List<PredatorPreyCell> getNeighborsOfState(State state) {
         List<PredatorPreyCell> neighborsOfState = new LinkedList<>();
         PredatorPreyCell neighbor;
         for (Cell c : neighbors) {
@@ -34,6 +43,31 @@ public class PredatorPreyCell extends Cell {
             }
         }
         return neighborsOfState;
+    }
+
+    public void changeState() {
+        switch (getMark()) {
+            case NONE:
+                return;
+            case TO_FISH:
+                setFill(fishVisual);
+                setState(State.FISH);
+                setEdible(true);
+                break;
+            case TO_SHARK:
+                setFill(sharkVisual);
+                setState(State.SHARK);
+                setEdible(false);
+                break;
+            case TO_EMPTY:
+                setFill(emptyVisual);
+                setState(State.EMPTY);
+                setEdible(false);
+                break;
+            default:
+        }
+        setMark(Mark.NONE);
+        setTurnsSurvived(0);
     }
 
     public boolean getEdible() {
@@ -50,7 +84,14 @@ public class PredatorPreyCell extends Cell {
 
     public void setState(State state) {
         this.state = state;
-        turnsSurvived = 0;
+    }
+
+    public Mark getMark() {
+        return mark;
+    }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
     }
 
     public int getTurnsSurvived() {
@@ -61,7 +102,19 @@ public class PredatorPreyCell extends Cell {
         this.turnsSurvived = turnsSurvived;
     }
 
+    @Override
+    public void setVisuals(Paint... visuals) {
+        emptyVisual = visuals[0];
+        fishVisual = visuals[1];
+        sharkVisual = visuals[2];
+    }
+
     public enum State {
         SHARK, FISH, EMPTY
     }
+
+    public enum Mark {
+        TO_FISH, TO_SHARK, TO_EMPTY, NONE
+    }
+
 }
