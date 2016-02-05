@@ -9,11 +9,11 @@ import javafx.scene.paint.Paint;
  */
 public class GameOfLifeCell extends Cell {
 
-    private Paint deadVisual;
-    private Paint aliveVisual;
-
     private State state;
     private Mark mark;
+
+    private Paint deadVisual;
+    private Paint aliveVisual;
 
     public GameOfLifeCell() {
         super();
@@ -22,11 +22,23 @@ public class GameOfLifeCell extends Cell {
     @Override
     public void handleUpdate() {
         int aliveNeighbors = countAliveNeighbors();
-        if (aliveNeighbors < 2 || aliveNeighbors > 3) {
+        if (shouldDie(aliveNeighbors)) {
             setMark(Mark.DESTROY);
-        } else if ((aliveNeighbors == 3) && (getState() == State.DEAD)) {
-            setMark(Mark.RESTORE);
+        } else if (shouldResurect(aliveNeighbors)) {
+            setMark(Mark.RESURECT);
         }
+    }
+
+    private int countAliveNeighbors() {
+        int count = 0;
+        GameOfLifeCell neighbor;
+        for (Cell c : neighbors) {
+            neighbor = (GameOfLifeCell) c;
+            if (neighbor.getState() == State.ALIVE) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
@@ -38,7 +50,7 @@ public class GameOfLifeCell extends Cell {
                 setFill(deadVisual);
                 setState(State.DEAD);
                 break;
-            case RESTORE:
+            case RESURECT:
                 setFill(aliveVisual);
                 setState(State.ALIVE);
                 break;
@@ -47,15 +59,21 @@ public class GameOfLifeCell extends Cell {
         setMark(Mark.NONE);
     }
 
-    private int countAliveNeighbors() {
-        int count = 0;
-        for (Cell c : neighbors) {
-            GameOfLifeCell gc = (GameOfLifeCell) c;
-            if (gc.getState() == State.ALIVE) {
-                count++;
-            }
-        }
-        return count;
+
+    private boolean shouldDie(int aliveNeighbors) {
+        return (getState() == State.ALIVE)
+                && ((aliveNeighbors < 2) || (aliveNeighbors > 3));
+    }
+
+    private boolean shouldResurect(int aliveNeighbors) {
+        return (getState() == State.DEAD)
+                && (aliveNeighbors == 3);
+    }
+
+    @Override
+    public void setVisuals(Paint... visuals) {
+        deadVisual = visuals[0];
+        aliveVisual = visuals[1];
     }
 
     public State getState() {
@@ -74,17 +92,11 @@ public class GameOfLifeCell extends Cell {
         this.mark = mark;
     }
 
-
-    public void setVisuals(Paint... visuals) {
-        this.deadVisual = visuals[0];
-        this.aliveVisual = visuals[1];
-    }
-
     public enum State {
         ALIVE, DEAD
     }
 
     public enum Mark {
-        RESTORE, DESTROY, NONE
+        DESTROY, RESURECT, NONE
     }
 }

@@ -19,6 +19,7 @@ public class GameOfLifeSimulation extends Simulation {
     private static final Paint DEFAULT_ALIVE_VISUAL = Color.GREEN;
 
     private double probStartDead;
+
     private Paint deadVisual;
     private Paint aliveVisual;
 
@@ -42,7 +43,7 @@ public class GameOfLifeSimulation extends Simulation {
         if (randomNum <= probStartDead) {
             gc.setMark(Mark.DESTROY);
         } else {
-            gc.setMark(Mark.RESTORE);
+            gc.setMark(Mark.RESURECT);
         }
     }
 

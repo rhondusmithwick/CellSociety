@@ -9,11 +9,10 @@ import javafx.scene.paint.Paint;
  * @author Rhondu Smithwick
  */
 public class SegregationCell extends Cell {
-    private int threshold;
-
-
     private State state;
     private Mark mark;
+
+    private int threshold;
 
     private Paint emptyVisual;
     private Paint group1Visual;
@@ -35,6 +34,22 @@ public class SegregationCell extends Cell {
         }
     }
 
+    private double getLikeMePercent() {
+        int count = 0;
+        int num = 0;
+        SegregationCell sc;
+        for (Cell c : neighbors) {
+            sc = (SegregationCell) c;
+            if (sc.getState() != State.EMPTY) {
+                if (sc.getState() == getState()) {
+                    count++;
+                }
+                num++;
+            }
+        }
+        return ((double) count / num) * 100;
+    }
+
     @Override
     public void changeState() {
         switch (getMark()) {
@@ -54,22 +69,6 @@ public class SegregationCell extends Cell {
                 break;
         }
         setMark(Mark.NONE);
-    }
-
-    private double getLikeMePercent() {
-        int count = 0;
-        int num = 0;
-        SegregationCell sc;
-        for (Cell c : neighbors) {
-            sc = (SegregationCell) c;
-            if (sc.getState() != State.EMPTY) {
-                if (sc.getState() == getState()) {
-                    count++;
-                }
-                num++;
-            }
-        }
-        return ((double) count / num) * 100;
     }
 
     @Override
@@ -100,7 +99,7 @@ public class SegregationCell extends Cell {
     }
 
     public enum State {
-        GROUP1, GROUP2, EMPTY
+        EMPTY, GROUP1, GROUP2
     }
 
     public enum Mark {

@@ -12,8 +12,6 @@ import javafx.scene.paint.Paint;
 public class FireCell extends Cell {
 
     private State state;
-
-
     private Mark mark;
 
     private int burnTime;
@@ -39,6 +37,17 @@ public class FireCell extends Cell {
         treeVisual = visuals[2];
     }
 
+    public boolean hasBurningNeighbor() {
+        FireCell fc;
+        for (Cell c : neighbors) {
+            fc = (FireCell) c;
+            if (fc.getState() == State.BURNING) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void changeState() {
         switch (getMark()) {
@@ -61,16 +70,6 @@ public class FireCell extends Cell {
         setMark(Mark.NONE);
     }
 
-    public boolean hasBurningNeighbor() {
-        FireCell fc;
-        for (Cell c : neighbors) {
-            fc = (FireCell) c;
-            if (fc.getState() == State.BURNING) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public State getState() {
         return state;

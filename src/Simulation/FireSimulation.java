@@ -23,6 +23,7 @@ public class FireSimulation extends Simulation {
 
     private int burnTime;
     private int probCatch;
+
     private Paint emptyVisual;
     private Paint burningVisual;
     private Paint treeVisual;
