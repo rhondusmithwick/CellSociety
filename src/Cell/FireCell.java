@@ -22,7 +22,7 @@ public class FireCell extends Cell {
 
     public FireCell() {
         super();
-        setStroke(Color.BLACK);
+//        setStroke(Color.BLACK);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class FireCell extends Cell {
 
     public boolean hasBurningNeighbor() {
         FireCell fc;
-        for (Cell c : neighbors) {
+        for (Cell c : getNeighbors()) {
             fc = (FireCell) c;
             if (fc.getState() == State.BURNING) {
                 return true;

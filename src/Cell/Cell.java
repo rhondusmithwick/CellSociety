@@ -13,17 +13,15 @@ import java.util.LinkedList;
  * @author Rhondu Smithwick
  */
 public abstract class Cell extends Rectangle {
-
-    final Collection<Cell> neighbors;
+    private final Collection<Cell> neighbors = new LinkedList<>();
     private int row;
     private int column;
 
     Cell() {
         super();
-        neighbors = new LinkedList<>();
     }
 
-    public void removeDiagonals() {
+    public final void removeDiagonals() {
         Iterator<Cell> iter = neighbors.iterator();
         while (iter.hasNext()) {
             Cell neighbor = iter.next();
@@ -43,7 +41,7 @@ public abstract class Cell extends Rectangle {
 
     public abstract void handleUpdate();
 
-    public int getRow() {
+    public final int getRow() {
         return row;
     }
 
@@ -51,7 +49,7 @@ public abstract class Cell extends Rectangle {
         this.row = row;
     }
 
-    public int getColumn() {
+    public final int getColumn() {
         return column;
     }
 
@@ -59,7 +57,7 @@ public abstract class Cell extends Rectangle {
         this.column = column;
     }
 
-    public void init(int cellWidth, int cellHeight, int x, int y, int row, int column) {
+    public final void init(int cellWidth, int cellHeight, int x, int y, int row, int column) {
         setWidth(cellWidth);
         setHeight(cellHeight);
         setX(x);
@@ -69,4 +67,10 @@ public abstract class Cell extends Rectangle {
     }
 
     public abstract void setVisuals(Paint... visuals);
+
+
+    public Collection<Cell> getNeighbors() {
+        return neighbors;
+    }
+
 }

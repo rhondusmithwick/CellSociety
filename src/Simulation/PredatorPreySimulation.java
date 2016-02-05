@@ -128,7 +128,7 @@ public class PredatorPreySimulation extends Simulation {
 
     private void moveSpawn(PredatorPreyCell ppc, PredatorPreyCell emptyNeighbor) {
         swap(ppc, emptyNeighbor);
-        if (onlyMoving(ppc)) {
+        if (makeMeEmpty(ppc)) {
             ppc.setMark(Mark.TO_EMPTY);
         }
         ppc.setBreeding(false);
@@ -149,7 +149,7 @@ public class PredatorPreySimulation extends Simulation {
         ppc.setStarveCounter(0);
     }
 
-    private boolean onlyMoving(PredatorPreyCell ppc) {
+    private boolean makeMeEmpty(PredatorPreyCell ppc) {
         return (!ppc.getBreeding())
                 || (ppc.getBreeding() && ppc.getMark() == Mark.TO_EMPTY);
     }

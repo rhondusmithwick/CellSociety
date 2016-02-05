@@ -90,7 +90,6 @@ public class CellManager extends Group {
                         myCell.addNeighbor(neighbor);
                     }
                 }
-
             }
         }
     }

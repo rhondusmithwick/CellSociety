@@ -38,7 +38,7 @@ public class SegregationCell extends Cell {
         int count = 0;
         int num = 0;
         SegregationCell sc;
-        for (Cell c : neighbors) {
+        for (Cell c : getNeighbors()) {
             sc = (SegregationCell) c;
             if (sc.getState() != State.EMPTY) {
                 if (sc.getState() == getState()) {

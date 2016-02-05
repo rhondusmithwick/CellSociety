@@ -37,7 +37,7 @@ public abstract class Simulation {
         setProperties(simElem);
     }
 
-    void setProperties(Element simElem) {
+    final void setProperties(Element simElem) {
         setGenericProperties(simElem);
         setSpecificProperties(simElem);
     }
@@ -76,7 +76,7 @@ public abstract class Simulation {
         isPlaying = true;
     }
 
-    public void stopLoop() {
+    public final void stopLoop() {
         simulationLoop.stop();
         isPlaying = false;
     }
