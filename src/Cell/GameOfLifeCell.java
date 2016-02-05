@@ -16,7 +16,6 @@ public class GameOfLifeCell extends Cell {
     private Paint aliveVisual;
 
     public GameOfLifeCell() {
-        super();
     }
 
     @Override
@@ -32,7 +31,7 @@ public class GameOfLifeCell extends Cell {
     private int countAliveNeighbors() {
         int count = 0;
         GameOfLifeCell neighbor;
-        for (Cell c : neighbors) {
+        for (Cell c : getNeighbors()) {
             neighbor = (GameOfLifeCell) c;
             if (neighbor.getState() == State.ALIVE) {
                 count++;
@@ -76,15 +75,15 @@ public class GameOfLifeCell extends Cell {
         aliveVisual = visuals[1];
     }
 
-    public State getState() {
+    private State getState() {
         return state;
     }
 
-    public void setState(State state) {
+    private void setState(State state) {
         this.state = state;
     }
 
-    public Mark getMark() {
+    private Mark getMark() {
         return mark;
     }
 

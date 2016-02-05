@@ -4,17 +4,9 @@ import Cell.Cell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.paint.Paint;
 import javafx.util.Duration;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Random;
 
@@ -33,7 +25,6 @@ public abstract class Simulation {
     private int cellsPerColumn;
     private String type;
     private Collection<Cell> theCells;
-    private Element simElement;
     private boolean isPlaying = false;
 
     Simulation() {
@@ -41,16 +32,14 @@ public abstract class Simulation {
         rn = new Random();
     }
 
-    Simulation(Element simElem){
-    	simulationLoop = buildLoop();
-        rn = new Random();
+    Simulation(Element simElem) {
+        this();
         setProperties(simElem);
     }
 
-    protected void setProperties(Element simElem){
-    	simElement = simElem;
-    	setGenericProperties(simElem);
-    	setSpecificProperties(simElem);
+    final void setProperties(Element simElem) {
+        setGenericProperties(simElem);
+        setSpecificProperties(simElem);
     }
 
     private Timeline buildLoop() {
@@ -62,7 +51,6 @@ public abstract class Simulation {
     }
 
     public final void init() {
-
         int randomNum;
         for (Cell c : getTheCells()) {
             randomNum = getRandomNum(1, 100);
@@ -88,7 +76,7 @@ public abstract class Simulation {
         isPlaying = true;
     }
 
-    public void stopLoop() {
+    public final void stopLoop() {
         simulationLoop.stop();
         isPlaying = false;
     }
@@ -111,7 +99,7 @@ public abstract class Simulation {
         return rn.nextInt(range) + min;
     }
 
-    protected void setGenericProperties(Element simElem) {
+    private void setGenericProperties(Element simElem) {
         String simType = XMLParser.getSimType(simElem);
         setType(simType);
         gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
@@ -178,5 +166,6 @@ public abstract class Simulation {
     public final void resetRate() {
         simulationLoop.setRate(1.0);
     }
+
 }
 

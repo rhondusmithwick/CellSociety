@@ -90,14 +90,8 @@ public class CellManager extends Group {
                         myCell.addNeighbor(neighbor);
                     }
                 }
-
             }
         }
-    }
-
-    public void clear() {
-        this.getChildren().clear();
-        theCells.clear();
     }
 
     public Collection<Cell> getCells() {

@@ -34,7 +34,6 @@ public class FireSimulation extends Simulation {
     }
 
 
-
     @Override
     void assignInitialState(int randomNum, Cell c) {
         FireCell fc = (FireCell) c;
@@ -51,8 +50,7 @@ public class FireSimulation extends Simulation {
     }
 
     @Override
-	public
-    void step() {
+    public void step() {
         super.step();
         getAllUpdates();
         changeStates();

@@ -26,7 +26,7 @@ public class PredatorPreyCell extends Cell {
 
     public PredatorPreyCell() {
         super();
-        setStroke(Color.BLACK);
+//        setStroke(Color.BLACK);
     }
 
     public void handleUpdate() {
@@ -38,7 +38,7 @@ public class PredatorPreyCell extends Cell {
     public List<PredatorPreyCell> getNeighborsOfState(State state) {
         List<PredatorPreyCell> neighborsOfState = new LinkedList<>();
         PredatorPreyCell neighbor;
-        for (Cell c : neighbors) {
+        for (Cell c : getNeighbors()) {
             neighbor = (PredatorPreyCell) c;
             if (neighbor.getMark() == Mark.NONE
                     && neighbor.getState() == state) {
@@ -81,7 +81,7 @@ public class PredatorPreyCell extends Cell {
         return state;
     }
 
-    public void setState(State state) {
+    private void setState(State state) {
         this.state = state;
     }
 

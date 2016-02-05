@@ -2,12 +2,12 @@
 <Simulation SimulationType="PredatorPrey">
     <gridWidth>500</gridWidth>
     <gridHeight>500</gridHeight>
-    <numCellsPerRow>50</numCellsPerRow>
-    <numCellsPerColumn>50</numCellsPerColumn>
+    <numCellsPerRow>125</numCellsPerRow>
+    <numCellsPerColumn>125</numCellsPerColumn>
     <breedTime>10</breedTime>
-    <starveTime>15</starveTime>
-    <emptyPercent>20</emptyPercent>
-    <fishPercent>60</fishPercent>
+    <starveTime>10</starveTime>
+    <emptyPercent>10</emptyPercent>
+    <fishPercent>80</fishPercent>
     <emptyVisual>blue</emptyVisual>
     <fishVisual>limegreen</fishVisual>
     <sharkVisual>yellow</sharkVisual>

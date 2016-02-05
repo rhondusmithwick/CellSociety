@@ -15,7 +15,6 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
-// TO FINISH
 public class PredatorPreySimulation extends Simulation {
     private static final int DEFAULT_BREED_TIME = 10;
     private static final int DEFAULT_STARVE_TIME = 2;
@@ -62,7 +61,7 @@ public class PredatorPreySimulation extends Simulation {
     }
 
     @Override
-    void step() {
+    public void step() {
         super.step();
         haveSharksEat();
         breedAll();
@@ -129,7 +128,7 @@ public class PredatorPreySimulation extends Simulation {
 
     private void moveSpawn(PredatorPreyCell ppc, PredatorPreyCell emptyNeighbor) {
         swap(ppc, emptyNeighbor);
-        if (onlyMoving(ppc)) {
+        if (makeMeEmpty(ppc)) {
             ppc.setMark(Mark.TO_EMPTY);
         }
         ppc.setBreeding(false);
@@ -150,7 +149,7 @@ public class PredatorPreySimulation extends Simulation {
         ppc.setStarveCounter(0);
     }
 
-    private boolean onlyMoving(PredatorPreyCell ppc) {
+    private boolean makeMeEmpty(PredatorPreyCell ppc) {
         return (!ppc.getBreeding())
                 || (ppc.getBreeding() && ppc.getMark() == Mark.TO_EMPTY);
     }
