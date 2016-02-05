@@ -15,7 +15,6 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
-// TO FINISH
 public class PredatorPreySimulation extends Simulation {
     private static final int DEFAULT_BREED_TIME = 10;
     private static final int DEFAULT_STARVE_TIME = 2;

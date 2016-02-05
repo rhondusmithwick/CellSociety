@@ -15,7 +15,6 @@ import java.util.LinkedList;
 public abstract class Cell extends Rectangle {
 
     final Collection<Cell> neighbors;
-    private boolean isEmpty = false;
     private int row;
     private int column;
 
@@ -67,14 +66,6 @@ public abstract class Cell extends Rectangle {
         setY(y);
         setRow(row);
         setColumn(column);
-    }
-
-    public boolean getIsEmpty() {
-        return isEmpty;
-    }
-
-    public void setIsEmpty(boolean t) {
-        isEmpty = t;
     }
 
     public abstract void setVisuals(Paint... visuals);
