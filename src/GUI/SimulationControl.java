@@ -7,44 +7,43 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 
-public class SimulationControl {
+import java.io.File;
 
-    private static final String DEFAULT_TYPE = "Fire";
-    ObservableList<String> mySimulations =
-            FXCollections.observableArrayList(
-                    "GameOfLife",
-                    "Segregation",
-                    "Fire",
-                    "PredatorPrey"
-            );
+class SimulationControl {
+
+    private static final String DEFAULT_SIM_TYPE = "GameOfLife";
+
+    private final ObservableList<String> mySimulations = FXCollections.observableArrayList(
+            "GameOfLife",
+            "Segregation",
+            "Fire",
+            "PredatorPrey"
+    );
+
     private String simType;
     private CellManager cellManager;
     private Simulation sim;
-    private GridPane display;
+    private final GridPane display;
 
     public SimulationControl(GridPane display) {
-        simType = DEFAULT_TYPE;
+        simType = DEFAULT_SIM_TYPE;
         this.display = display;
         initNewSimulation();
     }
 
-    public void initNewSimulation() {
-        sim = startSimulation(simType);
+    private void initNewSimulation() {
+        sim = getSimulation();
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
         GridPane.setConstraints(cellManager, 0, 0);
+        GridPane.setRowSpan(cellManager, 6);
         display.getChildren().add(cellManager);
-
         sim.setTheCells(cellManager.getCells());
         sim.init();
     }
 
     public ObservableList<String> getSimulations() {
         return mySimulations;
-    }
-
-    public void displayTextField(String message) {
-        //inputTextField.setText(message);
     }
 
     public void slowDown() {
@@ -55,18 +54,35 @@ public class SimulationControl {
         sim.increaseRate();
     }
 
-    public Object skip() {
-        // TODO Auto-generated method stub
-        return null;
+    public void step() {
+        if (!sim.getPlaying()) {
+            sim.step();
+        } else {
+            sim.stopLoop();
+            sim.step();
+        }
     }
 
     public void playPause() {
         sim.playOrStop();
     }
 
-    public Simulation startSimulation(Object o) {
+
+    private CellManager createCellManager(String simType) {
+        CellManager cellManager = new CellManager();
+        cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
+                sim.getCellsPerRow(), sim.getCellsPerColumn());
+        cellManager.init(simType);
+        return cellManager;
+    }
+
+    public void switchSimulation(Object o) {
         simType = o.toString();
-        //System.out.println(simType);
+        initNewSimulation();
+    }
+
+
+    private Simulation getSimulation() {
         Simulation sim;
         try {
             Class c = Class.forName("Simulation." + simType + "Simulation");
@@ -80,36 +96,17 @@ public class SimulationControl {
         return sim;
     }
 
-
-    private CellManager createCellManager(String simType) {
-        CellManager cellManager = new CellManager();
-        cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
-                sim.getCellsPerRow(), sim.getCellsPerColumn());
-        cellManager.init(simType);
-        return cellManager;
+    // TODO
+    public void sizeChange(String string) {
+        int mySize = Integer.parseInt(string);
+        System.out.println("This size: " + mySize);
     }
 
-    public void switchSimulation(Object o) {
-
-        simType = o.toString();
-        Simulation sim;
-        try {
-            Class c = Class.forName("Simulation." + simType + "Simulation");
-            sim = (Simulation) c.newInstance();
-            initNewSimulation();
-        } catch (InstantiationException
-                | IllegalAccessException
-                | ClassNotFoundException e) {
-            System.out.println(e);
-            sim = new GameOfLifeSimulation();
-        }
-
-        sim.setTheCells(cellManager.getCells());
-        sim.init();
-
+    // TODO
+    public void openFile(File file) {
+        System.out.println("File Path: " + file.getPath());
+        file.getPath();
     }
-
-
 }
 
 

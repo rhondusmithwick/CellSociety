@@ -15,7 +15,6 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
-// TO FINISH
 public class PredatorPreySimulation extends Simulation {
     private static final int DEFAULT_BREED_TIME = 10;
     private static final int DEFAULT_STARVE_TIME = 2;
@@ -38,7 +37,7 @@ public class PredatorPreySimulation extends Simulation {
 
     public PredatorPreySimulation() {
         super();
-        parseXmlFile("resources/" + "PredatorPrey.xml");
+        setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
     }
 
     private static boolean canMove(PredatorPreyCell ppc) {
@@ -62,7 +61,7 @@ public class PredatorPreySimulation extends Simulation {
     }
 
     @Override
-    void step() {
+    public void step() {
         super.step();
         haveSharksEat();
         breedAll();
@@ -166,13 +165,13 @@ public class PredatorPreySimulation extends Simulation {
             fishVisual = DEFAULT_FISH_VISUAL;
             sharkVisual = DEFAULT_SHARK_VISUAL;
         } else {
-            breedTime = getIntValue(simElem, "breedTime");
-            starveTime = getIntValue(simElem, "starveTime");
-            emptyPercent = getIntValue(simElem, "emptyPercent");
-            fishPercent = getIntValue(simElem, "fishPercent");
-            emptyVisual = getPaintValue(simElem, "emptyVisual");
-            fishVisual = getPaintValue(simElem, "fishVisual");
-            sharkVisual = getPaintValue(simElem, "sharkVisual");
+            breedTime = XMLParser.getIntValue(simElem, "breedTime");
+            starveTime = XMLParser.getIntValue(simElem, "starveTime");
+            emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
+            fishPercent = XMLParser.getIntValue(simElem, "fishPercent");
+            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
+            fishVisual = XMLParser.getPaintValue(simElem, "fishVisual");
+            sharkVisual = XMLParser.getPaintValue(simElem, "sharkVisual");
         }
     }
 }

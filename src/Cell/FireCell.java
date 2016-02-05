@@ -75,11 +75,11 @@ public class FireCell extends Cell {
         return state;
     }
 
-    public void setState(State state) {
+    private void setState(State state) {
         this.state = state;
     }
 
-    public Mark getMark() {
+    private Mark getMark() {
         return mark;
     }
 

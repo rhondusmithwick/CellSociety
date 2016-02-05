@@ -30,8 +30,9 @@ public class FireSimulation extends Simulation {
 
     public FireSimulation() {
         super();
-        parseXmlFile("resources/" + "Fire.xml");
+        setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"));
     }
+
 
     @Override
     void assignInitialState(int randomNum, Cell c) {
@@ -49,7 +50,7 @@ public class FireSimulation extends Simulation {
     }
 
     @Override
-    void step() {
+    public void step() {
         super.step();
         getAllUpdates();
         changeStates();
@@ -81,11 +82,11 @@ public class FireSimulation extends Simulation {
             burningVisual = DEFAULT_BURNING_VISUAL;
             treeVisual = DEFAULT_TREE_VISUAL;
         } else {
-            burnTime = getIntValue(simElem, "burnTime");
-            probCatch = getIntValue(simElem, "probCatch");
-            emptyVisual = getPaintValue(simElem, "emptyVisual");
-            burningVisual = getPaintValue(simElem, "burningVisual");
-            treeVisual = getPaintValue(simElem, "treeVisual");
+            burnTime = XMLParser.getIntValue(simElem, "burnTime");
+            probCatch = XMLParser.getIntValue(simElem, "probCatch");
+            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
+            burningVisual = XMLParser.getPaintValue(simElem, "burningVisual");
+            treeVisual = XMLParser.getPaintValue(simElem, "treeVisual");
         }
     }
 

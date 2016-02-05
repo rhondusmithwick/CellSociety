@@ -25,12 +25,12 @@ public class GameOfLifeSimulation extends Simulation {
 
     public GameOfLifeSimulation() {
         super();
-        parseXmlFile("resources/" + "GameOfLife.xml");
+        setProperties(XMLParser.getXmlElement("resources/" + "GameOfLife.xml"));
     }
 
 
     @Override
-    protected void step() {
+    public void step() {
         super.step();
         changeStates();
     }
@@ -54,9 +54,9 @@ public class GameOfLifeSimulation extends Simulation {
             deadVisual = DEFAULT_DEAD_VISUAL;
             aliveVisual = DEFAULT_ALIVE_VISUAL;
         } else {
-            probStartDead = getIntValue(simElem, "probStartDead");
-            deadVisual = getPaintValue(simElem, "deadVisual");
-            aliveVisual = getPaintValue(simElem, "aliveVisual");
+            probStartDead = XMLParser.getIntValue(simElem, "probStartDead");
+            deadVisual = XMLParser.getPaintValue(simElem, "deadVisual");
+            aliveVisual = XMLParser.getPaintValue(simElem, "aliveVisual");
         }
     }
 }

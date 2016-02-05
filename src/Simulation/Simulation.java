@@ -4,17 +4,9 @@ import Cell.Cell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.paint.Paint;
 import javafx.util.Duration;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Random;
 
@@ -40,6 +32,15 @@ public abstract class Simulation {
         rn = new Random();
     }
 
+    Simulation(Element simElem) {
+        this();
+        setProperties(simElem);
+    }
+
+    void setProperties(Element simElem) {
+        setGenericProperties(simElem);
+        setSpecificProperties(simElem);
+    }
 
     private Timeline buildLoop() {
         final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), t -> step());
@@ -60,7 +61,7 @@ public abstract class Simulation {
 
     abstract void assignInitialState(int randomNum, Cell c);
 
-    void step() {
+    public void step() {
         getTheCells().forEach(c -> c.handleUpdate());
     }
 
@@ -75,12 +76,12 @@ public abstract class Simulation {
         isPlaying = true;
     }
 
-    private void stopLoop() {
+    public void stopLoop() {
         simulationLoop.stop();
         isPlaying = false;
     }
 
-    private boolean getPlaying() {
+    public boolean getPlaying() {
         return isPlaying;
     }
 
@@ -98,53 +99,16 @@ public abstract class Simulation {
         return rn.nextInt(range) + min;
     }
 
-    final void parseXmlFile(String xmlFilename) {
-        //get the factory
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        try {
-            //Using factory get an instance of document builder
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            //parse using builder to get DOM representation of the XML file
-            Document xmlDoc = db.parse(xmlFilename);
-            Element simulationElem = xmlDoc.getDocumentElement();
-            setGenericProperties(simulationElem);
-            setSpecificProperties(simulationElem);
-        } catch (ParserConfigurationException
-                | SAXException
-                | IOException pce) {
-            pce.printStackTrace();
-        }
-    }
-
-
     private void setGenericProperties(Element simElem) {
-        String simType = simElem.getAttribute("SimulationType");
+        String simType = XMLParser.getSimType(simElem);
         setType(simType);
-        gridWidth = getIntValue(simElem, "gridWidth");
-        gridHeight = getIntValue(simElem, "gridHeight");
-        cellsPerRow = getIntValue(simElem, "numCellsPerRow");
-        cellsPerColumn = getIntValue(simElem, "numCellsPerColumn");
+        gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
+        gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
+        cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
+        cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
     }
 
     abstract void setSpecificProperties(Element simElem);
-
-    final String getTextValue(Element ele, String tagName) {
-        String textVal = null;
-        NodeList nl = ele.getElementsByTagName(tagName);
-        if (nl != null && nl.getLength() > 0) {
-            Element el = (Element) nl.item(0);
-            textVal = el.getFirstChild().getNodeValue();
-        }
-        return textVal;
-    }
-
-    final Paint getPaintValue(Element ele, String tagName) {
-        return Paint.valueOf(getTextValue(ele, tagName));
-    }
-
-    final int getIntValue(Element ele, String tagName) {
-        return Integer.parseInt(getTextValue(ele, tagName));
-    }
 
 
     public final int getGridWidth() {
@@ -202,5 +166,6 @@ public abstract class Simulation {
     public final void resetRate() {
         simulationLoop.setRate(1.0);
     }
+
 }
 

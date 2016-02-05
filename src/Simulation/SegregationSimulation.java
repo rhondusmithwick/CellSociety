@@ -40,7 +40,7 @@ public class SegregationSimulation extends Simulation {
 
     public SegregationSimulation() {
         super();
-        parseXmlFile("resources/" + "Segregation.xml");
+        setProperties(XMLParser.getXmlElement("resources/" + "Segregation.xml"));
     }
 
 
@@ -62,7 +62,7 @@ public class SegregationSimulation extends Simulation {
 
 
     @Override
-    void step() {
+    public void step() {
         super.step();
         emptyCellsToAdd = new LinkedList<>();
         getAllUpdates();
@@ -70,7 +70,7 @@ public class SegregationSimulation extends Simulation {
         emptyCells.addAll(emptyCellsToAdd);
     }
 
-    void getAllUpdates() {
+    private void getAllUpdates() {
         SegregationCell sc;
         for (Cell c : getTheCells()) {
             sc = (SegregationCell) c;
@@ -80,7 +80,7 @@ public class SegregationSimulation extends Simulation {
         }
     }
 
-    void tryToMove(SegregationCell sc) {
+    private void tryToMove(SegregationCell sc) {
         if (!emptyCells.isEmpty()) {
             final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
             final SegregationCell emptyCell = emptyCells.get(randomIndex);
@@ -91,7 +91,7 @@ public class SegregationSimulation extends Simulation {
         }
     }
 
-    void swap(SegregationCell sc, SegregationCell emptyCell) {
+    private void swap(SegregationCell sc, SegregationCell emptyCell) {
         if (sc.getState() == State.GROUP1) {
             emptyCell.setMark(Mark.TO_GROUP1);
         } else {
@@ -110,14 +110,13 @@ public class SegregationSimulation extends Simulation {
             group1Visual = DEFAULT_GROUP1_VISUAL;
             group2Visual = DEFAULT_GROUP2_VISUAL;
         } else {
-            threshold = getIntValue(simElem, "threshold");
-            emptyPercent = getIntValue(simElem, "emptyPercent");
-            group1Percent = getIntValue(simElem, "group1Percent");
-            emptyVisual = getPaintValue(simElem, "emptyVisual");
-            group1Visual = getPaintValue(simElem, "group1Visual");
-            group2Visual = getPaintValue(simElem, "group2Visual");
+            threshold = XMLParser.getIntValue(simElem, "threshold");
+            emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
+            group1Percent = XMLParser.getIntValue(simElem, "group1Percent");
+            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
+            group1Visual = XMLParser.getPaintValue(simElem, "group1Visual");
+            group2Visual = XMLParser.getPaintValue(simElem, "group2Visual");
         }
     }
-
 
 }

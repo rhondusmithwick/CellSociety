@@ -12,27 +12,21 @@ import java.awt.*;
  *
  * @author Rhondu Smithwick
  */
-public class CellSociety {
+class CellSociety {
+    private static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
 
-    public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
-    private GUI gui;
     private Scene myScene;
 
     public CellSociety() {
-
     }
 
     public void init(Stage primaryStage) {
-
         GridPane display = new GridPane();
-        gui = new GUI(this, display);
+        GUI gui = new GUI(display);
         display = gui.init();
-
         myScene = new Scene(display, DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
-
         primaryStage.setScene(myScene);
         primaryStage.setResizable(false);
-
     }
 
     /**
