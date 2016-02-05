@@ -2,23 +2,13 @@ package Simulation;
 
 import Cell.Cell;
 import Cell.PredatorPreyCell;
-<<<<<<< HEAD
-=======
 import Cell.PredatorPreyCell.Mark;
->>>>>>> Rhondu-Branch
 import Cell.PredatorPreyCell.State;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
-<<<<<<< HEAD
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-=======
->>>>>>> Rhondu-Branch
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rhondusmithwick on 2/3/16.
@@ -32,35 +22,23 @@ public class PredatorPreySimulation extends Simulation {
     private static final int DEFAULT_EMPTY_PERCENT = 40;
     private static final int DEFAULT_FISH_PERCENT = 50;
 
-    private static final Paint DEFAULT_EMPTY = Color.BLUE;
-    private static final Paint DEFAULT_FISH = Color.LIMEGREEN;
-    private static final Paint DEFAULT_SHARK = Color.YELLOW;
+    private static final Paint DEFAULT_EMPTY_VISUAL = Color.BLUE;
+    private static final Paint DEFAULT_FISH_VISUAL = Color.LIMEGREEN;
+    private static final Paint DEFAULT_SHARK_VISUAL = Color.YELLOW;
 
-<<<<<<< HEAD
-
-    private int breedTime = DEFAULT_BREED_TIME;
-    private int emptyPercent = DEFAULT_EMPTY_PERCENT;
-    private int fishPercent = DEFAULT_FISH_PERCENT;
-=======
     private int breedTime;
     private int starveTime;
     private int emptyPercent;
     private int fishPercent;
->>>>>>> Rhondu-Branch
 
-    private Paint emptyVisual = DEFAULT_EMPTY;
-    private Paint fishVisual = DEFAULT_FISH;
-    private Paint sharkVisual = DEFAULT_SHARK;
+    private Paint emptyVisual;
+    private Paint fishVisual;
+    private Paint sharkVisual;
 
-
-    private Collection<PredatorPreyCell> createFishCells;
-    private Collection<PredatorPreyCell> createSharkCells;
-    private Map<PredatorPreyCell, PredatorPreyCell> moves;
-    private Map<PredatorPreyCell, PredatorPreyCell> theMoves;
 
     public PredatorPreySimulation() {
         super();
-        parseXmlFile("resources/" + "GameOfLife.xml");
+        setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
     }
 
     private static boolean canMove(PredatorPreyCell ppc) {
@@ -71,39 +49,14 @@ public class PredatorPreySimulation extends Simulation {
     @Override
     void assignInitialState(int randomNum, Cell c) {
         final PredatorPreyCell ppc = (PredatorPreyCell) c;
+        ppc.removeDiagonals();
+        ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
-<<<<<<< HEAD
-            ppc.setFill(emptyVisual);
-            ppc.setState(State.EMPTY);
-=======
             ppc.setMark(Mark.TO_EMPTY);
->>>>>>> Rhondu-Branch
         } else if (randomNum > emptyPercent
                 && randomNum <= emptyPercent + fishPercent) {
-        	setAsFish(ppc);
+            ppc.setMark(Mark.TO_FISH);
         } else {
-<<<<<<< HEAD
-           setAsShark(ppc);
-        }
-    }
-
-    protected void step() {
-        super.step();
-        createFishCells = new LinkedList<>();
-        createSharkCells = new LinkedList<>();
-        moves = new HashMap<>();
-        PredatorPreyCell ppc;
-        for (Cell c : getTheCells()) {
-            ppc = (PredatorPreyCell) c;
-            switch (ppc.getState()) {
-                case SHARK:
-                    sharkUpdate(ppc);
-                    break;
-                case FISH:
-                    fishUpdate(ppc);
-                    break;
-                default:
-=======
             ppc.setMark(Mark.TO_SHARK);
         }
     }
@@ -127,21 +80,10 @@ public class PredatorPreySimulation extends Simulation {
                 } else {
                     sharkEat(ppc);
                 }
->>>>>>> Rhondu-Branch
             }
         }
     }
 
-<<<<<<< HEAD
-    private void setAsFish(PredatorPreyCell ppc){
-    	 ppc.setFill(fishVisual);
-         ppc.setState(State.FISH);
-         ppc.setEdible(true);
-    }
-    private void setAsShark(PredatorPreyCell ppc ){
-    	 ppc.setFill(sharkVisual);
-         ppc.setState(State.SHARK);
-=======
     private void sharkEat(PredatorPreyCell shark) {
         List<PredatorPreyCell> fishNeighbors = shark.getNeighborsOfState(State.FISH);
         if (!fishNeighbors.isEmpty()) {
@@ -150,38 +92,8 @@ public class PredatorPreySimulation extends Simulation {
             fish.setMark(Mark.TO_EMPTY);
             shark.setStarveCounter(0);
         }
->>>>>>> Rhondu-Branch
-    }
-    private void fishUpdate(PredatorPreyCell fish) {
-    	fish.handleUpdate();
-    	List<PredatorPreyCell> freeSpace = fish.countNeighbors(State.EMPTY);
-
-    	if(freeSpace.size()>1){
-    		if(fish.canBreed()){
-        		setAsFish(freeSpace.get((int)(Math.random() * ( freeSpace.size() ))));
-        	}
-    		else{
-    			;//TODO: Move
-    		}
-    	}
-
-<<<<<<< HEAD
     }
 
-
-    private void sharkUpdate(PredatorPreyCell shark) {
-    	shark.handleUpdate();
-    	List<PredatorPreyCell> freeSpace = shark.countNeighbors(State.EMPTY);
-
-    	if(freeSpace.size()>1){
-    		if(shark.canBreed()){
-        		setAsShark(freeSpace.get((int)(Math.random() * ( freeSpace.size() ))));
-        	}
-    		else{
-    			;//TODO: Move
-    		}
-    	}
-=======
     private void breedAll() {
         PredatorPreyCell ppc;
         for (Cell c : getTheCells()) {
@@ -241,22 +153,10 @@ public class PredatorPreySimulation extends Simulation {
     private boolean onlyMoving(PredatorPreyCell ppc) {
         return (!ppc.getBreeding())
                 || (ppc.getBreeding() && ppc.getMark() == Mark.TO_EMPTY);
->>>>>>> Rhondu-Branch
     }
 
     @Override
     void setSpecificProperties(Element simElem) {
-<<<<<<< HEAD
-//        if (getType() == null || !getType().equals("PredatorPrey")) {
-//            threshold = DEFAULT_THRESHOLD;
-//            emptyPercent = DEFAULT_EMPTY_PERCENT;
-//            group1Percent = DEFAULT_GROUP1_PERCENT;
-//        } else {
-//            threshold = getIntValue(simElem, "threshold");
-//            emptyPercent = getIntValue(simElem, "emptyPercent");
-//            group1Percent = getIntValue(simElem, "group1Percent");
-//        }
-=======
         if (getType() == null || !getType().equals("PredatorPrey")) {
             breedTime = DEFAULT_BREED_TIME;
             starveTime = DEFAULT_STARVE_TIME;
@@ -266,14 +166,13 @@ public class PredatorPreySimulation extends Simulation {
             fishVisual = DEFAULT_FISH_VISUAL;
             sharkVisual = DEFAULT_SHARK_VISUAL;
         } else {
-            breedTime = getIntValue(simElem, "breedTime");
-            starveTime = getIntValue(simElem, "starveTime");
-            emptyPercent = getIntValue(simElem, "emptyPercent");
-            fishPercent = getIntValue(simElem, "fishPercent");
-            emptyVisual = getPaintValue(simElem, "emptyVisual");
-            fishVisual = getPaintValue(simElem, "fishVisual");
-            sharkVisual = getPaintValue(simElem, "sharkVisual");
+            breedTime = XMLParser.getIntValue(simElem, "breedTime");
+            starveTime = XMLParser.getIntValue(simElem, "starveTime");
+            emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
+            fishPercent = XMLParser.getIntValue(simElem, "fishPercent");
+            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
+            fishVisual = XMLParser.getPaintValue(simElem, "fishVisual");
+            sharkVisual = XMLParser.getPaintValue(simElem, "sharkVisual");
         }
->>>>>>> Rhondu-Branch
     }
 }
