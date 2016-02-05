@@ -2,67 +2,101 @@ package Cell;
 
 import javafx.scene.paint.Paint;
 
-
 /**
  * Created by rhondusmithwick on 1/31/16.
  *
  * @author Rhondu Smithwick
  */
 public class GameOfLifeCell extends Cell {
-    private boolean isAlive;
-    private boolean markForDeath = false;
-    private boolean markForRestore = false;
+
+    private State state;
+    private Mark mark;
+
+    private Paint deadVisual;
+    private Paint aliveVisual;
 
     public GameOfLifeCell() {
         super();
-        isAlive = true;
     }
 
     @Override
     public void handleUpdate() {
         int aliveNeighbors = countAliveNeighbors();
-        if (aliveNeighbors < 2 || aliveNeighbors > 3) {
-            markForDeath = true;
-        } else if (aliveNeighbors == 3 && !isAlive) {
-            markForRestore = true;
-        }
-    }
-
-
-    public void transform(Paint deadColor, Paint aliveColor) {
-        if (markForDeath) {
-            destroy(deadColor);
-        } else if (markForRestore) {
-            restore(aliveColor);
+        if (shouldDie(aliveNeighbors)) {
+            setMark(Mark.DESTROY);
+        } else if (shouldResurect(aliveNeighbors)) {
+            setMark(Mark.RESURECT);
         }
     }
 
     private int countAliveNeighbors() {
         int count = 0;
+        GameOfLifeCell neighbor;
         for (Cell c : neighbors) {
-            GameOfLifeCell gc = (GameOfLifeCell) c;
-            if (gc.getAlive()) {
+            neighbor = (GameOfLifeCell) c;
+            if (neighbor.getState() == State.ALIVE) {
                 count++;
             }
         }
         return count;
     }
 
-
-    private boolean getAlive() {
-        return isAlive;
+    @Override
+    public void changeState() {
+        switch (getMark()) {
+            case NONE:
+                return;
+            case DESTROY:
+                setFill(deadVisual);
+                setState(State.DEAD);
+                break;
+            case RESURECT:
+                setFill(aliveVisual);
+                setState(State.ALIVE);
+                break;
+            default:
+        }
+        setMark(Mark.NONE);
     }
 
-    public void destroy(Paint deadColor) {
-        isAlive = false;
-        markForDeath = false;
-        setFill(deadColor);
+
+    private boolean shouldDie(int aliveNeighbors) {
+        return (getState() == State.ALIVE)
+                && ((aliveNeighbors < 2) || (aliveNeighbors > 3));
     }
 
-    public void restore(Paint aliveColor) {
-        isAlive = true;
-        markForRestore = false;
-        setFill(aliveColor);
+    private boolean shouldResurect(int aliveNeighbors) {
+        return (getState() == State.DEAD)
+                && (aliveNeighbors == 3);
     }
 
+    @Override
+    public void setVisuals(Paint... visuals) {
+        deadVisual = visuals[0];
+        aliveVisual = visuals[1];
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public Mark getMark() {
+        return mark;
+    }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
+    }
+
+    public enum State {
+        ALIVE, DEAD
+    }
+
+    public enum Mark {
+        DESTROY, RESURECT, NONE
+    }
 }

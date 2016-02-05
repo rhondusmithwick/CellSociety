@@ -6,4 +6,5 @@
     <numCellsPerColumn>50</numCellsPerColumn>
     <probStartDead>50</probStartDead>
     <deadVisual>white</deadVisual>
-    <aliveVisual>green</aliveVisual></Simulation>
+    <aliveVisual>green</aliveVisual>
+</Simulation>

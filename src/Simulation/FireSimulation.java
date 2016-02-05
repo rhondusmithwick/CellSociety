@@ -2,13 +2,11 @@ package Simulation;
 
 import Cell.Cell;
 import Cell.FireCell;
+import Cell.FireCell.Mark;
 import Cell.FireCell.State;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -16,77 +14,65 @@ import java.util.Map;
  *
  * @author Rhondu Smithwick
  */
-// TO FINISH
 public class FireSimulation extends Simulation {
     private static final int DEFAULT_BURN_TIME = 5;
     private static final int DEFAULT_PROB_CATCH = 30;
-
     private static final Paint DEFAULT_EMPTY_VISUAL = Color.YELLOW;
     private static final Paint DEFAULT_BURNING_VISUAL = Color.RED;
     private static final Paint DEFAULT_TREE_VISUAL = Color.GREEN;
 
-    private int burnTime = DEFAULT_BURN_TIME;
-    private int probCatch = DEFAULT_PROB_CATCH;
+    private int burnTime;
+    private int probCatch;
 
-    private Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
-    private Paint burningVisual = DEFAULT_BURNING_VISUAL;
-    private Paint treeVisual = DEFAULT_TREE_VISUAL;
+    private Paint emptyVisual;
+    private Paint burningVisual;
+    private Paint treeVisual;
 
     public FireSimulation() {
         super();
-        parseXmlFile("resources/" + "Fire.xml");
-    }
-
-    void step() {
-        super.step();
-        Map<FireCell, State> changes = new HashMap<>();
-        for (Cell c : getTheCells()) {
-            getUpdate(changes, c);
-        }
-        for (FireCell fc : changes.keySet()) {
-            changeState(fc, changes.get(fc));
-        }
+        setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"));
     }
 
 
-    private void getUpdate(Map<FireCell, State> changes, Cell c) {
-        FireCell fc = (FireCell) c;
-        if (treeShouldBurn(fc)) {
-            changes.put(fc, State.BURNING);
-        } else if (treeDoneBurning(fc)) {
-            changes.put(fc, State.EMPTY);
-        }
-    }
-
-    private void changeState(FireCell fc, State state) {
-        switch (state) {
-            case EMPTY:
-                fc.setFill(emptyVisual);
-                break;
-            case BURNING:
-                fc.setFill(burningVisual);
-                break;
-            case TREE:
-                fc.setFill(treeVisual);
-                break;
-        }
-        fc.setState(state);
-        fc.setBurnTime(0);
-    }
 
     @Override
     void assignInitialState(int randomNum, Cell c) {
         FireCell fc = (FireCell) c;
+        fc.removeDiagonals();
+        fc.setVisuals(emptyVisual, burningVisual, treeVisual);
+        fc.setBurnTime(burnTime);
         if (checkOnEdge(fc)) {
-            changeState(fc, State.EMPTY);
+            fc.setMark(Mark.TO_EMPTY);
         } else if (checkInMiddle(fc)) {
-            changeState(fc, State.BURNING);
+            fc.setMark(Mark.TO_BURNING);
         } else {
-            changeState(fc, State.TREE);
+            fc.setMark(Mark.TO_TREE);
         }
     }
 
+    @Override
+    void step() {
+        super.step();
+        getAllUpdates();
+        changeStates();
+    }
 
+
+    private void getAllUpdates() {
+        FireCell fc;
+        for (Cell c : getTheCells()) {
+            fc = (FireCell) c;
+            getUpdate(fc);
+        }
+    }
+
+    private void getUpdate(FireCell fc) {
+        if (treeShouldBurn(fc)) {
+            fc.setMark(Mark.TO_BURNING);
+        } else if (treeDoneBurning(fc)) {
+            fc.setMark(Mark.TO_EMPTY);
+        }
+    }
 
     @Override
     void setSpecificProperties(Element simElem) {
@@ -97,29 +83,26 @@ public class FireSimulation extends Simulation {
             burningVisual = DEFAULT_BURNING_VISUAL;
             treeVisual = DEFAULT_TREE_VISUAL;
         } else {
-            burnTime = getIntValue(simElem, "burnTime");
-            probCatch = getIntValue(simElem, "probCatch");
-            emptyVisual = getPaintValue(simElem, "emptyVisual");
-            burningVisual = getPaintValue(simElem, "burningVisual");
-            treeVisual = getPaintValue(simElem, "treeVisual");
+            burnTime = XMLParser.getIntValue(simElem, "burnTime");
+            probCatch = XMLParser.getIntValue(simElem, "probCatch");
+            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
+            burningVisual = XMLParser.getPaintValue(simElem, "burningVisual");
+            treeVisual = XMLParser.getPaintValue(simElem, "treeVisual");
         }
     }
 
 
     private boolean treeShouldBurn(FireCell fc) {
-        if ((fc.getState() == State.TREE)
-                && (fc.hasBurningNeighbor())) {
-            int randomNum = getRandomNum(1, 100);
-            return (randomNum < probCatch);
-        }
-        return false;
+        int randomNum = getRandomNum(1, 100);
+        return (fc.getState() == State.TREE)
+                && (fc.hasBurningNeighbor())
+                && (randomNum < probCatch);
     }
 
     private boolean treeDoneBurning(FireCell fc) {
         return (fc.getState() == State.BURNING)
                 && (fc.getBurnTime() > burnTime);
     }
-
 
     private boolean checkOnEdge(FireCell fc) {
         return (fc.getRow() == getCellsPerRow() - 1)
