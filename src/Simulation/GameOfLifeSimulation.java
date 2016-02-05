@@ -30,7 +30,7 @@ public class GameOfLifeSimulation extends Simulation {
 
 
     @Override
-    protected void step() {
+	public void step() {
         super.step();
         changeStates();
     }

@@ -14,18 +14,21 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.ResourceBundle;
 
 import Main.CellSociety;
 
 public class Controls {
 
+	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
+	private ResourceBundle myResources;
+	
     private Label outputLabel;
     private TextField inputTextField;
 
     private Button myFileButton;
     private Button myPlayPauseButton;
-    private Button mySkipForwardButton;
+    private Button myStepButton;
     private Button mySpeedUpButton;
     private Button mySlowDownButton;
     private Button myGoButton;
@@ -38,6 +41,7 @@ public class Controls {
     private SimulationControl mySimControl;
 
     public Controls(SimulationControl mySimulationControl) {
+    	myResources = ResourceBundle.getBundle("GUIstrings.properties");
         mySimControl = mySimulationControl;
 
         createControls();
@@ -52,21 +56,21 @@ public class Controls {
     private void createControls() {
     
         comboBox = new ComboBox<>(mySimControl.getSimulations());
-        comboBox.setPromptText("Select a simulation.");
+        comboBox.setPromptText(myResources.getString("SelectionPrompt"));
         comboBox.setEditable(false);
         comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
                 mySimControl.switchSimulation(newValue));
 
         outputLabel = new Label();
         inputTextField = new TextField();
-        inputTextField.setText("Enter a size.");
+        inputTextField.setText(myResources.getString("SizePrompt"));
         
-        myFileButton = makeButton("Load XML File.", event -> setUpFileChooser());
-        myGoButton = makeButton("Go", event -> mySimControl.sizeChange(inputTextField.getText()));
-        myPlayPauseButton = makeButton("Play/Pause", event -> mySimControl.playPause());
-        mySkipForwardButton = makeButton("Skip", event -> mySimControl.skip());
-        mySpeedUpButton = makeButton("Faster", event -> mySimControl.speedUp());
-        mySlowDownButton = makeButton("Slower", event -> mySimControl.slowDown());
+        myFileButton = makeButton(myResources.getString("XMLLoadPrompt"), event -> setUpFileChooser());
+        myGoButton = makeButton(myResources.getString("GoButton"), event -> mySimControl.sizeChange(inputTextField.getText()));
+        myPlayPauseButton = makeButton(myResources.getString("PlayPauseButton"), event -> mySimControl.playPause());
+        myStepButton = makeButton(myResources.getString("StepButton"), event -> mySimControl.step());
+        mySpeedUpButton = makeButton(myResources.getString("FasterButton"), event -> mySimControl.speedUp());
+        mySlowDownButton = makeButton(myResources.getString("SlowerButton"), event -> mySimControl.slowDown());
         
         controlList.add(myFileButton);
         controlList.add(comboBox);
@@ -74,7 +78,7 @@ public class Controls {
         controlList.add(inputTextField);
         controlList.add(myGoButton);
         controlList.add(myPlayPauseButton);
-        controlList.add(mySkipForwardButton);
+        controlList.add(myStepButton);
         controlList.add(mySpeedUpButton);
         controlList.add(mySlowDownButton);
 
@@ -86,9 +90,9 @@ public class Controls {
         GridPane.setConstraints(comboBox, 1, 1);
         GridPane.setColumnSpan(comboBox, 2);
         GridPane.setConstraints(inputTextField, 1, 2);
-        GridPane.setConstraints(myGoButton, 2, 1);
+        GridPane.setConstraints(myGoButton, 2, 2);
         GridPane.setConstraints(myPlayPauseButton, 1, 3);
-        GridPane.setConstraints(mySkipForwardButton, 2, 3);
+        GridPane.setConstraints(myStepButton, 2, 3);
         GridPane.setConstraints(mySlowDownButton, 1, 4);
         GridPane.setConstraints(mySpeedUpButton, 2, 4);
         GridPane.setConstraints(outputLabel, 1, 5);
@@ -105,7 +109,7 @@ public class Controls {
     
     private void setUpFileChooser(){
     	fileChooser = new FileChooser();
-    	fileChooser.setTitle("Choose an XML File");
+    	fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
     	fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("XML", "*.xml")
             );

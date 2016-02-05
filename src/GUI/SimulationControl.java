@@ -54,9 +54,14 @@ public class SimulationControl {
         sim.increaseRate();
     }
 
-    public Object skip() {
-        // TODO Auto-generated method stub
-        return null;
+    public void step() {
+    	if (!sim.getPlaying()){
+        sim.step();
+    	}
+    	else{
+    		sim.stopLoop();
+    		sim.step();
+    	}
     }
 
     public void playPause() {
