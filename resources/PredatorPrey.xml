@@ -5,8 +5,9 @@
     <numCellsPerRow>50</numCellsPerRow>
     <numCellsPerColumn>50</numCellsPerColumn>
     <breedTime>10</breedTime>
-    <emptyPercent>40</emptyPercent>
-    <fishPercent>50</fishPercent>
+    <starveTime>15</starveTime>
+    <emptyPercent>20</emptyPercent>
+    <fishPercent>60</fishPercent>
     <emptyVisual>blue</emptyVisual>
     <fishVisual>limegreen</fishVisual>
     <sharkVisual>yellow</sharkVisual>

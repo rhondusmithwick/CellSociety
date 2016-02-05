@@ -100,6 +100,6 @@ public class FireCell extends Cell {
     }
 
     public enum Mark {
-        TO_BURNING, TO_TREE, TO_EMPTY, NONE;
+        TO_BURNING, TO_TREE, TO_EMPTY, NONE
     }
 }

@@ -17,6 +17,7 @@ public class PredatorPreyCell extends Cell {
     private Mark mark;
 
     private int breedCounter;
+    private int starveCounter;
     private boolean breeding = false;
 
     private Paint emptyVisual;
@@ -30,6 +31,7 @@ public class PredatorPreyCell extends Cell {
 
     public void handleUpdate() {
         breedCounter++;
+        starveCounter++;
     }
 
 
@@ -97,6 +99,14 @@ public class PredatorPreyCell extends Cell {
 
     public void setBreedCounter(int breedCounter) {
         this.breedCounter = breedCounter;
+    }
+
+    public int getStarveCounter() {
+        return starveCounter;
+    }
+
+    public void setStarveCounter(int starveCounter) {
+        this.starveCounter = starveCounter;
     }
 
     @Override
