@@ -6,14 +6,11 @@ import javafx.scene.layout.GridPane;
 import java.util.List;
 
 public class GUI {
-
     private Controls myControls;
     private final GridPane myDisplay;
-    //private ResourceBundle myResources;
 
     // public GUI(CellSociety mySociety, Stage controlStage) {
     public GUI(GridPane display) {
-        //myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "GUIstrings");
         myDisplay = display;
     }
 

@@ -1,8 +1,9 @@
 package GUI;
 
 import Cell.CellManager;
-import Simulation.GameOfLifeSimulation;
+import Cell.FireCell;
 import Simulation.Simulation;
+import Simulation.FireSimulation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
@@ -11,7 +12,7 @@ import java.io.File;
 
 class SimulationControl {
 
-    private static final String DEFAULT_SIM_TYPE = "GameOfLife";
+    private static final String DEFAULT_SIM_TYPE = "Fire";
 
     private final ObservableList<String> mySimulations = FXCollections.observableArrayList(
             "GameOfLife",
@@ -91,7 +92,8 @@ class SimulationControl {
                 | IllegalAccessException
                 | ClassNotFoundException e) {
             System.out.println(e);
-            sim = new GameOfLifeSimulation();
+//            sim = new GameOfLifeSimulation();
+            sim = new FireSimulation();
         }
         return sim;
     }
