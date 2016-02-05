@@ -33,6 +33,7 @@ public abstract class Simulation {
     private int cellsPerColumn;
     private String type;
     private Collection<Cell> theCells;
+    private Element simElement;
     private boolean isPlaying = false;
 
     Simulation() {
@@ -40,6 +41,17 @@ public abstract class Simulation {
         rn = new Random();
     }
 
+    Simulation(Element simElem){
+    	simulationLoop = buildLoop();
+        rn = new Random();
+        setProperties(simElem);
+    }
+
+    protected void setProperties(Element simElem){
+    	simElement = simElem;
+    	setGenericProperties(simElem);
+    	setSpecificProperties(simElem);
+    }
 
     private Timeline buildLoop() {
         final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), t -> step());
@@ -50,6 +62,7 @@ public abstract class Simulation {
     }
 
     public final void init() {
+
         int randomNum;
         for (Cell c : getTheCells()) {
             randomNum = getRandomNum(1, 100);
@@ -98,53 +111,16 @@ public abstract class Simulation {
         return rn.nextInt(range) + min;
     }
 
-    final void parseXmlFile(String xmlFilename) {
-        //get the factory
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        try {
-            //Using factory get an instance of document builder
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            //parse using builder to get DOM representation of the XML file
-            Document xmlDoc = db.parse(xmlFilename);
-            Element simulationElem = xmlDoc.getDocumentElement();
-            setGenericProperties(simulationElem);
-            setSpecificProperties(simulationElem);
-        } catch (ParserConfigurationException
-                | SAXException
-                | IOException pce) {
-            pce.printStackTrace();
-        }
-    }
-
-
-    private void setGenericProperties(Element simElem) {
-        String simType = simElem.getAttribute("SimulationType");
+    protected void setGenericProperties(Element simElem) {
+        String simType = XMLParser.getSimType(simElem);
         setType(simType);
-        gridWidth = getIntValue(simElem, "gridWidth");
-        gridHeight = getIntValue(simElem, "gridHeight");
-        cellsPerRow = getIntValue(simElem, "numCellsPerRow");
-        cellsPerColumn = getIntValue(simElem, "numCellsPerColumn");
+        gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
+        gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
+        cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
+        cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
     }
 
     abstract void setSpecificProperties(Element simElem);
-
-    final String getTextValue(Element ele, String tagName) {
-        String textVal = null;
-        NodeList nl = ele.getElementsByTagName(tagName);
-        if (nl != null && nl.getLength() > 0) {
-            Element el = (Element) nl.item(0);
-            textVal = el.getFirstChild().getNodeValue();
-        }
-        return textVal;
-    }
-
-    final Paint getPaintValue(Element ele, String tagName) {
-        return Paint.valueOf(getTextValue(ele, tagName));
-    }
-
-    final int getIntValue(Element ele, String tagName) {
-        return Integer.parseInt(getTextValue(ele, tagName));
-    }
 
 
     public final int getGridWidth() {
