@@ -1,5 +1,8 @@
 package Cell;
 
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,14 +13,9 @@ import java.util.List;
  */
 // TO FINISH
 public class PredatorPreyCell extends Cell {
-
-<<<<<<< HEAD
     private State state;
-    private int turnsSurvived;
-    private int breedCountdown;
-    private int starveCountdown;
-    private boolean isEdible = false;
-=======
+    private Mark mark;
+
     private int breedCounter;
     private int starveCounter;
     private boolean breeding = false;
@@ -25,45 +23,19 @@ public class PredatorPreyCell extends Cell {
     private Paint emptyVisual;
     private Paint fishVisual;
     private Paint sharkVisual;
->>>>>>> Rhondu-Branch
 
     public PredatorPreyCell() {
         super();
-        removeDiagonals();
+        setStroke(Color.BLACK);
     }
 
     public void handleUpdate() {
-<<<<<<< HEAD
-        turnsSurvived++;
-        breedCountdown--;
-        starveCountdown--;
-=======
         breedCounter++;
         starveCounter++;
->>>>>>> Rhondu-Branch
-    }
-
-    public void setStarveCountdown(int countdown){
-    	starveCountdown = countdown;
-    }
-
-    public boolean isStarved()
-    {
-    	return (starveCountdown<1);
-    }
-
-    public void setBreedCountdown(int countdown){
-    	breedCountdown = countdown;
-    }
-
-    public boolean canBreed()
-    {
-    	return (breedCountdown<1);
     }
 
 
-
-    public List<PredatorPreyCell> countNeighbors(State state) {
+    public List<PredatorPreyCell> getNeighborsOfState(State state) {
         List<PredatorPreyCell> neighborsOfState = new LinkedList<>();
         PredatorPreyCell neighbor;
         for (Cell c : neighbors) {
@@ -76,10 +48,6 @@ public class PredatorPreyCell extends Cell {
         return neighborsOfState;
     }
 
-<<<<<<< HEAD
-    public boolean getEdible() {
-        return isEdible;
-=======
     public void changeState() {
         switch (getMark()) {
             case NONE:
@@ -103,7 +71,6 @@ public class PredatorPreyCell extends Cell {
 
     public boolean getBreeding() {
         return breeding;
->>>>>>> Rhondu-Branch
     }
 
     public void setBreeding(boolean t) {
@@ -116,7 +83,14 @@ public class PredatorPreyCell extends Cell {
 
     public void setState(State state) {
         this.state = state;
-        turnsSurvived = 0;
+    }
+
+    public Mark getMark() {
+        return mark;
+    }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
     }
 
     public int getBreedCounter() {
@@ -135,7 +109,19 @@ public class PredatorPreyCell extends Cell {
         this.starveCounter = starveCounter;
     }
 
+    @Override
+    public void setVisuals(Paint... visuals) {
+        emptyVisual = visuals[0];
+        fishVisual = visuals[1];
+        sharkVisual = visuals[2];
+    }
+
     public enum State {
         SHARK, FISH, EMPTY
     }
+
+    public enum Mark {
+        TO_FISH, TO_SHARK, TO_EMPTY, NONE
+    }
+
 }
