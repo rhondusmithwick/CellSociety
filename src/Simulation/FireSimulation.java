@@ -51,6 +51,7 @@ public class FireSimulation extends Simulation {
     }
 
     @Override
+	public
     void step() {
         super.step();
         getAllUpdates();

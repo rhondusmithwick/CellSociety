@@ -5,16 +5,20 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class GUI {
 
+	//public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
     private CellSociety myCellSociety;
     private Controls myControls;
     private SimulationControl mySimControl;
     private GridPane myDisplay;
+    //private ResourceBundle myResources;
 
     // public GUI(CellSociety mySociety, Stage controlStage) {
     public GUI(CellSociety CS, GridPane display) {
+    	//myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "GUIstrings");
         myDisplay = display;
         myCellSociety = CS;
     }

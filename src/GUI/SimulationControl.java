@@ -1,5 +1,7 @@
 package GUI;
 
+import java.io.File;
+
 import Cell.CellManager;
 import Simulation.GameOfLifeSimulation;
 import Simulation.Simulation;
@@ -33,6 +35,7 @@ public class SimulationControl {
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
         GridPane.setConstraints(cellManager, 0, 0);
+        GridPane.setRowSpan(cellManager, 6);
         display.getChildren().add(cellManager);
 
         sim.setTheCells(cellManager.getCells());
@@ -43,10 +46,6 @@ public class SimulationControl {
         return mySimulations;
     }
 
-    public void displayTextField(String message) {
-        //inputTextField.setText(message);
-    }
-
     public void slowDown() {
         sim.decreaseRate();
     }
@@ -55,9 +54,14 @@ public class SimulationControl {
         sim.increaseRate();
     }
 
-    public Object skip() {
-        // TODO Auto-generated method stub
-        return null;
+    public void step() {
+    	if (!sim.getPlaying()){
+        sim.step();
+    	}
+    	else{
+    		sim.stopLoop();
+    		sim.step();
+    	}
     }
 
     public void playPause() {
@@ -108,6 +112,17 @@ public class SimulationControl {
         sim.init();
 
     }
+
+	public void sizeChange(String string) {
+		int mySize = Integer.parseInt(string);
+		System.out.println("This size: " + mySize);
+		
+	}
+
+	public void openFile(File file) {
+		System.out.println("File Path: " + file.getPath());
+		file.getPath();
+	}
 
 
 }

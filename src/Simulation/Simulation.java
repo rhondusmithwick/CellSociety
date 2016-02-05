@@ -73,7 +73,7 @@ public abstract class Simulation {
 
     abstract void assignInitialState(int randomNum, Cell c);
 
-    void step() {
+    public void step() {
         getTheCells().forEach(c -> c.handleUpdate());
     }
 
@@ -88,12 +88,12 @@ public abstract class Simulation {
         isPlaying = true;
     }
 
-    private void stopLoop() {
+    public void stopLoop() {
         simulationLoop.stop();
         isPlaying = false;
     }
 
-    private boolean getPlaying() {
+    public boolean getPlaying() {
         return isPlaying;
     }
 
