@@ -16,8 +16,8 @@ public class PredatorPreyCell extends Cell {
     private State state;
     private Mark mark;
 
-    private int turnsSurvived;
-    private boolean isEdible;
+    private int breedCounter;
+    private boolean breeding = false;
 
     private Paint emptyVisual;
     private Paint fishVisual;
@@ -29,7 +29,7 @@ public class PredatorPreyCell extends Cell {
     }
 
     public void handleUpdate() {
-        turnsSurvived++;
+        breedCounter++;
     }
 
 
@@ -38,7 +38,8 @@ public class PredatorPreyCell extends Cell {
         PredatorPreyCell neighbor;
         for (Cell c : neighbors) {
             neighbor = (PredatorPreyCell) c;
-            if (neighbor.getState() == state) {
+            if (neighbor.getMark() == Mark.NONE
+                    && neighbor.getState() == state) {
                 neighborsOfState.add(neighbor);
             }
         }
@@ -52,30 +53,26 @@ public class PredatorPreyCell extends Cell {
             case TO_FISH:
                 setFill(fishVisual);
                 setState(State.FISH);
-                setEdible(true);
                 break;
             case TO_SHARK:
                 setFill(sharkVisual);
                 setState(State.SHARK);
-                setEdible(false);
                 break;
             case TO_EMPTY:
                 setFill(emptyVisual);
                 setState(State.EMPTY);
-                setEdible(false);
                 break;
             default:
         }
         setMark(Mark.NONE);
-        setTurnsSurvived(0);
     }
 
-    public boolean getEdible() {
-        return isEdible;
+    public boolean getBreeding() {
+        return breeding;
     }
 
-    public void setEdible(boolean t) {
-        isEdible = t;
+    public void setBreeding(boolean t) {
+        breeding = t;
     }
 
     public State getState() {
@@ -94,12 +91,12 @@ public class PredatorPreyCell extends Cell {
         this.mark = mark;
     }
 
-    public int getTurnsSurvived() {
-        return turnsSurvived;
+    public int getBreedCounter() {
+        return breedCounter;
     }
 
-    public void setTurnsSurvived(int turnsSurvived) {
-        this.turnsSurvived = turnsSurvived;
+    public void setBreedCounter(int breedCounter) {
+        this.breedCounter = breedCounter;
     }
 
     @Override

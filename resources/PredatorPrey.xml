@@ -4,9 +4,9 @@
     <gridHeight>500</gridHeight>
     <numCellsPerRow>50</numCellsPerRow>
     <numCellsPerColumn>50</numCellsPerColumn>
-    <breedTime>5</breedTime>
+    <breedTime>10</breedTime>
     <emptyPercent>40</emptyPercent>
-    <fishPercent>40</fishPercent>
+    <fishPercent>50</fishPercent>
     <emptyVisual>blue</emptyVisual>
     <fishVisual>limegreen</fishVisual>
     <sharkVisual>yellow</sharkVisual>

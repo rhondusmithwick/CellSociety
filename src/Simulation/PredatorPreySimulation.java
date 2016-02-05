@@ -2,14 +2,12 @@ package Simulation;
 
 import Cell.Cell;
 import Cell.PredatorPreyCell;
-import Cell.PredatorPreyCell.State;
 import Cell.PredatorPreyCell.Mark;
+import Cell.PredatorPreyCell.State;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,16 +17,13 @@ import java.util.List;
  */
 // TO FINISH
 public class PredatorPreySimulation extends Simulation {
-    private static final int DEFAULT_BREED_TIME = 30;
+    private static final int DEFAULT_BREED_TIME = 10;
     private static final int DEFAULT_EMPTY_PERCENT = 10;
     private static final int DEFAULT_FISH_PERCENT = 45;
 
     private static final Paint DEFAULT_EMPTY_VISUAL = Color.BLUE;
     private static final Paint DEFAULT_FISH_VISUAL = Color.LIMEGREEN;
     private static final Paint DEFAULT_SHARK_VISUAL = Color.YELLOW;
-
-    private final List<PredatorPreyCell> emptyCells = new ArrayList<>();
-    private List<PredatorPreyCell> emptyCellsToAdd;
 
     private int breedTime;
     private int emptyPercent;
@@ -44,6 +39,10 @@ public class PredatorPreySimulation extends Simulation {
         parseXmlFile("resources/" + "PredatorPrey.xml");
     }
 
+    private static boolean canMove(PredatorPreyCell ppc) {
+        return (ppc.getMark() != Mark.TO_EMPTY)
+                || (ppc.getBreeding());
+    }
 
     @Override
     void assignInitialState(int randomNum, Cell c) {
@@ -52,46 +51,97 @@ public class PredatorPreySimulation extends Simulation {
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
             ppc.setMark(Mark.TO_EMPTY);
-            emptyCells.add(ppc);
         } else if (randomNum > emptyPercent
                 && randomNum <= emptyPercent + fishPercent) {
             ppc.setMark(Mark.TO_FISH);
         } else {
-           ppc.setMark(Mark.TO_SHARK);
+            ppc.setMark(Mark.TO_SHARK);
         }
     }
-
 
     @Override
     void step() {
         super.step();
-        emptyCellsToAdd = new LinkedList<>();
+        haveSharksEat();
+        breedAll();
+        moveAll();
+        changeStates();
+    }
+
+    private void haveSharksEat() {
         PredatorPreyCell ppc;
         for (Cell c : getTheCells()) {
             ppc = (PredatorPreyCell) c;
-            if (ppc.getState() == State.FISH) {
-                fishUpdate(ppc);
-            } else if(ppc.getState() == State.SHARK) {
-                sharkUpdate(ppc);
+            if (ppc.getState() == State.SHARK) {
+                sharkEat(ppc);
             }
         }
-        changeStates();
-        emptyCells.addAll(emptyCellsToAdd);
     }
 
-    void sharkEatt() {
-        
-    }
-
-    void fishUpdate(PredatorPreyCell fish) {
-        if (fish.getTurnsSurvived() > breedTime) {
-            spawn(fish);
+    private void sharkEat(PredatorPreyCell shark) {
+        List<PredatorPreyCell> fishNeighbors = shark.getNeighborsOfState(State.FISH);
+        if (!fishNeighbors.isEmpty()) {
+            int randomNum = getRandomNum(0, fishNeighbors.size() - 1);
+            PredatorPreyCell fish = fishNeighbors.get(randomNum);
+            fish.setMark(Mark.TO_EMPTY);
         }
     }
 
-    void spawn(PredatorPreyCell ppc) {
-        List<PredatorPreyCell> emptyNeighbors = ppc.getNeighborsOfState(State.EMPTY);
+    private void breedAll() {
+        PredatorPreyCell ppc;
+        for (Cell c : getTheCells()) {
+            ppc = (PredatorPreyCell) c;
+            if ((ppc.getState() != State.EMPTY)
+                    && (ppc.getBreedCounter() >= breedTime)) {
+                ppc.setBreeding(true);
+                ppc.setBreedCounter(0);
+            }
+        }
+    }
 
+    private void moveAll() {
+        PredatorPreyCell ppc;
+        for (Cell c : getTheCells()) {
+            ppc = (PredatorPreyCell) c;
+            if (ppc.getState() != State.EMPTY) {
+                move(ppc);
+            }
+        }
+    }
+
+    private void move(PredatorPreyCell ppc) {
+        if (canMove(ppc)) {
+            List<PredatorPreyCell> emptyNeighbors = ppc.getNeighborsOfState(State.EMPTY);
+            if (!emptyNeighbors.isEmpty()) {
+                int randomIndex = getRandomNum(0, emptyNeighbors.size() - 1);
+                PredatorPreyCell emptyNeighbor = emptyNeighbors.get(randomIndex);
+                moveSpawn(ppc, emptyNeighbor);
+            }
+        }
+        ppc.setBreeding(false);
+    }
+
+    private void moveSpawn(PredatorPreyCell ppc, PredatorPreyCell emptyNeighbor) {
+        swap(ppc, emptyNeighbor);
+        if (onlyMoving(ppc)) {
+            ppc.setMark(Mark.TO_EMPTY);
+        }
+    }
+
+    private void swap(PredatorPreyCell ppc, PredatorPreyCell emptyNeighbor) {
+        switch (ppc.getState()) {
+            case FISH:
+                emptyNeighbor.setMark(Mark.TO_FISH);
+                break;
+            case SHARK:
+                emptyNeighbor.setMark(Mark.TO_SHARK);
+                break;
+        }
+    }
+
+    private boolean onlyMoving(PredatorPreyCell ppc) {
+        return (!ppc.getBreeding())
+                || (ppc.getBreeding() && ppc.getMark() == Mark.TO_EMPTY);
     }
 
     @Override
