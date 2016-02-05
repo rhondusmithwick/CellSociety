@@ -7,6 +7,11 @@ import Cell.PredatorPreyCell.Mark;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by rhondusmithwick on 2/3/16.
  *
@@ -21,6 +26,9 @@ public class PredatorPreySimulation extends Simulation {
     private static final Paint DEFAULT_EMPTY_VISUAL = Color.BLUE;
     private static final Paint DEFAULT_FISH_VISUAL = Color.LIMEGREEN;
     private static final Paint DEFAULT_SHARK_VISUAL = Color.YELLOW;
+
+    private final List<PredatorPreyCell> emptyCells = new ArrayList<>();
+    private List<PredatorPreyCell> emptyCellsToAdd;
 
     private int breedTime;
     private int emptyPercent;
@@ -44,6 +52,7 @@ public class PredatorPreySimulation extends Simulation {
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
             ppc.setMark(Mark.TO_EMPTY);
+            emptyCells.add(ppc);
         } else if (randomNum > emptyPercent
                 && randomNum <= emptyPercent + fishPercent) {
             ppc.setMark(Mark.TO_FISH);
@@ -52,6 +61,35 @@ public class PredatorPreySimulation extends Simulation {
         }
     }
 
+
+    @Override
+    void step() {
+        super.step();
+        emptyCellsToAdd = new LinkedList<>();
+        PredatorPreyCell ppc;
+        for (Cell c : getTheCells()) {
+            ppc = (PredatorPreyCell) c;
+            if (ppc.getState() == State.FISH) {
+                fishUpdate(ppc);
+            } else if(ppc.getState() == State.SHARK) {
+                sharkUpdate(ppc);
+            }
+        }
+        changeStates();
+        emptyCells.addAll(emptyCellsToAdd);
+    }
+
+
+    void fishUpdate(PredatorPreyCell fish) {
+        if (fish.getTurnsSurvived() > breedTime) {
+            spawn(fish);
+        }
+    }
+
+    void spawn(PredatorPreyCell ppc) {
+        List<PredatorPreyCell> emptyNeighbors = ppc.getNeighborsOfState(State.EMPTY);
+
+    }
 
     @Override
     void setSpecificProperties(Element simElem) {
