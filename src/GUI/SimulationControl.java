@@ -9,9 +9,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 
 import java.io.File;
+import java.util.ResourceBundle;
 
 class SimulationControl {
 
+	private ResourceBundle myResources;
     private static final String DEFAULT_SIM_TYPE = "Fire";
 
     private final ObservableList<String> mySimulations = FXCollections.observableArrayList(
@@ -26,7 +28,8 @@ class SimulationControl {
     private Simulation sim;
     private final GridPane display;
 
-    public SimulationControl(GridPane display) {
+    public SimulationControl(GridPane display, String resource) {
+    	myResources = ResourceBundle.getBundle(resource);
         simType = DEFAULT_SIM_TYPE;
         this.display = display;
         initNewSimulation();
@@ -41,6 +44,26 @@ class SimulationControl {
         display.getChildren().add(cellManager);
         sim.setTheCells(cellManager.getCells());
         sim.init();
+    }
+    
+    public void switchSimulation(Object o) {
+        simType = o.toString();
+        initNewSimulation();
+    }
+
+
+    private Simulation getSimulation() {
+        Simulation sim;
+        try {
+            Class c = Class.forName("Simulation." + simType + "Simulation");
+            sim = (Simulation) c.newInstance();
+        } catch (InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException e) {
+            System.out.println(e);
+            sim = new FireSimulation();
+        }
+        return sim;
     }
 
     public ObservableList<String> getSimulations() {
@@ -63,6 +86,12 @@ class SimulationControl {
             sim.step();
         }
     }
+    
+    public void stop(){
+    	if (sim.getPlaying()){
+    		sim.stopLoop();
+    	}
+    }
 
     public void playPause() {
         sim.playOrStop();
@@ -75,27 +104,6 @@ class SimulationControl {
                 sim.getCellsPerRow(), sim.getCellsPerColumn());
         cellManager.init(simType);
         return cellManager;
-    }
-
-    public void switchSimulation(Object o) {
-        simType = o.toString();
-        initNewSimulation();
-    }
-
-
-    private Simulation getSimulation() {
-        Simulation sim;
-        try {
-            Class c = Class.forName("Simulation." + simType + "Simulation");
-            sim = (Simulation) c.newInstance();
-        } catch (InstantiationException
-                | IllegalAccessException
-                | ClassNotFoundException e) {
-            System.out.println(e);
-//            sim = new GameOfLifeSimulation();
-            sim = new FireSimulation();
-        }
-        return sim;
     }
 
     // TODO

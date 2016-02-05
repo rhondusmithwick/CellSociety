@@ -14,16 +14,15 @@ import java.awt.*;
  */
 class CellSociety {
     private static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
-
     private Scene myScene;
 
     public CellSociety() {
     }
 
-    public void init(Stage primaryStage) {
+    public void init(Stage primaryStage, String resource) {
         GridPane display = new GridPane();
-        GUI gui = new GUI(display);
-        display = gui.init();
+        GUI gui = new GUI();
+        display = gui.init(display,resource);
         myScene = new Scene(display, DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
         primaryStage.setScene(myScene);
         primaryStage.setResizable(false);
