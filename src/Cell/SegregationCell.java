@@ -1,6 +1,7 @@
 package Cell;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 /**
  * Created by rhondusmithwick on 2/1/16.
@@ -8,8 +9,14 @@ import javafx.scene.paint.Color;
  * @author Rhondu Smithwick
  */
 public class SegregationCell extends Cell {
+    private State state;
+    private Mark mark;
+
     private int threshold;
-    private boolean isSatisfied;
+
+    private Paint emptyVisual;
+    private Paint group1Visual;
+    private Paint group2Visual;
 
     public SegregationCell() {
         super();
@@ -17,11 +24,12 @@ public class SegregationCell extends Cell {
 
     }
 
+    @Override
     public void handleUpdate() {
-        if (!getIsEmpty()) {
+        if (getState() != State.EMPTY) {
             double likeMePercent = getLikeMePercent();
             if (likeMePercent < threshold) {
-                setSatisfied(false);
+                setMark(Mark.TO_EMPTY);
             }
         }
     }
@@ -32,8 +40,8 @@ public class SegregationCell extends Cell {
         SegregationCell sc;
         for (Cell c : neighbors) {
             sc = (SegregationCell) c;
-            if (!sc.getIsEmpty()) {
-                if (sc.getFill() != this.getFill()) {
+            if (sc.getState() != State.EMPTY) {
+                if (sc.getState() == getState()) {
                     count++;
                 }
                 num++;
@@ -42,17 +50,59 @@ public class SegregationCell extends Cell {
         return ((double) count / num) * 100;
     }
 
+    @Override
+    public void changeState() {
+        switch (getMark()) {
+            case NONE:
+                return;
+            case TO_EMPTY:
+                setFill(emptyVisual);
+                setState(State.EMPTY);
+                break;
+            case TO_GROUP1:
+                setFill(group1Visual);
+                setState(State.GROUP1);
+                break;
+            case TO_GROUP2:
+                setFill(group2Visual);
+                setState(State.GROUP2);
+                break;
+        }
+        setMark(Mark.NONE);
+    }
+
+    @Override
+    public void setVisuals(Paint... visuals) {
+        emptyVisual = visuals[0];
+        group1Visual = visuals[1];
+        group2Visual = visuals[2];
+    }
+
     public void setThreshold(int t) {
         threshold = t;
     }
 
-    public boolean getSatisfied() {
-        return isSatisfied;
+    public State getState() {
+        return state;
     }
 
-    public void setSatisfied(boolean t) {
-        isSatisfied = t;
+    public void setState(SegregationCell.State state) {
+        this.state = state;
     }
 
+    public Mark getMark() {
+        return mark;
+    }
 
+    public void setMark(Mark mark) {
+        this.mark = mark;
+    }
+
+    public enum State {
+        EMPTY, GROUP1, GROUP2
+    }
+
+    public enum Mark {
+        TO_EMPTY, TO_GROUP1, TO_GROUP2, NONE
+    }
 }

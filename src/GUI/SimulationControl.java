@@ -14,7 +14,8 @@ public class SimulationControl {
             FXCollections.observableArrayList(
                     "GameOfLife",
                     "Segregation",
-                    "Fire"
+                    "Fire",
+                    "PredatorPrey"
             );
     private String simType;
     private CellManager cellManager;

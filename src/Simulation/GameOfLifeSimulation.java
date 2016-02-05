@@ -2,6 +2,7 @@ package Simulation;
 
 import Cell.Cell;
 import Cell.GameOfLifeCell;
+import Cell.GameOfLifeCell.Mark;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
@@ -17,7 +18,6 @@ public class GameOfLifeSimulation extends Simulation {
     private static final Paint DEFAULT_DEAD_VISUAL = Color.WHITE;
     private static final Paint DEFAULT_ALIVE_VISUAL = Color.GREEN;
 
-
     private double probStartDead;
 
     private Paint deadVisual;
@@ -30,25 +30,22 @@ public class GameOfLifeSimulation extends Simulation {
 
 
     @Override
-    void assignInitialState(int randomNum, Cell c) {
-        final GameOfLifeCell gc = (GameOfLifeCell) c;
-        if (randomNum <= probStartDead) {
-            gc.destroy(deadVisual);
-        } else {
-            gc.restore(aliveVisual);
-        }
-    }
-
-    @Override
     protected void step() {
         super.step();
-        GameOfLifeCell gc;
-        for (Cell c : getTheCells()) {
-            gc = (GameOfLifeCell) c;
-            gc.transform(deadVisual, aliveVisual);
-        }
+        changeStates();
     }
 
+
+    @Override
+    void assignInitialState(int randomNum, Cell c) {
+        final GameOfLifeCell gc = (GameOfLifeCell) c;
+        gc.setVisuals(deadVisual, aliveVisual);
+        if (randomNum <= probStartDead) {
+            gc.setMark(Mark.DESTROY);
+        } else {
+            gc.setMark(Mark.RESURECT);
+        }
+    }
 
     @Override
     void setSpecificProperties(Element simElem) {
