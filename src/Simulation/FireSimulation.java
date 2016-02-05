@@ -36,6 +36,7 @@ public class FireSimulation extends Simulation {
     @Override
     void assignInitialState(int randomNum, Cell c) {
         FireCell fc = (FireCell) c;
+        fc.removeDiagonals();
         fc.setVisuals(emptyVisual, burningVisual, treeVisual);
         fc.setBurnTime(burnTime);
         if (checkOnEdge(fc)) {
@@ -45,7 +46,6 @@ public class FireSimulation extends Simulation {
         } else {
             fc.setMark(Mark.TO_TREE);
         }
-        fc.removeDiagonals();
     }
 
     @Override

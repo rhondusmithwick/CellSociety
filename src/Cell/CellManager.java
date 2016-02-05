@@ -100,15 +100,6 @@ public class CellManager extends Group {
         theCells.clear();
     }
 
-
-    public int getWidth() {
-        return gridWidth;
-    }
-
-    public int getHeight() {
-        return gridHeight;
-    }
-
     public Collection<Cell> getCells() {
         return theCells;
     }

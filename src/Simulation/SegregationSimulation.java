@@ -85,16 +85,19 @@ public class SegregationSimulation extends Simulation {
             final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
             final SegregationCell emptyCell = emptyCells.get(randomIndex);
             emptyCells.remove(randomIndex);
-            if (sc.getState() == State.GROUP1) {
-                emptyCell.setMark(Mark.TO_GROUP1);
-            } else {
-                emptyCell.setMark(Mark.TO_GROUP2);
-
-            }
-            emptyCellsToAdd.add(sc);
+            swap(sc, emptyCell);
         } else {
             sc.setMark(Mark.NONE);
         }
+    }
+
+    void swap(SegregationCell sc, SegregationCell emptyCell) {
+        if (sc.getState() == State.GROUP1) {
+            emptyCell.setMark(Mark.TO_GROUP1);
+        } else {
+            emptyCell.setMark(Mark.TO_GROUP2);
+        }
+        emptyCellsToAdd.add(sc);
     }
 
     @Override
