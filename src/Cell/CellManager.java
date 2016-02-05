@@ -95,11 +95,6 @@ public class CellManager extends Group {
         }
     }
 
-    public void clear() {
-        this.getChildren().clear();
-        theCells.clear();
-    }
-
     public Collection<Cell> getCells() {
         return theCells;
     }

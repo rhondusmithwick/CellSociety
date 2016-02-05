@@ -61,7 +61,7 @@ public class PredatorPreySimulation extends Simulation {
     }
 
     @Override
-    void step() {
+    public void step() {
         super.step();
         haveSharksEat();
         breedAll();

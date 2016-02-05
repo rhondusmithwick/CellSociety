@@ -1,38 +1,32 @@
 package Simulation;
 
-import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import javafx.scene.paint.Paint;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javafx.scene.paint.Paint;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
-public class XMLParser {
+public final class XMLParser {
 
 
-	public XMLParser() {
+    private XMLParser() {
+    }
 
-	}
-	public static String getSimType(Element simElem){
-		return simElem.getAttribute("SimulationType");
-	}
+    public static String getSimType(Element simElem) {
+        return simElem.getAttribute("SimulationType");
+    }
 
-	public static Element getXmlElement(String xmlFilename) {
-        //get the factory
+    public static Element getXmlElement(String xmlFilename) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
-            //Using factory get an instance of document builder
             DocumentBuilder db = dbf.newDocumentBuilder();
-            //parse using builder to get DOM representation of the XML file
             Document xmlDoc = db.parse(xmlFilename);
-            return( xmlDoc.getDocumentElement());
-
+            return (xmlDoc.getDocumentElement());
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {

@@ -86,7 +86,7 @@ public class SegregationCell extends Cell {
         return state;
     }
 
-    public void setState(SegregationCell.State state) {
+    private void setState(SegregationCell.State state) {
         this.state = state;
     }
 

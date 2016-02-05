@@ -81,7 +81,7 @@ public class PredatorPreyCell extends Cell {
         return state;
     }
 
-    public void setState(State state) {
+    private void setState(State state) {
         this.state = state;
     }
 
