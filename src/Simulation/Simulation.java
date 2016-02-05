@@ -49,8 +49,25 @@ public abstract class Simulation {
         return simulationLoop;
     }
 
+    public final void init() {
+        int randomNum;
+        for (Cell c : getTheCells()) {
+            randomNum = getRandomNum(1, 100);
+            assignInitialState(randomNum, c);
+        }
+        changeStates();
+    }
+
+    abstract void assignInitialState(int randomNum, Cell c);
+
     void step() {
         getTheCells().forEach(c -> c.handleUpdate());
+    }
+
+    final void changeStates() {
+        for (Cell c : getTheCells()) {
+            c.changeState();
+        }
     }
 
     private void beginLoop() {
@@ -75,16 +92,6 @@ public abstract class Simulation {
         }
     }
 
-
-    public final void init() {
-        int randomNum;
-        for (Cell c : getTheCells()) {
-            randomNum = getRandomNum(1, 100);
-            assignInitialState(randomNum, c);
-        }
-    }
-
-    abstract void assignInitialState(int randomNum, Cell c);
 
     final int getRandomNum(int min, int max) {
         int range = max - min + 1;
