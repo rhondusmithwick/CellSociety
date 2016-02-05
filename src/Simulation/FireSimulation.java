@@ -2,13 +2,11 @@ package Simulation;
 
 import Cell.Cell;
 import Cell.FireCell;
+import Cell.FireCell.Mark;
 import Cell.FireCell.State;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -16,18 +14,15 @@ import java.util.Map;
  *
  * @author Rhondu Smithwick
  */
-// TO FINISH
 public class FireSimulation extends Simulation {
     private static final int DEFAULT_BURN_TIME = 5;
     private static final int DEFAULT_PROB_CATCH = 30;
-
     private static final Paint DEFAULT_EMPTY_VISUAL = Color.YELLOW;
     private static final Paint DEFAULT_BURNING_VISUAL = Color.RED;
     private static final Paint DEFAULT_TREE_VISUAL = Color.GREEN;
 
     private int burnTime;
     private int probCatch;
-
     private Paint emptyVisual;
     private Paint burningVisual;
     private Paint treeVisual;
@@ -37,57 +32,44 @@ public class FireSimulation extends Simulation {
         parseXmlFile("resources/" + "Fire.xml");
     }
 
-    void step() {
-        super.step();
-        Map<FireCell, State> changes = new HashMap<>();
-        for (Cell c : getTheCells()) {
-            getUpdate(changes, c);
-        }
-        for (FireCell fc : changes.keySet()) {
-            changeState(fc, changes.get(fc));
-        }
-    }
-
-
-    private void getUpdate(Map<FireCell, State> changes, Cell c) {
-        FireCell fc = (FireCell) c;
-        if (treeShouldBurn(fc)) {
-            changes.put(fc, State.BURNING);
-        } else if (treeDoneBurning(fc)) {
-            changes.put(fc, State.EMPTY);
-        }
-    }
-
-    private void changeState(FireCell fc, State state) {
-        switch (state) {
-            case EMPTY:
-                fc.setFill(emptyVisual);
-                break;
-            case BURNING:
-                fc.setFill(burningVisual);
-                break;
-            case TREE:
-                fc.setFill(treeVisual);
-                break;
-        }
-        fc.setState(state);
-        fc.setBurnTime(0);
-    }
-
     @Override
     void assignInitialState(int randomNum, Cell c) {
         FireCell fc = (FireCell) c;
+        fc.setVisuals(emptyVisual, burningVisual, treeVisual);
+        fc.setBurnTime(burnTime);
         if (checkOnEdge(fc)) {
-            changeState(fc, State.EMPTY);
+            fc.setMark(Mark.TO_EMPTY);
         } else if (checkInMiddle(fc)) {
-            changeState(fc, State.BURNING);
+            fc.setMark(Mark.TO_BURNING);
         } else {
-            changeState(fc, State.TREE);
+            fc.setMark(Mark.TO_TREE);
         }
         fc.removeDiagonals();
-        System.out.println(fc.getNeighbors().size());
     }
 
+    @Override
+    void step() {
+        super.step();
+        getAllUpdates();
+        changeStates();
+    }
+
+
+    private void getAllUpdates() {
+        FireCell fc;
+        for (Cell c : getTheCells()) {
+            fc = (FireCell) c;
+            getUpdate(fc);
+        }
+    }
+
+    private void getUpdate(FireCell fc) {
+        if (treeShouldBurn(fc)) {
+            fc.setMark(Mark.TO_BURNING);
+        } else if (treeDoneBurning(fc)) {
+            fc.setMark(Mark.TO_EMPTY);
+        }
+    }
 
     @Override
     void setSpecificProperties(Element simElem) {
@@ -108,19 +90,16 @@ public class FireSimulation extends Simulation {
 
 
     private boolean treeShouldBurn(FireCell fc) {
-        if ((fc.getState() == State.TREE)
-                && (fc.hasBurningNeighbor())) {
-            int randomNum = getRandomNum(1, 100);
-            return (randomNum < probCatch);
-        }
-        return false;
+        int randomNum = getRandomNum(1, 100);
+        return (fc.getState() == State.TREE)
+                && (fc.hasBurningNeighbor())
+                && (randomNum < probCatch);
     }
 
     private boolean treeDoneBurning(FireCell fc) {
         return (fc.getState() == State.BURNING)
                 && (fc.getBurnTime() > burnTime);
     }
-
 
     private boolean checkOnEdge(FireCell fc) {
         return (fc.getRow() == getCellsPerRow() - 1)

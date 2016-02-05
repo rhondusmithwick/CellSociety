@@ -1,5 +1,6 @@
 package Cell;
 
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Collection;
@@ -35,11 +36,7 @@ public abstract class Cell extends Rectangle {
         }
     }
 
-
-
-    public Collection<Cell> getNeighbors() {
-        return neighbors;
-    }
+    public abstract void changeState();
 
     public final void addNeighbor(Cell neighbor) {
         neighbors.add(neighbor);
@@ -80,4 +77,5 @@ public abstract class Cell extends Rectangle {
         isEmpty = t;
     }
 
+    public abstract void setVisuals(Paint... visuals);
 }
