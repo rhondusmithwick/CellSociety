@@ -32,11 +32,11 @@ class SimulationControl {
     	myResources = ResourceBundle.getBundle(resource);
         simType = DEFAULT_SIM_TYPE;
         this.display = display;
+        sim = getSimulation();
         initNewSimulation();
     }
 
     private void initNewSimulation() {
-        sim = getSimulation();
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
         GridPane.setConstraints(cellManager, 0, 0);
@@ -48,6 +48,7 @@ class SimulationControl {
     
     public void switchSimulation(Object o) {
         simType = o.toString();
+        sim = getSimulation();
         initNewSimulation();
     }
 
@@ -108,8 +109,12 @@ class SimulationControl {
 
     // TODO
     public void sizeChange(String string) {
-        int mySize = Integer.parseInt(string);
-        System.out.println("This size: " + mySize);
+        sim = getSimulation();
+        sim.resetCellSize(Integer.parseInt(string));
+        initNewSimulation();
+    	
+        //int mySize = ;
+        //System.out.println("This size: " + mySize);
     }
 
     // TODO

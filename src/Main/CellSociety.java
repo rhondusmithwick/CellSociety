@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Rhondu Smithwick
  */
 class CellSociety {
-    private static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
+    private static final Dimension DEFAULT_SIZE = new Dimension(810, 600);
     private Scene myScene;
 
     public CellSociety() {
