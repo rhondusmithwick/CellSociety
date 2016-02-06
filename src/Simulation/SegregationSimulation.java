@@ -71,24 +71,29 @@ public class SegregationSimulation extends Simulation {
     }
 
     private void getAllUpdates() {
-        SegregationCell sc;
+        List<SegregationCell> cellsToMove = new ArrayList<>();
         for (Cell c : getTheCells()) {
-            sc = (SegregationCell) c;
+            SegregationCell sc = (SegregationCell) c;
             if (sc.getMark() == Mark.TO_EMPTY) {
-                tryToMove(sc);
+                cellsToMove.add(sc);
             }
+        }
+        while (!cellsToMove.isEmpty() && !emptyCells.isEmpty()) {
+            final int randomIndex = getRandomNum(0, cellsToMove.size() - 1);
+            final SegregationCell cellToMove = cellsToMove.get(randomIndex);
+            cellsToMove.remove(randomIndex);
+            move(cellToMove);
+        }
+        for (SegregationCell sc: cellsToMove) {
+            sc.setMark(Mark.NONE);
         }
     }
 
-    private void tryToMove(SegregationCell sc) {
-        if (!emptyCells.isEmpty()) {
-            final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
-            final SegregationCell emptyCell = emptyCells.get(randomIndex);
-            emptyCells.remove(randomIndex);
-            swap(sc, emptyCell);
-        } else {
-            sc.setMark(Mark.NONE);
-        }
+    private void move(SegregationCell sc) {
+        final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
+        final SegregationCell emptyCell = emptyCells.get(randomIndex);
+        emptyCells.remove(randomIndex);
+        swap(sc, emptyCell);
     }
 
     private void swap(SegregationCell sc, SegregationCell emptyCell) {

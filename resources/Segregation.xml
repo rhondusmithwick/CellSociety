@@ -6,7 +6,7 @@
     <numCellsPerColumn>50</numCellsPerColumn>
     <threshold>50</threshold>
     <emptyPercent>10</emptyPercent>
-    <group1Percent>60</group1Percent>
+    <group1Percent>45</group1Percent>
     <emptyVisual>black</emptyVisual>
     <group1Visual>red</group1Visual>
     <group2Visual>blue</group2Visual>

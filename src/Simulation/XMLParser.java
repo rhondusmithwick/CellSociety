@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public final class XMLParser {
 
-
     private XMLParser() {
     }
 

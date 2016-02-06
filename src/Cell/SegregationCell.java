@@ -20,7 +20,7 @@ public class SegregationCell extends Cell {
 
     public SegregationCell() {
         super();
-//      setStroke(Color.BLACK);
+        setStroke(Color.BLACK);
     }
 
     @Override
