@@ -5,13 +5,16 @@ import Simulation.FireSimulation;
 import Simulation.Simulation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 
 import java.io.File;
+import java.util.ResourceBundle;
 
 public class SimulationControl {
     private static final String DEFAULT_SIM_TYPE = "Fire";
-
+    private final ResourceBundle myResources;
     private final GridPane display;
     private final ObservableList<String> mySimulations = FXCollections.observableArrayList(
             "GameOfLife",
@@ -25,6 +28,7 @@ public class SimulationControl {
 
 
     public SimulationControl(GridPane display, String resource) {
+    	myResources = ResourceBundle.getBundle(resource);
         simType = DEFAULT_SIM_TYPE;
         this.display = display;
         sim = getSimulation();
@@ -97,14 +101,27 @@ public class SimulationControl {
     }
 
     public void sizeChange(String string) {
+    	int newSize = Integer.parseInt(string);
+    	if (newSize > 0){
         sim = getSimulation();
-        sim.resetCellSize(Integer.parseInt(string));
+        sim.resetCellSize(newSize);
         initNewSimulation();
+    	}
+    	else{
+    		showError(myResources.getString("SizeError"));
+    	}
     }
 
     public void openFile(File file) {
         System.out.println("File Path: " + file.getPath());
         file.getPath();
+    }
+    
+    public void showError (String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(myResources.getString("ErrorTitle"));
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
 
