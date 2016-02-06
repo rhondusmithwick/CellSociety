@@ -10,38 +10,33 @@ import javafx.stage.Stage;
 import java.awt.*;
 
 /**
- * Created by rhondusmithwick on 1/30/16.
+ * The class for Cell Society that holds a GUI.
  *
  * @author Rhondu Smithwick
  */
 class CellSociety {
-
+    /**
+     * The dimensions of the Scene.
+     */
     private static final Dimension DEFAULT_SIZE = new Dimension(810, 600);
 
-    //Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-    //int width = (int) (primaryScreenBounds.getWidth() / 1.5);
-    ///int height = (int) (primaryScreenBounds.getHeight() / 1.5);
-    //private final Dimension DEFAULT_SIZE = new Dimension(width, height);
-    
-    private Scene myScene;
-
-    public CellSociety() {
-    }
-
-    public void init(Stage primaryStage, String resource) {
-        GridPane display = new GridPane();
-        GUI gui = new GUI();
-        display = gui.init(display,resource);
-        myScene = new Scene(display, DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
-        primaryStage.setScene(myScene);
-        primaryStage.setResizable(false);
+    /**
+     * The empty constructor.
+     */
+    CellSociety() {
     }
 
     /**
-     * Returns scene for this view so it can be added to stage.
+     * Create the scene and set the primaryStage to it.
+     * @param primaryStage the primary stage
+     * @param resource the filename of the GUI properties
      */
-    public Scene getScene() {
-        return myScene;
+    void init(Stage primaryStage, String resource) {
+        GridPane display = new GridPane();
+        GUI gui = new GUI();
+        display = gui.init(display,resource);
+        Scene myScene = new Scene(display, DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
+        primaryStage.setScene(myScene);
+        primaryStage.setResizable(false);
     }
-
 }
