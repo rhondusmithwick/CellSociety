@@ -7,16 +7,16 @@ import java.util.List;
 
 public class GUI {
     private Controls myControls;
-    private final GridPane myDisplay;
+    private GridPane myDisplay;
 
     // public GUI(CellSociety mySociety, Stage controlStage) {
-    public GUI(GridPane display) {
-        myDisplay = display;
+    public GUI() {
     }
 
-    public GridPane init() {
-        SimulationControl mySimControl = new SimulationControl(myDisplay);
-        myControls = new Controls(mySimControl);
+    public GridPane init(GridPane display, String resource) {
+    	myDisplay = display;
+        SimulationControl mySimControl = new SimulationControl(myDisplay, resource);
+        myControls = new Controls(mySimControl, resource);
         addToControlPanel(myDisplay);
         return myDisplay;
     }

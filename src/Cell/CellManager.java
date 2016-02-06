@@ -24,7 +24,7 @@ public class CellManager extends Group {
         theCells = new LinkedList<>();
     }
 
-    private static Cell createCell(String cellType, int cellWidth, int cellHeight, int row, int column) {
+    private static Cell createCell(String cellType, double cellWidth, double cellHeight, int row, int column) {
         Cell myCell;
         try {
             Class cellClass = Class.forName("Cell." + cellType + "Cell");
@@ -34,8 +34,8 @@ public class CellManager extends Group {
                 | ClassNotFoundException e) {
             myCell = new GameOfLifeCell();
         }
-        int x = row * cellWidth;
-        int y = column * cellHeight;
+        double x = row * cellWidth;
+        double y = column * cellHeight;
         myCell.init(cellWidth, cellHeight, x, y, row, column);
         return myCell;
     }
@@ -56,8 +56,8 @@ public class CellManager extends Group {
     }
 
     public void init(String cellType) {
-        int cellWidth = gridWidth / cellsPerRow;
-        int cellHeight = gridHeight / cellsPerColumn;
+        double cellWidth = ((double) gridWidth) / cellsPerRow;
+        double cellHeight = ((double) gridHeight) / cellsPerColumn;
         for (int row = 0; row < cellsPerRow; row++) {
             for (int column = 0; column < cellsPerColumn; column++) {
                 Cell myCell = createCell(cellType, cellWidth, cellHeight, row, column);

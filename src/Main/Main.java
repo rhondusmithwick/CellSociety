@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage controlStage) {
         controlStage.setTitle("Cell Society");
         CellSociety cs = new CellSociety();
-        cs.init(controlStage);
+        cs.init(controlStage, "GUIstrings");
         controlStage.show();
     }
 }

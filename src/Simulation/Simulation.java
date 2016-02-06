@@ -167,5 +167,10 @@ public abstract class Simulation {
         simulationLoop.setRate(1.0);
     }
 
+	public void resetCellSize(int numCells) {
+        cellsPerRow = numCells;
+        cellsPerColumn = numCells;
+	}
+
 }
 
