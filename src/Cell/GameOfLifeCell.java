@@ -1,6 +1,5 @@
 package Cell;
 
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
@@ -17,6 +16,7 @@ public class GameOfLifeCell extends Cell {
     private Paint aliveVisual;
 
     public GameOfLifeCell() {
+        super();
 //        setStroke(Color.BLACK);
     }
 

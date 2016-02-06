@@ -78,7 +78,7 @@ public class SegregationSimulation extends Simulation {
             }
         }
         randomMover(cellsToMove);
-        for (SegregationCell sc: cellsToMove) {
+        for (SegregationCell sc : cellsToMove) {
             sc.setMark(Mark.NONE);
         }
     }

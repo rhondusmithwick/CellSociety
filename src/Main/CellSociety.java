@@ -1,7 +1,7 @@
 package Main;
 
-import GUI.SimulationControl;
 import GUI.GUI;
+import GUI.SimulationControl;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -27,8 +27,9 @@ class CellSociety {
 
     /**
      * Create the scene and set the primaryStage to it.
+     *
      * @param primaryStage the primary stage
-     * @param resource the filename of the GUI properties
+     * @param resource     the filename of the GUI properties
      */
     void init(Stage primaryStage, String resource) {
         GridPane display = createDisplay(resource);

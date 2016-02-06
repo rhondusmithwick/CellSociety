@@ -19,6 +19,8 @@ import java.util.ResourceBundle;
 public class GUI {
 
     private final ResourceBundle myResources;
+    private final List<Node> controlList = new ArrayList<>();
+    private final SimulationControl mySimControl;
     private Label outputLabel;
     private TextField inputTextField;
     private Button myFileButton;
@@ -28,11 +30,9 @@ public class GUI {
     private Button mySlowDownButton;
     private Button mySetSizeButton;
     private ComboBox<String> comboBox;
-    private final List<Node> controlList = new ArrayList<>();
-    private final SimulationControl mySimControl;
 
     public GUI(SimulationControl mySimulationControl, String resource) {
-    	myResources = ResourceBundle.getBundle(resource);
+        myResources = ResourceBundle.getBundle(resource);
         mySimControl = mySimulationControl;
         createControls();
         setLocations();
@@ -103,9 +103,9 @@ public class GUI {
     }
 
     private void setUpFileChooser() {
-    	mySimControl.stop();
+        mySimControl.stop();
         FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
+        fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("XML", "*.xml")
         );

@@ -1,8 +1,8 @@
 package GUI;
 
 import Cell.CellManager;
-import Simulation.Simulation;
 import Simulation.FireSimulation;
+import Simulation.Simulation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
@@ -13,17 +13,15 @@ public class SimulationControl {
     private static final String DEFAULT_SIM_TYPE = "Fire";
 
     private final GridPane display;
-    private Simulation sim;
-    private String simType;
-    private CellManager cellManager;
-
     private final ObservableList<String> mySimulations = FXCollections.observableArrayList(
             "GameOfLife",
             "Segregation",
             "Fire",
             "PredatorPrey"
     );
-
+    private Simulation sim;
+    private String simType;
+    private CellManager cellManager;
 
 
     public SimulationControl(GridPane display, String resource) {
@@ -42,7 +40,7 @@ public class SimulationControl {
         sim.setTheCells(cellManager.getCells());
         sim.init();
     }
-    
+
     public void switchSimulation(Object o) {
         simType = o.toString();
         sim = getSimulation();
@@ -84,11 +82,11 @@ public class SimulationControl {
             sim.step();
         }
     }
-    
-    public void stop(){
-    	if (sim.getPlaying()){
-    		sim.stopLoop();
-    	}
+
+    public void stop() {
+        if (sim.getPlaying()) {
+            sim.stopLoop();
+        }
     }
 
     public void playPause() {

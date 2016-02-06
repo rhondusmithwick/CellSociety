@@ -1,6 +1,5 @@
 package Cell;
 
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 import java.util.LinkedList;
