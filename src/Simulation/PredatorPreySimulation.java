@@ -17,6 +17,8 @@ import java.util.List;
  */
 public class PredatorPreySimulation extends Simulation {
     private static final int DEFAULT_BREED_TIME = 10;
+    //private static final int DEFAULT_FISH_BREED_TIME = 10;
+    //private static final int DEFAULT_SHARK_BREED_TIME = 7;
     private static final int DEFAULT_STARVE_TIME = 2;
     private static final int DEFAULT_EMPTY_PERCENT = 40;
     private static final int DEFAULT_FISH_PERCENT = 50;
@@ -26,6 +28,8 @@ public class PredatorPreySimulation extends Simulation {
     private static final Paint DEFAULT_SHARK_VISUAL = Color.YELLOW;
 
     private int breedTime;
+    //private int sharkBreedTime; 
+    //private int fishBreedTime; 
     private int starveTime;
     private int emptyPercent;
     private int fishPercent;
@@ -98,7 +102,11 @@ public class PredatorPreySimulation extends Simulation {
         for (Cell c : getTheCells()) {
             ppc = (PredatorPreyCell) c;
             if ((ppc.getState() != State.EMPTY)
-                    && (ppc.getBreedCounter() >= breedTime)) {
+                    && (ppc.getBreedCounter() >= breedTime)){ 
+            /*if ((ppc.getState() == State.FISH)
+                    && (ppc.getBreedCounter() >= fishBreedTime) 
+                    || ((ppc.getState() == State.SHARK)
+                    && (ppc.getBreedCounter() >= sharkBreedTime))) {*/
                 ppc.setBreeding(true);
                 ppc.setBreedCounter(0);
             }
@@ -158,6 +166,8 @@ public class PredatorPreySimulation extends Simulation {
     void setSpecificProperties(Element simElem) {
         if (getType() == null || !getType().equals("PredatorPrey")) {
             breedTime = DEFAULT_BREED_TIME;
+            //sharkBreedTime = DEFAULT_SHARK_BREED_TIME;
+            //fishBreedTime = DEFAULT_FISH_BREED_TIME;
             starveTime = DEFAULT_STARVE_TIME;
             emptyPercent = DEFAULT_EMPTY_PERCENT;
             fishPercent = DEFAULT_FISH_PERCENT;
@@ -166,6 +176,8 @@ public class PredatorPreySimulation extends Simulation {
             sharkVisual = DEFAULT_SHARK_VISUAL;
         } else {
             breedTime = XMLParser.getIntValue(simElem, "breedTime");
+            //sharkBreedTime = XMLParser.getIntValue(simElem, "sharkBreedTime");
+            //fishBreedTime = XMLParser.getIntValue(simElem, "fishBreedTime");
             starveTime = XMLParser.getIntValue(simElem, "starveTime");
             emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
             fishPercent = XMLParser.getIntValue(simElem, "fishPercent");

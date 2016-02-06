@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation SimulationType="Segregation">
-    <gridWidth>500</gridWidth>
-    <gridHeight>500</gridHeight>
+    <gridWidth>600</gridWidth>
+    <gridHeight>600</gridHeight>
     <numCellsPerRow>50</numCellsPerRow>
     <numCellsPerColumn>50</numCellsPerColumn>
     <threshold>50</threshold>

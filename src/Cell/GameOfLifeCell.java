@@ -62,8 +62,8 @@ public class GameOfLifeCell extends Cell {
 
 
     private boolean shouldDie(int aliveNeighbors) {
-        return (getState() == State.ALIVE)
-                && ((aliveNeighbors < 2) || (aliveNeighbors > 3));
+        return ((getState() == State.ALIVE) 
+        		&& ((aliveNeighbors < 2) || (aliveNeighbors > 3)));
     }
 
     private boolean shouldResurect(int aliveNeighbors) {
