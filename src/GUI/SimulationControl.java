@@ -105,8 +105,21 @@ public class SimulationControl {
             sim.resetCellSize(newSize);
             setSimulation();
         } else {
-            showError(myResources.getString("SizeError"));
+            showError(myResources.getString("NumberSizeError"));
         }
+//
+//		try {
+//			int newSize = Integer.parseInt(string);
+//			if (newSize > 0) {
+//				sim = getSimulation();
+//				sim.resetCellSize(newSize);
+//				setSimulation();
+//			} else {
+//				showError(myResources.getString("NumberSizeError"));
+//			}
+//		} catch (Exception e) {
+//			showError(myResources.getString("StringSizeError"));
+//		}
     }
 
     public void openFile(File file) {
