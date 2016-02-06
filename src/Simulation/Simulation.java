@@ -105,8 +105,6 @@ public abstract class Simulation {
     }
 
     public void setGenericProperties(Element simElem) {
-        String simType = XMLParser.getSimType(simElem);
-        setType(simType);
         gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
         gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
         cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
@@ -141,7 +139,7 @@ public abstract class Simulation {
     }
 
 
-    private void setType(String type) {
+    public void setType(String type) {
         this.type = type;
     }
 

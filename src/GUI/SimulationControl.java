@@ -42,6 +42,7 @@ public class SimulationControl {
     public void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
+        sim.setType(simType);
         sim.setProperties(simElem);
         setSimulation();
     }
