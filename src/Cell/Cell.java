@@ -57,7 +57,7 @@ public abstract class Cell extends Rectangle {
         this.column = column;
     }
 
-    public final void init(int cellWidth, int cellHeight, int x, int y, int row, int column) {
+    public final void init(double cellWidth, double cellHeight, double x, double y, int row, int column) {
         setWidth(cellWidth);
         setHeight(cellHeight);
         setX(x);
