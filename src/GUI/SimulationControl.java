@@ -13,116 +13,122 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class SimulationControl {
-	private static final String DEFAULT_SIM_TYPE = "Fire";
 
-	private final ResourceBundle myResources;
-	private final GridPane display;
-	private final ObservableList<String> mySimulations;
-	private Simulation sim;
-	private String simType = DEFAULT_SIM_TYPE;
-	private CellManager cellManager;
+    private static final String DEFAULT_SIM_TYPE = "Fire";
 
-	public SimulationControl(GridPane display, String resource) {
-		this.display = display;
-		myResources = ResourceBundle.getBundle(resource);
-		mySimulations = createSimulationsList();
-		switchSimulation(DEFAULT_SIM_TYPE);
-	}
+    private final ResourceBundle myResources;
+    private final GridPane display;
+    private final ObservableList<String> mySimulations;
+    private Simulation sim;
+    private String simType = DEFAULT_SIM_TYPE;
+    private CellManager cellManager;
 
-	public void switchSimulation(Object o) {
-		simType = o.toString();
-		sim = getSimulation();
-		setSimulation();
-	}
 
-	private void setSimulation() {
-		displayNewCells();
-		sim.setTheCells(cellManager.getCells());
-		sim.init();
-	}
+    public SimulationControl(GridPane display, String resource) {
+        this.display = display;
+        myResources = ResourceBundle.getBundle(resource);
+        mySimulations = createSimulationsList();
+        switchSimulation(DEFAULT_SIM_TYPE);
+    }
 
-	private void displayNewCells() {
-		display.getChildren().remove(cellManager);
-		cellManager = createCellManager(simType);
-		GridPane.setConstraints(cellManager, 0, 0);
-		GridPane.setRowSpan(cellManager, 6);
-		display.getChildren().add(cellManager);
-	}
+    public void switchSimulation(Object o) {
+        simType = o.toString();
+        sim = getSimulation();
+        setSimulation();
+    }
 
-	private Simulation getSimulation() {
-		Simulation sim;
-		try {
-			String simClassName = "Simulation." + simType + "Simulation";
-			Class c = Class.forName(simClassName);
-			sim = (Simulation) c.newInstance();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			sim = new FireSimulation();
-		}
-		return sim;
-	}
+    private void setSimulation() {
+        displayNewCells();
+        sim.setTheCells(cellManager.getCells());
+        sim.init();
+    }
+    private void displayNewCells() {
+        display.getChildren().remove(cellManager);
+        cellManager = createCellManager(simType);
+        GridPane.setConstraints(cellManager, 0, 0);
+        GridPane.setRowSpan(cellManager, 6);
+        display.getChildren().add(cellManager);
+    }
 
-	public ObservableList<String> getSimulations() {
-		return mySimulations;
-	}
 
-	public void slowDown() {
-		sim.decreaseRate();
-	}
+    private Simulation getSimulation() {
+        Simulation sim;
+        try {
+            String simClassName = "Simulation." + simType + "Simulation";
+            Class c = Class.forName(simClassName);
+            sim = (Simulation) c.newInstance();
+        } catch (InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException e) {
+            sim = new FireSimulation();
+        }
+        return sim;
+    }
 
-	public void speedUp() {
-		sim.increaseRate();
-	}
+    public ObservableList<String> getSimulations() {
+        return mySimulations;
+    }
 
-	public void step() {
-		sim.stop();
-		sim.step();
-	}
+    public void slowDown() {
+        sim.decreaseRate();
+    }
 
-	public void stop() {
-		sim.stop();
-	}
+    public void speedUp() {
+        sim.increaseRate();
+    }
 
-	public void playPause() {
-		sim.playOrStop();
-	}
+    public void step() {
+        sim.stop();
+        sim.step();
+    }
 
-	private CellManager createCellManager(String simType) {
-		CellManager cellManager = new CellManager();
-		cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(), sim.getCellsPerRow(), sim.getCellsPerColumn());
-		cellManager.init(simType);
-		return cellManager;
-	}
+    public void stop() {
+        sim.stop();
+    }
 
-	public void sizeChange(String string) {
-		try {
-			int newSize = Integer.parseInt(string);
-			if (newSize > 0) {
-				sim = getSimulation();
-				sim.resetCellSize(newSize);
-				setSimulation();
-			} else {
-				showError(myResources.getString("NumberSizeError"));
-			}
-		} catch (Exception e) {
-			showError(myResources.getString("StringSizeError"));
-		}
-	}
+    public void playPause() {
+        sim.playOrStop();
+    }
 
-	public void openFile(File file) {
-		System.out.println("File Path: " + file.getPath());
-		file.getPath();
-	}
 
-	private void showError(String message) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle(myResources.getString("ErrorTitle"));
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
+    private CellManager createCellManager(String simType) {
+        CellManager cellManager = new CellManager();
+        cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(),
+                sim.getCellsPerRow(), sim.getCellsPerColumn());
+        cellManager.init(simType);
+        return cellManager;
+    }
 
-	private ObservableList<String> createSimulationsList() {
-		return FXCollections.observableArrayList(myResources.getString("GameOfLifeSim"),
-				myResources.getString("SegregationSim"), myResources.getString("FireSim"),
-				myResources.getString("PredatorPreySim"));
-	}
+    public void sizeChange(String string) {
+        int newSize = Integer.parseInt(string);
+        if (newSize > 0) {
+            sim = getSimulation();
+            sim.resetCellSize(newSize);
+            setSimulation();
+        } else {
+            showError(myResources.getString("SizeError"));
+        }
+    }
+
+    public void openFile(File file) {
+        System.out.println("File Path: " + file.getPath());
+        file.getPath();
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(myResources.getString("ErrorTitle"));
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private ObservableList<String> createSimulationsList() {
+        return FXCollections.observableArrayList(
+                myResources.getString("GameOfLifeSim"),
+                myResources.getString("SegregationSim"),
+                myResources.getString("FireSim"),
+                myResources.getString("PredatorPreySim")
+        );
+    }
+
 }
