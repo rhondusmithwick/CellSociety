@@ -61,7 +61,7 @@ public class CellManager extends Group {
             for (int column = 0; column < cellsPerColumn; column++) {
                 Cell myCell = createCell(cellType, cellWidth, cellHeight, row, column);
                 grid[row][column] = myCell;
-                this.getChildren().add(myCell);
+                this.getChildren().add(myCell.getShape());
                 theCells.add(myCell);
             }
         }

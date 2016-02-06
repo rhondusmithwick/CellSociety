@@ -40,7 +40,7 @@ class CellSociety {
 
     private GridPane createDisplay() {
         GridPane display = new GridPane();
-        SimulationControl mySimControl = new SimulationControl(display, "GUIstrings");
+        SimulationControl mySimControl = new SimulationControl(display);
         display.setHgap(10);
         display.setVgap(10);
         GUI gui = new GUI(mySimControl);
