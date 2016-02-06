@@ -17,7 +17,6 @@ public class GameOfLifeCell extends Cell {
 
     public GameOfLifeCell() {
         super();
-//        setStroke(Color.BLACK);
     }
 
     @Override
@@ -62,8 +61,8 @@ public class GameOfLifeCell extends Cell {
 
 
     private boolean shouldDie(int aliveNeighbors) {
-        return ((getState() == State.ALIVE) 
-        		&& ((aliveNeighbors < 2) || (aliveNeighbors > 3)));
+        return ((getState() == State.ALIVE)
+                && ((aliveNeighbors < 2) || (aliveNeighbors > 3)));
     }
 
     private boolean shouldResurect(int aliveNeighbors) {
@@ -71,10 +70,12 @@ public class GameOfLifeCell extends Cell {
                 && (aliveNeighbors == 3);
     }
 
-    @Override
+
     public void setVisuals(Paint... visuals) {
         deadVisual = visuals[0];
         aliveVisual = visuals[1];
+//        setStroke(Color.BLACK);
+
     }
 
     private State getState() {

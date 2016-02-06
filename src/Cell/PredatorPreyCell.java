@@ -25,7 +25,6 @@ public class PredatorPreyCell extends Cell {
 
     public PredatorPreyCell() {
         super();
-//        setStroke(Color.BLACK);
     }
 
     public void handleUpdate() {
@@ -113,6 +112,8 @@ public class PredatorPreyCell extends Cell {
         emptyVisual = visuals[0];
         fishVisual = visuals[1];
         sharkVisual = visuals[2];
+        //        setStroke(Color.BLACK);
+
     }
 
     public enum State {

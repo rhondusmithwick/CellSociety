@@ -12,7 +12,7 @@ import java.util.LinkedList;
  * @author Rhondu Smithwick
  */
 public class CellManager extends Group {
-    private final Collection<Cell> theCells;
+    private final Collection<Cell> theCells = new LinkedList<>();
     private Cell[][] grid;
     private int gridWidth;
     private int gridHeight;
@@ -21,7 +21,6 @@ public class CellManager extends Group {
 
     public CellManager() {
         super();
-        theCells = new LinkedList<>();
     }
 
     private static Cell createCell(String cellType, double cellWidth, double cellHeight, int row, int column) {

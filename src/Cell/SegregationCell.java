@@ -75,6 +75,7 @@ public class SegregationCell extends Cell {
         emptyVisual = visuals[0];
         group1Visual = visuals[1];
         group2Visual = visuals[2];
+        setStroke(Color.BLACK);
     }
 
     public void setThreshold(int t) {

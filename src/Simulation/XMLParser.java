@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-public final class XMLParser {
+final class XMLParser {
 
     private XMLParser() {
     }
@@ -35,7 +35,7 @@ public final class XMLParser {
         }
     }
 
-    public static String getTextValue(Element ele, String tagName) {
+    private static String getTextValue(Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {

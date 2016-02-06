@@ -1,5 +1,6 @@
 package Cell;
 
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
@@ -21,7 +22,6 @@ public class FireCell extends Cell {
 
     public FireCell() {
         super();
-//        setStroke(Color.BLACK);
     }
 
     @Override
@@ -29,12 +29,6 @@ public class FireCell extends Cell {
         burnTime++;
     }
 
-    @Override
-    public void setVisuals(Paint... visuals) {
-        emptyVisual = visuals[0];
-        burningVisual = visuals[1];
-        treeVisual = visuals[2];
-    }
 
     public boolean hasBurningNeighbor() {
         FireCell fc;
@@ -69,6 +63,13 @@ public class FireCell extends Cell {
         setMark(Mark.NONE);
     }
 
+    @Override
+    public void setVisuals(Paint... visuals) {
+        emptyVisual = visuals[0];
+        burningVisual = visuals[1];
+        treeVisual = visuals[2];
+        setStroke(Color.BLACK);
+    }
 
     public State getState() {
         return state;

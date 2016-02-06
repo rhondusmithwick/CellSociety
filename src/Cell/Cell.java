@@ -13,13 +13,12 @@ import java.util.LinkedList;
  * @author Rhondu Smithwick
  */
 public abstract class Cell extends Rectangle {
-    private final Collection<Cell> neighbors;
+    private final Collection<Cell> neighbors = new LinkedList<>();
     private int row;
     private int column;
 
     Cell() {
         super();
-        neighbors = new LinkedList<>();
     }
 
     public final void removeDiagonals() {
@@ -70,7 +69,7 @@ public abstract class Cell extends Rectangle {
     public abstract void setVisuals(Paint... visuals);
 
 
-    public Collection<Cell> getNeighbors() {
+    Collection<Cell> getNeighbors() {
         return neighbors;
     }
 

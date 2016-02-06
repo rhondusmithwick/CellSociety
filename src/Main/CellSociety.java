@@ -29,20 +29,19 @@ class CellSociety {
      * Create the scene and set the primaryStage to it.
      *
      * @param primaryStage the primary stage
-     * @param resource     the filename of the GUI properties
      */
-    void init(Stage primaryStage, String resource) {
-        GridPane display = createDisplay(resource);
+    void init(Stage primaryStage) {
+        GridPane display = createDisplay();
         Scene myScene = new Scene(display, DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
         primaryStage.setScene(myScene);
         primaryStage.setResizable(false);
     }
 
 
-    private GridPane createDisplay(String resource) {
+    private GridPane createDisplay() {
         GridPane display = new GridPane();
-        SimulationControl mySimControl = new SimulationControl(display, resource);
-        GUI gui = new GUI(mySimControl, resource);
+        SimulationControl mySimControl = new SimulationControl(display, "GUIstrings");
+        GUI gui = new GUI(mySimControl);
         display.getChildren().addAll(gui.getControls());
         return display;
     }

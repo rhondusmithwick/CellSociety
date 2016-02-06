@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Cell Society");
         CellSociety cs = new CellSociety();
-        cs.init(primaryStage, "GUIstrings");
+        cs.init(primaryStage);
         primaryStage.show();
     }
 }

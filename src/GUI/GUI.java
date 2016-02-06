@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 
 public class GUI {
 
+    private static final String GUI_PROPERTY_PATH = "Guistrings";
+
     private final ResourceBundle myResources;
     private final List<Node> controlList = new ArrayList<>();
     private final SimulationControl mySimControl;
@@ -31,8 +33,8 @@ public class GUI {
     private Button mySetSizeButton;
     private ComboBox<String> comboBox;
 
-    public GUI(SimulationControl mySimulationControl, String resource) {
-        myResources = ResourceBundle.getBundle(resource);
+    public GUI(SimulationControl mySimulationControl) {
+        myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
         mySimControl = mySimulationControl;
         createControls();
         setLocations();

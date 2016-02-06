@@ -76,12 +76,12 @@ public abstract class Simulation {
         isPlaying = true;
     }
 
-    private final void stopLoop() {
+    private void stopLoop() {
         simulationLoop.stop();
         isPlaying = false;
     }
 
-    public boolean getPlaying() {
+    private boolean getPlaying() {
         return isPlaying;
     }
 
@@ -92,13 +92,13 @@ public abstract class Simulation {
             stopLoop();
         }
     }
-    
-	public void stop() {
-		if (getPlaying()) {
+
+    public void stop() {
+        if (getPlaying()) {
             stopLoop();
         }
-	}
-        
+    }
+
     final int getRandomNum(int min, int max) {
         int range = max - min + 1;
         return rn.nextInt(range) + min;
@@ -164,7 +164,6 @@ public abstract class Simulation {
         double currentRate = simulationLoop.getRate();
         if (currentRate > 0) {
             simulationLoop.setRate(currentRate - .1);
-
         }
     }
 
