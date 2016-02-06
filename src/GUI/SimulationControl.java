@@ -81,15 +81,27 @@ public class SimulationControl {
     }
 
     public void slowDown() {
-        sim.decreaseRate();
+        if(notPlayingError() && !sim.decreaseRate()){
+            showError(myResources.getString("DecreaseError"));
+        }
+
     }
 
     public void speedUp() {
-        sim.increaseRate();
+        if (notPlayingError() && !sim.increaseRate()){
+            showError(myResources.getString("IncreaseError"));
+        }
+    }
+
+    private boolean notPlayingError(){
+        if(!sim.getPlaying()){
+            showError(myResources.getString("NotPlayingError"));
+        }
+        return (sim.getPlaying());
     }
 
     public void step() {
-        sim.stop();
+        stop();
         sim.step();
     }
 
@@ -111,27 +123,15 @@ public class SimulationControl {
     }
 
     public void sizeChange(String string) {
-        int newSize = Integer.parseInt(string);
-        if (newSize > 0) {
+        try {
+            int newSize = Integer.parseInt(string);
             sim = getSimulation();
-            sim.resetCellSize(newSize);
+            int sizePass = 1 / (sim.resetCellSize(newSize));
             setSimulation();
-        } else {
-            showError(myResources.getString("NumberSizeError"));
         }
-//
-//		try {
-//			int newSize = Integer.parseInt(string);
-//			if (newSize > 0) {
-//				sim = getSimulation();
-//				sim.resetCellSize(newSize);
-//				setSimulation();
-//			} else {
-//				showError(myResources.getString("NumberSizeError"));
-//			}
-//		} catch (Exception e) {
-//			showError(myResources.getString("StringSizeError"));
-//		}
+        catch (Exception e){
+            showError(myResources.getString("SizeError"));
+        }
     }
 
     public void openFile(File file) {
