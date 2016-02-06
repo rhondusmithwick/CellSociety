@@ -76,7 +76,7 @@ public abstract class Simulation {
         isPlaying = true;
     }
 
-    public final void stopLoop() {
+    private final void stopLoop() {
         simulationLoop.stop();
         isPlaying = false;
     }
@@ -92,8 +92,13 @@ public abstract class Simulation {
             stopLoop();
         }
     }
-
-
+    
+	public void stop() {
+		if (getPlaying()) {
+            stopLoop();
+        }
+	}
+        
     final int getRandomNum(int min, int max) {
         int range = max - min + 1;
         return rn.nextInt(range) + min;

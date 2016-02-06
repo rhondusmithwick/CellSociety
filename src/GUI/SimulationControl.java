@@ -75,18 +75,12 @@ public class SimulationControl {
     }
 
     public void step() {
-        if (!sim.getPlaying()) {
-            sim.step();
-        } else {
-            sim.stopLoop();
-            sim.step();
-        }
+        sim.stop();
+        sim.step();
     }
 
     public void stop() {
-        if (sim.getPlaying()) {
-            sim.stopLoop();
-        }
+        sim.stop();
     }
 
     public void playPause() {
@@ -102,17 +96,12 @@ public class SimulationControl {
         return cellManager;
     }
 
-    // TODO
     public void sizeChange(String string) {
         sim = getSimulation();
         sim.resetCellSize(Integer.parseInt(string));
         initNewSimulation();
-
-        //int mySize = ;
-        //System.out.println("This size: " + mySize);
     }
 
-    // TODO
     public void openFile(File file) {
         System.out.println("File Path: " + file.getPath());
         file.getPath();
