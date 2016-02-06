@@ -33,11 +33,14 @@ public class SimulationControl {
     public void switchSimulation(Object o) {
         simType = o.toString();
         sim = getSimulation();
+        setSimulation();
+    }
+
+    private void setSimulation() {
         displayNewCells();
         sim.setTheCells(cellManager.getCells());
         sim.init();
     }
-
     private void displayNewCells() {
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
@@ -100,7 +103,7 @@ public class SimulationControl {
         if (newSize > 0) {
             sim = getSimulation();
             sim.resetCellSize(newSize);
-            displayNewCells();
+            setSimulation();
         } else {
             showError(myResources.getString("SizeError"));
         }
