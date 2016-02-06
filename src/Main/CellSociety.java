@@ -1,10 +1,9 @@
 package Main;
 
+import GUI.SimulationControl;
 import GUI.GUI;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -32,11 +31,18 @@ class CellSociety {
      * @param resource the filename of the GUI properties
      */
     void init(Stage primaryStage, String resource) {
-        GridPane display = new GridPane();
-        GUI gui = new GUI();
-        display = gui.init(display,resource);
+        GridPane display = createDisplay(resource);
         Scene myScene = new Scene(display, DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
         primaryStage.setScene(myScene);
         primaryStage.setResizable(false);
+    }
+
+
+    private GridPane createDisplay(String resource) {
+        GridPane display = new GridPane();
+        SimulationControl mySimControl = new SimulationControl(display, resource);
+        GUI gui = new GUI(mySimControl, resource);
+        display.getChildren().addAll(gui.getControls());
+        return display;
     }
 }

@@ -1,7 +1,6 @@
 package GUI;
 
 import Cell.CellManager;
-import Cell.FireCell;
 import Simulation.Simulation;
 import Simulation.FireSimulation;
 import javafx.collections.FXCollections;
@@ -9,12 +8,14 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 
 import java.io.File;
-import java.util.ResourceBundle;
 
-class SimulationControl {
-
-	private ResourceBundle myResources;
+public class SimulationControl {
     private static final String DEFAULT_SIM_TYPE = "Fire";
+
+    private final GridPane display;
+    private Simulation sim;
+    private String simType;
+    private CellManager cellManager;
 
     private final ObservableList<String> mySimulations = FXCollections.observableArrayList(
             "GameOfLife",
@@ -23,13 +24,9 @@ class SimulationControl {
             "PredatorPrey"
     );
 
-    private String simType;
-    private CellManager cellManager;
-    private Simulation sim;
-    private final GridPane display;
+
 
     public SimulationControl(GridPane display, String resource) {
-    	myResources = ResourceBundle.getBundle(resource);
         simType = DEFAULT_SIM_TYPE;
         this.display = display;
         sim = getSimulation();
@@ -56,12 +53,12 @@ class SimulationControl {
     private Simulation getSimulation() {
         Simulation sim;
         try {
-            Class c = Class.forName("Simulation." + simType + "Simulation");
+            String simClassName = "Simulation." + simType + "Simulation";
+            Class c = Class.forName(simClassName);
             sim = (Simulation) c.newInstance();
         } catch (InstantiationException
                 | IllegalAccessException
                 | ClassNotFoundException e) {
-            System.out.println(e);
             sim = new FireSimulation();
         }
         return sim;
@@ -112,7 +109,7 @@ class SimulationControl {
         sim = getSimulation();
         sim.resetCellSize(Integer.parseInt(string));
         initNewSimulation();
-    	
+
         //int mySize = ;
         //System.out.println("This size: " + mySize);
     }
