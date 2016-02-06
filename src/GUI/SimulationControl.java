@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class SimulationControl {
+    private static final String DEFAULT_GUUI_PROPERTY = "GUIstrings";
     private static final String DEFAULT_SIM_TYPE = "Fire";
 
     private final ResourceBundle myResources;
@@ -23,11 +24,11 @@ public class SimulationControl {
     private CellManager cellManager;
 
 
-    public SimulationControl(GridPane display, String resource) {
+    public SimulationControl(GridPane display) {
         this.display = display;
-        myResources = ResourceBundle.getBundle(resource);
+        myResources = ResourceBundle.getBundle(DEFAULT_GUUI_PROPERTY);
         mySimulations = createSimulationsList();
-//        switchSimulation(DEFAULT_SIM_TYPE);
+        switchSimulation(DEFAULT_SIM_TYPE);
     }
 
     public void switchSimulation(Object o) {
@@ -41,6 +42,7 @@ public class SimulationControl {
         sim.setTheCells(cellManager.getCells());
         sim.init();
     }
+
     private void displayNewCells() {
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
@@ -105,8 +107,21 @@ public class SimulationControl {
             sim.resetCellSize(newSize);
             setSimulation();
         } else {
-            showError(myResources.getString("SizeError"));
+            showError(myResources.getString("NumberSizeError"));
         }
+//
+//		try {
+//			int newSize = Integer.parseInt(string);
+//			if (newSize > 0) {
+//				sim = getSimulation();
+//				sim.resetCellSize(newSize);
+//				setSimulation();
+//			} else {
+//				showError(myResources.getString("NumberSizeError"));
+//			}
+//		} catch (Exception e) {
+//			showError(myResources.getString("StringSizeError"));
+//		}
     }
 
     public void openFile(File file) {

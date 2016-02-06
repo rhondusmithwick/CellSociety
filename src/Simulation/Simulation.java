@@ -153,18 +153,23 @@ public abstract class Simulation {
         this.theCells = theCells;
     }
 
-    public final void increaseRate() {
+    public final boolean increaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate <= 10) {
             simulationLoop.setRate(currentRate + .1);
+            return true;
         }
+        return false;
     }
 
-    public final void decreaseRate() {
+    public final boolean decreaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate > 0) {
             simulationLoop.setRate(currentRate - .1);
+            return true;
         }
+        return false;
+
     }
 
     public final void resetRate() {

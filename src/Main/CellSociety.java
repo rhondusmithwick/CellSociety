@@ -17,7 +17,7 @@ class CellSociety {
     /**
      * The dimensions of the Scene.
      */
-    private static final Dimension DEFAULT_SIZE = new Dimension(850, 600);
+    private static final Dimension DEFAULT_SIZE = new Dimension(870, 600);
 
     /**
      * The empty constructor.
@@ -40,7 +40,9 @@ class CellSociety {
 
     private GridPane createDisplay() {
         GridPane display = new GridPane();
-        SimulationControl mySimControl = new SimulationControl(display, "GUIstrings");
+        SimulationControl mySimControl = new SimulationControl(display);
+        display.setHgap(10);
+        display.setVgap(10);
         GUI gui = new GUI(mySimControl);
         display.getChildren().addAll(gui.getControls());
         return display;
