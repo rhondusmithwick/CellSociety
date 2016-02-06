@@ -81,7 +81,7 @@ public abstract class Simulation {
         isPlaying = false;
     }
 
-    private boolean getPlaying() {
+    public boolean getPlaying() {
         return isPlaying;
     }
 
@@ -176,9 +176,15 @@ public abstract class Simulation {
         simulationLoop.setRate(1.0);
     }
 
-    public final void resetCellSize(int numCells) {
+    public final int resetCellSize(int numCells) {
+    	if (numCells > 1){
         cellsPerRow = numCells;
         cellsPerColumn = numCells;
+        return 1;
+    	}
+    	else {
+    		return 0;
+    	}
     }
 
 }
