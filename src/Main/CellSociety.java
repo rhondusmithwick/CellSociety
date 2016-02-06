@@ -16,13 +16,13 @@ import java.awt.*;
  */
 class CellSociety {
 
-//    private static final Dimension DEFAULT_SIZE = new Dimension(810, 600);
+    private static final Dimension DEFAULT_SIZE = new Dimension(810, 600);
 
-    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-    int width = (int) (primaryScreenBounds.getWidth() / 1.5);
-    int height = (int) (primaryScreenBounds.getHeight() / 1.5);
-
-    private final Dimension DEFAULT_SIZE = new Dimension(width, height);
+    //Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+    //int width = (int) (primaryScreenBounds.getWidth() / 1.5);
+    ///int height = (int) (primaryScreenBounds.getHeight() / 1.5);
+    //private final Dimension DEFAULT_SIZE = new Dimension(width, height);
+    
     private Scene myScene;
 
     public CellSociety() {
