@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-final class XMLParser {
+public final class XMLParser {
 
     private XMLParser() {
     }

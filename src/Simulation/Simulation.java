@@ -37,7 +37,7 @@ public abstract class Simulation {
         setProperties(simElem);
     }
 
-    final void setProperties(Element simElem) {
+    public final void setProperties(Element simElem) {
         setGenericProperties(simElem);
         setSpecificProperties(simElem);
     }
@@ -104,7 +104,7 @@ public abstract class Simulation {
         return rn.nextInt(range) + min;
     }
 
-    private void setGenericProperties(Element simElem) {
+    public void setGenericProperties(Element simElem) {
         String simType = XMLParser.getSimType(simElem);
         setType(simType);
         gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
