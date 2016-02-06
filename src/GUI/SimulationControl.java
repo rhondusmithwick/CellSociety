@@ -27,7 +27,7 @@ public class SimulationControl {
         this.display = display;
         myResources = ResourceBundle.getBundle(resource);
         mySimulations = createSimulationsList();
-//        switchSimulation(DEFAULT_SIM_TYPE);
+        switchSimulation(DEFAULT_SIM_TYPE);
     }
 
     public void switchSimulation(Object o) {
