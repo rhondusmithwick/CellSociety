@@ -27,7 +27,7 @@ public class SimulationControl {
     private String simType = DEFAULT_SIM_TYPE;
     private CellManager cellManager;
     private int newSize = 0;
-    private Label simLabel = new Label();
+    private final Label simLabel = new Label();
 
     public SimulationControl(GridPane display) {
         this.display = display;
@@ -43,7 +43,7 @@ public class SimulationControl {
         setSimulation();
     }
 
-    public void switchSimulation(Element simElem) {
+    private void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
         setSimLabel();
@@ -171,7 +171,7 @@ public class SimulationControl {
         return simLabel;
     }
 
-    public void setSimLabel() {
+    private void setSimLabel() {
         simLabel.setText(simType);
     }
 }

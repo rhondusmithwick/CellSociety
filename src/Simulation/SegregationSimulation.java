@@ -9,6 +9,7 @@ import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -84,19 +85,13 @@ public class SegregationSimulation extends Simulation {
     }
 
     private void randomMover(List<SegregationCell> cellsToMove) {
+        Collections.shuffle(cellsToMove);
+        Collections.shuffle(emptyCells);
         while (!cellsToMove.isEmpty() && !emptyCells.isEmpty()) {
-            final int randomIndex = getRandomNum(0, cellsToMove.size() - 1);
-            final SegregationCell cellToMove = cellsToMove.get(randomIndex);
-            cellsToMove.remove(randomIndex);
-            move(cellToMove);
+            swap(cellsToMove.get(0), emptyCells.get(0));
+            emptyCells.remove(0);
+            cellsToMove.remove(0);
         }
-    }
-
-    private void move(SegregationCell sc) {
-        final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
-        final SegregationCell emptyCell = emptyCells.get(randomIndex);
-        emptyCells.remove(randomIndex);
-        swap(sc, emptyCell);
     }
 
     private void swap(SegregationCell sc, SegregationCell emptyCell) {

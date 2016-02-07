@@ -2,7 +2,7 @@ package Cell;
 
 import javafx.scene.paint.Paint;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +39,7 @@ public class PredatorPreyCell extends Cell {
 
 
     public List<PredatorPreyCell> getNeighborsOfState(State state) {
-        List<PredatorPreyCell> neighborsOfState = new LinkedList<>();
+        List<PredatorPreyCell> neighborsOfState = new ArrayList<>();
         PredatorPreyCell neighbor;
         for (Cell c : getNeighbors()) {
             neighbor = (PredatorPreyCell) c;

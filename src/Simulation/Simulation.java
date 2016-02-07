@@ -76,7 +76,7 @@ public abstract class Simulation {
         isPlaying = false;
     }
 
-    public boolean getPlaying() {
+    private boolean getPlaying() {
         return isPlaying;
     }
 
@@ -99,7 +99,8 @@ public abstract class Simulation {
         return rn.nextInt(range) + min;
     }
 
-    public void setGenericProperties(Element simElem) {
+    private void setGenericProperties(Element simElem) {
+
         gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
         gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
         cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
@@ -129,7 +130,7 @@ public abstract class Simulation {
     }
 
 
-    public String getType() {
+    String getType() {
         return type;
     }
 

@@ -39,7 +39,7 @@ public class GUI {
     private Button mySetSizeButton;
     private Button myResetButton;
     private Button myPlayAgainButton;
-    private Label simLabel;
+    private final Label simLabel;
     private ComboBox<String> comboBox;
 
     public GUI(SimulationControl mySimControl) {
