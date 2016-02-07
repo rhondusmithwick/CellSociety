@@ -53,7 +53,7 @@ public class GUI {
 
 
     private void setWidths() {
-        for (Node node : this.getControls()) {
+        for (Node node : getControls()) {
             ((Region) node).setMaxWidth(Double.MAX_VALUE);
         }
     }
@@ -119,7 +119,7 @@ public class GUI {
         GridPane.setConstraints(mySpeedUpButton, 2, 4, 1, 1, HPos.CENTER, VPos.CENTER);
     }
 
-    private Button makeButton(String property, EventHandler<ActionEvent> handler) {
+    private static Button makeButton(String property, EventHandler<ActionEvent> handler) {
         Button result = new Button();
         result.setText(property);
         result.setOnAction(handler);
@@ -140,7 +140,6 @@ public class GUI {
 
     private void setUpFileChooser() {
         mySimControl.stop();
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(
@@ -153,11 +152,10 @@ public class GUI {
         }
     }
 
-    private File getLocalDir() {
+    private static File getLocalDir() {
         ProtectionDomain pd = GUI.class.getProtectionDomain();
         CodeSource cs = pd.getCodeSource();
         URL localDir = cs.getLocation();
-
         File dir;
         try {
             dir = new File(localDir.toURI());

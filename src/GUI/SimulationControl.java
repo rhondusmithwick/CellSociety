@@ -137,7 +137,6 @@ public class SimulationControl {
         try {
             newSize = Integer.parseInt(string);
             sim = getSimulation();
-
             if (!sim.resetCellSize(newSize)) {
                 throw new Exception();
             }
@@ -148,7 +147,6 @@ public class SimulationControl {
     }
 
     public void openFile(File file) {
-        System.out.println("File Path: " + file.getPath());
         switchSimulation(XMLParser.getXmlElement(file.getPath()));
     }
 

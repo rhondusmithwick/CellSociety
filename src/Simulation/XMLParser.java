@@ -29,7 +29,6 @@ public final class XMLParser {
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {
-
             pce.printStackTrace();//Bad
             return null;
         }
