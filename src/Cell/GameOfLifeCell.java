@@ -115,8 +115,6 @@ public class GameOfLifeCell extends Cell {
     public void setVisuals(Paint... visuals) {
         deadVisual = visuals[0];
         aliveVisual = visuals[1];
-//        setStroke(Color.BLACK);
-
     }
 
     /**

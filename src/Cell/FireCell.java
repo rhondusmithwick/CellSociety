@@ -104,7 +104,6 @@ public class FireCell extends Cell {
         emptyVisual = visuals[0];
         burningVisual = visuals[1];
         treeVisual = visuals[2];
-        setStroke(Color.BLACK);
     }
 
     /**

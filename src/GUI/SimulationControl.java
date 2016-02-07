@@ -136,7 +136,6 @@ public class SimulationControl {
             if (!sim.resetCellSize(newSize)) {
                 throw new Exception();
             }
-
             setSimulation();
         } catch (Exception e) {
             showError(myResources.getString("SizeError"));

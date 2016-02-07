@@ -10,9 +10,14 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
-// TO FINISH
 public class PredatorPreyCell extends Cell {
+    /**
+     * This cell's state.
+     */
     private State state;
+    /**
+     * This cell's mark.
+     */
     private Mark mark;
 
     private int breedCounter;
@@ -112,8 +117,6 @@ public class PredatorPreyCell extends Cell {
         emptyVisual = visuals[0];
         fishVisual = visuals[1];
         sharkVisual = visuals[2];
-        //        setStroke(Color.BLACK);
-
     }
 
     public enum State {
