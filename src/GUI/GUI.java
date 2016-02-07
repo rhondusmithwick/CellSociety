@@ -7,8 +7,6 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -16,10 +14,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +56,7 @@ public class GUI {
         addButtons();
     }
 
-    private void createComboBox(){
+    private void createComboBox() {
         comboBox = new ComboBox<>(mySimControl.getSimulations());
         comboBox.setEditable(false);
         comboBox.getSelectionModel().selectedItemProperty().addListener(
@@ -113,15 +107,13 @@ public class GUI {
         return result;
     }
 
-    private void setUpSizeBox(){
+    private void setUpSizeBox() {
         mySimControl.stop();
         TextInputDialog input = new TextInputDialog("");
         input.setTitle(myResources.getString("SizePromptTitle"));
         input.setContentText(myResources.getString("SizePrompt"));
         Optional<String> response = input.showAndWait();
-        if (response.isPresent()){
-            //if (response.isPresent() && response.get()=="") {
-            System.out.println(response.get());
+        if (response.isPresent()) {
             mySimControl.sizeChange(response.get());
         }
     }

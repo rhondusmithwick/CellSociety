@@ -149,7 +149,7 @@ public abstract class Simulation {
     public final boolean increaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate <= 10) {
-            simulationLoop.setRate(currentRate + .1);
+            simulationLoop.setRate(currentRate + .5);
             return true;
         }
         return false;
@@ -158,7 +158,7 @@ public abstract class Simulation {
     public final boolean decreaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate > 0) {
-            simulationLoop.setRate(currentRate - .1);
+            simulationLoop.setRate(currentRate - .5);
             return true;
         }
         return false;
@@ -170,7 +170,7 @@ public abstract class Simulation {
     }
 
     public final int resetCellSize(int numCells) {
-        if (numCells > 1){
+        if (numCells > 1) {
             cellsPerRow = numCells;
             cellsPerColumn = numCells;
             return 1;

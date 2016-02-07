@@ -9,11 +9,10 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ResourceBundle;
-
-import org.w3c.dom.Element;
 
 public class SimulationControl {
     private static final String DEFAULT_GUUI_PROPERTY = "GUIstrings";
@@ -39,6 +38,7 @@ public class SimulationControl {
         sim = getSimulation();
         setSimulation();
     }
+
     public void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
@@ -81,23 +81,16 @@ public class SimulationControl {
     }
 
     public void slowDown() {
-        if(notPlayingError() && !sim.decreaseRate()){
+        if (!sim.decreaseRate()) {
             showError(myResources.getString("DecreaseError"));
         }
 
     }
 
     public void speedUp() {
-        if (notPlayingError() && !sim.increaseRate()){
+        if (!sim.increaseRate()) {
             showError(myResources.getString("IncreaseError"));
         }
-    }
-
-    private boolean notPlayingError(){
-        if(!sim.getPlaying()){
-            showError(myResources.getString("NotPlayingError"));
-        }
-        return (sim.getPlaying());
     }
 
     public void step() {
@@ -128,8 +121,7 @@ public class SimulationControl {
             sim = getSimulation();
             int sizePass = 1 / (sim.resetCellSize(newSize));
             setSimulation();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             showError(myResources.getString("SizeError"));
         }
     }
