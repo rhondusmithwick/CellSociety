@@ -4,7 +4,7 @@
     <gridHeight>600</gridHeight>
     <numCellsPerRow>100</numCellsPerRow>
     <numCellsPerColumn>100</numCellsPerColumn>
-    <burnTimer>30</burnTimer>
+    <burnTime>30</burnTime>
     <probCatch>30</probCatch>
     <emptyVisual>white</emptyVisual>
     <burningVisual>red</burningVisual>
