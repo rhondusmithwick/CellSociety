@@ -18,7 +18,7 @@ import java.util.List;
 public class PredatorPreySimulation extends Simulation {
     private static final int DEFAULT_FISH_BREED_TIME = 10;
     private static final int DEFAULT_SHARK_BREED_TIME = 15;
-    private static final int DEFAULT_STARVE_TIME = 2;
+    private static final int DEFAULT_STARVE_TIME = 5;
     private static final int DEFAULT_EMPTY_PERCENT = 40;
     private static final int DEFAULT_FISH_PERCENT = 50;
 

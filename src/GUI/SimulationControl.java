@@ -46,13 +46,13 @@ public class SimulationControl {
     public void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
-        sim.setType(simType);
         setSimLabel();
         sim.setProperties(simElem);
         setSimulation();
     }
 
     private void setSimulation() {
+        sim.setType(simType);
         displayNewCells();
         sim.setTheCells(cellManager.getCells());
         sim.init();
