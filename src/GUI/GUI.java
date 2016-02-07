@@ -7,6 +7,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -38,11 +39,13 @@ public class GUI {
     private Button mySetSizeButton;
     private Button myResetButton;
     private Button myPlayAgainButton;
+    private Label simLabel;
     private ComboBox<String> comboBox;
 
-    public GUI(SimulationControl mySimulationControl) {
+    public GUI(SimulationControl mySimControl) {
         myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
-        mySimControl = mySimulationControl;
+        this.mySimControl = mySimControl;
+        simLabel = mySimControl.getSimLabel();
         createControls();
         setWidths();
         setLocations();
@@ -100,6 +103,7 @@ public class GUI {
         controlList.add(mySlowDownButton);
         controlList.add(myResetButton);
         controlList.add(myPlayAgainButton);
+        controlList.add(simLabel);
     }
 
     private void setLocations() {
@@ -107,6 +111,7 @@ public class GUI {
         GridPane.setConstraints(myResetButton, 1, 6, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myPlayAgainButton, 1, 5, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(comboBox, 1, 1, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(simLabel, 3, 0, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySetSizeButton, 1, 2, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myPlayPauseButton, 1, 3, 1, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myStepButton, 2, 3, 1, 1, HPos.CENTER, VPos.CENTER);

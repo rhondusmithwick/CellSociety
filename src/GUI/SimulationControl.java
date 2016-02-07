@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.w3c.dom.Element;
 
@@ -25,6 +26,7 @@ public class SimulationControl {
     private String simType = DEFAULT_SIM_TYPE;
     private CellManager cellManager;
     private int newSize = 0;
+    private Label simLabel = new Label();
 
 
     public SimulationControl(GridPane display) {
@@ -36,6 +38,7 @@ public class SimulationControl {
 
     public void switchSimulation(Object o) {
         simType = o.toString();
+        simLabel.setText(simType);
         sim = getSimulation();
         setSimulation();
     }
@@ -43,6 +46,7 @@ public class SimulationControl {
     public void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
+        simLabel.setText(simType);
         sim.setType(simType);
         sim.setProperties(simElem);
         setSimulation();
@@ -161,6 +165,10 @@ public class SimulationControl {
                 myResources.getString("FireSim"),
                 myResources.getString("PredatorPreySim")
         );
+    }
+
+    public Label getSimLabel() {
+        return simLabel;
     }
 }
 
