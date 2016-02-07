@@ -6,16 +6,21 @@ import Simulation.Simulation;
 import Simulation.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.TextAlignment;
+
 import org.w3c.dom.Element;
 
+
 import java.io.File;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SimulationControl {
-    private static final String DEFAULT_GUUI_PROPERTY = "GUIstrings";
+    private static final String DEFAULT_GUI_PROPERTY = "GUIstrings";
     private static final String DEFAULT_SIM_TYPE = "Fire";
 
     private final ResourceBundle myResources;
@@ -25,12 +30,14 @@ public class SimulationControl {
     private String simType = DEFAULT_SIM_TYPE;
     private CellManager cellManager;
     private int newSize = 0;
+	private GUI myGUI;
 
 
     public SimulationControl(GridPane display) {
         this.display = display;
-        myResources = ResourceBundle.getBundle(DEFAULT_GUUI_PROPERTY);
+        myResources = ResourceBundle.getBundle(DEFAULT_GUI_PROPERTY);
         mySimulations = createSimulationsList();
+        myGUI = new GUI(this);
         switchSimulation(DEFAULT_SIM_TYPE);
     }
 
@@ -57,8 +64,8 @@ public class SimulationControl {
     private void displayNewCells() {
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
-        GridPane.setConstraints(cellManager, 0, 0);
-        GridPane.setRowSpan(cellManager, 6);
+        GridPane.setConstraints(cellManager, 0, 1);
+        GridPane.setRowSpan(cellManager, 7);
         display.getChildren().add(cellManager);
     }
 
@@ -74,6 +81,7 @@ public class SimulationControl {
                 | ClassNotFoundException e) {
             sim = new FireSimulation();
         }
+        myGUI.getSimulationTitle().setText(simType);
         return sim;
     }
 
@@ -110,6 +118,7 @@ public class SimulationControl {
     public void reset() {
         sim = getSimulation();
         setSimulation();
+        newSize = 0;
     }
 
     public void playAgain() {
@@ -164,6 +173,12 @@ public class SimulationControl {
                 myResources.getString("PredatorPreySim")
         );
     }
+
+    public List<Node> getControls() {
+        return myGUI.getControls();
+    }
+    
+
 }
 
 

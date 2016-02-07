@@ -7,9 +7,11 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -38,6 +40,7 @@ public class GUI {
     private Button mySetSizeButton;
     private Button myResetButton;
     private Button myPlayAgainButton;
+    private Label simulationTitle;
     private ComboBox<String> comboBox;
 
     public GUI(SimulationControl mySimulationControl) {
@@ -58,11 +61,17 @@ public class GUI {
 
     private void createControls() {
         createComboBox();
+        createTextRegions();
         createButtons();
         addButtons();
     }
 
-    private void createComboBox() {
+    private void createTextRegions() {
+		simulationTitle = new Label();
+	}
+
+
+	private void createComboBox() {
         comboBox = new ComboBox<>(mySimControl.getSimulations());
         comboBox.setEditable(false);
         comboBox.getSelectionModel().selectedItemProperty().addListener(
@@ -100,6 +109,7 @@ public class GUI {
         controlList.add(mySlowDownButton);
         controlList.add(myResetButton);
         controlList.add(myPlayAgainButton);
+        controlList.add(simulationTitle);
     }
 
     private void setLocations() {
@@ -107,6 +117,7 @@ public class GUI {
         GridPane.setConstraints(myResetButton, 1, 6, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myPlayAgainButton, 1, 5, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(comboBox, 1, 1, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(simulationTitle, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySetSizeButton, 1, 2, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myPlayPauseButton, 1, 3, 1, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myStepButton, 2, 3, 1, 1, HPos.CENTER, VPos.CENTER);
@@ -164,6 +175,10 @@ public class GUI {
 
     public List<Node> getControls() {
         return controlList;
+    }
+    
+    public Label getSimulationTitle(){
+    	return simulationTitle;
     }
 
 }
