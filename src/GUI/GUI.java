@@ -135,7 +135,7 @@ public class GUI {
 
     private void setUpFileChooser() {
         mySimControl.stop();
-
+ 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(
@@ -147,17 +147,16 @@ public class GUI {
             mySimControl.openFile(file);
         }
     }
-    
 
-    private File getLocalDir(){
+
+    private File getLocalDir() {
         ProtectionDomain pd = GUI.class.getProtectionDomain();
         CodeSource cs = pd.getCodeSource();
         URL localDir = cs.getLocation();
-
         File dir;
         try {
             dir = new File(localDir.toURI());
-        } catch(URISyntaxException e) {
+        } catch (URISyntaxException e) {
             dir = new File(localDir.getPath());
         }
         return dir;
