@@ -14,6 +14,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -120,15 +124,30 @@ public class GUI {
 
     private void setUpFileChooser() {
         mySimControl.stop();
+ 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("XML", "*.xml")
         );
+        fileChooser.setInitialDirectory(getLocalDir());
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             mySimControl.openFile(file);
         }
+    }
+    private File getLocalDir(){
+    	ProtectionDomain pd = GUI.class.getProtectionDomain();
+        CodeSource cs = pd.getCodeSource();
+        URL localDir = cs.getLocation();
+        
+        File dir;
+        try {
+          dir = new File(localDir.toURI());
+        } catch(URISyntaxException e) {
+          dir = new File(localDir.getPath());
+        }
+        return dir;
     }
 
     public List<Node> getControls() {
