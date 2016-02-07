@@ -12,18 +12,50 @@ import java.util.LinkedList;
  * @author Rhondu Smithwick
  */
 public class CellManager extends Group {
+    /**
+     * The cells.
+     */
     private final Collection<Cell> theCells = new LinkedList<>();
+    /**
+     * The internal 2D array for keeping track of neighbors.
+     */
     private Cell[][] grid;
+    /**
+     * This grid's width.
+     */
     private int gridWidth;
+    /**
+     * This grid's height.
+     */
     private int gridHeight;
+    /**
+     * This grid's number of cells per row.
+     */
     private int cellsPerRow;
+    /**
+     * This grid's number of cells per column.
+     */
     private int cellsPerColumn;
 
+    /**
+     * Construct a cellmanager.
+     */
     public CellManager() {
         super();
     }
 
-    private static Cell createCell(String cellType, double cellWidth, double cellHeight, int row, int column) {
+    /**
+     * Create a cell of type cellType.
+     *
+     * @param cellType   the type of cell
+     * @param cellWidth  the cell's width
+     * @param cellHeight the cell's height
+     * @param row        the cell's row
+     * @param column     the cell's column
+     * @return a cell of type cellType OR a Fire cell if exception
+     */
+    private static Cell createCell(String cellType, double cellWidth,
+                                   double cellHeight, int row, int column) {
         Cell myCell;
         try {
             Class cellClass = Class.forName("Cell." + cellType + "Cell");
@@ -31,7 +63,7 @@ public class CellManager extends Group {
         } catch (InstantiationException
                 | IllegalAccessException
                 | ClassNotFoundException e) {
-            myCell = new GameOfLifeCell();
+            myCell = new FireCell();
         }
         double x = row * cellWidth;
         double y = column * cellHeight;
@@ -39,6 +71,14 @@ public class CellManager extends Group {
         return myCell;
     }
 
+    /**
+     * Set the internal array and grid.
+     *
+     * @param gridWidth      the grid's width.
+     * @param gridHeight     the grid's height.
+     * @param cellsPerRow    the number of cells per row
+     * @param cellsPerColumn the number of cells per column
+     */
     public void setGrid(int gridWidth, int gridHeight, int cellsPerRow, int cellsPerColumn) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
@@ -47,13 +87,11 @@ public class CellManager extends Group {
         grid = new Cell[cellsPerRow][cellsPerColumn];
     }
 
-    private boolean inBounds(int r, int c) {
-        return (r >= 0)
-                && (r < cellsPerRow)
-                && (c >= 0)
-                && (c < cellsPerColumn);
-    }
-
+    /**
+     * Initialize this cell manager.
+     *
+     * @param cellType this Cell Manager's cell type.
+     */
     public void init(String cellType) {
         double cellWidth = ((double) gridWidth) / cellsPerRow;
         double cellHeight = ((double) gridHeight) / cellsPerColumn;
@@ -68,6 +106,9 @@ public class CellManager extends Group {
         populateNeighbors();
     }
 
+    /**
+     * Populate neighbors of all cells.
+     */
     private void populateNeighbors() {
         for (int r = 0; r < cellsPerRow; r++) {
             for (int c = 0; c < cellsPerColumn; c++) {
@@ -76,7 +117,12 @@ public class CellManager extends Group {
         }
     }
 
-
+    /**
+     * Populate the neighbors of a single cell.
+     *
+     * @param r this cell's row
+     * @param c this cell's column
+     */
     private void traverseNeighbors(int r, int c) {
         Cell myCell = grid[r][c];
         for (int i = -1; i <= 1; i++) {
@@ -93,6 +139,25 @@ public class CellManager extends Group {
         }
     }
 
+    /**
+     * Test if this is in the grid.
+     *
+     * @param r the tested row
+     * @param c the tested column
+     * @return triue if in the grid
+     */
+    private boolean inBounds(int r, int c) {
+        return (r >= 0)
+                && (r < cellsPerRow)
+                && (c >= 0)
+                && (c < cellsPerColumn);
+    }
+
+    /**
+     * Get this Cell Manager's cells.
+     *
+     * @return this cell manager's cells
+     */
     public Collection<Cell> getCells() {
         return theCells;
     }

@@ -9,22 +9,58 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * Created by rhondusmithwick on 1/30/16.
+ * The base class for a cell.
  *
  * @author Rhondu Smithwick
  */
 public abstract class Cell {
+    /**
+     * This cell's neighbors.
+     */
     private final Collection<Cell> neighbors = new LinkedList<>();
-    private Rectangle rectangle;
-
+    /**
+     * This cell's shape.
+     */
+    private Rectangle shape = new Rectangle();
+    /**
+     * This cell's row in the grid.
+     */
     private int row;
+    /**
+     * This cell's column in the grid.
+     */
     private int column;
 
+    /**
+     * Construct a cell.
+     */
     Cell() {
         super();
-        rectangle = new Rectangle();
     }
 
+    /**
+     * Initialize this cell with these parameters.
+     *
+     * @param cellWidth  the cell's width
+     * @param cellHeight the cell's height
+     * @param x          the cell's x-coordinate
+     * @param y          the cell's y-coordinate
+     * @param row        te cell's row
+     * @param column     the cell's column
+     */
+    public final void init(double cellWidth, double cellHeight, double x, double y, int row, int column) {
+        shape.setWidth(cellWidth);
+        shape.setHeight(cellHeight);
+        shape.setX(x);
+        shape.setY(y);
+        setRow(row);
+        setColumn(column);
+    }
+
+
+    /**
+     * Remove this cell's diagonal neighbors.
+     */
     public final void removeDiagonals() {
         Iterator<Cell> iter = neighbors.iterator();
         while (iter.hasNext()) {
@@ -37,56 +73,102 @@ public abstract class Cell {
         }
     }
 
+    /**
+     * Change this cell's state.
+     */
     public abstract void changeState();
 
+    /**
+     * Add a neighbor to this cell's neighbor list.
+     *
+     * @param neighbor the neighbor to add
+     */
     public final void addNeighbor(Cell neighbor) {
         neighbors.add(neighbor);
     }
 
+    /**
+     * Update this cell at a step.
+     */
     public abstract void handleUpdate();
 
+    /**
+     * Get this cell's row.
+     *
+     * @return the row of this cell
+     */
     public final int getRow() {
         return row;
     }
 
+    /**
+     * Set this cell's row.
+     *
+     * @param row this cell's new row
+     */
     private void setRow(int row) {
         this.row = row;
     }
 
+    /**
+     * Get this cell's column.
+     *
+     * @return this cell's column
+     */
     public final int getColumn() {
         return column;
     }
 
+    /**
+     * Set this cell's column.
+     *
+     * @param column this cell's new column
+     */
     private void setColumn(int column) {
         this.column = column;
     }
 
-    public final void init(double cellWidth, double cellHeight, double x, double y, int row, int column) {
-        rectangle.setWidth(cellWidth);
-        rectangle.setHeight(cellHeight);
-        rectangle.setX(x);
-        rectangle.setY(y);
-        setRow(row);
-        setColumn(column);
-    }
 
+    /**
+     * Set this cell's visuals.
+     *
+     * @param visuals this cell's visuals.
+     */
     public abstract void setVisuals(Paint... visuals);
 
-
+    /**
+     * Get this cell's neighbors.
+     *
+     * @return this cell's neighbors.
+     */
     Collection<Cell> getNeighbors() {
         return neighbors;
     }
 
+    /**
+     * Get this cell's shape.
+     *
+     * @return this cell's shape
+     */
     Shape getShape() {
-        return rectangle;
+        return shape;
     }
 
-
+    /**
+     * Set this cell's background.
+     *
+     * @param value this cell's new background
+     */
     void setFill(Paint value) {
-        rectangle.setFill(value);
+        shape.setFill(value);
     }
 
+    /**
+     * Set this cell's outline.
+     *
+     * @param value this cell's new outline
+     */
     void setStroke(Paint value) {
-        rectangle.setStroke(value);
+        shape.setStroke(value);
     }
 }

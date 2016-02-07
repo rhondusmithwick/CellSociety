@@ -39,7 +39,7 @@ public class FireSimulation extends Simulation {
         FireCell fc = (FireCell) c;
         fc.removeDiagonals();
         fc.setVisuals(emptyVisual, burningVisual, treeVisual);
-        fc.setBurnTime(burnTime);
+        fc.setBurnTimer(burnTime);
         if (checkOnEdge(fc)) {
             fc.setMark(Mark.TO_EMPTY);
         } else if (checkInMiddle(fc)) {
@@ -100,7 +100,7 @@ public class FireSimulation extends Simulation {
 
     private boolean treeDoneBurning(FireCell fc) {
         return (fc.getState() == State.BURNING)
-                && (fc.getBurnTime() > burnTime);
+                && (fc.getBurnTimer() > burnTime);
     }
 
     private boolean checkOnEdge(FireCell fc) {
