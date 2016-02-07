@@ -15,14 +15,13 @@ import java.awt.*;
  */
 class CellSociety {
     /**
-     * The dimensions of the Scene.
-     */
-    private static final Dimension DEFAULT_SIZE = new Dimension(870, 650);
-    
-    /**
      * Stylesheet option.
      */
     public static final String STYLESHEET = "vivid.css";
+    /**
+     * The dimensions of the Scene.
+     */
+    private static final Dimension DEFAULT_SIZE = new Dimension(870, 650);
 
     /**
      * The empty constructor.
@@ -47,7 +46,7 @@ class CellSociety {
      * Sets up displays and initialized cell society and gui.
      *
      * @return display
-     * 				the edited GridPane with necessary objects
+     * the edited GridPane with necessary objects
      */
     private GridPane createDisplay() {
         GridPane display = new GridPane();

@@ -43,6 +43,11 @@ public class SegregationSimulation extends Simulation {
         setProperties(XMLParser.getXmlElement("resources/" + "Segregation.xml"));
     }
 
+    private static void cleanUp(List<SegregationCell> cellsToMove) {
+        for (SegregationCell sc : cellsToMove) {
+            sc.setMark(Mark.NONE);
+        }
+    }
 
     @Override
     void assignInitialState(int randomNum, Cell c) {
@@ -60,7 +65,6 @@ public class SegregationSimulation extends Simulation {
         }
     }
 
-
     @Override
     public void step() {
         super.step();
@@ -71,17 +75,9 @@ public class SegregationSimulation extends Simulation {
     }
 
     private void getAllUpdates() {
-        List<SegregationCell> cellsToMove = new ArrayList<>();
-        for (Cell c : getTheCells()) {
-            SegregationCell sc = (SegregationCell) c;
-            if (sc.getMark() == Mark.TO_EMPTY) {
-                cellsToMove.add(sc);
-            }
-        }
+        List<SegregationCell> cellsToMove = getCellToMove();
         randomMover(cellsToMove);
-        for (SegregationCell sc : cellsToMove) {
-            sc.setMark(Mark.NONE);
-        }
+        cleanUp(cellsToMove);
     }
 
     private void randomMover(List<SegregationCell> cellsToMove) {
@@ -101,6 +97,17 @@ public class SegregationSimulation extends Simulation {
             emptyCell.setMark(Mark.TO_GROUP2);
         }
         emptyCellsToAdd.add(sc);
+    }
+
+    private List<SegregationCell> getCellToMove() {
+        List<SegregationCell> cellsToMove = new ArrayList<>();
+        for (Cell c : getTheCells()) {
+            SegregationCell sc = (SegregationCell) c;
+            if (sc.getMark() == Mark.TO_EMPTY) {
+                cellsToMove.add(sc);
+            }
+        }
+        return cellsToMove;
     }
 
     @Override
