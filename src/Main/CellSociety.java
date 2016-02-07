@@ -18,6 +18,11 @@ class CellSociety {
      * The dimensions of the Scene.
      */
     private static final Dimension DEFAULT_SIZE = new Dimension(870, 650);
+    
+    /**
+     * Stylesheet option.
+     */
+    public static final String STYLESHEET = "vivid.css";
 
     /**
      * The empty constructor.
@@ -33,6 +38,7 @@ class CellSociety {
     void init(Stage primaryStage) {
         GridPane display = createDisplay();
         Scene myScene = new Scene(display, DEFAULT_SIZE.getWidth(), DEFAULT_SIZE.getHeight());
+        myScene.getStylesheets().add(STYLESHEET);
         primaryStage.setScene(myScene);
         primaryStage.setResizable(false);
     }
