@@ -1,186 +1,170 @@
 package GUI;
 
-import Cell.CellManager;
-import Simulation.FireSimulation;
-import Simulation.Simulation;
-import Simulation.XMLParser;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import org.w3c.dom.Element;
+import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class SimulationControl {
-	private static final String DEFAULT_GUI_PROPERTY = "GUIstrings";
-	private static final String DEFAULT_SIM_TYPE = "Fire";
+public class GUI {
 
-	private final ResourceBundle myResources;
-	private final GridPane display;
-	private final ObservableList<String> mySimulations;
-	private final Label simLabel = new Label();
-	private Simulation sim;
-	private String simType = DEFAULT_SIM_TYPE;
-	private CellManager cellManager;
-	private int newSize = 0;
-	private File myXMLFile = null;
+    private static final String GUI_PROPERTY_PATH = "GUIstrings";
 
-	public SimulationControl(GridPane display) {
-		this.display = display;
-		myResources = ResourceBundle.getBundle(DEFAULT_GUI_PROPERTY);
-		mySimulations = createSimulationsList();
-		switchSimulation(DEFAULT_SIM_TYPE);
-	}
+    private final ResourceBundle myResources;
+    private final List<Node> controlList = new ArrayList<>();
+    private final SimulationControl mySimControl;
+    private final Label simLabel;
+    private Button myFileButton;
+    private Button myPlayPauseButton;
+    private Button myStepButton;
+    private Button mySpeedUpButton;
+    private Button mySlowDownButton;
+    private Button mySetSizeButton;
+    private Button myResetButton;
+    private Button myPlayAgainButton;
+    private ComboBox<String> comboBox;
 
-	public void switchSimulation(Object o) {
-		myXMLFile = null;
-		newSize = 0;
-		simType = o.toString();
-		sim = getSimulation();
-		setSimulation();
-	}
+    public GUI(SimulationControl mySimControl) {
+        myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
+        this.mySimControl = mySimControl;
+        simLabel = mySimControl.getSimLabel();
+        createControls();
+        setWidths();
+        setLocations();
+    }
 
-	private void switchSimulation(Element simElem) {
-		simType = XMLParser.getSimType(simElem);
-		sim = getSimulation();
-		sim.setType(simType);
-		sim.setProperties(simElem);
-	}
+    private static Button makeButton(String property, EventHandler<ActionEvent> handler) {
+        Button result = new Button();
+        result.setText(property);
+        result.setOnAction(handler);
+        return result;
+    }
 
-	private void setSimulation() {
-		setSimLabel();
-		displayNewCells();
-		sim.setTheCells(cellManager.getCells());
-		sim.init();
-	}
+    private static File getLocalDir() {
+        ProtectionDomain pd = GUI.class.getProtectionDomain();
+        CodeSource cs = pd.getCodeSource();
+        URL localDir = cs.getLocation();
+        File dir;
+        try {
+            dir = new File(localDir.toURI());
+        } catch (URISyntaxException e) {
+            dir = new File(localDir.getPath());
+        }
+        return dir;
+    }
 
-	private void displayNewCells() {
-		display.getChildren().remove(cellManager);
-		cellManager = createCellManager(simType);
-		GridPane.setConstraints(cellManager, 0, 0);
-		GridPane.setRowSpan(cellManager, 8);
-		display.getChildren().add(cellManager);
-	}
+    private void setWidths() {
+        for (Node node : getControls()) {
+            ((Region) node).setMaxWidth(Double.MAX_VALUE);
+        }
+    }
 
-	private Simulation getSimulation() {
-		Simulation sim;
-		try {
-			String simClassName = "Simulation." + simType + "Simulation";
-			Class c = Class.forName(simClassName);
-			sim = (Simulation) c.newInstance();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			sim = new FireSimulation();
-		}
-		return sim;
-	}
+    private void createControls() {
+        createComboBox();
+        createButtons();
+        addButtons();
+    }
 
-	public ObservableList<String> getSimulations() {
-		return mySimulations;
-	}
+    private void createComboBox() {
+        comboBox = new ComboBox<>(mySimControl.getSimulations());
+        comboBox.setEditable(false);
+        comboBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> mySimControl.switchSimulation(newValue)
+        );
+        comboBox.setPromptText(myResources.getString("SelectionPrompt"));
+    }
 
-	public void slowDown() {
-		if (!sim.decreaseRate()) {
-			showError(myResources.getString("DecreaseError"));
-		}
+    private void createButtons() {
+        myFileButton = makeButton(myResources.getString("XMLLoadPrompt"),
+                event -> setUpFileChooser());
+        mySetSizeButton = makeButton(myResources.getString("SetSizeButton"),
+                event -> setUpSizeBox());
+        myPlayPauseButton = makeButton(myResources.getString("PlayPauseButton"),
+                event -> mySimControl.playPause());
+        myStepButton = makeButton(myResources.getString("StepButton"),
+                event -> mySimControl.step());
+        mySpeedUpButton = makeButton(myResources.getString("FasterButton"),
+                event -> mySimControl.speedUp());
+        mySlowDownButton = makeButton(myResources.getString("SlowerButton"),
+                event -> mySimControl.slowDown());
+        myResetButton = makeButton(myResources.getString("ResetButton"),
+                event -> mySimControl.reset());
+        myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"),
+                event -> mySimControl.playAgain());
+    }
 
-	}
+    private void addButtons() {
+        controlList.add(myFileButton);
+        controlList.add(comboBox);
+        controlList.add(mySetSizeButton);
+        controlList.add(myPlayPauseButton);
+        controlList.add(myStepButton);
+        controlList.add(mySpeedUpButton);
+        controlList.add(mySlowDownButton);
+        controlList.add(myResetButton);
+        controlList.add(myPlayAgainButton);
+        controlList.add(simLabel);
+    }
 
-	public void speedUp() {
-		if (!sim.increaseRate()) {
-			showError(myResources.getString("IncreaseError"));
-		}
-	}
+    private void setLocations() {
+        GridPane.setConstraints(myFileButton, 1, 0, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(myResetButton, 1, 6, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(myPlayAgainButton, 1, 5, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(comboBox, 1, 1, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(simLabel, 1, 7, 3, 3, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(mySetSizeButton, 1, 2, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(myPlayPauseButton, 1, 3, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(myStepButton, 2, 3, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(mySlowDownButton, 1, 4, 1, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(mySpeedUpButton, 2, 4, 1, 1, HPos.CENTER, VPos.CENTER);
+    }
 
-	public void step() {
-		stop();
-		sim.step();
-	}
+    private void setUpSizeBox() {
+        mySimControl.stop();
+        TextInputDialog input = new TextInputDialog("");
+        input.setTitle(myResources.getString("SizePromptTitle"));
+        input.setContentText(myResources.getString("SizePrompt"));
+        Optional<String> response = input.showAndWait();
+        if (response.isPresent()) {
+            mySimControl.sizeChange(response.get());
+        }
+    }
 
-	public void stop() {
-		sim.stop();
-	}
+    private void setUpFileChooser() {
+        mySimControl.stop();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("XML", "*.xml")
+        );
+        fileChooser.setInitialDirectory(getLocalDir());
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            mySimControl.openFile(file);
+        }
+    }
 
-	public void playPause() {
-		sim.playOrStop();
-	}
+    public List<Node> getControls() {
+        return controlList;
+    }
 
-	public void reset() {
-		myXMLFile = null;
-		newSize = 0;
-		sim = getSimulation();
-		setSimulation();
-	}
-
-	public void playAgain() {
-		try {
-			switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
-			sim.resetCellSize(newSize);
-			setSimulation();
-		} catch (Exception e) {
-			sim = getSimulation();
-			sim.resetCellSize(newSize);
-			setSimulation();
-		}
-	}
-
-	private CellManager createCellManager(String simType) {
-		CellManager cellManager = new CellManager();
-		cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(), sim.getCellsPerRow(), sim.getCellsPerColumn());
-		cellManager.init(simType);
-		return cellManager;
-	}
-
-	public void sizeChange(String string) {
-		try {
-			newSize = Integer.parseInt(string);
-			try {
-				switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
-			} catch (Exception e) {
-				sim = getSimulation();
-			}
-			if (!sim.resetCellSize(newSize)) {
-				throw new Exception();
-			}
-			setSimulation();
-		} catch (Exception e) {
-			showError(myResources.getString("SizeError"));
-		}
-	}
-
-	public void openFile(File file) {
-		newSize = 0;
-		myXMLFile = file;
-		switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
-		setSimulation();
-	}
-
-	private void showError(String message) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle(myResources.getString("ErrorTitle"));
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
-
-	private ObservableList<String> createSimulationsList() {
-		return FXCollections.observableArrayList(myResources.getString("GameOfLifeSim"),
-				myResources.getString("SegregationSim"), myResources.getString("FireSim"),
-				myResources.getString("PredatorPreySim"));
-	}
-
-	public Label getSimLabel() {
-		simLabel.setStyle("-fx-font-size: 3em;");
-		simLabel.setTextFill(Color.BLUE);
-		return simLabel;
-	}
-
-	private void setSimLabel() {
-		simLabel.setText(simType);
-	}
 }
-
 
