@@ -36,12 +36,14 @@ public class FireCell extends Cell {
      * This fire cell's tree visual.
      */
     private Paint treeVisual;
+
     /**
      * Construct a fire cell.
      */
     public FireCell() {
         super();
     }
+
     /**
      * Update this fire cell.
      */
@@ -53,6 +55,7 @@ public class FireCell extends Cell {
 
     /**
      * Determine if this fire cell has burning neighbors
+     *
      * @return true if this fire cell has a burning neighbor
      */
     public boolean hasBurningNeighbor() {
@@ -93,6 +96,7 @@ public class FireCell extends Cell {
 
     /**
      * Set this fire cell's visuals.
+     *
      * @param visuals this cell's visuals
      */
     @Override
@@ -105,6 +109,7 @@ public class FireCell extends Cell {
 
     /**
      * Get this fire cell's state.
+     *
      * @return this fire cell's state
      */
     public State getState() {
@@ -113,6 +118,7 @@ public class FireCell extends Cell {
 
     /**
      * Set this fire cell's mark.
+     *
      * @param mark this fire cell's mark.
      */
     public void setMark(Mark mark) {
@@ -121,6 +127,7 @@ public class FireCell extends Cell {
 
     /**
      * Get this cell's burn timer.
+     *
      * @return this cell's burn timer.
      */
     public int getBurnTimer() {
@@ -129,6 +136,7 @@ public class FireCell extends Cell {
 
     /**
      * Set this cell's burn timer.
+     *
      * @param burnTimer this cell's new burn timer.
      */
     public void setBurnTimer(int burnTimer) {

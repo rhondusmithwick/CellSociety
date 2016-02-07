@@ -171,12 +171,11 @@ public abstract class Simulation {
 
 
     public final boolean resetCellSize(int numCells) {
-        if (numCells > 1){
+        if (numCells > 1) {
             cellsPerRow = numCells;
             cellsPerColumn = numCells;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

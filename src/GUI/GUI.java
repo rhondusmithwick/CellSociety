@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 
 public class GUI {
 
-    private static final String GUI_PROPERTY_PATH = "Guistrings";
+    private static final String GUI_PROPERTY_PATH = "GUIstrings";
 
     private final ResourceBundle myResources;
     private final List<Node> controlList = new ArrayList<>();
@@ -135,7 +135,7 @@ public class GUI {
 
     private void setUpFileChooser() {
         mySimControl.stop();
- 
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(
@@ -147,16 +147,17 @@ public class GUI {
             mySimControl.openFile(file);
         }
     }
-    private File getLocalDir(){
-    	ProtectionDomain pd = GUI.class.getProtectionDomain();
+
+    private File getLocalDir() {
+        ProtectionDomain pd = GUI.class.getProtectionDomain();
         CodeSource cs = pd.getCodeSource();
         URL localDir = cs.getLocation();
-        
+
         File dir;
         try {
-          dir = new File(localDir.toURI());
-        } catch(URISyntaxException e) {
-          dir = new File(localDir.getPath());
+            dir = new File(localDir.toURI());
+        } catch (URISyntaxException e) {
+            dir = new File(localDir.getPath());
         }
         return dir;
     }

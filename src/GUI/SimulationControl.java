@@ -138,8 +138,7 @@ public class SimulationControl {
             }
 
             setSimulation();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             showError(myResources.getString("SizeError"));
         }
     }
