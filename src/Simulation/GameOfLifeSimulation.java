@@ -28,13 +28,11 @@ public class GameOfLifeSimulation extends Simulation {
         setProperties(XMLParser.getXmlElement("resources/" + "GameOfLife.xml"));
     }
 
-
     @Override
     public void step() {
         super.step();
         changeStates();
     }
-
 
     @Override
     void assignInitialState(int randomNum, Cell c) {

@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class SimulationControl {
-    private static final String DEFAULT_GUUI_PROPERTY = "GUIstrings";
+    private static final String DEFAULT_GUI_PROPERTY = "GUIstrings";
     private static final String DEFAULT_SIM_TYPE = "Fire";
 
     private final ResourceBundle myResources;
@@ -29,10 +29,9 @@ public class SimulationControl {
     private int newSize = 0;
     private Label simLabel = new Label();
 
-
     public SimulationControl(GridPane display) {
         this.display = display;
-        myResources = ResourceBundle.getBundle(DEFAULT_GUUI_PROPERTY);
+        myResources = ResourceBundle.getBundle(DEFAULT_GUI_PROPERTY);
         mySimulations = createSimulationsList();
         switchSimulation(DEFAULT_SIM_TYPE);
     }
@@ -171,7 +170,6 @@ public class SimulationControl {
         simLabel.setTextFill(Color.BLUE);
         return simLabel;
     }
-
 
     public void setSimLabel() {
         simLabel.setText(simType);

@@ -20,7 +20,7 @@ public class PredatorPreyCell extends Cell {
      */
     private Mark mark;
 
-    private int breedCounter;
+    private int breedTimer;
     private int starveCounter;
     private boolean breeding = false;
 
@@ -33,7 +33,7 @@ public class PredatorPreyCell extends Cell {
     }
 
     public void handleUpdate() {
-        breedCounter++;
+        breedTimer++;
         starveCounter++;
     }
 
@@ -57,15 +57,15 @@ public class PredatorPreyCell extends Cell {
                 return;
             case TO_FISH:
                 setFill(fishVisual);
-                setState(State.FISH);
+                state = State.FISH;
                 break;
             case TO_SHARK:
                 setFill(sharkVisual);
-                setState(State.SHARK);
+                state = State.SHARK;
                 break;
             case TO_EMPTY:
                 setFill(emptyVisual);
-                setState(State.EMPTY);
+                state = State.EMPTY;
                 break;
             default:
         }
@@ -84,10 +84,6 @@ public class PredatorPreyCell extends Cell {
         return state;
     }
 
-    private void setState(State state) {
-        this.state = state;
-    }
-
     public Mark getMark() {
         return mark;
     }
@@ -96,12 +92,12 @@ public class PredatorPreyCell extends Cell {
         this.mark = mark;
     }
 
-    public int getBreedCounter() {
-        return breedCounter;
+    public int getBreedTimer() {
+        return breedTimer;
     }
 
-    public void setBreedCounter(int breedCounter) {
-        this.breedCounter = breedCounter;
+    public void setBreedTimer(int breedTimer) {
+        this.breedTimer = breedTimer;
     }
 
     public int getStarveCounter() {

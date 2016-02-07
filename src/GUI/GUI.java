@@ -51,13 +51,31 @@ public class GUI {
         setLocations();
     }
 
+    private static Button makeButton(String property, EventHandler<ActionEvent> handler) {
+        Button result = new Button();
+        result.setText(property);
+        result.setOnAction(handler);
+        return result;
+    }
+
+    private static File getLocalDir() {
+        ProtectionDomain pd = GUI.class.getProtectionDomain();
+        CodeSource cs = pd.getCodeSource();
+        URL localDir = cs.getLocation();
+        File dir;
+        try {
+            dir = new File(localDir.toURI());
+        } catch (URISyntaxException e) {
+            dir = new File(localDir.getPath());
+        }
+        return dir;
+    }
 
     private void setWidths() {
         for (Node node : getControls()) {
             ((Region) node).setMaxWidth(Double.MAX_VALUE);
         }
     }
-
 
     private void createControls() {
         createComboBox();
@@ -119,13 +137,6 @@ public class GUI {
         GridPane.setConstraints(mySpeedUpButton, 2, 4, 1, 1, HPos.CENTER, VPos.CENTER);
     }
 
-    private static Button makeButton(String property, EventHandler<ActionEvent> handler) {
-        Button result = new Button();
-        result.setText(property);
-        result.setOnAction(handler);
-        return result;
-    }
-
     private void setUpSizeBox() {
         mySimControl.stop();
         TextInputDialog input = new TextInputDialog("");
@@ -136,7 +147,6 @@ public class GUI {
             mySimControl.sizeChange(response.get());
         }
     }
-
 
     private void setUpFileChooser() {
         mySimControl.stop();
@@ -151,20 +161,6 @@ public class GUI {
             mySimControl.openFile(file);
         }
     }
-
-    private static File getLocalDir() {
-        ProtectionDomain pd = GUI.class.getProtectionDomain();
-        CodeSource cs = pd.getCodeSource();
-        URL localDir = cs.getLocation();
-        File dir;
-        try {
-            dir = new File(localDir.toURI());
-        } catch (URISyntaxException e) {
-            dir = new File(localDir.getPath());
-        }
-        return dir;
-    }
-
 
     public List<Node> getControls() {
         return controlList;
