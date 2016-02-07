@@ -295,7 +295,7 @@ public class SimulationControl {
 	 * 
 	 */
 	public Label getSimLabel() {
-		simLabel.setStyle("-fx-font-size: 3em;");
+		simLabel.setStyle("-fx-font-size: 2em;");
 		simLabel.setTextFill(Color.BLUE);
 		return simLabel;
 	}

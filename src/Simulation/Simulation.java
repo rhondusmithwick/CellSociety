@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * Created by rhondusmithwick on 1/31/16.
  *
- * @author Rhondu Smithwick, Tavo Loaiza
+ * @author Rhondu Smithwick
  */
 public abstract class Simulation {
     private final Random rn;
@@ -100,7 +100,6 @@ public abstract class Simulation {
     }
 
     private void setGenericProperties(Element simElem) {
-
         gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
         gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
         cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");

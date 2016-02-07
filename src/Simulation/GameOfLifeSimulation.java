@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 /**
  * Created by rhondusmithwick on 1/31/16.
  *
- * @author Rhondu Smithwick, Tavo Loaiza
+ * @author Rhondu Smithwick
  */
 public class GameOfLifeSimulation extends Simulation {
 
