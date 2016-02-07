@@ -9,11 +9,10 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ResourceBundle;
-
-import org.w3c.dom.Element;
 
 public class SimulationControl {
     private static final String DEFAULT_GUUI_PROPERTY = "GUIstrings";
@@ -39,9 +38,11 @@ public class SimulationControl {
         sim = getSimulation();
         setSimulation();
     }
+
     public void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
+        sim.setType(simType);
         sim.setProperties(simElem);
         setSimulation();
     }
@@ -80,15 +81,20 @@ public class SimulationControl {
     }
 
     public void slowDown() {
-        sim.decreaseRate();
+        if (!sim.decreaseRate()) {
+            showError(myResources.getString("DecreaseError"));
+        }
+
     }
 
     public void speedUp() {
-        sim.increaseRate();
+        if (!sim.increaseRate()) {
+            showError(myResources.getString("IncreaseError"));
+        }
     }
 
     public void step() {
-        sim.stop();
+        stop();
         sim.step();
     }
 
@@ -110,27 +116,14 @@ public class SimulationControl {
     }
 
     public void sizeChange(String string) {
-        int newSize = Integer.parseInt(string);
-        if (newSize > 0) {
+        try {
+            int newSize = Integer.parseInt(string);
             sim = getSimulation();
-            sim.resetCellSize(newSize);
+            int sizePass = 1 / (sim.resetCellSize(newSize));
             setSimulation();
-        } else {
-            showError(myResources.getString("NumberSizeError"));
+        } catch (Exception e) {
+            showError(myResources.getString("SizeError"));
         }
-//
-//		try {
-//			int newSize = Integer.parseInt(string);
-//			if (newSize > 0) {
-//				sim = getSimulation();
-//				sim.resetCellSize(newSize);
-//				setSimulation();
-//			} else {
-//				showError(myResources.getString("NumberSizeError"));
-//			}
-//		} catch (Exception e) {
-//			showError(myResources.getString("StringSizeError"));
-//		}
     }
 
     public void openFile(File file) {

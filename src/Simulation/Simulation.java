@@ -32,11 +32,6 @@ public abstract class Simulation {
         rn = new Random();
     }
 
-    Simulation(Element simElem) {
-        this();
-        setProperties(simElem);
-    }
-
     public final void setProperties(Element simElem) {
         setGenericProperties(simElem);
         setSpecificProperties(simElem);
@@ -81,7 +76,7 @@ public abstract class Simulation {
         isPlaying = false;
     }
 
-    private boolean getPlaying() {
+    public boolean getPlaying() {
         return isPlaying;
     }
 
@@ -105,8 +100,6 @@ public abstract class Simulation {
     }
 
     public void setGenericProperties(Element simElem) {
-        String simType = XMLParser.getSimType(simElem);
-        setType(simType);
         gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
         gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
         cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
@@ -141,7 +134,7 @@ public abstract class Simulation {
     }
 
 
-    private void setType(String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -156,7 +149,7 @@ public abstract class Simulation {
     public final boolean increaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate <= 10) {
-            simulationLoop.setRate(currentRate + .1);
+            simulationLoop.setRate(currentRate + .5);
             return true;
         }
         return false;
@@ -165,7 +158,7 @@ public abstract class Simulation {
     public final boolean decreaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate > 0) {
-            simulationLoop.setRate(currentRate - .1);
+            simulationLoop.setRate(currentRate - .5);
             return true;
         }
         return false;
@@ -176,9 +169,14 @@ public abstract class Simulation {
         simulationLoop.setRate(1.0);
     }
 
-    public final void resetCellSize(int numCells) {
-        cellsPerRow = numCells;
-        cellsPerColumn = numCells;
+    public final int resetCellSize(int numCells) {
+        if (numCells > 1) {
+            cellsPerRow = numCells;
+            cellsPerColumn = numCells;
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
 }
