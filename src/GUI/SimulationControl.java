@@ -38,7 +38,7 @@ public class SimulationControl {
 
     public void switchSimulation(Object o) {
         simType = o.toString();
-        simLabel.setText(simType);
+        setSimLabel();
         sim = getSimulation();
         setSimulation();
     }
@@ -48,6 +48,7 @@ public class SimulationControl {
         sim = getSimulation();
         simLabel.setText(simType);
         sim.setType(simType);
+        setSimLabel();
         sim.setProperties(simElem);
         setSimulation();
     }
@@ -169,6 +170,10 @@ public class SimulationControl {
 
     public Label getSimLabel() {
         return simLabel;
+    }
+
+    public void setSimLabel() {
+        simLabel.setText("Currently on \n" + simType);
     }
 }
 
