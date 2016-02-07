@@ -50,7 +50,6 @@ public class PredatorPreySimulation extends Simulation {
     @Override
     void assignInitialState(int randomNum, Cell c) {
         final PredatorPreyCell ppc = (PredatorPreyCell) c;
-        ppc.removeDiagonals();
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
             ppc.setMark(Mark.TO_EMPTY);
@@ -88,22 +87,12 @@ public class PredatorPreySimulation extends Simulation {
         for (Cell c : getTheCells()) {
             ppc = (PredatorPreyCell) c;
             if (ppc.getState() == State.SHARK) {
-                if (ppc.getStarveCounter() >= starveTime) {
+                if (ppc.shouldStarve(starveTime)) {
                     ppc.setMark(Mark.TO_EMPTY);
                 } else {
-                    sharkEat(ppc);
+                    ppc.sharkEat();
                 }
             }
-        }
-    }
-
-    private void sharkEat(PredatorPreyCell shark) {
-        List<PredatorPreyCell> fishNeighbors = shark.getNeighborsOfState(State.FISH);
-        if (!fishNeighbors.isEmpty()) {
-            int randomNum = getRandomNum(0, fishNeighbors.size() - 1);
-            PredatorPreyCell fish = fishNeighbors.get(randomNum);
-            fish.setMark(Mark.TO_EMPTY);
-            shark.setStarveCounter(0);
         }
     }
 
@@ -130,7 +119,7 @@ public class PredatorPreySimulation extends Simulation {
 
     private void moveSpawn(PredatorPreyCell ppc, PredatorPreyCell emptyNeighbor) {
         swap(ppc, emptyNeighbor);
-        if (shouldMakeEmpty(ppc)) {
+        if (ppc.shouldMakeEmpty()) {
             ppc.setMark(Mark.TO_EMPTY);
         }
         ppc.setBreeding(false);
@@ -152,23 +141,10 @@ public class PredatorPreySimulation extends Simulation {
     }
 
     private boolean shouldBreed(PredatorPreyCell ppc) {
-        return fishShouldBreed(ppc) || sharkShouldBreed(ppc);
+        return ppc.fishShouldBreed(fishBreedTime) ||
+                ppc.sharkShouldBreed(sharkBreedTime);
     }
 
-    private boolean fishShouldBreed(PredatorPreyCell ppc) {
-        return (ppc.getState() == State.FISH)
-                && (ppc.getBreedTimer() >= fishBreedTime);
-    }
-
-    private boolean sharkShouldBreed(PredatorPreyCell ppc) {
-        return (ppc.getState() == State.SHARK)
-                && (ppc.getBreedTimer() >= sharkBreedTime);
-    }
-
-    private boolean shouldMakeEmpty(PredatorPreyCell ppc) {
-        return (!ppc.getBreeding())
-                || (ppc.getBreeding() && ppc.getMark() == Mark.TO_EMPTY);
-    }
 
     @Override
     void setSpecificProperties(Element simElem) {

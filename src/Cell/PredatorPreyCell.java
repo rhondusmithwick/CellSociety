@@ -3,6 +3,7 @@ package Cell;
 import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -123,4 +124,34 @@ public class PredatorPreyCell extends Cell {
         TO_FISH, TO_SHARK, TO_EMPTY, NONE
     }
 
+    public boolean shouldMakeEmpty() {
+        return (!getBreeding())
+                || (getBreeding() && getMark() == Mark.TO_EMPTY);
+    }
+
+
+    public boolean fishShouldBreed(int fishBreedTime) {
+        return (getState() == State.FISH)
+                && (getBreedTimer() >= fishBreedTime);
+    }
+
+    public boolean sharkShouldBreed(int sharkBreedTime) {
+        return (getState() == State.SHARK)
+                && (getBreedTimer() >= sharkBreedTime);
+    }
+
+    public boolean shouldStarve(int starveTime) {
+        return starveCounter >= starveTime;
+    }
+
+
+    public void sharkEat() {
+        List<PredatorPreyCell> fishNeighbors = getNeighborsOfState(State.FISH);
+        if (!fishNeighbors.isEmpty()) {
+            Collections.shuffle(fishNeighbors);
+            PredatorPreyCell fish = fishNeighbors.get(0);
+            fish.setMark(Mark.TO_EMPTY);
+            setStarveCounter(0);
+        }
+    }
 }
