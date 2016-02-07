@@ -24,6 +24,7 @@ public class SimulationControl {
     private Simulation sim;
     private String simType = DEFAULT_SIM_TYPE;
     private CellManager cellManager;
+    private int newSize = 0;
 
 
     public SimulationControl(GridPane display) {
@@ -106,6 +107,17 @@ public class SimulationControl {
         sim.playOrStop();
     }
 
+    public void reset() {
+        sim = getSimulation();
+        setSimulation();
+    }
+
+    public void playAgain() {
+        sim = getSimulation();
+        sim.resetCellSize(newSize);
+        setSimulation();
+        sim.playOrStop();
+    }
 
     private CellManager createCellManager(String simType) {
         CellManager cellManager = new CellManager();
@@ -115,13 +127,19 @@ public class SimulationControl {
         return cellManager;
     }
 
+
     public void sizeChange(String string) {
         try {
-            int newSize = Integer.parseInt(string);
+            newSize = Integer.parseInt(string);
             sim = getSimulation();
-            int sizePass = 1 / (sim.resetCellSize(newSize));
+
+            if (!sim.resetCellSize(newSize)) {
+                throw new Exception();
+            }
+
             setSimulation();
-        } catch (Exception e) {
+        }
+        catch (Exception e){
             showError(myResources.getString("SizeError"));
         }
     }

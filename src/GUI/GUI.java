@@ -14,6 +14,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +36,8 @@ public class GUI {
     private Button mySpeedUpButton;
     private Button mySlowDownButton;
     private Button mySetSizeButton;
+    private Button myResetButton;
+    private Button myPlayAgainButton;
     private ComboBox<String> comboBox;
 
     public GUI(SimulationControl mySimulationControl) {
@@ -78,6 +84,10 @@ public class GUI {
                 event -> mySimControl.speedUp());
         mySlowDownButton = makeButton(myResources.getString("SlowerButton"),
                 event -> mySimControl.slowDown());
+        myResetButton = makeButton(myResources.getString("ResetButton"),
+                event -> mySimControl.reset());
+        myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"),
+                event -> mySimControl.playAgain());
     }
 
     private void addButtons() {
@@ -88,10 +98,14 @@ public class GUI {
         controlList.add(myStepButton);
         controlList.add(mySpeedUpButton);
         controlList.add(mySlowDownButton);
+        controlList.add(myResetButton);
+        controlList.add(myPlayAgainButton);
     }
 
     private void setLocations() {
         GridPane.setConstraints(myFileButton, 1, 0, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(myResetButton, 1, 6, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(myPlayAgainButton, 1, 5, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(comboBox, 1, 1, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySetSizeButton, 1, 2, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myPlayPauseButton, 1, 3, 1, 1, HPos.CENTER, VPos.CENTER);
@@ -118,17 +132,35 @@ public class GUI {
         }
     }
 
+
     private void setUpFileChooser() {
         mySimControl.stop();
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("XML", "*.xml")
         );
+        fileChooser.setInitialDirectory(getLocalDir());
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             mySimControl.openFile(file);
         }
+    }
+    
+
+    private File getLocalDir(){
+        ProtectionDomain pd = GUI.class.getProtectionDomain();
+        CodeSource cs = pd.getCodeSource();
+        URL localDir = cs.getLocation();
+
+        File dir;
+        try {
+            dir = new File(localDir.toURI());
+        } catch(URISyntaxException e) {
+            dir = new File(localDir.getPath());
+        }
+        return dir;
     }
 
     public List<Node> getControls() {

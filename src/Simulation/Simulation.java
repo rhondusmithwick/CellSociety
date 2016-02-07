@@ -169,13 +169,15 @@ public abstract class Simulation {
         simulationLoop.setRate(1.0);
     }
 
-    public final int resetCellSize(int numCells) {
-        if (numCells > 1) {
+
+    public final boolean resetCellSize(int numCells) {
+        if (numCells > 1){
             cellsPerRow = numCells;
             cellsPerColumn = numCells;
-            return 1;
-        } else {
-            return 0;
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
