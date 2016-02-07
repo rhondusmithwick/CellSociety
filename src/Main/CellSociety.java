@@ -17,7 +17,7 @@ class CellSociety {
     /**
      * Stylesheet option.
      */
-    public static final String STYLESHEET = "vivid.css";
+    private static final String STYLESHEET = "vivid.css";
     /**
      * The dimensions of the Scene.
      */
