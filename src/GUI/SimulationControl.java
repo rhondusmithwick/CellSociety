@@ -16,6 +16,12 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ResourceBundle;
 
+/**
+ * Created by bliborio on 2/2/16.
+ *
+ * @author Bruna Liborio
+ */
+
 public class SimulationControl {
 	private static final String DEFAULT_GUI_PROPERTY = "GUIstrings";
 	private static final String DEFAULT_SIM_TYPE = "Fire";
