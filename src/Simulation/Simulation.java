@@ -136,7 +136,7 @@ public abstract class Simulation {
     }
 
 
-    final String getType() {
+    public String getType() {
         return type;
     }
 
