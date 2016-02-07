@@ -23,11 +23,11 @@ public class SimulationControl {
     private final ResourceBundle myResources;
     private final GridPane display;
     private final ObservableList<String> mySimulations;
+    private final Label simLabel = new Label();
     private Simulation sim;
     private String simType = DEFAULT_SIM_TYPE;
     private CellManager cellManager;
     private int newSize = 0;
-    private final Label simLabel = new Label();
 
     public SimulationControl(GridPane display) {
         this.display = display;

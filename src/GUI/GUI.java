@@ -31,6 +31,7 @@ public class GUI {
     private final ResourceBundle myResources;
     private final List<Node> controlList = new ArrayList<>();
     private final SimulationControl mySimControl;
+    private final Label simLabel;
     private Button myFileButton;
     private Button myPlayPauseButton;
     private Button myStepButton;
@@ -39,7 +40,6 @@ public class GUI {
     private Button mySetSizeButton;
     private Button myResetButton;
     private Button myPlayAgainButton;
-    private final Label simLabel;
     private ComboBox<String> comboBox;
 
     public GUI(SimulationControl mySimControl) {
