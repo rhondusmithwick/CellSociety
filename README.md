@@ -10,7 +10,7 @@ Duke CompSci 308 Cell Society Project
 **Hours worked:** 
 Rhondu Smithwick - 40 hours
 Bruna Liborio - 30 hours 
-Tavo Loaiza - 
+Tavo Loaiza - 20 hours
 
 **Resources used:** Java API; Piazza; Stackoverflow.com; http://docs.oracle.com/javafx/2/layout/size_align.htm, spefically for the GUI; resources on Cell Society assignment page; links to simulation discriptions; 'lab_browser' code 
 
