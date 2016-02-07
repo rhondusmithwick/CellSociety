@@ -53,8 +53,6 @@ public class GUI {
         this.mySimControl = mySimControl;
         simLabel = mySimControl.getSimLabel();
         createControls();
-        setWidths();
-        setLocations();
     }
 
     private static Button makeButton(String property, EventHandler<ActionEvent> handler) {
@@ -77,16 +75,10 @@ public class GUI {
         return dir;
     }
 
-    private void setWidths() {
-        for (Node node : getControls()) {
-            ((Region) node).setMaxWidth(Double.MAX_VALUE);
-        }
-    }
-
     private void createControls() {
         createComboBox();
         createButtons();
-        addButtons();
+        setAndAdd();
     }
 
     private void createComboBox() {
@@ -102,7 +94,7 @@ public class GUI {
         myFileButton = makeButton(myResources.getString("XMLLoadPrompt"),
                 event -> setUpFileChooser());
         mySetSizeButton = makeButton(myResources.getString("SetSizeButton"),
-                event -> setUpSizeBox());
+                event -> setUpSizeInput());
         myPlayPauseButton = makeButton(myResources.getString("PlayPauseButton"),
                 event -> mySimControl.playPause());
         myStepButton = makeButton(myResources.getString("StepButton"),
@@ -116,34 +108,27 @@ public class GUI {
         myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"),
                 event -> mySimControl.playAgain());
     }
-
-    private void addButtons() {
-        controlList.add(myFileButton);
-        controlList.add(comboBox);
-        controlList.add(mySetSizeButton);
-        controlList.add(myPlayPauseButton);
-        controlList.add(myStepButton);
-        controlList.add(mySpeedUpButton);
-        controlList.add(mySlowDownButton);
-        controlList.add(myResetButton);
-        controlList.add(myPlayAgainButton);
-        controlList.add(simLabel);
+    
+    private void setAndAdd(){
+    	 setAndAdd(myFileButton, 1, 0, 2, 1);
+    	 setAndAdd(myResetButton, 1, 6, 2, 1);
+         setAndAdd(myPlayAgainButton, 1, 5, 2, 1);
+         setAndAdd(mySetSizeButton, 1, 2, 2, 1);
+         setAndAdd(myPlayPauseButton, 1, 3, 1, 1);
+         setAndAdd(myStepButton, 2, 3, 1, 1);
+         setAndAdd(mySlowDownButton, 1, 4, 1, 1);
+         setAndAdd(mySpeedUpButton, 2, 4, 1, 1);
+         setAndAdd(comboBox, 1, 1, 2, 1);
+         setAndAdd(simLabel, 1, 7, 3, 3);
+    }
+    
+    private void setAndAdd(Node node, int col, int row, int colSpan, int rowSpan){
+    	GridPane.setConstraints(node, col, row, colSpan, rowSpan, HPos.CENTER, VPos.CENTER);
+    	controlList.add(node);
+    	((Region) node).setMaxWidth(Double.MAX_VALUE);
     }
 
-    private void setLocations() {
-        GridPane.setConstraints(myFileButton, 1, 0, 2, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(myResetButton, 1, 6, 2, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(myPlayAgainButton, 1, 5, 2, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(comboBox, 1, 1, 2, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(simLabel, 1, 7, 3, 3, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(mySetSizeButton, 1, 2, 2, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(myPlayPauseButton, 1, 3, 1, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(myStepButton, 2, 3, 1, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(mySlowDownButton, 1, 4, 1, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(mySpeedUpButton, 2, 4, 1, 1, HPos.CENTER, VPos.CENTER);
-    }
-
-    private void setUpSizeBox() {
+    private void setUpSizeInput() {
         mySimControl.stop();
         TextInputDialog input = new TextInputDialog("");
         input.setTitle(myResources.getString("SizePromptTitle"));
