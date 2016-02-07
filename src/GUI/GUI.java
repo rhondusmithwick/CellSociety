@@ -24,6 +24,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Created by bliborio on 2/2/16.
+ *
+ * @author Bruna Liborio
+ */
+
 public class GUI {
 
     private static final String GUI_PROPERTY_PATH = "GUIstrings";
