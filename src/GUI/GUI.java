@@ -34,6 +34,8 @@ public class GUI {
     private Button mySpeedUpButton;
     private Button mySlowDownButton;
     private Button mySetSizeButton;
+    private Button myResetButton;
+    private Button myPlayAgainButton;
     private ComboBox<String> comboBox;
 
     public GUI(SimulationControl mySimulationControl) {
@@ -50,7 +52,6 @@ public class GUI {
     		((Region) node).setMaxWidth(Double.MAX_VALUE);
     	}
 	}
-
 
 	private void createControls() {
         createComboBox();
@@ -80,6 +81,10 @@ public class GUI {
                 event -> mySimControl.speedUp());
         mySlowDownButton = makeButton(myResources.getString("SlowerButton"),
                 event -> mySimControl.slowDown());
+        myResetButton = makeButton(myResources.getString("ResetButton"),
+        		event -> mySimControl.reset());
+        myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"),
+        		event -> mySimControl.playAgain());
     }
 
     private void addButtons() {
@@ -90,10 +95,14 @@ public class GUI {
         controlList.add(myStepButton);
         controlList.add(mySpeedUpButton);
         controlList.add(mySlowDownButton);
+        controlList.add(myResetButton);
+        controlList.add(myPlayAgainButton);
     }
 
     private void setLocations() {
         GridPane.setConstraints(myFileButton, 1, 0, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(myResetButton, 1, 6, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(myPlayAgainButton, 1, 5, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(comboBox, 1, 1, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySetSizeButton, 1, 2, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myPlayPauseButton, 1, 3, 1, 1, HPos.CENTER, VPos.CENTER);
@@ -108,7 +117,7 @@ public class GUI {
         result.setOnAction(handler);
         return result;
     }
-    
+        
     private void setUpSizeBox(){
     	mySimControl.stop();
     	TextInputDialog input = new TextInputDialog("");
@@ -117,7 +126,6 @@ public class GUI {
         Optional<String> response = input.showAndWait();
         if (response.isPresent()){
         //if (response.isPresent() && response.get()=="") {
-        	System.out.println(response.get());
         	mySimControl.sizeChange(response.get());
         }
     }

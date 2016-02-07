@@ -22,6 +22,7 @@ public class SimulationControl {
     private Simulation sim;
     private String simType = DEFAULT_SIM_TYPE;
     private CellManager cellManager;
+    private int newSize = 0;
 
 
     public SimulationControl(GridPane display, String resource) {
@@ -46,7 +47,7 @@ public class SimulationControl {
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
         GridPane.setConstraints(cellManager, 0, 0);
-        GridPane.setRowSpan(cellManager, 6);
+        GridPane.setRowSpan(cellManager, 8);
         display.getChildren().add(cellManager);
     }
 
@@ -70,25 +71,18 @@ public class SimulationControl {
     }
 
     public void slowDown() {
-    	if(notPlayingError() && !sim.decreaseRate()){
+    	if(!sim.decreaseRate()){
     	   showError(myResources.getString("DecreaseError"));
        }
        
     }
 
     public void speedUp() {
-    	if (notPlayingError() && !sim.increaseRate()){
+    	if (!sim.increaseRate()){
         	showError(myResources.getString("IncreaseError"));
         }
     }
     
-    private boolean notPlayingError(){
-    	if(!sim.getPlaying()){
-    		showError(myResources.getString("NotPlayingError"));
-        }
-    	return (sim.getPlaying());
-    }
-
     public void step() {
         sim.stop();
         sim.step();
@@ -110,12 +104,29 @@ public class SimulationControl {
         cellManager.init(simType);
         return cellManager;
     }
+    
+    public void reset() {
+		sim = getSimulation();
+        setSimulation();
+	}
+    
+	public void playAgain() {
+		sim = getSimulation();
+		sim.resetCellSize(newSize);
+        setSimulation();
+        sim.playOrStop();
+	}
+    
 
     public void sizeChange(String string) {
         try {
-        	int newSize = Integer.parseInt(string);
+        	newSize = Integer.parseInt(string);
             sim = getSimulation();
-            int sizePass = 1/(sim.resetCellSize(newSize));
+            
+            if (!sim.resetCellSize(newSize)) {
+                throw new Exception();
+            }
+            
             setSimulation();
         } 
         catch (Exception e){
