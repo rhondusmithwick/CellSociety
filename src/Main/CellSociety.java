@@ -22,7 +22,7 @@ class CellSociety {
     /**
      * Stylesheet option.
      */
-    public static final String STYLESHEET = "vivid.css";
+    public static final String STYLESHEET = "heart.css";
 
     /**
      * The empty constructor.
