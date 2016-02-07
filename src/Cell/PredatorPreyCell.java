@@ -52,6 +52,26 @@ public class PredatorPreyCell extends Cell {
         return neighborsOfState;
     }
 
+    private void sharkEat() {
+        List<PredatorPreyCell> fishNeighbors = getNeighborsOfState(State.FISH);
+        if (!fishNeighbors.isEmpty()) {
+            Collections.shuffle(fishNeighbors);
+            PredatorPreyCell fish = fishNeighbors.get(0);
+            fish.setMark(Mark.TO_EMPTY);
+            setStarveCounter(0);
+        }
+    }
+
+    public void haveEat(int starveTime) {
+        if (getState() == State.SHARK) {
+            if (shouldStarve(starveTime)) {
+                setMark(Mark.TO_EMPTY);
+            } else {
+                sharkEat();
+            }
+        }
+    }
+
     public void changeState() {
         switch (getMark()) {
             case NONE:
@@ -73,7 +93,7 @@ public class PredatorPreyCell extends Cell {
         setMark(Mark.NONE);
     }
 
-    public boolean getBreeding() {
+    private boolean getBreeding() {
         return breeding;
     }
 
@@ -85,7 +105,7 @@ public class PredatorPreyCell extends Cell {
         return state;
     }
 
-    public Mark getMark() {
+    private Mark getMark() {
         return mark;
     }
 
@@ -116,42 +136,43 @@ public class PredatorPreyCell extends Cell {
         sharkVisual = visuals[2];
     }
 
-    public enum State {
-        SHARK, FISH, EMPTY
-    }
-
-    public enum Mark {
-        TO_FISH, TO_SHARK, TO_EMPTY, NONE
-    }
-
     public boolean shouldMakeEmpty() {
         return (!getBreeding())
                 || (getBreeding() && getMark() == Mark.TO_EMPTY);
     }
 
+    public boolean shouldBreed(int fishBreedTime, int sharkBreedTime) {
+        return fishShouldBreed(fishBreedTime) ||
+                sharkShouldBreed(sharkBreedTime);
+    }
 
-    public boolean fishShouldBreed(int fishBreedTime) {
+    private boolean fishShouldBreed(int fishBreedTime) {
         return (getState() == State.FISH)
                 && (getBreedTimer() >= fishBreedTime);
     }
 
-    public boolean sharkShouldBreed(int sharkBreedTime) {
+    private boolean sharkShouldBreed(int sharkBreedTime) {
         return (getState() == State.SHARK)
                 && (getBreedTimer() >= sharkBreedTime);
     }
 
-    public boolean shouldStarve(int starveTime) {
+    private boolean shouldStarve(int starveTime) {
         return starveCounter >= starveTime;
     }
 
-
-    public void sharkEat() {
-        List<PredatorPreyCell> fishNeighbors = getNeighborsOfState(State.FISH);
-        if (!fishNeighbors.isEmpty()) {
-            Collections.shuffle(fishNeighbors);
-            PredatorPreyCell fish = fishNeighbors.get(0);
-            fish.setMark(Mark.TO_EMPTY);
-            setStarveCounter(0);
-        }
+    public boolean canMoveOrSpawn() {
+        return (getState() != State.EMPTY)
+                && ((getMark() != Mark.TO_EMPTY) || (getBreeding()));
     }
+
+    public enum State {
+        SHARK, FISH, EMPTY
+    }
+
+
+    public enum Mark {
+        TO_FISH, TO_SHARK, TO_EMPTY, NONE
+    }
+
+
 }

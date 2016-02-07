@@ -42,10 +42,6 @@ public class PredatorPreySimulation extends Simulation {
         setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
     }
 
-    private static boolean canMoveOrSpawn(PredatorPreyCell ppc) {
-        return (ppc.getMark() != Mark.TO_EMPTY)
-                || (ppc.getBreeding());
-    }
 
     @Override
     void assignInitialState(int randomNum, Cell c) {
@@ -75,7 +71,7 @@ public class PredatorPreySimulation extends Simulation {
         PredatorPreyCell ppc;
         for (Cell c : getTheCells()) {
             ppc = (PredatorPreyCell) c;
-            if (shouldBreed(ppc)) {
+            if (ppc.shouldBreed(fishBreedTime, sharkBreedTime)) {
                 ppc.setBreeding(true);
                 ppc.setBreedTimer(0);
             }
@@ -86,13 +82,7 @@ public class PredatorPreySimulation extends Simulation {
         PredatorPreyCell ppc;
         for (Cell c : getTheCells()) {
             ppc = (PredatorPreyCell) c;
-            if (ppc.getState() == State.SHARK) {
-                if (ppc.shouldStarve(starveTime)) {
-                    ppc.setMark(Mark.TO_EMPTY);
-                } else {
-                    ppc.sharkEat();
-                }
-            }
+            ppc.haveEat(starveTime);
         }
     }
 
@@ -100,20 +90,18 @@ public class PredatorPreySimulation extends Simulation {
         PredatorPreyCell ppc;
         for (Cell c : getTheCells()) {
             ppc = (PredatorPreyCell) c;
-            if (ppc.getState() != State.EMPTY) {
+            if (ppc.canMoveOrSpawn()) {
                 move(ppc);
             }
         }
     }
 
     private void move(PredatorPreyCell ppc) {
-        if (canMoveOrSpawn(ppc)) {
-            List<PredatorPreyCell> emptyNeighbors = ppc.getNeighborsOfState(State.EMPTY);
-            if (!emptyNeighbors.isEmpty()) {
-                int randomIndex = getRandomNum(0, emptyNeighbors.size() - 1);
-                PredatorPreyCell emptyNeighbor = emptyNeighbors.get(randomIndex);
-                moveSpawn(ppc, emptyNeighbor);
-            }
+        List<PredatorPreyCell> emptyNeighbors = ppc.getNeighborsOfState(State.EMPTY);
+        if (!emptyNeighbors.isEmpty()) {
+            int randomIndex = getRandomNum(0, emptyNeighbors.size() - 1);
+            PredatorPreyCell emptyNeighbor = emptyNeighbors.get(randomIndex);
+            moveSpawn(ppc, emptyNeighbor);
         }
     }
 
@@ -138,11 +126,6 @@ public class PredatorPreySimulation extends Simulation {
         emptyNeighbor.setStarveCounter(ppc.getStarveCounter());
         ppc.setBreedTimer(0);
         ppc.setStarveCounter(0);
-    }
-
-    private boolean shouldBreed(PredatorPreyCell ppc) {
-        return ppc.fishShouldBreed(fishBreedTime) ||
-                ppc.sharkShouldBreed(sharkBreedTime);
     }
 
 

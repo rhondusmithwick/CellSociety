@@ -21,7 +21,7 @@ public abstract class Cell {
     /**
      * This cell's shape.
      */
-    private Rectangle shape = new Rectangle();
+    private final Rectangle shape = new Rectangle();
     /**
      * This cell's row in the grid.
      */
