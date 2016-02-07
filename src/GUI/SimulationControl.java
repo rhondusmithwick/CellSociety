@@ -15,7 +15,11 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class SimulationControl {
+<<<<<<< HEAD
+
+=======
     private static final String DEFAULT_GUUI_PROPERTY = "GUIstrings";
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
     private static final String DEFAULT_SIM_TYPE = "Fire";
 
     private final ResourceBundle myResources;
@@ -58,7 +62,7 @@ public class SimulationControl {
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
         GridPane.setConstraints(cellManager, 0, 0);
-        GridPane.setRowSpan(cellManager, 6);
+        GridPane.setRowSpan(cellManager, 8);
         display.getChildren().add(cellManager);
     }
 
@@ -82,6 +86,17 @@ public class SimulationControl {
     }
 
     public void slowDown() {
+<<<<<<< HEAD
+    	if(!sim.decreaseRate()){
+    	   showError(myResources.getString("DecreaseError"));
+       }
+       
+    }
+
+    public void speedUp() {
+    	if (!sim.increaseRate()){
+        	showError(myResources.getString("IncreaseError"));
+=======
         if (!sim.decreaseRate()) {
             showError(myResources.getString("DecreaseError"));
         }
@@ -91,9 +106,10 @@ public class SimulationControl {
     public void speedUp() {
         if (!sim.increaseRate()) {
             showError(myResources.getString("IncreaseError"));
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
         }
     }
-
+    
     public void step() {
         stop();
         sim.step();
@@ -126,10 +142,36 @@ public class SimulationControl {
         cellManager.init(simType);
         return cellManager;
     }
+    
+    public void reset() {
+		sim = getSimulation();
+        setSimulation();
+	}
+    
+	public void playAgain() {
+		sim = getSimulation();
+		sim.resetCellSize(newSize);
+        setSimulation();
+        sim.playOrStop();
+	}
+    
 
 
     public void sizeChange(String string) {
         try {
+<<<<<<< HEAD
+        	newSize = Integer.parseInt(string);
+            sim = getSimulation();
+            
+            if (!sim.resetCellSize(newSize)) {
+                throw new Exception();
+            }
+            
+            setSimulation();
+        } 
+        catch (Exception e){
+        	showError(myResources.getString("SizeError"));
+=======
             newSize = Integer.parseInt(string);
             sim = getSimulation();
 
@@ -141,6 +183,7 @@ public class SimulationControl {
         }
         catch (Exception e){
             showError(myResources.getString("SizeError"));
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
         }
     }
 
@@ -164,6 +207,5 @@ public class SimulationControl {
                 myResources.getString("PredatorPreySim")
         );
     }
+
 }
-
-

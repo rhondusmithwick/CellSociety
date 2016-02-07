@@ -7,6 +7,11 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+<<<<<<< HEAD
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+=======
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -50,6 +55,14 @@ public class GUI {
 
 
     private void setWidths() {
+<<<<<<< HEAD
+    	for (Node node : this.getControls()){
+    		((Region) node).setMaxWidth(Double.MAX_VALUE);
+    	}
+	}
+
+	private void createControls() {
+=======
         for (Node node : this.getControls()) {
             ((Region) node).setMaxWidth(Double.MAX_VALUE);
         }
@@ -57,20 +70,27 @@ public class GUI {
 
 
     private void createControls() {
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
         createComboBox();
         createButtons();
         addButtons();
     }
+<<<<<<< HEAD
+    
+    private void createComboBox(){
+    	comboBox = new ComboBox<>(mySimControl.getSimulations());
+=======
 
     private void createComboBox() {
         comboBox = new ComboBox<>(mySimControl.getSimulations());
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
         comboBox.setEditable(false);
         comboBox.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> mySimControl.switchSimulation(newValue)
+                (observable, oldValue, newValue) -> mySimControl.switchSimulation(newValue)    
         );
         comboBox.setPromptText(myResources.getString("SelectionPrompt"));
     }
-
+    
     private void createButtons() {
         myFileButton = makeButton(myResources.getString("XMLLoadPrompt"),
                 event -> setUpFileChooser());
@@ -85,9 +105,15 @@ public class GUI {
         mySlowDownButton = makeButton(myResources.getString("SlowerButton"),
                 event -> mySimControl.slowDown());
         myResetButton = makeButton(myResources.getString("ResetButton"),
+<<<<<<< HEAD
+        		event -> mySimControl.reset());
+        myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"),
+        		event -> mySimControl.playAgain());
+=======
                 event -> mySimControl.reset());
         myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"),
                 event -> mySimControl.playAgain());
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
     }
 
     private void addButtons() {
@@ -112,13 +138,29 @@ public class GUI {
         GridPane.setConstraints(myStepButton, 2, 3, 1, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySlowDownButton, 1, 4, 1, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySpeedUpButton, 2, 4, 1, 1, HPos.CENTER, VPos.CENTER);
+<<<<<<< HEAD
+        }
+=======
     }
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
 
     private Button makeButton(String property, EventHandler<ActionEvent> handler) {
         Button result = new Button();
         result.setText(property);
         result.setOnAction(handler);
         return result;
+    }
+        
+    private void setUpSizeBox(){
+    	mySimControl.stop();
+    	TextInputDialog input = new TextInputDialog("");
+        input.setTitle(myResources.getString("SizePromptTitle"));
+        input.setContentText(myResources.getString("SizePrompt"));
+        Optional<String> response = input.showAndWait();
+        if (response.isPresent()){
+        //if (response.isPresent() && response.get()=="") {
+        	mySimControl.sizeChange(response.get());
+        }
     }
 
     private void setUpSizeBox() {
