@@ -7,8 +7,11 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+<<<<<<< HEAD
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+=======
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -16,6 +19,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,19 +55,35 @@ public class GUI {
 
 
     private void setWidths() {
+<<<<<<< HEAD
     	for (Node node : this.getControls()){
     		((Region) node).setMaxWidth(Double.MAX_VALUE);
     	}
 	}
 
 	private void createControls() {
+=======
+        for (Node node : this.getControls()) {
+            ((Region) node).setMaxWidth(Double.MAX_VALUE);
+        }
+    }
+
+
+    private void createControls() {
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
         createComboBox();
         createButtons();
         addButtons();
     }
+<<<<<<< HEAD
     
     private void createComboBox(){
     	comboBox = new ComboBox<>(mySimControl.getSimulations());
+=======
+
+    private void createComboBox() {
+        comboBox = new ComboBox<>(mySimControl.getSimulations());
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
         comboBox.setEditable(false);
         comboBox.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> mySimControl.switchSimulation(newValue)    
@@ -82,9 +105,15 @@ public class GUI {
         mySlowDownButton = makeButton(myResources.getString("SlowerButton"),
                 event -> mySimControl.slowDown());
         myResetButton = makeButton(myResources.getString("ResetButton"),
+<<<<<<< HEAD
         		event -> mySimControl.reset());
         myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"),
         		event -> mySimControl.playAgain());
+=======
+                event -> mySimControl.reset());
+        myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"),
+                event -> mySimControl.playAgain());
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
     }
 
     private void addButtons() {
@@ -109,7 +138,11 @@ public class GUI {
         GridPane.setConstraints(myStepButton, 2, 3, 1, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySlowDownButton, 1, 4, 1, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySpeedUpButton, 2, 4, 1, 1, HPos.CENTER, VPos.CENTER);
+<<<<<<< HEAD
         }
+=======
+    }
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
 
     private Button makeButton(String property, EventHandler<ActionEvent> handler) {
         Button result = new Button();
@@ -130,21 +163,50 @@ public class GUI {
         }
     }
 
+    private void setUpSizeBox() {
+        mySimControl.stop();
+        TextInputDialog input = new TextInputDialog("");
+        input.setTitle(myResources.getString("SizePromptTitle"));
+        input.setContentText(myResources.getString("SizePrompt"));
+        Optional<String> response = input.showAndWait();
+        if (response.isPresent()) {
+            mySimControl.sizeChange(response.get());
+        }
+    }
+
+
     private void setUpFileChooser() {
         mySimControl.stop();
+ 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("XML", "*.xml")
         );
+        fileChooser.setInitialDirectory(getLocalDir());
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             mySimControl.openFile(file);
         }
     }
+    private File getLocalDir(){
+    	ProtectionDomain pd = GUI.class.getProtectionDomain();
+        CodeSource cs = pd.getCodeSource();
+        URL localDir = cs.getLocation();
+        
+        File dir;
+        try {
+          dir = new File(localDir.toURI());
+        } catch(URISyntaxException e) {
+          dir = new File(localDir.getPath());
+        }
+        return dir;
+    }
+    
 
     public List<Node> getControls() {
         return controlList;
     }
 
 }
+

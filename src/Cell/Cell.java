@@ -2,6 +2,7 @@ package Cell;
 
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -12,13 +13,16 @@ import java.util.LinkedList;
  *
  * @author Rhondu Smithwick
  */
-public abstract class Cell extends Rectangle {
+public abstract class Cell {
     private final Collection<Cell> neighbors = new LinkedList<>();
+    private Rectangle rectangle;
+
     private int row;
     private int column;
 
     Cell() {
         super();
+        rectangle = new Rectangle();
     }
 
     public final void removeDiagonals() {
@@ -58,10 +62,10 @@ public abstract class Cell extends Rectangle {
     }
 
     public final void init(double cellWidth, double cellHeight, double x, double y, int row, int column) {
-        setWidth(cellWidth);
-        setHeight(cellHeight);
-        setX(x);
-        setY(y);
+        rectangle.setWidth(cellWidth);
+        rectangle.setHeight(cellHeight);
+        rectangle.setX(x);
+        rectangle.setY(y);
         setRow(row);
         setColumn(column);
     }
@@ -73,4 +77,16 @@ public abstract class Cell extends Rectangle {
         return neighbors;
     }
 
+    Shape getShape() {
+        return rectangle;
+    }
+
+
+    void setFill(Paint value) {
+        rectangle.setFill(value);
+    }
+
+    void setStroke(Paint value) {
+        rectangle.setStroke(value);
+    }
 }

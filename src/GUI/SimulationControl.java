@@ -3,17 +3,23 @@ package GUI;
 import Cell.CellManager;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
+import Simulation.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ResourceBundle;
 
 public class SimulationControl {
+<<<<<<< HEAD
 
+=======
+    private static final String DEFAULT_GUUI_PROPERTY = "GUIstrings";
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
     private static final String DEFAULT_SIM_TYPE = "Fire";
 
     private final ResourceBundle myResources;
@@ -25,9 +31,9 @@ public class SimulationControl {
     private int newSize = 0;
 
 
-    public SimulationControl(GridPane display, String resource) {
+    public SimulationControl(GridPane display) {
         this.display = display;
-        myResources = ResourceBundle.getBundle(resource);
+        myResources = ResourceBundle.getBundle(DEFAULT_GUUI_PROPERTY);
         mySimulations = createSimulationsList();
         switchSimulation(DEFAULT_SIM_TYPE);
     }
@@ -38,11 +44,20 @@ public class SimulationControl {
         setSimulation();
     }
 
+    public void switchSimulation(Element simElem) {
+        simType = XMLParser.getSimType(simElem);
+        sim = getSimulation();
+        sim.setType(simType);
+        sim.setProperties(simElem);
+        setSimulation();
+    }
+
     private void setSimulation() {
         displayNewCells();
         sim.setTheCells(cellManager.getCells());
         sim.init();
     }
+
     private void displayNewCells() {
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
@@ -71,6 +86,7 @@ public class SimulationControl {
     }
 
     public void slowDown() {
+<<<<<<< HEAD
     	if(!sim.decreaseRate()){
     	   showError(myResources.getString("DecreaseError"));
        }
@@ -80,11 +96,22 @@ public class SimulationControl {
     public void speedUp() {
     	if (!sim.increaseRate()){
         	showError(myResources.getString("IncreaseError"));
+=======
+        if (!sim.decreaseRate()) {
+            showError(myResources.getString("DecreaseError"));
+        }
+
+    }
+
+    public void speedUp() {
+        if (!sim.increaseRate()) {
+            showError(myResources.getString("IncreaseError"));
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
         }
     }
     
     public void step() {
-        sim.stop();
+        stop();
         sim.step();
     }
 
@@ -96,6 +123,17 @@ public class SimulationControl {
         sim.playOrStop();
     }
 
+    public void reset() {
+        sim = getSimulation();
+        setSimulation();
+    }
+
+    public void playAgain() {
+        sim = getSimulation();
+        sim.resetCellSize(newSize);
+        setSimulation();
+        sim.playOrStop();
+    }
 
     private CellManager createCellManager(String simType) {
         CellManager cellManager = new CellManager();
@@ -118,8 +156,10 @@ public class SimulationControl {
 	}
     
 
+
     public void sizeChange(String string) {
         try {
+<<<<<<< HEAD
         	newSize = Integer.parseInt(string);
             sim = getSimulation();
             
@@ -131,12 +171,25 @@ public class SimulationControl {
         } 
         catch (Exception e){
         	showError(myResources.getString("SizeError"));
+=======
+            newSize = Integer.parseInt(string);
+            sim = getSimulation();
+
+            if (!sim.resetCellSize(newSize)) {
+                throw new Exception();
+            }
+
+            setSimulation();
+        }
+        catch (Exception e){
+            showError(myResources.getString("SizeError"));
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
         }
     }
 
     public void openFile(File file) {
         System.out.println("File Path: " + file.getPath());
-        file.getPath();
+        switchSimulation(XMLParser.getXmlElement(file.getPath()));
     }
 
     private void showError(String message) {

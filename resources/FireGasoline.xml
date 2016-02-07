@@ -4,9 +4,9 @@
     <gridHeight>600</gridHeight>
     <numCellsPerRow>100</numCellsPerRow>
     <numCellsPerColumn>100</numCellsPerColumn>
-    <burnTime>3</burnTime>
-    <probCatch>50</probCatch>
+    <burnTime>1</burnTime>
+    <probCatch>99</probCatch>
     <emptyVisual>black</emptyVisual>
     <burningVisual>yellow</burningVisual>
-    <treeVisual>green</treeVisual>
+    <treeVisual>tan</treeVisual>
 </Simulation>

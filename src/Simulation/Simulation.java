@@ -32,12 +32,7 @@ public abstract class Simulation {
         rn = new Random();
     }
 
-    Simulation(Element simElem) {
-        this();
-        setProperties(simElem);
-    }
-
-    final void setProperties(Element simElem) {
+    public final void setProperties(Element simElem) {
         setGenericProperties(simElem);
         setSpecificProperties(simElem);
     }
@@ -104,9 +99,7 @@ public abstract class Simulation {
         return rn.nextInt(range) + min;
     }
 
-    private void setGenericProperties(Element simElem) {
-        String simType = XMLParser.getSimType(simElem);
-        setType(simType);
+    public void setGenericProperties(Element simElem) {
         gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
         gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
         cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
@@ -136,12 +129,12 @@ public abstract class Simulation {
     }
 
 
-    final String getType() {
+    public String getType() {
         return type;
     }
 
 
-    private void setType(String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -156,7 +149,7 @@ public abstract class Simulation {
     public final boolean increaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate <= 10) {
-            simulationLoop.setRate(currentRate + .1);
+            simulationLoop.setRate(currentRate + .5);
             return true;
         }
         return false;
@@ -165,7 +158,7 @@ public abstract class Simulation {
     public final boolean decreaseRate() {
         double currentRate = simulationLoop.getRate();
         if (currentRate > 0) {
-            simulationLoop.setRate(currentRate - .1);
+            simulationLoop.setRate(currentRate - .5);
             return true;
         }
         return false;
@@ -176,6 +169,7 @@ public abstract class Simulation {
         simulationLoop.setRate(1.0);
     }
 
+<<<<<<< HEAD
     public boolean resetCellSize(int numCells) {
     	if (numCells > 1){
         cellsPerRow = numCells;
@@ -185,6 +179,18 @@ public abstract class Simulation {
     	else {
     		return false;
     	}
+=======
+
+    public final boolean resetCellSize(int numCells) {
+        if (numCells > 1){
+            cellsPerRow = numCells;
+            cellsPerColumn = numCells;
+            return true;
+        }
+        else {
+            return false;
+        }
+>>>>>>> 4ef5c6b647464fdf89096beca1aeaa8c29702f5f
     }
 
 }
