@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import org.w3c.dom.Element;
 
 import java.io.File;
@@ -46,7 +47,6 @@ public class SimulationControl {
     public void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
-        simLabel.setText(simType);
         sim.setType(simType);
         setSimLabel();
         sim.setProperties(simElem);
@@ -63,7 +63,7 @@ public class SimulationControl {
         display.getChildren().remove(cellManager);
         cellManager = createCellManager(simType);
         GridPane.setConstraints(cellManager, 0, 0);
-        GridPane.setRowSpan(cellManager, 6);
+        GridPane.setRowSpan(cellManager, 8);
         display.getChildren().add(cellManager);
     }
 
@@ -169,11 +169,14 @@ public class SimulationControl {
     }
 
     public Label getSimLabel() {
+        simLabel.setStyle("-fx-font-size: 3em;");
+        simLabel.setTextFill(Color.BLUE);
         return simLabel;
     }
 
+
     public void setSimLabel() {
-        simLabel.setText("Currently on \n" + simType);
+        simLabel.setText(simType);
     }
 }
 

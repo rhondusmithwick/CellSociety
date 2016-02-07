@@ -111,7 +111,7 @@ public class GUI {
         GridPane.setConstraints(myResetButton, 1, 6, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myPlayAgainButton, 1, 5, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(comboBox, 1, 1, 2, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(simLabel, 3, 0, 2, 1, HPos.CENTER, VPos.CENTER);
+        GridPane.setConstraints(simLabel, 1, 7, 3, 3, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(mySetSizeButton, 1, 2, 2, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myPlayPauseButton, 1, 3, 1, 1, HPos.CENTER, VPos.CENTER);
         GridPane.setConstraints(myStepButton, 2, 3, 1, 1, HPos.CENTER, VPos.CENTER);
