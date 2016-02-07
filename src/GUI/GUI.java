@@ -160,20 +160,7 @@ public class GUI {
         }
         return dir;
     }
-
-
-    private File getLocalDir() {
-        ProtectionDomain pd = GUI.class.getProtectionDomain();
-        CodeSource cs = pd.getCodeSource();
-        URL localDir = cs.getLocation();
-        File dir;
-        try {
-            dir = new File(localDir.toURI());
-        } catch (URISyntaxException e) {
-            dir = new File(localDir.getPath());
-        }
-        return dir;
-    }
+    
 
     public List<Node> getControls() {
         return controlList;
