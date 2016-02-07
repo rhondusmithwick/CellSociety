@@ -10,15 +10,29 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	/**
+	 * A classic main method.
+	 * 
+	 * @param args
+	 *            the standard string array
+	 * 
+	 */
+	public static void main(String[] args) {
+		launch(args);
+	}
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Cell Society");
-        CellSociety cs = new CellSociety();
-        cs.init(primaryStage);
-        primaryStage.show();
-    }
+	/**
+	 * Initializes cell society and shows the stage.
+	 *
+	 * @param primaryStage
+	 *            the primary screen containing the scene
+	 * 
+	 */
+	@Override
+	public void start(Stage primaryStage) {
+		primaryStage.setTitle("Cell Society");
+		CellSociety cs = new CellSociety();
+		cs.init(primaryStage);
+		primaryStage.show();
+	}
 }

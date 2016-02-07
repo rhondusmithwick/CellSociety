@@ -37,7 +37,12 @@ class CellSociety {
         primaryStage.setResizable(false);
     }
 
-
+    /**
+     * Sets up displays and initialized cell society and gui.
+     *
+     * @return display
+     * 				the edited GridPane with necessary objects
+     */
     private GridPane createDisplay() {
         GridPane display = new GridPane();
         SimulationControl mySimControl = new SimulationControl(display);
