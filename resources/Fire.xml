@@ -6,7 +6,7 @@
     <numCellsPerColumn>100</numCellsPerColumn>
     <burnTime>3</burnTime>
     <probCatch>50</probCatch>
-    <emptyVisual>black</emptyVisual>
-    <burningVisual>yellow</burningVisual>
+    <emptyVisual>yellow</emptyVisual>
+    <burningVisual>red</burningVisual>
     <treeVisual>green</treeVisual>
 </Simulation>

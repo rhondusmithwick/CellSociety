@@ -31,6 +31,7 @@ public class FireSimulation extends Simulation {
     public FireSimulation() {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"));
+
     }
 
 
