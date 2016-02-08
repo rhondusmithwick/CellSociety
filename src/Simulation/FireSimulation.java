@@ -36,7 +36,7 @@ public class FireSimulation extends Simulation {
 
 
     @Override
-    void assignInitialState(int randomNum, Cell c) {
+    void assignInitialState(Cell c) {
         FireCell fc = (FireCell) c;
         fc.removeDiagonals();
         fc.setVisuals(emptyVisual, burningVisual, treeVisual);

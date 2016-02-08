@@ -42,7 +42,8 @@ public class PredatorPreySimulation extends Simulation {
 
 
     @Override
-    void assignInitialState(int randomNum, Cell c) {
+    void assignInitialState(Cell c) {
+        int randomNum = getRandomNum(1, 100);
         final PredatorPreyCell ppc = (PredatorPreyCell) c;
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {

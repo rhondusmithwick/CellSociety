@@ -50,7 +50,8 @@ public class SegregationSimulation extends Simulation {
     }
 
     @Override
-    void assignInitialState(int randomNum, Cell c) {
+    void assignInitialState( Cell c) {
+        int randomNum = getRandomNum(1, 100);
         final SegregationCell sc = (SegregationCell) c;
         sc.setThreshold(threshold);
         sc.setVisuals(emptyVisual, group1Visual, group2Visual);
