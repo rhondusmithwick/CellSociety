@@ -45,16 +45,14 @@ public abstract class Simulation {
         return simulationLoop;
     }
 
-    public final void init() {
-        int randomNum;
+    public void init() {
         for (Cell c : getTheCells()) {
-            randomNum = getRandomNum(1, 100);
-            assignInitialState(randomNum, c);
+            assignInitialState(c);
         }
         changeStates();
     }
 
-    abstract void assignInitialState(int randomNum, Cell c);
+    abstract void assignInitialState(Cell c);
 
     public void step() {
         getTheCells().forEach(c -> c.handleUpdate());

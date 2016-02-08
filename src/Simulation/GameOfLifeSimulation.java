@@ -35,7 +35,8 @@ public class GameOfLifeSimulation extends Simulation {
     }
 
     @Override
-    void assignInitialState(int randomNum, Cell c) {
+    void assignInitialState(Cell c) {
+        int randomNum = getRandomNum(1, 100);
         final GameOfLifeCell gc = (GameOfLifeCell) c;
         gc.setVisuals(deadVisual, aliveVisual);
         if (randomNum <= probStartDead) {
