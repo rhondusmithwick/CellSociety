@@ -52,25 +52,8 @@ public class PredatorPreyCell extends Cell {
         return neighborsOfState;
     }
 
-    private void sharkEat() {
-        List<PredatorPreyCell> fishNeighbors = getNeighborsOfState(State.FISH);
-        if (!fishNeighbors.isEmpty()) {
-            Collections.shuffle(fishNeighbors);
-            PredatorPreyCell fish = fishNeighbors.get(0);
-            fish.setMark(Mark.TO_EMPTY);
-            setStarveCounter(0);
-        }
-    }
 
-    public void haveEat(int starveTime) {
-        if (getState() == State.SHARK) {
-            if (shouldStarve(starveTime)) {
-                setMark(Mark.TO_EMPTY);
-            } else {
-                sharkEat();
-            }
-        }
-    }
+
 
     public void changeState() {
         switch (getMark()) {
@@ -156,7 +139,7 @@ public class PredatorPreyCell extends Cell {
                 && (getBreedTimer() >= sharkBreedTime);
     }
 
-    private boolean shouldStarve(int starveTime) {
+    public boolean shouldStarve(int starveTime) {
         return starveCounter >= starveTime;
     }
 

@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,7 +62,6 @@ public class PredatorPreySimulation extends Simulation {
     public void step() {
         super.step();
         breedAll();
-        haveSharksEat();
         moveAll();
         changeStates();
     }
@@ -78,54 +78,71 @@ public class PredatorPreySimulation extends Simulation {
         }
     }
 
-    private void haveSharksEat() {
-        PredatorPreyCell ppc;
-        for (Cell c : getTheCells()) {
-            ppc = (PredatorPreyCell) c;
-            ppc.haveEat(starveTime);
-        }
-    }
-
     private void moveAll() {
         PredatorPreyCell ppc;
         for (Cell c : getTheCells()) {
             ppc = (PredatorPreyCell) c;
-            if (ppc.canMoveOrSpawn()) {
+            if (ppc.getState() == State.SHARK) {
+                sharkUpdate(ppc);
+            } else if (ppc.canMoveOrSpawn()) {
                 move(ppc);
             }
         }
     }
 
-    private void move(PredatorPreyCell ppc) {
+
+    private void sharkUpdate(PredatorPreyCell shark) {
+        if (shark.shouldStarve(starveTime)) {
+            shark.setMark(Mark.TO_EMPTY);
+        } else if (!sharkEat(shark)) {
+            if (shark.canMoveOrSpawn()) {
+                move(shark);
+            }
+        }
+    }
+
+    private static boolean sharkEat(PredatorPreyCell ppc) {
+        List<PredatorPreyCell> fishNeighbors = ppc.getNeighborsOfState(State.FISH);
+        if (!fishNeighbors.isEmpty()) {
+            Collections.shuffle(fishNeighbors);
+            PredatorPreyCell fish = fishNeighbors.get(0);
+            ppc.setStarveCounter(0);
+            moveSpawn(ppc, fish);
+            return true;
+        }
+        return false;
+    }
+
+    private static void move(PredatorPreyCell ppc) {
         List<PredatorPreyCell> emptyNeighbors = ppc.getNeighborsOfState(State.EMPTY);
         if (!emptyNeighbors.isEmpty()) {
-            int randomIndex = getRandomNum(0, emptyNeighbors.size() - 1);
-            PredatorPreyCell emptyNeighbor = emptyNeighbors.get(randomIndex);
+            Collections.shuffle(emptyNeighbors);
+            PredatorPreyCell emptyNeighbor = emptyNeighbors.get(0);
             moveSpawn(ppc, emptyNeighbor);
         }
     }
 
-    private void moveSpawn(PredatorPreyCell ppc, PredatorPreyCell emptyNeighbor) {
-        swap(ppc, emptyNeighbor);
+    private static void moveSpawn(PredatorPreyCell ppc, PredatorPreyCell cellToMoveTo) {
+        swap(ppc, cellToMoveTo);
         if (ppc.shouldMakeEmpty()) {
             ppc.setMark(Mark.TO_EMPTY);
         }
         ppc.setBreeding(false);
     }
 
-    private void swap(PredatorPreyCell ppc, PredatorPreyCell emptyNeighbor) {
-        switch (ppc.getState()) {
+    private static void swap(PredatorPreyCell cellToMove, PredatorPreyCell cellToMoveTo) {
+        switch (cellToMove.getState()) {
             case FISH:
-                emptyNeighbor.setMark(Mark.TO_FISH);
+                cellToMoveTo.setMark(Mark.TO_FISH);
                 break;
             case SHARK:
-                emptyNeighbor.setMark(Mark.TO_SHARK);
+                cellToMoveTo.setMark(Mark.TO_SHARK);
                 break;
         }
-        emptyNeighbor.setBreedTimer(ppc.getBreedTimer());
-        emptyNeighbor.setStarveCounter(ppc.getStarveCounter());
-        ppc.setBreedTimer(0);
-        ppc.setStarveCounter(0);
+        cellToMoveTo.setBreedTimer(cellToMove.getBreedTimer());
+        cellToMoveTo.setStarveCounter(cellToMove.getStarveCounter());
+        cellToMove.setBreedTimer(0);
+        cellToMove.setStarveCounter(0);
     }
 
 
