@@ -1,0 +1,45 @@
+.root {
+	-fx-font-size: 12pt;
+	-fx-font-family: "Apple Chancery";
+	-fx-base: rgb(255,204,229);
+	-fx-background: rgb(255,204,229);
+}
+
+.button {
+	-fx-text-fill: #ffb6c1;
+	-fx-background-color: #ff0000;
+	-fx-border-radius: 20;
+	-fx-background-radius: 20;
+	-fx-padding: 8;
+}
+
+.button:hover {
+	-fx-background-color: #e6e6fa;
+}
+
+.combo-box-base {
+	-fx-text-base-color: #ffb6c1;
+	-fx-background-color: #ff0000;
+	-fx-border-radius: 20;
+	-fx-background-radius: 20;
+}
+
+.combo-box-base:hover {
+	-fx-background-color: #e6e6fa;
+}
+
+.combo-box-popup .list-view .list-cell {
+	-fx-background-color: #e6e6fa;
+	-fx-text-fill: #ffb6c1;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+	-fx-background-color: #e6e6fa;
+	-fx-text-fill: #00fa9a;
+}
+
+.label {
+	-fx-font-size: 10pt;
+	-fx-font-family: "American Typewriter";
+	-fx-text-fill: #c71585;
+}

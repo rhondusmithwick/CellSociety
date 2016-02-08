@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 /**
  * Created by rhondusmithwick on 1/31/16.
  *
- * @author Rhondu Smithwick, Tavo Loaiza
+ * @author Rhondu Smithwick
  */
 public class GameOfLifeSimulation extends Simulation {
 
@@ -28,13 +28,11 @@ public class GameOfLifeSimulation extends Simulation {
         setProperties(XMLParser.getXmlElement("resources/" + "GameOfLife.xml"));
     }
 
-
     @Override
     public void step() {
         super.step();
         changeStates();
     }
-
 
     @Override
     void assignInitialState(int randomNum, Cell c) {

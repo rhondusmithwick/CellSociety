@@ -5,10 +5,10 @@
     <numCellsPerRow>125</numCellsPerRow>
     <numCellsPerColumn>125</numCellsPerColumn>
     <fishBreedTime>10</fishBreedTime>
-    <sharkBreedTime>12</sharkBreedTime>
-    <starveTime>10</starveTime>
-    <emptyPercent>10</emptyPercent>
-    <fishPercent>80</fishPercent>
+    <sharkBreedTime>5</sharkBreedTime>
+    <starveTime>4</starveTime>
+    <emptyPercent>50</emptyPercent>
+    <fishPercent>40</fishPercent>
     <emptyVisual>blue</emptyVisual>
     <fishVisual>limegreen</fishVisual>
     <sharkVisual>yellow</sharkVisual>

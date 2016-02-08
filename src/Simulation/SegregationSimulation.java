@@ -9,6 +9,7 @@ import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,6 +43,11 @@ public class SegregationSimulation extends Simulation {
         setProperties(XMLParser.getXmlElement("resources/" + "Segregation.xml"));
     }
 
+    private static void cleanUp(List<SegregationCell> cellsToMove) {
+        for (SegregationCell sc : cellsToMove) {
+            sc.setMark(Mark.NONE);
+        }
+    }
 
     @Override
     void assignInitialState(int randomNum, Cell c) {
@@ -59,7 +65,6 @@ public class SegregationSimulation extends Simulation {
         }
     }
 
-
     @Override
     public void step() {
         super.step();
@@ -70,33 +75,19 @@ public class SegregationSimulation extends Simulation {
     }
 
     private void getAllUpdates() {
-        List<SegregationCell> cellsToMove = new ArrayList<>();
-        for (Cell c : getTheCells()) {
-            SegregationCell sc = (SegregationCell) c;
-            if (sc.getMark() == Mark.TO_EMPTY) {
-                cellsToMove.add(sc);
-            }
-        }
+        List<SegregationCell> cellsToMove = getCellToMove();
         randomMover(cellsToMove);
-        for (SegregationCell sc : cellsToMove) {
-            sc.setMark(Mark.NONE);
-        }
+        cleanUp(cellsToMove);
     }
 
     private void randomMover(List<SegregationCell> cellsToMove) {
+        Collections.shuffle(cellsToMove);
+        Collections.shuffle(emptyCells);
         while (!cellsToMove.isEmpty() && !emptyCells.isEmpty()) {
-            final int randomIndex = getRandomNum(0, cellsToMove.size() - 1);
-            final SegregationCell cellToMove = cellsToMove.get(randomIndex);
-            cellsToMove.remove(randomIndex);
-            move(cellToMove);
+            swap(cellsToMove.get(0), emptyCells.get(0));
+            emptyCells.remove(0);
+            cellsToMove.remove(0);
         }
-    }
-
-    private void move(SegregationCell sc) {
-        final int randomIndex = getRandomNum(0, emptyCells.size() - 1);
-        final SegregationCell emptyCell = emptyCells.get(randomIndex);
-        emptyCells.remove(randomIndex);
-        swap(sc, emptyCell);
     }
 
     private void swap(SegregationCell sc, SegregationCell emptyCell) {
@@ -106,6 +97,17 @@ public class SegregationSimulation extends Simulation {
             emptyCell.setMark(Mark.TO_GROUP2);
         }
         emptyCellsToAdd.add(sc);
+    }
+
+    private List<SegregationCell> getCellToMove() {
+        List<SegregationCell> cellsToMove = new ArrayList<>();
+        for (Cell c : getTheCells()) {
+            SegregationCell sc = (SegregationCell) c;
+            if (sc.getMark() == Mark.TO_EMPTY) {
+                cellsToMove.add(sc);
+            }
+        }
+        return cellsToMove;
     }
 
     @Override
