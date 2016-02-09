@@ -1,6 +1,6 @@
 package GUI;
 
-import Cell.CellManager;
+import Cell.Grid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
 import Simulation.XMLParser;
@@ -34,7 +34,7 @@ public class SimulationControl {
     private final Label simLabel = new Label();
     private String simType = DEFAULT_SIM_TYPE;
     private Simulation sim;
-    private CellManager cellManager;
+    private Grid grid;
     private int newSize = 0;
     private File myXMLFile = null;
 
@@ -83,7 +83,7 @@ public class SimulationControl {
     private void setSimulation() {
         setSimLabel();
         displayNewCells();
-        sim.setTheCells(cellManager.getCells());
+        sim.setTheCells(grid.getCells());
         sim.init();
     }
 
@@ -91,11 +91,11 @@ public class SimulationControl {
      * Displays cells and sets the grid.
      */
     private void displayNewCells() {
-        display.getChildren().remove(cellManager);
-        cellManager = createCellManager(simType);
-        GridPane.setConstraints(cellManager, 0, 0);
-        GridPane.setRowSpan(cellManager, 8);
-        display.getChildren().add(cellManager);
+        display.getChildren().remove(grid);
+        grid = createCellManager(simType);
+        GridPane.setConstraints(grid, 0, 0);
+        GridPane.setRowSpan(grid, 8);
+        display.getChildren().add(grid);
     }
 
     /**
@@ -193,16 +193,16 @@ public class SimulationControl {
     }
 
     /**
-     * Creates and initializes the CellManager for the program.
+     * Creates and initializes the Grid for the program.
      *
      * @param simType the currently saved simulation type
-     * @result cellManager the new cellManager
+     * @result grid the new grid
      */
-    private CellManager createCellManager(String simType) {
-        CellManager cellManager = new CellManager();
-        cellManager.setGrid(sim.getGridWidth(), sim.getGridHeight(), sim.getCellsPerRow(), sim.getCellsPerColumn());
-        cellManager.init(simType);
-        return cellManager;
+    private Grid createCellManager(String simType) {
+        Grid grid = new Grid();
+        grid.setGrid(sim.getGridWidth(), sim.getGridHeight(), sim.getCellsPerRow(), sim.getCellsPerColumn());
+        grid.init(simType);
+        return grid;
     }
 
     /**
