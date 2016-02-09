@@ -6,12 +6,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * The class for the CellManager, which contains all the cells.
+ * The class for the Grid, which contains all the cells.
  * Created by rhondusmithwick on 1/30/16.
  *
  * @author Rhondu Smithwick
  */
-public class CellManager extends Group {
+public class Grid extends Group {
     /**
      * The cells.
      */
@@ -40,7 +40,7 @@ public class CellManager extends Group {
     /**
      * Construct a cellmanager.
      */
-    public CellManager() {
+    public Grid() {
         super();
     }
 
