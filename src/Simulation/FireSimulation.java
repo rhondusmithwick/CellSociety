@@ -75,7 +75,7 @@ public class FireSimulation extends Simulation {
     }
 
     @Override
-    void setSpecificProperties(Element simElem) {
+    void setSpecificProperties() {
         if (getType() == null || !getType().equals("Fire")) {
             burnTime = DEFAULT_BURN_TIME;
             probCatch = DEFAULT_PROB_CATCH;
@@ -83,14 +83,21 @@ public class FireSimulation extends Simulation {
             burningVisual = DEFAULT_BURNING_VISUAL;
             treeVisual = DEFAULT_TREE_VISUAL;
         } else {
-            burnTime = XMLParser.getIntValue(simElem, "burnTime");
-            probCatch = XMLParser.getIntValue(simElem, "probCatch");
-            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
-            burningVisual = XMLParser.getPaintValue(simElem, "burningVisual");
-            treeVisual = XMLParser.getPaintValue(simElem, "treeVisual");
+            burnTime = xmlProperties.getIntValue("burnTime");
+            probCatch = xmlProperties.getIntValue( "probCatch");
+            emptyVisual = xmlProperties.getPaintValue( "emptyVisual");
+            burningVisual = xmlProperties.getPaintValue("burningVisual");
+            treeVisual = xmlProperties.getPaintValue("treeVisual");
         }
     }
-
+    @Override
+	void saveSpecificValues() {
+		savedValues.put("burnTime", burnTime);
+		savedValues.put("probCatch",probCatch);
+		savedValues.put("emptyVisual",emptyVisual);
+		savedValues.put("burningVisual",burningVisual);
+		savedValues.put("treeVisual",treeVisual);
+	}
 
     private boolean treeShouldBurn(FireCell fc) {
         int randomNum = getRandomNum(1, 100);
@@ -115,4 +122,5 @@ public class FireSimulation extends Simulation {
         return (fc.getRow() == getCellsPerRow() / 2)
                 && (fc.getColumn() == getCellsPerColumn() / 2);
     }
+
 }

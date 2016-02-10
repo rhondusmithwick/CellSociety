@@ -3,6 +3,7 @@ package GUI;
 import Cell.Grid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
+import Simulation.XMLOutput;
 import Simulation.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -85,6 +86,12 @@ public class SimulationControl {
         displayNewCells();
         sim.setTheCells(grid.getCells());
         sim.init();
+    }
+    public void saveSimulation(File file) {
+    	sim.saveValues();
+    	XMLOutput simSave = new XMLOutput(sim);
+    	simSave.writeXML(file);
+
     }
 
     /**

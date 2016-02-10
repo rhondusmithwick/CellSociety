@@ -15,7 +15,7 @@ public class Grid extends Group {
     /**
      * The cells.
      */
-    private final Collection<Cell> theCells = new LinkedList<>();
+    private Collection<Cell> theCells = new LinkedList<>();
     /**
      * The internal 2D array for keeping track of neighbors.
      */
@@ -92,6 +92,16 @@ public class Grid extends Group {
      *
      * @param cellType this Cell Manager's cell type.
      */
+    public void init(String cellType, Collection<Cell> theCells) {
+    	this.theCells = theCells;
+        for (Cell c: theCells) {
+                grid[c.getRow()][c.getColumn()] = c;
+                this.getChildren().add(c.getShape());
+            }
+
+        populateNeighbors();
+    }
+
     public void init(String cellType) {
         double cellWidth = ((double) gridWidth) / cellsPerRow;
         double cellHeight = ((double) gridHeight) / cellsPerColumn;
@@ -105,7 +115,6 @@ public class Grid extends Group {
         }
         populateNeighbors();
     }
-
     /**
      * Populate neighbors of all cells.
      */
@@ -144,7 +153,7 @@ public class Grid extends Group {
      *
      * @param r the tested row
      * @param c the tested column
-     * @return triue if in the grid
+     * @return true if in the grid
      */
     private boolean inBounds(int r, int c) {
         return (r >= 0)
@@ -160,5 +169,8 @@ public class Grid extends Group {
      */
     public Collection<Cell> getCells() {
         return theCells;
+    }
+    public void setCells(Collection<Cell> newCells) {
+        theCells = newCells;
     }
 }

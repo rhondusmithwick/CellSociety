@@ -47,15 +47,22 @@ public class GameOfLifeSimulation extends Simulation {
     }
 
     @Override
-    void setSpecificProperties(Element simElem) {
+    void setSpecificProperties() {
         if (getType() == null || !getType().equals("GameOfLife")) {
             probStartDead = DEFAULT_START_DEAD;
             deadVisual = DEFAULT_DEAD_VISUAL;
             aliveVisual = DEFAULT_ALIVE_VISUAL;
         } else {
-            probStartDead = XMLParser.getIntValue(simElem, "probStartDead");
-            deadVisual = XMLParser.getPaintValue(simElem, "deadVisual");
-            aliveVisual = XMLParser.getPaintValue(simElem, "aliveVisual");
+            probStartDead = xmlProperties.getIntValue("probStartDead");
+            deadVisual = xmlProperties.getPaintValue("deadVisual");
+            aliveVisual = xmlProperties.getPaintValue("aliveVisual");
         }
     }
+
+	@Override
+	void saveSpecificValues() {
+		savedValues.put("probStartDead",probStartDead);
+		savedValues.put("deadVisual",deadVisual);
+		savedValues.put("aliveVisual",aliveVisual);
+	}
 }

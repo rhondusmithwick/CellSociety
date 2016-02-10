@@ -8,6 +8,8 @@ import javafx.util.Duration;
 import org.w3c.dom.Element;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -21,21 +23,36 @@ public abstract class Simulation {
 
     private int gridWidth;
     private int gridHeight;
-    private int cellsPerRow;
-    private int cellsPerColumn;
+    private int numCellsPerRow;
+    private int numCellsPerColumn;
     private String type;
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
-
+    protected XMLParser xmlProperties;
+    protected Map<String,Object> savedValues;
     Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
     }
 
     public final void setProperties(Element simElem) {
-        setGenericProperties(simElem);
-        setSpecificProperties(simElem);
+    	xmlProperties = new XMLParser(simElem);
+        setGenericProperties();
+        setSpecificProperties();
     }
+    public Map<String,Object> getSavedValues(){
+    	return savedValues;
+    }
+    public void saveValues(){
+    	savedValues = new HashMap<String,Object>();
+    	//savedValues.put("type", type);
+    	savedValues.put("gridWidth", gridWidth);
+    	savedValues.put("gridHeight", gridHeight);
+    	savedValues.put("numCellsPerRow", numCellsPerRow);
+    	savedValues.put("numCellsPerColumn", numCellsPerColumn);
+    	saveSpecificValues();
+    }
+    abstract void saveSpecificValues();
 
     private Timeline buildLoop() {
         final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), t -> step());
@@ -97,14 +114,14 @@ public abstract class Simulation {
         return rn.nextInt(range) + min;
     }
 
-    private void setGenericProperties(Element simElem) {
-        gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
-        gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
-        cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
-        cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
+    private void setGenericProperties() {
+    	type = xmlProperties.getSimType();
+        gridWidth = xmlProperties.getIntValue("gridWidth");
+        gridHeight = xmlProperties.getIntValue("gridHeight");
+        numCellsPerRow = xmlProperties.getIntValue("numCellsPerRow");
+        numCellsPerColumn = xmlProperties.getIntValue("numCellsPerColumn");
     }
-
-    abstract void setSpecificProperties(Element simElem);
+    abstract void setSpecificProperties();
 
 
     public final int getGridWidth() {
@@ -118,12 +135,12 @@ public abstract class Simulation {
 
 
     public final int getCellsPerRow() {
-        return cellsPerRow;
+        return numCellsPerRow;
     }
 
 
     public final int getCellsPerColumn() {
-        return cellsPerColumn;
+        return numCellsPerColumn;
     }
 
 
@@ -167,11 +184,14 @@ public abstract class Simulation {
         simulationLoop.setRate(1.0);
     }
 
+    public XMLParser getXmlProperties(){
+    	return xmlProperties;
+    }
 
     public final boolean resetCellSize(int numCells) {
         if (numCells > 1) {
-            cellsPerRow = numCells;
-            cellsPerColumn = numCells;
+            numCellsPerRow = numCells;
+            numCellsPerColumn = numCells;
             return true;
         } else {
             return false;

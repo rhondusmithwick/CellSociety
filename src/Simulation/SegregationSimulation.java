@@ -26,6 +26,7 @@ public class SegregationSimulation extends Simulation {
     private static final Paint DEFAULT_GROUP1_VISUAL = Color.RED;
     private static final Paint DEFAULT_GROUP2_VISUAL = Color.BLUE;
 
+
     private final List<SegregationCell> emptyCells = new ArrayList<>();
     private List<SegregationCell> emptyCellsToAdd;
 
@@ -112,7 +113,7 @@ public class SegregationSimulation extends Simulation {
     }
 
     @Override
-    void setSpecificProperties(Element simElem) {
+    void setSpecificProperties() {
         if (getType() == null || !getType().equals("Segregation")) {
             threshold = DEFAULT_THRESHOLD;
             emptyPercent = DEFAULT_EMPTY_PERCENT;
@@ -121,13 +122,22 @@ public class SegregationSimulation extends Simulation {
             group1Visual = DEFAULT_GROUP1_VISUAL;
             group2Visual = DEFAULT_GROUP2_VISUAL;
         } else {
-            threshold = XMLParser.getIntValue(simElem, "threshold");
-            emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
-            group1Percent = XMLParser.getIntValue(simElem, "group1Percent");
-            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
-            group1Visual = XMLParser.getPaintValue(simElem, "group1Visual");
-            group2Visual = XMLParser.getPaintValue(simElem, "group2Visual");
+            threshold = xmlProperties.getIntValue("threshold");
+            emptyPercent = xmlProperties.getIntValue("emptyPercent");
+            group1Percent = xmlProperties.getIntValue("group1Percent");
+            emptyVisual = xmlProperties.getPaintValue("emptyVisual");
+            group1Visual = xmlProperties.getPaintValue("group1Visual");
+            group2Visual = xmlProperties.getPaintValue("group2Visual");
         }
     }
+	@Override
+	void saveSpecificValues() {
+		savedValues.put("threshold",threshold);
+		savedValues.put("emptyPercent",emptyPercent);
+		savedValues.put("group1Percent",group1Percent);
+		savedValues.put("emptyVisual",emptyVisual);
+		savedValues.put("group1Visual",group1Visual);
+		savedValues.put("group2Visual",group2Visual);
+	}
 
 }
