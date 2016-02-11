@@ -259,7 +259,7 @@ public class SimulationControl {
     private ObservableList<String> createSimulationsList() {
         return FXCollections.observableArrayList(myResources.getString("GameOfLifeSim"),
                 myResources.getString("SegregationSim"), myResources.getString("FireSim"),
-                myResources.getString("PredatorPreySim"));
+                myResources.getString("PredatorPreySim"), "ForagingAnts");
     }
 
     /**

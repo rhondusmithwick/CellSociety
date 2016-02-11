@@ -65,9 +65,7 @@ public abstract class Cell {
         Iterator<Cell> iter = neighbors.iterator();
         while (iter.hasNext()) {
             Cell neighbor = iter.next();
-            int rowDiff = Math.abs(neighbor.getRow() - getRow());
-            int columnDiff = Math.abs(neighbor.getColumn() - getColumn());
-            if (rowDiff == 1 && columnDiff == 1) {
+            if (checkDiagonal(neighbor)) {
                 iter.remove();
             }
         }
@@ -159,7 +157,7 @@ public abstract class Cell {
      *
      * @param value this cell's new background
      */
-    void setFill(Paint value) {
+    public void setFill(Paint value) {
         shape.setFill(value);
     }
 
@@ -171,4 +169,13 @@ public abstract class Cell {
     void setStroke(Paint value) {
         shape.setStroke(value);
     }
+
+
+    boolean checkDiagonal(Cell neighbor) {
+        int rowDiff = Math.abs(neighbor.getRow() - getRow());
+        int columnDiff = Math.abs(neighbor.getColumn() - getColumn());
+        return (rowDiff == 1)
+                && (columnDiff == 1);
+    }
+
 }

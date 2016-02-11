@@ -46,22 +46,18 @@ public abstract class Simulation {
     }
 
     public void init() {
-        for (Cell c : getTheCells()) {
-            assignInitialState(c);
-        }
+        getTheCells().stream().forEach(this::assignInitialState);
         changeStates();
     }
 
     abstract void assignInitialState(Cell c);
 
     public void step() {
-        getTheCells().forEach(c -> c.handleUpdate());
+        getTheCells().stream().forEach(Cell::handleUpdate);
     }
 
     final void changeStates() {
-        for (Cell c : getTheCells()) {
-            c.changeState();
-        }
+        getTheCells().stream().forEach(Cell::changeState);
     }
 
     private void beginLoop() {
@@ -146,7 +142,7 @@ public abstract class Simulation {
 
     public final boolean increaseRate() {
         double currentRate = simulationLoop.getRate();
-        if (currentRate <= 10) {
+        if (currentRate <= 15) {
             simulationLoop.setRate(currentRate + .5);
             return true;
         }
