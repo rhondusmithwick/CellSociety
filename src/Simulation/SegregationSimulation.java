@@ -44,9 +44,7 @@ public class SegregationSimulation extends Simulation {
     }
 
     private static void cleanUp(List<SegregationCell> cellsToMove) {
-        for (SegregationCell sc : cellsToMove) {
-            sc.setMark(Mark.NONE);
-        }
+        cellsToMove.stream().forEach(sc -> sc.setMark(Mark.NONE));
     }
 
     @Override

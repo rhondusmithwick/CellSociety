@@ -155,7 +155,14 @@ public class PredatorPreyCell extends Cell {
                 || (mark == Mark.TO_EMPTY);
     }
 
-    public boolean shouldBreed(int fishBreedTime, int sharkBreedTime) {
+    public void breedIfShould(int fishBreedTime, int sharkBreedTime) {
+        if (shouldBreed(fishBreedTime, sharkBreedTime)) {
+            setShouldBreed(true);
+            setBreedTimer(0);
+        }
+    }
+
+    private boolean shouldBreed(int fishBreedTime, int sharkBreedTime) {
         return fishShouldBreed(fishBreedTime) ||
                 sharkShouldBreed(sharkBreedTime);
     }

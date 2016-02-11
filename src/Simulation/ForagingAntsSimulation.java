@@ -16,17 +16,17 @@ import org.w3c.dom.Element;
  */
 public class ForagingAntsSimulation extends Simulation {
 
-    private static final Point2D DEFAULT_NEST_LOCATION = new Point2D(0, 0);
+    private static final Point2D DEFAULT_NEST_LOCATION = new Point2D(50, 50);
     private static final Point2D DEFAULT_FOOD_LOCATION = new Point2D(99, 99);
     private static final int DEFAULT_MAX_ANTS_PER_LOCATION = 10;
     private static final int DEFAULT_ANT_LIFETIME = 500;
     private static final int DEFAULT_ANTS_BORN = 20;
     private static final double DEFAULT_MIN_AMOUNT_PHEROMONE = 0.0;
-    private static final double DEFAULT_MAX_PHEROMONE = 100.0;
+    private static final double DEFAULT_MAX_PHEROMONE = 100000.0;
     private static final double DEFAULT_EVAPORATION_RATE = .001;
     private static final double DEFAULT_DIFFUSION_RATE = .001;
     private static final double DEFAULT_K = .001;
-    private static final double DEFAULT_N = 10.0;
+    private static final double DEFAULT_N = 60.0;
     private static final Paint DEFAULT_EMPTY_VISUAL = Color.WHITE;
     private static final Paint DEFAULT_NEST_VISUAL = Color.LIGHTGREEN;
     private static final Paint DEFAULT_FOOD_VISUAL = Color.PALEGOLDENROD;

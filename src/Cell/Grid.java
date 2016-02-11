@@ -3,6 +3,7 @@ package Cell;
 import javafx.scene.Group;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -159,6 +160,6 @@ public class Grid extends Group {
      * @return this cell manager's cells
      */
     public Collection<Cell> getCells() {
-        return theCells;
+        return Collections.unmodifiableCollection(theCells);
     }
 }
