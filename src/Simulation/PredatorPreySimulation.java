@@ -6,6 +6,10 @@ import Cell.PredatorPreyCell.Mark;
 import Cell.PredatorPreyCell.State;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.w3c.dom.Element;
 
 /**
@@ -24,6 +28,8 @@ public class PredatorPreySimulation extends Simulation {
     private static final Paint DEFAULT_FISH_VISUAL = Color.LIMEGREEN;
     private static final Paint DEFAULT_SHARK_VISUAL = Color.YELLOW;
 
+    private Map<String,Object> properties = new HashMap<String,Object>();
+    
     private int sharkBreedTime;
     private int fishBreedTime;
     private int starveTime;
@@ -37,9 +43,20 @@ public class PredatorPreySimulation extends Simulation {
 
     public PredatorPreySimulation() {
         super();
-        setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
+        addProperties();
+        properties = setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"),properties);
     }
-
+    
+    void addProperties(){
+    	properties.put("sharkBreedTime",DEFAULT_SHARK_BREED_TIME);
+    	properties.put("fishBreedTime",DEFAULT_FISH_BREED_TIME);
+    	properties.put("starveTime", DEFAULT_STARVE_TIME);
+    	properties.put("emptyPercent",DEFAULT_EMPTY_PERCENT);
+    	properties.put("fishPercent", DEFAULT_FISH_PERCENT);
+    	properties.put("emptyVisual", DEFAULT_EMPTY_VISUAL);
+    	properties.put("fishVisual", DEFAULT_FISH_VISUAL);
+    	properties.put("sharkVisual", DEFAULT_SHARK_VISUAL);
+    }
 
     @Override
     void assignInitialState(Cell c) {
@@ -99,26 +116,4 @@ public class PredatorPreySimulation extends Simulation {
         }
     }
 
-    @Override
-    void setSpecificProperties(Element simElem) {
-        if (getType() == null || !getType().equals("PredatorPrey")) {
-            sharkBreedTime = DEFAULT_SHARK_BREED_TIME;
-            fishBreedTime = DEFAULT_FISH_BREED_TIME;
-            starveTime = DEFAULT_STARVE_TIME;
-            emptyPercent = DEFAULT_EMPTY_PERCENT;
-            fishPercent = DEFAULT_FISH_PERCENT;
-            emptyVisual = DEFAULT_EMPTY_VISUAL;
-            fishVisual = DEFAULT_FISH_VISUAL;
-            sharkVisual = DEFAULT_SHARK_VISUAL;
-        } else {
-            sharkBreedTime = XMLParser.getIntValue(simElem, "sharkBreedTime");
-            fishBreedTime = XMLParser.getIntValue(simElem, "fishBreedTime");
-            starveTime = XMLParser.getIntValue(simElem, "starveTime");
-            emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
-            fishPercent = XMLParser.getIntValue(simElem, "fishPercent");
-            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
-            fishVisual = XMLParser.getPaintValue(simElem, "fishVisual");
-            sharkVisual = XMLParser.getPaintValue(simElem, "sharkVisual");
-        }
-    }
 }

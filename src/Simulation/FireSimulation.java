@@ -4,8 +4,15 @@ import Cell.Cell;
 import Cell.FireCell;
 import Cell.FireCell.Mark;
 import Cell.FireCell.State;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.w3c.dom.Element;
 
 
@@ -21,6 +28,8 @@ public class FireSimulation extends Simulation {
     private static final Paint DEFAULT_BURNING_VISUAL = Color.RED;
     private static final Paint DEFAULT_TREE_VISUAL = Color.GREEN;
 
+    private Map<String,Object> properties = new HashMap<String,Object>();
+    
     private int burnTime;
     private int probCatch;
 
@@ -30,8 +39,17 @@ public class FireSimulation extends Simulation {
 
     public FireSimulation() {
         super();
-        setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"));
+        addProperties();
+        properties = setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"),properties);
 
+    }
+    
+    void addProperties(){
+    	properties.put("burnTime",DEFAULT_BURN_TIME);
+    	properties.put("probCatch",DEFAULT_PROB_CATCH);
+    	properties.put("emptyVisual",DEFAULT_EMPTY_VISUAL);
+    	properties.put("burningVisual",DEFAULT_BURNING_VISUAL);
+    	properties.put("treeVisual", DEFAULT_TREE_VISUAL);
     }
 
 
@@ -74,24 +92,7 @@ public class FireSimulation extends Simulation {
         }
     }
 
-    @Override
-    void setSpecificProperties(Element simElem) {
-        if (getType() == null || !getType().equals("Fire")) {
-            burnTime = DEFAULT_BURN_TIME;
-            probCatch = DEFAULT_PROB_CATCH;
-            emptyVisual = DEFAULT_EMPTY_VISUAL;
-            burningVisual = DEFAULT_BURNING_VISUAL;
-            treeVisual = DEFAULT_TREE_VISUAL;
-        } else {
-            burnTime = XMLParser.getIntValue(simElem, "burnTime");
-            probCatch = XMLParser.getIntValue(simElem, "probCatch");
-            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
-            burningVisual = XMLParser.getPaintValue(simElem, "burningVisual");
-            treeVisual = XMLParser.getPaintValue(simElem, "treeVisual");
-        }
-    }
-
-
+ 
     private boolean treeShouldBurn(FireCell fc) {
         int randomNum = getRandomNum(1, 100);
         return (fc.getState() == State.TREE)

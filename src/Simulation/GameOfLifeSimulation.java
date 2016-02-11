@@ -5,6 +5,10 @@ import Cell.GameOfLifeCell;
 import Cell.GameOfLifeCell.Mark;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.w3c.dom.Element;
 
 /**
@@ -18,6 +22,8 @@ public class GameOfLifeSimulation extends Simulation {
     private static final Paint DEFAULT_DEAD_VISUAL = Color.WHITE;
     private static final Paint DEFAULT_ALIVE_VISUAL = Color.GREEN;
 
+    private Map<String,Object> properties = new HashMap<String,Object>();
+    
     private double probStartDead;
 
     private Paint deadVisual;
@@ -25,7 +31,15 @@ public class GameOfLifeSimulation extends Simulation {
 
     public GameOfLifeSimulation() {
         super();
-        setProperties(XMLParser.getXmlElement("resources/" + "GameOfLife.xml"));
+        addProperties();
+        properties = setProperties(XMLParser.getXmlElement("resources/" + "GameOfLife.xml"),properties);
+    }
+    
+    void addProperties(){
+    	properties.put("probStartDead",DEFAULT_START_DEAD);
+    	properties.put("deadVisual",DEFAULT_DEAD_VISUAL);
+    	properties.put("aliveVisual",DEFAULT_ALIVE_VISUAL);
+
     }
 
     @Override
@@ -46,16 +60,5 @@ public class GameOfLifeSimulation extends Simulation {
         }
     }
 
-    @Override
-    void setSpecificProperties(Element simElem) {
-        if (getType() == null || !getType().equals("GameOfLife")) {
-            probStartDead = DEFAULT_START_DEAD;
-            deadVisual = DEFAULT_DEAD_VISUAL;
-            aliveVisual = DEFAULT_ALIVE_VISUAL;
-        } else {
-            probStartDead = XMLParser.getIntValue(simElem, "probStartDead");
-            deadVisual = XMLParser.getPaintValue(simElem, "deadVisual");
-            aliveVisual = XMLParser.getPaintValue(simElem, "aliveVisual");
-        }
-    }
+
 }

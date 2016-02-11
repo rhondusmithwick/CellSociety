@@ -74,7 +74,7 @@ public class SimulationControl {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
         sim.setType(simType);
-        sim.setProperties(simElem);
+        sim.setProperties(simElem,sim.getProperties());
     }
 
     /**

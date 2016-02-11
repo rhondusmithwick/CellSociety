@@ -8,6 +8,7 @@ import javafx.util.Duration;
 import org.w3c.dom.Element;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -26,15 +27,16 @@ public abstract class Simulation {
     private String type;
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
+	private Map<String, Object> properties;
 
     Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
     }
 
-    public final void setProperties(Element simElem) {
+    public final Map<String, Object> setProperties(Element simElem, Map<String,Object> properties) {
         setGenericProperties(simElem);
-        setSpecificProperties(simElem);
+        return setSpecificProperties(simElem, properties);
     }
 
     private Timeline buildLoop() {
@@ -104,7 +106,16 @@ public abstract class Simulation {
         cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
     }
 
-    abstract void setSpecificProperties(Element simElem);
+    Map<String, Object> setSpecificProperties(Element simElem, Map<String,Object> properties) {
+        if (getType() != null && getType().equals("Fire")) {
+        	for (Map.Entry<String, Object> entry : properties.entrySet()){
+				Object myValue = entry.getValue();
+			    myValue = XMLParser.getIntValue(simElem,entry.getKey());
+			    properties.put(entry.getKey(),myValue);
+			}
+        }
+        return properties;
+    }
 
 
     public final int getGridWidth() {
@@ -177,6 +188,10 @@ public abstract class Simulation {
             return false;
         }
     }
+
+	public Map<String, Object> getProperties() {
+		return properties;
+	}
 
 }
 

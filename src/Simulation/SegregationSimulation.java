@@ -10,7 +10,9 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rhondusmithwick on 2/1/16.
@@ -28,6 +30,8 @@ public class SegregationSimulation extends Simulation {
 
     private final List<SegregationCell> emptyCells = new ArrayList<>();
     private List<SegregationCell> emptyCellsToAdd;
+    
+    private Map<String,Object> properties = new HashMap<String,Object>();
 
     private int threshold;
     private int emptyPercent;
@@ -40,13 +44,23 @@ public class SegregationSimulation extends Simulation {
 
     public SegregationSimulation() {
         super();
-        setProperties(XMLParser.getXmlElement("resources/" + "Segregation.xml"));
+        addProperties();
+        properties = setProperties(XMLParser.getXmlElement("resources/" + "Segregation.xml"), properties);
     }
 
     private static void cleanUp(List<SegregationCell> cellsToMove) {
         for (SegregationCell sc : cellsToMove) {
             sc.setMark(Mark.NONE);
         }
+    }
+    
+    void addProperties(){
+    	properties.put("threshold",DEFAULT_THRESHOLD);
+    	properties.put("emptyPercent",DEFAULT_EMPTY_PERCENT);
+    	properties.put("group1Percent",DEFAULT_GROUP1_PERCENT);
+    	properties.put("emptyVisual",DEFAULT_EMPTY_VISUAL);
+    	properties.put("group1Visual", DEFAULT_GROUP1_VISUAL);
+    	properties.put("group2Visual", DEFAULT_GROUP2_VISUAL);
     }
 
     @Override
@@ -109,25 +123,6 @@ public class SegregationSimulation extends Simulation {
             }
         }
         return cellsToMove;
-    }
-
-    @Override
-    void setSpecificProperties(Element simElem) {
-        if (getType() == null || !getType().equals("Segregation")) {
-            threshold = DEFAULT_THRESHOLD;
-            emptyPercent = DEFAULT_EMPTY_PERCENT;
-            group1Percent = DEFAULT_GROUP1_PERCENT;
-            emptyVisual = DEFAULT_EMPTY_VISUAL;
-            group1Visual = DEFAULT_GROUP1_VISUAL;
-            group2Visual = DEFAULT_GROUP2_VISUAL;
-        } else {
-            threshold = XMLParser.getIntValue(simElem, "threshold");
-            emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
-            group1Percent = XMLParser.getIntValue(simElem, "group1Percent");
-            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
-            group1Visual = XMLParser.getPaintValue(simElem, "group1Visual");
-            group2Visual = XMLParser.getPaintValue(simElem, "group2Visual");
-        }
     }
 
 }
