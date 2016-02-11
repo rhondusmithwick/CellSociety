@@ -10,15 +10,6 @@ import javafx.scene.paint.Paint;
 public class FireCell extends Cell {
 
     /**
-     * This fire cell's state.
-     */
-    private State state;
-    /**
-     * This fire cell's mark that determines how it will be udpated.
-     */
-    private Mark mark;
-
-    /**
      * This fire cell's burnTimer.
      */
     private int burnTimer;
@@ -73,7 +64,7 @@ public class FireCell extends Cell {
      */
     @Override
     public void changeState() {
-        switch (mark) {
+        switch (getMark()) {
             case NONE:
                 return;
             case TO_EMPTY:
@@ -105,23 +96,7 @@ public class FireCell extends Cell {
         treeVisual = visuals[2];
     }
 
-    /**
-     * Get this fire cell's state.
-     *
-     * @return this fire cell's state
-     */
-    public State getState() {
-        return state;
-    }
 
-    /**
-     * Set this fire cell's mark.
-     *
-     * @param mark this fire cell's mark.
-     */
-    public void setMark(Mark mark) {
-        this.mark = mark;
-    }
 
     /**
      * Get this cell's burn timer.
@@ -144,14 +119,14 @@ public class FireCell extends Cell {
     /**
      * The fire cell State enum.
      */
-    public enum State {
+    public enum State implements Cell.State {
         BURNING, TREE, EMPTY
     }
 
     /**
      * The fire cell Mark enum.
      */
-    public enum Mark {
+    public enum Mark implements Cell.Mark {
         TO_BURNING, TO_TREE, TO_EMPTY, NONE
     }
 }

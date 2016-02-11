@@ -31,6 +31,10 @@ public abstract class Cell {
      */
     private int column;
 
+    private State state;
+    private Mark mark;
+
+
     /**
      * Construct a cell.
      */
@@ -178,4 +182,44 @@ public abstract class Cell {
                 && (columnDiff == 1);
     }
 
+    /**
+     * Get this fire cell's state.
+     *
+     * @return this fire cell's state
+     */
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State s) {
+        state = s;
+    }
+
+    /**
+     * Set this fire cell's mark.
+     *
+     * @param mark this fire cell's mark.
+     */
+    public void setMark(Mark mark) {
+        this.mark = mark;
+    }
+
+    interface State {
+
+    }
+
+    interface Mark {
+    }
+
+//    abstract void changeVisual();
+
+//    void changeState() {
+//        if (mark.toString() == "NONE") return;
+//        State state =
+//    }
+
+
+    public Mark getMark() {
+        return mark;
+    }
 }
