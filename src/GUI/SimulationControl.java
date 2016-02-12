@@ -200,7 +200,9 @@ public class SimulationControl {
      */
     private Grid createCellManager(String simType) {
         Grid grid = new Grid();
-        grid.setGrid(sim.getGridWidth(), sim.getGridHeight(), sim.getCellsPerRow(), sim.getCellsPerColumn());
+        grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
+                sim.getCellsPerRow(),
+                sim.getCellsPerColumn(), sim.getEdgeType());
         grid.init(simType);
         return grid;
     }

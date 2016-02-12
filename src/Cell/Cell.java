@@ -174,8 +174,8 @@ public abstract class Cell {
     boolean checkDiagonal(Cell neighbor) {
         int rowDiff = Math.abs(neighbor.getRow() - getRow());
         int columnDiff = Math.abs(neighbor.getColumn() - getColumn());
-        return (rowDiff == 1)
-                && (columnDiff == 1);
+        return (rowDiff >= 1)
+                && (columnDiff >= 1);
     }
 
 }

@@ -38,6 +38,8 @@ public class Grid extends Group {
      */
     private int cellsPerColumn;
 
+    private EdgeType edgeType = EdgeType.NORMAL;
+
     /**
      * Construct a cellmanager.
      */
@@ -80,11 +82,12 @@ public class Grid extends Group {
      * @param cellsPerRow    the number of cells per row
      * @param cellsPerColumn the number of cells per column
      */
-    public void setGrid(int gridWidth, int gridHeight, int cellsPerRow, int cellsPerColumn) {
+    public void setGrid(int gridWidth, int gridHeight, int cellsPerRow, int cellsPerColumn, EdgeType edgeType) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
         this.cellsPerRow = cellsPerRow;
         this.cellsPerColumn = cellsPerColumn;
+        this.edgeType = edgeType;
         grid = new Cell[cellsPerRow][cellsPerColumn];
     }
 
@@ -118,6 +121,7 @@ public class Grid extends Group {
         }
     }
 
+
     /**
      * Populate the neighbors of a single cell.
      *
@@ -134,10 +138,31 @@ public class Grid extends Group {
                     if (inBounds(neighborR, neighborC)) {
                         Cell neighbor = grid[neighborR][neighborC];
                         myCell.addNeighbor(neighbor);
+                    } else if (edgeType == EdgeType.TORODIAL) {
+                        addTorodialNeighbor(myCell, neighborR, neighborC);
                     }
                 }
             }
         }
+    }
+
+    private void addTorodialNeighbor(Cell myCell, int neighborR, int neighborC) {
+        if (!checkBound(neighborR, cellsPerRow)) {
+            neighborR = getTorodialVal(neighborR, cellsPerRow);
+
+        }
+        if (!checkBound(neighborC, cellsPerColumn)) {
+            neighborC = getTorodialVal(neighborC, cellsPerColumn);
+        }
+        Cell neighbor = grid[neighborR][neighborC];
+        myCell.addNeighbor(neighbor);
+    }
+
+    private int getTorodialVal(int neighborVal, int boundaryVal) {
+        if (neighborVal < 0) {
+            return boundaryVal - 1;
+        }
+        return 0;
     }
 
     /**
@@ -148,12 +173,15 @@ public class Grid extends Group {
      * @return triue if in the grid
      */
     private boolean inBounds(int r, int c) {
-        return (r >= 0)
-                && (r < cellsPerRow)
-                && (c >= 0)
-                && (c < cellsPerColumn);
+        return checkBound(r, cellsPerRow)
+                && checkBound(c, cellsPerColumn);
     }
 
+
+    private boolean checkBound(int val, int boundaryVal) {
+        return (val >= 0)
+                && (val < boundaryVal);
+    }
     /**
      * Get this Cell Manager's cells.
      *
@@ -161,5 +189,10 @@ public class Grid extends Group {
      */
     public Collection<Cell> getCells() {
         return Collections.unmodifiableCollection(theCells);
+    }
+
+
+    public enum EdgeType {
+        NORMAL, TORODIAL
     }
 }

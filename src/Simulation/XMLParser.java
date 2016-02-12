@@ -1,5 +1,6 @@
 package Simulation;
 
+import Cell.Grid.EdgeType;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,7 +40,7 @@ public final class XMLParser {
         }
     }
 
-    private static String getTextValue(Element ele, String tagName) {
+    static String getTextValue(Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {
@@ -56,5 +57,6 @@ public final class XMLParser {
     public static int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
+
 
 }

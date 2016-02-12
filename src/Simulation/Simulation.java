@@ -1,11 +1,13 @@
 package Simulation;
 
 import Cell.Cell;
+import com.sun.javafx.geom.Edge;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
+import Cell.Grid.EdgeType;
 
 import java.util.Collection;
 import java.util.Random;
@@ -23,6 +25,7 @@ public abstract class Simulation {
     private int gridHeight;
     private int cellsPerRow;
     private int cellsPerColumn;
+    private EdgeType edgeType = EdgeType.NORMAL;
     private String type;
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
@@ -98,47 +101,12 @@ public abstract class Simulation {
         gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
         cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
         cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
+//        edgeType = EdgeType.valueOf(XMLParser.getTextValue(simElem, "edgeType"));
+        edgeType = EdgeType.TORODIAL;
     }
 
     abstract void setSpecificProperties(Element simElem);
 
-
-    public final int getGridWidth() {
-        return gridWidth;
-    }
-
-
-    public final int getGridHeight() {
-        return gridHeight;
-    }
-
-
-    public final int getCellsPerRow() {
-        return cellsPerRow;
-    }
-
-
-    public final int getCellsPerColumn() {
-        return cellsPerColumn;
-    }
-
-
-    String getType() {
-        return type;
-    }
-
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    final Collection<Cell> getTheCells() {
-        return theCells;
-    }
-
-    public final void setTheCells(Collection<Cell> theCells) {
-        this.theCells = theCells;
-    }
 
     public final boolean increaseRate() {
         double currentRate = simulationLoop.getRate();
@@ -172,6 +140,48 @@ public abstract class Simulation {
         } else {
             return false;
         }
+    }
+
+
+
+    public final int getGridWidth() {
+        return gridWidth;
+    }
+
+    public final EdgeType getEdgeType() {
+        return edgeType;
+    }
+
+    public final int getGridHeight() {
+        return gridHeight;
+    }
+
+
+    public final int getCellsPerRow() {
+        return cellsPerRow;
+    }
+
+
+    public final int getCellsPerColumn() {
+        return cellsPerColumn;
+    }
+
+
+    String getType() {
+        return type;
+    }
+
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    final Collection<Cell> getTheCells() {
+        return theCells;
+    }
+
+    public final void setTheCells(Collection<Cell> theCells) {
+        this.theCells = theCells;
     }
 
 }
