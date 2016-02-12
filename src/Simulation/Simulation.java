@@ -1,6 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
+import Main.CellSocietyProperties;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,7 +19,7 @@ import java.util.Random;
 public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
-
+    private final CellSocietyProperties myProperties;
     private int gridWidth;
     private int gridHeight;
     private int cellsPerRow;
@@ -30,6 +31,7 @@ public abstract class Simulation {
     Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
+        myProperties = new CellSocietyProperties();
     }
 
     public final void setProperties(Element simElem) {
