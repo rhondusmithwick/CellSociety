@@ -60,7 +60,6 @@ public class GUI {
     private Slider mySizeSlider;
     private Label sizeLabel;
     private Label speedLabel;
-    private Config myConfigClass;
 
     /**
      * Sets starting GUI parameters and links GUI to simulation control class
@@ -118,26 +117,7 @@ public class GUI {
         createSliders();
         createLabels();
         setAndAdd();
-        extraControls();
     }
-
-    private void extraControls() {
-		Label simLabel = mySimControl.getSimLabel();
-		String simText = simLabel.getText();
-		try {
-            Class myClass = Class.forName("Config." + simText + "Config");
-            myConfigClass = (Config) myClass.newInstance();
-        } catch (InstantiationException
-                | IllegalAccessException
-                | ClassNotFoundException e) {
-        	myConfigClass = new FireConfig();
-        }
-		myConfigClass.setSimControl(mySimControl);
-		myConfigClass.init();
-		for (Node node : myConfigClass.getControls()){
-			setAndAdd(node);
-		}
-	}
 
 	private void createLabels() {
     	sizeLabel = new Label(myResources.getString("SizeLabel"));
@@ -227,11 +207,7 @@ public class GUI {
         controlList.add(node);
         ((Region) node).setMaxWidth(Double.MAX_VALUE);
     }
-    
-    private void setAndAdd(Node node) {
-        controlList.add(node);
-        ((Region) node).setMaxWidth(Double.MAX_VALUE);
-    }
+
     
     private void changeSize(int new_val){
     	mySimControl.stop();

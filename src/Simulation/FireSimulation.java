@@ -33,6 +33,14 @@ public class FireSimulation extends Simulation {
         setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"));
 
     }
+    
+    public void setBurnTime(int newTime){
+    	burnTime = newTime;
+    }
+    
+    public void setProbCatch(int newProb){
+    	probCatch = newProb;
+    }
 
 
     @Override

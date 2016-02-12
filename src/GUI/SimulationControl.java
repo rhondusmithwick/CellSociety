@@ -6,6 +6,7 @@ import Simulation.Simulation;
 import Simulation.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -34,6 +35,7 @@ public class SimulationControl {
     private final Label simLabel = new Label();
     private String simType = DEFAULT_SIM_TYPE;
     private Simulation sim;
+    private Config config = new FireConfig();
     private Grid grid;
     private int newSize = 0;
     private File myXMLFile = null;
@@ -61,7 +63,25 @@ public class SimulationControl {
         newSize = 0;
         simType = o.toString();
         sim = getSimulation();
+        config = getConfig();
+        setConfigControls();
         setSimulation();
+    }
+    
+    public Config getConfig(){
+    	removeConfigControls();
+    	Config config;
+	try {
+        Class myClass = Class.forName("Config." + simType + "Config");
+        config = (Config) myClass.newInstance();
+    } catch (InstantiationException
+            | IllegalAccessException
+            | ClassNotFoundException e) {
+    	config = new FireConfig();
+    }
+	config.setSim(this,sim);
+	config.init();
+	return config;
     }
 
     /**
@@ -73,6 +93,8 @@ public class SimulationControl {
     private void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
+        config = getConfig();
+        setConfigControls();
         sim.setType(simType);
         sim.setProperties(simElem);
     }
@@ -294,6 +316,14 @@ public class SimulationControl {
         simLabel.setStyle("-fx-font-size: 2em;");
         return simLabel;
     }
+    
+    private void setConfigControls(){
+    	display.getChildren().addAll(config.getControls());
+    }
+    
+    private void removeConfigControls(){
+    	display.getChildren().removeAll(config.getControls());
+    }
 
     /**
      * Resets the text inside the simulation title label.
@@ -301,13 +331,5 @@ public class SimulationControl {
     private void setSimLabel() {
         simLabel.setText(simType);
     }
-
-	public void changeCatchingFire(int value) {
-		//sim.changeCatchingFire(value);
-	}
-
-	public void changeBurnTime(int value) {
-		//sim.changeBurnTime(value);
-	}
 
 }
