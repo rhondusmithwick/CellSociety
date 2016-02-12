@@ -16,28 +16,30 @@ import org.w3c.dom.Element;
  */
 public class SlimeMoldSimulation extends Simulation {
     private static final int DEFAULT_SLIME_AMOUNT = 30;
-    private static final double DEFAULT_SNIFF_THRESHOLD = 1.0;
+    private static final int DEFAULT_OBSTACLES_AMOUNT = 20;
+    private static final double DEFAULT_SNIFF_THRESHOLD = 10;
     private static final Point2D[] DEFAULT_SNIFF_ANGLES = {
-            new Point2D(0, 1),
-            new Point2D(1, 1),
-            new Point2D(-1, 1)
+            new Point2D(0, 1), new Point2D(1, 1),
+            new Point2D(-1, 1), new Point2D(-1, 0)
     };
     private static final Point2D[] DEFAULT_WIGGLE_ANGLES = {
-            new Point2D(0, 1),
-            new Point2D(1, 1),
-            new Point2D(-1, 1),
-            new Point2D(-1, 0)
+            new Point2D(0, 1), new Point2D(1, 1),
+            new Point2D(-1, 1), new Point2D(-1, 0),
+            new Point2D(-1, -1), new Point2D(0, -1),
+            new Point2D(1, 0), new Point2D(1, -1)
     };
     private static final double DEFAULT_EVAPORATION_RATE = 1;
-    private static final double DEFAULT_DIFFUSION_RATE = 1;
+    private static final double DEFAULT_DIFFUSION_RATE = 0;
     private static final double DEFAULT_CHEMICAL_DROPS = 2;
 
 
     private static final Paint DEFAULT_EMPTY_VISUAL = Color.WHITE;
     private static final Paint DEFAULT_SLIME_VISUAL = Color.GREEN;
     private static final Paint DEFAULT_cAMP_VISUAL = Color.RED;
+    private static final Paint DEFAULT_OBSTACLES_VISUAL = Color.BLUE;
 
-    private final int slimeAmount = DEFAULT_SLIME_AMOUNT;
+    private final int slimePercent = DEFAULT_SLIME_AMOUNT;
+    private final int obstaclePercent = DEFAULT_OBSTACLES_AMOUNT;
     private final double sniffThreshold = DEFAULT_SNIFF_THRESHOLD;
     private final Point2D[] sniffAngles = DEFAULT_SNIFF_ANGLES;
     private final Point2D[] wiggleAngles = DEFAULT_WIGGLE_ANGLES;
@@ -48,6 +50,7 @@ public class SlimeMoldSimulation extends Simulation {
     private final Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
     private final Paint slimeVisual = DEFAULT_SLIME_VISUAL;
     private final Paint cAMPVisual = DEFAULT_cAMP_VISUAL;
+    private final Paint obstacleVisual = DEFAULT_OBSTACLES_VISUAL;
 
 
     public SlimeMoldSimulation() {
@@ -107,11 +110,13 @@ public class SlimeMoldSimulation extends Simulation {
 
     @Override
     void assignInitialState(Cell c) {
-        c.setVisuals(emptyVisual, slimeVisual, cAMPVisual);
+        c.setVisuals(emptyVisual, slimeVisual, cAMPVisual, obstacleVisual);
         SlimeMoldCell smc = (SlimeMoldCell) c;
         int randomNum = getRandomNum(1, 100);
-        if (randomNum < slimeAmount) {
+        if (randomNum <= slimePercent) {
             smc.setMark(Mark.TO_SLIME);
+        } else if (randomNum <= slimePercent + obstaclePercent){
+            smc.setMark(Mark.TO_OBSTACLE);
         } else {
             smc.setMark(Mark.TO_EMPTY);
         }

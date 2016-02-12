@@ -48,8 +48,7 @@ public class PredatorPreySimulation extends Simulation {
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
             ppc.setMark(Mark.TO_EMPTY);
-        } else if (randomNum > emptyPercent
-                && randomNum <= emptyPercent + fishPercent) {
+        } else if (randomNum <= emptyPercent + fishPercent) {
             ppc.setMark(Mark.TO_FISH);
         } else {
             ppc.setMark(Mark.TO_SHARK);

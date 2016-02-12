@@ -18,6 +18,7 @@ public class SlimeMoldCell extends Cell {
     private Paint emptyVisual;
     private Paint slimeVisual;
     private Paint cAMPVisual;
+    private Paint obstacleVisual;
 
     public SlimeMoldCell() {
         super();
@@ -31,6 +32,10 @@ public class SlimeMoldCell extends Cell {
             case TO_EMPTY:
                 state = State.EMPTY;
                 modifyColor();
+                break;
+            case TO_OBSTACLE:
+                state = State.OBSTACLE;
+                setFill(obstacleVisual);
                 break;
             case TO_SLIME:
                 state = State.SLIME;
@@ -49,6 +54,7 @@ public class SlimeMoldCell extends Cell {
         emptyVisual = visuals[0];
         slimeVisual = visuals[1];
         cAMPVisual = visuals[2];
+        obstacleVisual = visuals[3];
     }
 
 
@@ -145,15 +151,16 @@ public class SlimeMoldCell extends Cell {
 
     private boolean notFull(SlimeMoldCell smc) {
         return (smc.state != State.SLIME)
+                && (smc.state != State.OBSTACLE)
                 && (smc.mark != Mark.TO_SLIME);
     }
 
     public enum State {
-        EMPTY, SLIME
+        EMPTY, SLIME, OBSTACLE
     }
 
     public enum Mark {
-        TO_EMPTY, TO_SLIME, NONE
+        TO_EMPTY, TO_SLIME, NONE, TO_OBSTACLE
     }
 
 }

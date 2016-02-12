@@ -56,8 +56,7 @@ public class SegregationSimulation extends Simulation {
         if (randomNum <= emptyPercent) {
             sc.setMark(Mark.TO_EMPTY);
             emptyCells.add(sc);
-        } else if (randomNum > emptyPercent
-                && randomNum <= emptyPercent + group1Percent) {
+        } else if (randomNum <= emptyPercent + group1Percent) {
             sc.setMark(Mark.TO_GROUP1);
         } else {
             sc.setMark(Mark.TO_GROUP2);
