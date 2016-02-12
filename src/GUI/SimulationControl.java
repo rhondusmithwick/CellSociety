@@ -92,7 +92,7 @@ public class SimulationControl {
      */
     private void displayNewCells() {
         display.getChildren().remove(grid);
-        grid = createCellManager(simType);
+        grid = createGrid(simType);
         GridPane.setConstraints(grid, 0, 0);
         GridPane.setRowSpan(grid, 8);
         display.getChildren().add(grid);
@@ -198,7 +198,7 @@ public class SimulationControl {
      * @param simType the currently saved simulation type
      * @result grid the new grid
      */
-    private Grid createCellManager(String simType) {
+    private Grid createGrid(String simType) {
         Grid grid = new Grid();
         grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
                 sim.getCellsPerRow(),

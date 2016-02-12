@@ -115,7 +115,7 @@ public class SlimeMoldSimulation extends Simulation {
         int randomNum = getRandomNum(1, 100);
         if (randomNum <= slimePercent) {
             smc.setMark(Mark.TO_SLIME);
-        } else if (randomNum <= slimePercent + obstaclePercent){
+        } else if (randomNum <= slimePercent + obstaclePercent) {
             smc.setMark(Mark.TO_OBSTACLE);
         } else {
             smc.setMark(Mark.TO_EMPTY);

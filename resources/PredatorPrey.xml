@@ -4,9 +4,9 @@
     <gridHeight>600</gridHeight>
     <numCellsPerRow>125</numCellsPerRow>
     <numCellsPerColumn>125</numCellsPerColumn>
-    <fishBreedTime>10</fishBreedTime>
+    <fishBreedTime>5</fishBreedTime>
     <sharkBreedTime>12</sharkBreedTime>
-    <starveTime>10</starveTime>
+    <starveTime>5</starveTime>
     <emptyPercent>10</emptyPercent>
     <fishPercent>80</fishPercent>
     <emptyVisual>blue</emptyVisual>

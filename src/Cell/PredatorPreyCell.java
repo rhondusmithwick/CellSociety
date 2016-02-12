@@ -21,8 +21,8 @@ public class PredatorPreyCell extends Cell {
      */
     private Mark mark;
 
-    private int breedTimer;
-    private int starveCounter;
+    private int breedTimer = 0;
+    public int starveCounter  = 0;
     private boolean shouldBreed = false;
 
     private Paint emptyVisual;
@@ -139,7 +139,7 @@ public class PredatorPreyCell extends Cell {
         this.breedTimer = breedTimer;
     }
 
-    private void setStarveCounter(int starveCounter) {
+    public void setStarveCounter(int starveCounter) {
         this.starveCounter = starveCounter;
     }
 

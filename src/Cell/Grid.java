@@ -38,7 +38,7 @@ public class Grid extends Group {
      */
     private int cellsPerColumn;
 
-    private EdgeType edgeType = EdgeType.NORMAL;
+    private EdgeType edgeType;
 
     /**
      * Construct a cellmanager.
@@ -182,6 +182,7 @@ public class Grid extends Group {
         return (val >= 0)
                 && (val < boundaryVal);
     }
+
     /**
      * Get this Cell Manager's cells.
      *

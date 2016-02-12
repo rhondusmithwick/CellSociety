@@ -1,6 +1,5 @@
 package Simulation;
 
-import Cell.Grid.EdgeType;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

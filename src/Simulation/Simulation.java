@@ -1,13 +1,12 @@
 package Simulation;
 
 import Cell.Cell;
-import com.sun.javafx.geom.Edge;
+import Cell.Grid.EdgeType;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
-import Cell.Grid.EdgeType;
 
 import java.util.Collection;
 import java.util.Random;
@@ -25,7 +24,7 @@ public abstract class Simulation {
     private int gridHeight;
     private int cellsPerRow;
     private int cellsPerColumn;
-    private EdgeType edgeType = EdgeType.NORMAL;
+    private EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
     private String type;
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
@@ -102,7 +101,6 @@ public abstract class Simulation {
         cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
         cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
 //        edgeType = EdgeType.valueOf(XMLParser.getTextValue(simElem, "edgeType"));
-        edgeType = EdgeType.TORODIAL;
     }
 
     abstract void setSpecificProperties(Element simElem);
@@ -141,7 +139,6 @@ public abstract class Simulation {
             return false;
         }
     }
-
 
 
     public final int getGridWidth() {
