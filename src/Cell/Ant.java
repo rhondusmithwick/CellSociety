@@ -3,9 +3,9 @@ package Cell;
 import Cell.ForagingAntsCell.Mark;
 import Cell.ForagingAntsCell.State;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 
@@ -19,6 +19,7 @@ class Ant {
     private int deathTicker = 0;
     private boolean hasFoodItem = false;
     private ForagingAntsCell myCell;
+    private ForagingAntsCell prevCell = null;
     private boolean isDead = false;
     private boolean moving = false;
 
@@ -27,6 +28,30 @@ class Ant {
         this.myCell = myCell;
         this.myLifeTime = mylifeTime;
         hasFoodItem = false;
+    }
+
+    private static ForagingAntsCell simulateProbalisticChoice(List<ForagingAntsCell> locSet, double total) {
+        double prob = new Random().nextDouble() * total;
+        double probTracker = 0;
+        double currProb;
+        Collections.sort(locSet, (c1, c2) -> (compare(c1, c2)));
+        for (ForagingAntsCell cell : locSet) {
+            currProb = cell.getProbChoice();
+            if (isRightProbability(prob, probTracker, currProb)) {
+                return cell;
+            }
+            probTracker += currProb;
+        }
+        return locSet.get(locSet.size() / 2);
+    }
+
+    private static boolean isRightProbability(double prob, double probTracker, double currProb) {
+        return (prob >= probTracker)
+                && (prob <= probTracker + currProb);
+    }
+
+    private static int compare(ForagingAntsCell c1, ForagingAntsCell c2) {
+        return (int) (c1.getProbChoice() - c2.getProbChoice());
     }
 
     public void handleUpdate() {
@@ -43,6 +68,7 @@ class Ant {
         myCell.setMark(Mark.CHANGE_ANTS);
         cellToMoveTo.addAnt(this);
         cellToMoveTo.setMark(Mark.CHANGE_ANTS);
+        prevCell = myCell;
         myCell = cellToMoveTo;
     }
 
@@ -65,7 +91,7 @@ class Ant {
             mostForward = getNeighborMaxPhero(false);
         }
         if (mostForward != null) {
-            myCell.dropFoodPheromones();
+            myCell.dropPheromones(false);
             move(mostForward);
             if (myCell.getState() == State.NEST) {
                 hasFoodItem = false;
@@ -73,14 +99,13 @@ class Ant {
         }
     }
 
-
     private void antFindFooSource() {
         ForagingAntsCell mostForward = selectLocations(true);
         if (mostForward == null) {
             mostForward = selectLocations(false);
         }
         if (mostForward != null) {
-            myCell.dropHomesPheromones();
+            myCell.dropPheromones(true);
             move(mostForward);
             if (myCell.getState() == State.FOOD) {
                 hasFoodItem = true;
@@ -88,37 +113,25 @@ class Ant {
         }
     }
 
-
-    private double populateMap(Map<ForagingAntsCell, Double> locSet, boolean forwardOnly) {
+    private double populateLocSet(List<ForagingAntsCell> locSet, boolean forwardOnly) {
         ForagingAntsCell neighbor;
         double total = 0;
         for (Cell c : myCell.getNeighbors()) {
-            if (moveCheck(c, forwardOnly)) {
-                neighbor = (ForagingAntsCell) c;
-                if (neighbor.isValid()) {
-                    double probChoice = neighbor.getProbChoice();
-                    total += probChoice;
-                    locSet.put(neighbor, probChoice);
-                }
+            neighbor = (ForagingAntsCell) c;
+            if (moveCheck(neighbor, forwardOnly)) {
+                double probChoice = neighbor.getProbChoice();
+                total += probChoice;
+                locSet.add(neighbor);
             }
         }
         return total;
     }
 
     private ForagingAntsCell selectLocations(boolean forwardOnly) {
-        Map<ForagingAntsCell, Double> locSet = new HashMap<>();
-        double total = populateMap(locSet, forwardOnly);
+        List<ForagingAntsCell> locSet = new ArrayList<>();
+        double total = populateLocSet(locSet, forwardOnly);
         if (!locSet.isEmpty()) {
-            double prob = new Random().nextDouble() * total;
-            ForagingAntsCell[] cells = locSet.keySet().toArray(new ForagingAntsCell[locSet.size()]);
-            Arrays.sort(cells, (c1, c2) -> (int) (locSet.get(c1) - locSet.get(c2)));
-            double curr = 0;
-            for (ForagingAntsCell cell : cells) {
-                if (prob >= curr && prob <= curr + locSet.get(cell)) {
-                    return cell;
-                }
-                curr += locSet.get(cell);
-            }
+            return simulateProbalisticChoice(locSet, total);
         }
         return null;
     }
@@ -129,23 +142,21 @@ class Ant {
         ForagingAntsCell neighbor;
         for (Cell c : myCell.getNeighbors()) {
             neighbor = (ForagingAntsCell) c;
-            if (neighbor.isValid()) {
-                if (moveCheck(neighbor, forwardOnly)) {
-                    double phero = neighbor.getHomePheromones();
-                    if (phero > currMax) {
-                        currMax = phero;
-                        maxFac = neighbor;
-                    }
+            if (moveCheck(neighbor, forwardOnly)) {
+                double phero = neighbor.getHomePheromones();
+                if (phero > currMax) {
+                    currMax = phero;
+                    maxFac = neighbor;
                 }
             }
         }
         return maxFac;
     }
 
-
-    private boolean moveCheck(Cell neighbor, boolean forwardOnly) {
-        return (forwardOnly && !myCell.checkDiagonal(neighbor))
-                || !forwardOnly;
+    private boolean moveCheck(ForagingAntsCell neighbor, boolean forwardOnly) {
+        return (neighbor != prevCell)
+                && neighbor.isValid()
+                && ((forwardOnly && !myCell.checkDiagonal(neighbor)) || !forwardOnly);
     }
 
     boolean getDeadOrMove() {

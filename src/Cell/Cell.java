@@ -157,7 +157,7 @@ public abstract class Cell {
      *
      * @param value this cell's new background
      */
-    public void setFill(Paint value) {
+    void setFill(Paint value) {
         shape.setFill(value);
     }
 

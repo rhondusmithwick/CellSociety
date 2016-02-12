@@ -119,7 +119,7 @@ public class PredatorPreyCell extends Cell {
     }
 
 
-    public void setShouldBreed(boolean t) {
+    private void setShouldBreed(boolean t) {
         shouldBreed = t;
     }
 
@@ -135,7 +135,7 @@ public class PredatorPreyCell extends Cell {
         this.mark = mark;
     }
 
-    public void setBreedTimer(int breedTimer) {
+    private void setBreedTimer(int breedTimer) {
         this.breedTimer = breedTimer;
     }
 

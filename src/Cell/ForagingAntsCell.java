@@ -15,17 +15,14 @@ import java.util.List;
  */
 public class ForagingAntsCell extends Cell {
 
+    private final List<Ant> myAnts = new LinkedList<>();
+    private final List<Ant> antsToAdd = new LinkedList<>();
     private State state;
     private Mark mark;
-
-    private final List<Ant> myAnts = new LinkedList<>();
-    private final List<Ant> antsToadd = new LinkedList<>();
-
-    private double homePheromones ;
+    private double homePheromones;
     private double foodPheromones;
     private double maxAmountPhero;
 
-    private double antLifeTime;
     private int maxAntsPer;
     private double probChoice;
 
@@ -68,15 +65,22 @@ public class ForagingAntsCell extends Cell {
     }
 
 
-    public void spawn(int antsBorn) {
+    public void spawn(int antsBorn, int antLifeTime) {
         for (int i = 0; i < antsBorn; i++) {
-            if (state == State.NEST && myAnts.size() < maxAntsPer) {
+            if (canSpawn()) {
                 Ant ant = new Ant(this, antLifeTime);
-                antsToadd.add(ant);
+                antsToAdd.add(ant);
                 setMark(Mark.CHANGE_ANTS);
             }
         }
     }
+
+
+    private boolean canSpawn() {
+        return (state == State.NEST)
+                && myAnts.size() < maxAntsPer;
+    }
+
 
     private void updateAnts() {
         Iterator<Ant> iter = myAnts.iterator();
@@ -86,8 +90,8 @@ public class ForagingAntsCell extends Cell {
                 iter.remove();
             }
         }
-        myAnts.addAll(antsToadd);
-        antsToadd.clear();
+        myAnts.addAll(antsToAdd);
+        antsToAdd.clear();
         changeVisual();
     }
 
@@ -145,12 +149,12 @@ public class ForagingAntsCell extends Cell {
         this.maxAntsPer = maxAntsPer;
     }
 
-    void addAnt(Ant ant) {
-        antsToadd.add(ant);
+    public int getNumAnts() {
+        return myAnts.size();
     }
 
-    public void setAntLifeTime(double antLifeTime) {
-        this.antLifeTime = antLifeTime;
+    void addAnt(Ant ant) {
+        antsToAdd.add(ant);
     }
 
 
@@ -166,7 +170,7 @@ public class ForagingAntsCell extends Cell {
         return homePheromones;
     }
 
-    public void setPheromones(double min, double max) {
+    public void setInitialPheromones(double min, double max) {
         foodPheromones = min;
         homePheromones = min;
         maxAmountPhero = max;
@@ -184,43 +188,43 @@ public class ForagingAntsCell extends Cell {
         return myAnts.size() < maxAntsPer;
     }
 
-    void dropHomesPheromones() {
+    void dropPheromones(boolean home) {
+        double currPhero = getAreaPheromones(home);
+        double max = maxAmountPhero - currPhero;
+        addPheros(home, max);
+    }
+
+    private double getAreaPheromones(boolean home) {
         ForagingAntsCell fac;
         double currPhero = 0.0;
         for (Cell c : getNeighbors()) {
             fac = (ForagingAntsCell) c;
-            double curr = fac.homePheromones;
-            currPhero += curr;
+            double increase = home ? fac.homePheromones : fac.foodPheromones;
+            currPhero += increase;
         }
-        double max = maxAmountPhero - currPhero;
-        if (state == State.NEST) {
+        return currPhero;
+    }
+
+    private void addPheros(boolean home, double max) {
+        if (home && state == State.NEST) {
             homePheromones += max;
+        } else if (!home && state == State.FOOD) {
+            foodPheromones += max;
         } else {
             double desired = max - 2;
-            double d = desired - homePheromones;
+            double offset = home ? homePheromones : foodPheromones;
+            double d = desired - offset;
             if (d > 0) {
-                homePheromones += d;
+                incrementPheros(home, d);
             }
         }
     }
 
-    void dropFoodPheromones() {
-        ForagingAntsCell fac;
-        double currPhero = 0.0;
-        for (Cell c : getNeighbors()) {
-            fac = (ForagingAntsCell) c;
-            double curr = fac.foodPheromones;
-            currPhero += curr;
-        }
-        double max = maxAmountPhero - currPhero;
-        if (state == State.FOOD) {
-            foodPheromones += max;
+    private void incrementPheros(boolean home, double d) {
+        if (home) {
+            homePheromones += d;
         } else {
-            double desired = max - 2;
-            double d = desired - foodPheromones;
-            if (d > 0) {
-                foodPheromones += d;
-            }
+            foodPheromones += d;
         }
     }
 
