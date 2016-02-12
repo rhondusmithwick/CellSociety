@@ -4,8 +4,14 @@ import Cell.Cell;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
+import javafx.scene.chart.LineChart;
+
 
 import java.util.Collection;
 import java.util.Random;
@@ -18,7 +24,7 @@ import java.util.Random;
 public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
-
+    
     private int gridWidth;
     private int gridHeight;
     private int cellsPerRow;
@@ -26,12 +32,28 @@ public abstract class Simulation {
     private String type;
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
+    private NumberAxis xAxis = new NumberAxis();
+    private NumberAxis yAxis = new NumberAxis();
+    private LineChart<Number, Number> lineChart;
 
     Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
+        createGraph();
+    }
+    
+    private void createGraph() {
+    	xAxis.setLabel("Frame");
+    	yAxis.setLabel("Number of Cells");
+    	lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+    	GridPane.setConstraints(lineChart, 0, 20, 1, 1, HPos.CENTER, VPos.CENTER);
     }
 
+    public LineChart<Number,Number> getGraph(){
+    	return lineChart;
+    }
+	
+  
     public final void setProperties(Element simElem) {
         setGenericProperties(simElem);
         setSpecificProperties(simElem);

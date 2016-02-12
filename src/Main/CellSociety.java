@@ -17,11 +17,11 @@ class CellSociety {
     /**
      * Stylesheet option.
      */
-    private static final String STYLESHEET = "vivid.css";
+    private static final String STYLESHEET = "heart.css";
     /**
      * The dimensions of the Scene.
      */
-    private static final Dimension DEFAULT_SIZE = new Dimension(1200, 650);
+    private static final Dimension DEFAULT_SIZE = new Dimension(1200, 800);
 
     /**
      * The empty constructor.

@@ -7,6 +7,7 @@ import Simulation.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -39,6 +40,7 @@ public class SimulationControl {
     private Grid grid;
     private int newSize = 0;
     private File myXMLFile = null;
+   
 
     /**
      * Sets starting simulation control parameters.
@@ -59,6 +61,7 @@ public class SimulationControl {
      * @param o Simulation object to switch t
      */
     public void switchSimulation(Object o) {
+    	//display.getChildren().remove(sim.getGraph()); 
         myXMLFile = null;
         newSize = 0;
         simType = o.toString();
@@ -66,6 +69,7 @@ public class SimulationControl {
         config = getConfig();
         setConfigControls();
         setSimulation();
+        display.getChildren().add(sim.getGraph());  
     }
     
     public Config getConfig(){
@@ -91,12 +95,14 @@ public class SimulationControl {
      * @param simElem Simulation element from the XML file parser.
      */
     private void switchSimulation(Element simElem) {
+    	//display.getChildren().remove(sim.getGraph()); 
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
         config = getConfig();
         setConfigControls();
         sim.setType(simType);
         sim.setProperties(simElem);
+        display.getChildren().add(sim.getGraph()); 
     }
 
     /**
