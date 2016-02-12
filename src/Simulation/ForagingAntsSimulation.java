@@ -55,13 +55,17 @@ public class ForagingAntsSimulation extends Simulation {
         setProperties(XMLParser.getXmlElement("resources/ForagingAnts.xml"));
     }
 
+    private static boolean isLocation(Cell c, Point2D loc) {
+        return (c.getRow() == loc.getY())
+                && (c.getColumn() == loc.getX());
+    }
+
     public void step() {
         stepSetup();
         spawnAnts();
         super.step();
         changeStates();
     }
-
 
     private void stepSetup() {
         currAnts = 0;
@@ -75,7 +79,6 @@ public class ForagingAntsSimulation extends Simulation {
         c.setProbChoice(K, N);
         c.pheroUpdate(evaporationRate, diffusionRate);
     }
-
 
     private void spawnAnts() {
         if (currAnts < maxAnts) {
@@ -109,7 +112,6 @@ public class ForagingAntsSimulation extends Simulation {
 
     }
 
-
     private boolean isFoodLocation(Cell c) {
         for (Point2D food : foodLocations) {
             if (isLocation(c, food)) {
@@ -117,11 +119,6 @@ public class ForagingAntsSimulation extends Simulation {
             }
         }
         return false;
-    }
-
-    private static boolean isLocation(Cell c, Point2D loc) {
-        return (c.getRow() == loc.getY())
-                && (c.getColumn() == loc.getX());
     }
 
 }

@@ -30,7 +30,16 @@ class Ant {
         hasFoodItem = false;
     }
 
-    private static ForagingAntsCell simulateProbalisticChoice(List<ForagingAntsCell> locSet, double total) {
+    private static boolean isRightProbability(double prob, double probTracker, double currProb) {
+        return (prob >= probTracker)
+                && (prob <= probTracker + currProb);
+    }
+
+    private static int compare(ForagingAntsCell c1, ForagingAntsCell c2) {
+        return (int) (c1.getProbChoice() - c2.getProbChoice());
+    }
+
+    private ForagingAntsCell simulateProbalisticChoice(List<ForagingAntsCell> locSet, double total) {
         double prob = new Random().nextDouble() * total;
         double probTracker = 0;
         double currProb;
@@ -43,15 +52,6 @@ class Ant {
             probTracker += currProb;
         }
         return locSet.get(locSet.size() / 2);
-    }
-
-    private static boolean isRightProbability(double prob, double probTracker, double currProb) {
-        return (prob >= probTracker)
-                && (prob <= probTracker + currProb);
-    }
-
-    private static int compare(ForagingAntsCell c1, ForagingAntsCell c2) {
-        return (int) (c1.getProbChoice() - c2.getProbChoice());
     }
 
     public void handleUpdate() {
