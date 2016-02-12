@@ -39,7 +39,7 @@ public final class XMLParser {
         }
     }
 
-    static String getTextValue(Element ele, String tagName) {
+    private static String getTextValue(Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {

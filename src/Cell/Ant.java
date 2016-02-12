@@ -24,35 +24,12 @@ class Ant {
     private boolean moving = false;
 
 
-    Ant(ForagingAntsCell myCell, double mylifeTime) {
+    Ant(ForagingAntsCell myCell, double myLifeTime) {
         this.myCell = myCell;
-        this.myLifeTime = mylifeTime;
+        this.myLifeTime = myLifeTime;
         hasFoodItem = false;
     }
 
-    private static boolean isRightProbability(double prob, double probTracker, double currProb) {
-        return (prob >= probTracker)
-                && (prob <= probTracker + currProb);
-    }
-
-    private static int compare(ForagingAntsCell c1, ForagingAntsCell c2) {
-        return (int) (c1.getProbChoice() - c2.getProbChoice());
-    }
-
-    private ForagingAntsCell simulateProbalisticChoice(List<ForagingAntsCell> locSet, double total) {
-        double prob = new Random().nextDouble() * total;
-        double probTracker = 0;
-        double currProb;
-        Collections.sort(locSet, (c1, c2) -> (compare(c1, c2)));
-        for (ForagingAntsCell cell : locSet) {
-            currProb = cell.getProbChoice();
-            if (isRightProbability(prob, probTracker, currProb)) {
-                return cell;
-            }
-            probTracker += currProb;
-        }
-        return locSet.get(locSet.size() / 2);
-    }
 
     public void handleUpdate() {
         deathTicker++;
@@ -113,25 +90,11 @@ class Ant {
         }
     }
 
-    private double populateLocSet(List<ForagingAntsCell> locSet, boolean forwardOnly) {
-        ForagingAntsCell neighbor;
-        double total = 0;
-        for (Cell c : myCell.getNeighbors()) {
-            neighbor = (ForagingAntsCell) c;
-            if (moveCheck(neighbor, forwardOnly)) {
-                double probChoice = neighbor.getProbChoice();
-                total += probChoice;
-                locSet.add(neighbor);
-            }
-        }
-        return total;
-    }
-
     private ForagingAntsCell selectLocations(boolean forwardOnly) {
-        List<ForagingAntsCell> locSet = new ArrayList<>();
-        double total = populateLocSet(locSet, forwardOnly);
+        List<ForagingAntsCell> locSet = createLocSet(forwardOnly);
+        double totalProb = getTotalProb(locSet);
         if (!locSet.isEmpty()) {
-            return simulateProbalisticChoice(locSet, total);
+            return chooseNeighbor(locSet, totalProb);
         }
         return null;
     }
@@ -153,13 +116,60 @@ class Ant {
         return maxFac;
     }
 
+    private List<ForagingAntsCell> createLocSet(boolean forwardOnly) {
+        ForagingAntsCell neighbor;
+        List<ForagingAntsCell> locSet = new ArrayList<>();
+        for (Cell c : myCell.getNeighbors()) {
+            neighbor = (ForagingAntsCell) c;
+            if (moveCheck(neighbor, forwardOnly)) {
+                locSet.add(neighbor);
+            }
+        }
+        return locSet;
+    }
+
+
+    private double getTotalProb(List<ForagingAntsCell> locSet) {
+        double total = 0.0;
+        for (ForagingAntsCell fac : locSet) {
+            total += fac.getProbChoice();
+        }
+        return total;
+    }
+
+    private ForagingAntsCell chooseNeighbor(List<ForagingAntsCell> locSet, double totalProb) {
+        double prob = new Random().nextDouble() * totalProb;
+        double probTracker = 0;
+        double currProb;
+        Collections.sort(locSet, (c1, c2) -> (compare(c1, c2)));
+        for (ForagingAntsCell cell : locSet) {
+            currProb = cell.getProbChoice();
+            if (isRightProbability(prob, probTracker, currProb)) {
+                return cell;
+            }
+            probTracker += currProb;
+        }
+        return locSet.get(locSet.size() / 2);
+    }
+
+    private int compare(ForagingAntsCell c1, ForagingAntsCell c2) {
+        return (int) (c1.getProbChoice() - c2.getProbChoice());
+    }
+
+
     private boolean moveCheck(ForagingAntsCell neighbor, boolean forwardOnly) {
         return (neighbor != prevCell)
                 && neighbor.isValid()
                 && ((forwardOnly && !myCell.checkDiagonal(neighbor)) || !forwardOnly);
     }
 
+    private boolean isRightProbability(double prob, double probTracker, double currProb) {
+        return (prob >= probTracker)
+                && (prob <= probTracker + currProb);
+    }
+
     boolean getDeadOrMove() {
         return isDead || moving;
     }
+
 }

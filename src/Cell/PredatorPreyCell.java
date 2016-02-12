@@ -12,6 +12,7 @@ import java.util.List;
  * @author Rhondu Smithwick
  */
 public class PredatorPreyCell extends Cell {
+    private int starveCounter = 0;
     /**
      * This cell's state.
      */
@@ -20,9 +21,7 @@ public class PredatorPreyCell extends Cell {
      * This cell's mark.
      */
     private Mark mark;
-
     private int breedTimer = 0;
-    public int starveCounter  = 0;
     private boolean shouldBreed = false;
 
     private Paint emptyVisual;
@@ -139,7 +138,7 @@ public class PredatorPreyCell extends Cell {
         this.breedTimer = breedTimer;
     }
 
-    public void setStarveCounter(int starveCounter) {
+    private void setStarveCounter(int starveCounter) {
         this.starveCounter = starveCounter;
     }
 
