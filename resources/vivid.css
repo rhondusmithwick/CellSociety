@@ -1,8 +1,8 @@
 .root {
 	-fx-font-size: 12pt;
 	-fx-font-family: "Avenir Black";
-	-fx-base: rgb(0, 0, 0);
-	-fx-background: rgb(0, 0, 0);
+	-fx-base: rgb(255, 0, 0);
+	-fx-background:rgb(0, 0, 0);
 }
 
 .button {
@@ -13,8 +13,14 @@
 	-fx-padding: 8;
 }
 
+.slider {
+	-fx-text-fill: #ffa500;
+	-fx-prompt-text-fill: #ffa500;
+}
+
 .button:hover {
 	-fx-background-color: #ffa500;
+	
 }
 
 .combo-box-base {

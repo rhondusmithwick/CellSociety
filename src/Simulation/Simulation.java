@@ -143,6 +143,10 @@ public abstract class Simulation {
     public final void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
+    
+    public final void changeRate(int rate){
+    	simulationLoop.setRate(rate);
+    }
 
     public final boolean increaseRate() {
         double currentRate = simulationLoop.getRate();

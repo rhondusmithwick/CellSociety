@@ -21,7 +21,7 @@ class CellSociety {
     /**
      * The dimensions of the Scene.
      */
-    private static final Dimension DEFAULT_SIZE = new Dimension(870, 650);
+    private static final Dimension DEFAULT_SIZE = new Dimension(1200, 650);
 
     /**
      * The empty constructor.

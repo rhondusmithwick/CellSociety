@@ -94,7 +94,7 @@ public class SimulationControl {
         display.getChildren().remove(grid);
         grid = createCellManager(simType);
         GridPane.setConstraints(grid, 0, 0);
-        GridPane.setRowSpan(grid, 8);
+        GridPane.setRowSpan(grid, 9);
         display.getChildren().add(grid);
     }
 
@@ -123,6 +123,12 @@ public class SimulationControl {
     public ObservableList<String> getSimulations() {
         return mySimulations;
     }
+    
+	public void speed(int new_val, int old_val) {
+		if(new_val != old_val){
+		sim.changeRate(new_val);
+		}
+	}
 
     /**
      * Decreases simulation rate. Displays error when rate can no longer be
@@ -229,6 +235,23 @@ public class SimulationControl {
         }
     }
 
+    public void sizeChange(int size) {
+        try {
+            try {
+                switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
+            } catch (Exception e) {
+                sim = getSimulation();
+            }
+            if (!sim.resetCellSize(size)) {
+                throw new Exception();
+            }
+            newSize = size;
+            setSimulation();
+        } catch (Exception e) {
+            showError(myResources.getString("SizeError"));
+        }
+    }
+    
     /**
      * Opens new XML file and sets the chosen simulation
      *
@@ -278,4 +301,13 @@ public class SimulationControl {
     private void setSimLabel() {
         simLabel.setText(simType);
     }
+
+	public void changeCatchingFire(int value) {
+		//sim.changeCatchingFire(value);
+	}
+
+	public void changeBurnTime(int value) {
+		//sim.changeBurnTime(value);
+	}
+
 }
