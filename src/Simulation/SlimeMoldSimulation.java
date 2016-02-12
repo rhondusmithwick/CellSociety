@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
  */
 public class SlimeMoldSimulation extends Simulation {
     private static final int DEFAULT_SLIME_AMOUNT = 30;
-    private static final int DEFAULT_OBSTACLES_AMOUNT = 20;
+    private static final int DEFAULT_OBSTACLES_AMOUNT = 10;
     private static final double DEFAULT_SNIFF_THRESHOLD = 10;
     private static final Point2D[] DEFAULT_SNIFF_ANGLES = {
             new Point2D(0, 1), new Point2D(1, 1),
@@ -29,7 +29,7 @@ public class SlimeMoldSimulation extends Simulation {
             new Point2D(1, 0), new Point2D(1, -1)
     };
     private static final double DEFAULT_EVAPORATION_RATE = 1;
-    private static final double DEFAULT_DIFFUSION_RATE = 0;
+    private static final double DEFAULT_DIFFUSION_RATE = .5;
     private static final double DEFAULT_CHEMICAL_DROPS = 2;
 
 
