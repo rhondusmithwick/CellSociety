@@ -1,6 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
+import XML.XMLException;
 import XML.XMLParser;
 import Cell.SlimeMoldCell;
 import Cell.SlimeMoldCell.Mark;
@@ -54,7 +55,7 @@ public class SlimeMoldSimulation extends Simulation {
     private final Paint obstacleVisual = DEFAULT_OBSTACLES_VISUAL;
 
 
-    public SlimeMoldSimulation() {
+    public SlimeMoldSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/SlimeMold.xml"));
 

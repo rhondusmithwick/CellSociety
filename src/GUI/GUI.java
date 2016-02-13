@@ -98,7 +98,7 @@ public class GUI {
         }
         return dir;
     }
-
+    
     /**
      * Creates and sets up all controls with their necessary parameters.
      */

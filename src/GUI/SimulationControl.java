@@ -3,6 +3,7 @@ package GUI;
 import Cell.Grid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
+import XML.XMLException;
 import XML.XMLOutput;
 import XML.XMLParser;
 import javafx.collections.FXCollections;
@@ -118,7 +119,12 @@ public class SimulationControl {
             Class c = Class.forName(simClassName);
             sim = (Simulation) c.newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            sim = new FireSimulation();
+            try {
+				sim = new FireSimulation();
+			} catch (XMLException e1) {
+				showError("XML read error");
+				return null;
+			}
         }
         return sim;
     }
@@ -247,7 +253,11 @@ public class SimulationControl {
     public void openFile(File file) {
         newSize = 0;
         myXMLFile = file;
-        switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
+        try {
+			switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
+		} catch (XMLException e) {
+			showError(myResources.getString("XMLReadError"));
+		}
         setSimulation();
     }
 

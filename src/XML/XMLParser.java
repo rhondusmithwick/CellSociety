@@ -35,7 +35,7 @@ public class XMLParser {
         return simElem.getAttribute("SimulationType");
     }
 
-    public static Element getXmlElement(String xmlFilename){
+    public static Element getXmlElement(String xmlFilename) throws XMLException{
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -44,8 +44,8 @@ public class XMLParser {
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {
-        	return null;
-           // throw new XMLException("XML Read error");
+        	//return null;
+            throw new XMLException("XML Read error");
         }
     }
 
@@ -74,7 +74,7 @@ public class XMLParser {
         return Paint.valueOf(getTextValue(rootElement, tagName));
 
     }
-    
+
     public int getIntValue( String tagName) {
         return Integer.parseInt(getTextValue(rootElement, tagName));
     }
