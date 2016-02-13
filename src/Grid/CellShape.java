@@ -22,19 +22,11 @@ public abstract class CellShape {
 
     public abstract double getX();
 
-    public abstract void setX(double x);
-
     public abstract double getY();
-
-    public abstract void setY(double y);
 
     public abstract double getWidth();
 
-    public abstract void setWidth(double width);
-
     public abstract double getHeight();
-
-    public abstract void setHeight(double height);
 
     public void setStroke(Paint value) {
         myShape.setStroke(value);

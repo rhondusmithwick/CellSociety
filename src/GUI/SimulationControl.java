@@ -1,7 +1,7 @@
 package GUI;
 
 import Grid.Grid;
-import Grid.RectangleGrid;
+import Grid.TriangleGrid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
 import XML.XMLException;
@@ -40,6 +40,7 @@ public class SimulationControl {
     private Simulation sim;
     private Config config = new FireConfig();
     private Grid grid;
+    private Group gridGroup;
     private int newSize = 0;
     private File myXMLFile = null;
 
@@ -134,9 +135,9 @@ public class SimulationControl {
      * Displays cells and sets the grid.
      */
     private void displayNewCells() {
-        display.getChildren().remove(grid);
+        if (gridGroup != null) display.getChildren().remove(gridGroup);
         grid = createGrid(simType);
-        Group gridGroup = grid.getGroup();
+        gridGroup = grid.getGroup();
         GridPane.setConstraints(gridGroup, 0, 0);
         GridPane.setRowSpan(gridGroup, 9);
         display.getChildren().add(gridGroup);
@@ -255,7 +256,7 @@ public class SimulationControl {
      * @result grid the new grid
      */
     private Grid createGrid(String simType) {
-        Grid grid = new RectangleGrid(); // testing
+        Grid grid = new TriangleGrid(); // testing
         grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
                 sim.getCellsPerRow(),
                 sim.getCellsPerColumn(), sim.getEdgeType());
@@ -267,7 +268,7 @@ public class SimulationControl {
      * Changes number of rows and columns per line on the grid based on user
      * input.
      *
-     * @param the size string from the user
+     * @param size string from the user
      */
     public void sizeChange(int size) {
         try {

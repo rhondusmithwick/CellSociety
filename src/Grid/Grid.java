@@ -41,13 +41,6 @@ public abstract class Grid {
 
     private EdgeType edgeType;
 
-    /**
-     * Construct a cellmanager.
-     */
-    Grid() {
-        super();
-    }
-
 
     /**
      * Set the internal array and grid.
@@ -171,8 +164,7 @@ public abstract class Grid {
      * @param column     the cell's column
      * @return a cell of type cellType OR a Fire cell if exception
      */
-    Cell createCell(String cellType, double cellWidth,
-                    double cellHeight, int row, int column) {
+    Cell createCell(CellShape shape, String cellType, int row, int column) {
         Cell myCell;
         try {
             Class cellClass = Class.forName("Cell." + cellType + "Cell");
@@ -182,9 +174,7 @@ public abstract class Grid {
                 | ClassNotFoundException e) {
             myCell = new FireCell();
         }
-        double x = row * cellWidth;
-        double y = column * cellHeight;
-        myCell.init(getShape(), cellWidth, cellHeight, x, y, row, column);
+        myCell.init(shape, row, column);
         return myCell;
     }
 
@@ -204,21 +194,19 @@ public abstract class Grid {
         return asList(r, c);
     }
 
-    protected abstract CellShape getShape();
-
-    public int getCellsPerRow() {
+    int getCellsPerRow() {
         return cellsPerRow;
     }
 
-    public int getGridWidth() {
+    int getGridWidth() {
         return gridWidth;
     }
 
-    public int getGridHeight() {
+    int getGridHeight() {
         return gridHeight;
     }
 
-    public int getCellsPerColumn() {
+    int getCellsPerColumn() {
         return cellsPerColumn;
     }
 

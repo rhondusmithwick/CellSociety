@@ -11,9 +11,9 @@ public class RectangleShape extends CellShape {
 
     private final Rectangle rectangle;
 
-    public RectangleShape() {
-        setMyShape(new Rectangle());
-        rectangle = (Rectangle) getMyShape();
+    public RectangleShape(double x, double y, double cellWidth, double cellHeight) {
+        rectangle = new Rectangle(x, y, cellWidth, cellHeight);
+        setMyShape(rectangle);
     }
 
     @Override
@@ -22,18 +22,8 @@ public class RectangleShape extends CellShape {
     }
 
     @Override
-    public void setX(double x) {
-        rectangle.setX(x);
-    }
-
-    @Override
     public double getY() {
         return rectangle.getY();
-    }
-
-    @Override
-    public void setY(double y) {
-        rectangle.setY(y);
     }
 
     @Override
@@ -41,18 +31,9 @@ public class RectangleShape extends CellShape {
         return rectangle.getWidth();
     }
 
-    @Override
-    public void setWidth(double width) {
-        rectangle.setWidth(width);
-    }
 
     @Override
     public double getHeight() {
         return rectangle.getHeight();
-    }
-
-    @Override
-    public void setHeight(double height) {
-        rectangle.setHeight(height);
     }
 }

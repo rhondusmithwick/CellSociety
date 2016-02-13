@@ -2,8 +2,8 @@
 <Simulation SimulationType="Fire">
     <gridWidth>600</gridWidth>
     <gridHeight>600</gridHeight>
-    <numCellsPerRow>100</numCellsPerRow>
-    <numCellsPerColumn>100</numCellsPerColumn>
+    <numCellsPerRow>10</numCellsPerRow>
+    <numCellsPerColumn>10</numCellsPerColumn>
     <burnTime>3</burnTime>
     <probCatch>50</probCatch>
     <emptyVisual>yellow</emptyVisual>

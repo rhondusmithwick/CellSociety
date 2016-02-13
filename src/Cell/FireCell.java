@@ -1,5 +1,6 @@
 package Cell;
 
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
@@ -86,6 +87,7 @@ public class FireCell extends Cell {
         addToVisualMap(State.EMPTY, visuals[0]);
         addToVisualMap(State.BURNING, visuals[1]);
         addToVisualMap(State.TREE, visuals[2]);
+        setStroke(Color.BLACK);
     }
 
 

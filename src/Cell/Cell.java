@@ -66,13 +66,8 @@ public abstract class Cell {
      * @param column     the cell's column
      */
 
-    public final void init(CellShape shape, double cellWidth, double cellHeight,
-                           double x, double y, int row, int column) {
+    public final void init(CellShape shape, int row, int column) {
         this.shape = shape;
-        shape.setWidth(cellWidth);
-        shape.setHeight(cellHeight);
-        shape.setX(x);
-        shape.setY(y);
         setRow(row);
         setColumn(column);
     }
