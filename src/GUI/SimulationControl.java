@@ -1,6 +1,7 @@
 package GUI;
 
-import Cell.Grid;
+import Grid.Grid;
+import Grid.RectangleGrid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
 import XML.XMLException;
@@ -254,7 +255,7 @@ public class SimulationControl {
      * @result grid the new grid
      */
     private Grid createGrid(String simType) {
-        Grid grid = new Grid();
+        Grid grid = new RectangleGrid(); // testing
         grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
                 sim.getCellsPerRow(),
                 sim.getCellsPerColumn(), sim.getEdgeType());

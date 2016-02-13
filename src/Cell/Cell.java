@@ -1,7 +1,7 @@
 package Cell;
 
+import Grid.CellShape;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import java.util.Collection;
@@ -20,11 +20,11 @@ public abstract class Cell {
      * This cell's neighbors.
      */
     private final Collection<Cell> neighbors = new LinkedList<>();
+    private final Map<Enum, Paint> visualMap = new HashMap<>();
     /**
      * This cell's shape.
      */
-    private final Rectangle shape = new Rectangle();
-    private final Map<Enum, Paint> visualMap = new HashMap<>();
+    private CellShape shape;
     private Map<String, Object> cellState;
     /**
      * This cell's row in the grid.
@@ -66,7 +66,9 @@ public abstract class Cell {
      * @param column     the cell's column
      */
 
-    public final void init(double cellWidth, double cellHeight, double x, double y, int row, int column) {
+    public final void init(CellShape shape, double cellWidth, double cellHeight,
+                           double x, double y, int row, int column) {
+        this.shape = shape;
         shape.setWidth(cellWidth);
         shape.setHeight(cellHeight);
         shape.setX(x);
@@ -170,8 +172,8 @@ public abstract class Cell {
      *
      * @return this cell's shape
      */
-    Shape getShape() {
-        return shape;
+    public Shape getShape() {
+        return shape.getMyShape();
     }
 
     /**

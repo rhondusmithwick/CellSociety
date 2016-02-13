@@ -1,7 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
-import Cell.Grid.EdgeType;
+import Grid.Grid.EdgeType;
 import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;

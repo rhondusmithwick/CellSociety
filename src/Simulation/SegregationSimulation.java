@@ -148,11 +148,11 @@ public class SegregationSimulation extends Simulation {
         savedValues.put("group2Visual", group2Visual);
     }
 
-    public void setThreshold(int newThreshold) {
-        threshold = newThreshold;
-    }
-
     public double getThreshold() {
         return threshold;
+    }
+
+    public void setThreshold(int newThreshold) {
+        threshold = newThreshold;
     }
 }

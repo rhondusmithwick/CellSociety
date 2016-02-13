@@ -1,5 +1,7 @@
-package Cell;
+package Grid;
 
+import Cell.Cell;
+import Cell.FireCell;
 import javafx.scene.Group;
 
 import java.util.Collection;
@@ -16,9 +18,9 @@ import static java.util.Arrays.asList;
  *
  * @author Rhondu Smithwick
  */
-public class Grid {
+public abstract class Grid {
+    final Group group = new Group();
     private final Map<List<Integer>, Cell> grid = new HashMap<>();
-    private final Group group = new Group();
     /**
      * This grid's width.
      */
@@ -27,6 +29,7 @@ public class Grid {
      * This grid's height.
      */
     private int gridHeight;
+
     /**
      * This grid's number of cells per row.
      */
@@ -41,36 +44,10 @@ public class Grid {
     /**
      * Construct a cellmanager.
      */
-    public Grid() {
+    Grid() {
         super();
     }
 
-    /**
-     * Create a cell of type cellType.
-     *
-     * @param cellType   the type of cell
-     * @param cellWidth  the cell's width
-     * @param cellHeight the cell's height
-     * @param row        the cell's row
-     * @param column     the cell's column
-     * @return a cell of type cellType OR a Fire cell if exception
-     */
-    private static Cell createCell(String cellType, double cellWidth,
-                                   double cellHeight, int row, int column) {
-        Cell myCell;
-        try {
-            Class cellClass = Class.forName("Cell." + cellType + "Cell");
-            myCell = (Cell) cellClass.newInstance();
-        } catch (InstantiationException
-                | IllegalAccessException
-                | ClassNotFoundException e) {
-            myCell = new FireCell();
-        }
-        double x = row * cellWidth;
-        double y = column * cellHeight;
-        myCell.init(cellWidth, cellHeight, x, y, row, column);
-        return myCell;
-    }
 
     /**
      * Set the internal array and grid.
@@ -99,23 +76,12 @@ public class Grid {
         populateNeighbors();
     }
 
-    public void init(String cellType) {
-        double cellWidth = ((double) gridWidth) / cellsPerRow;
-        double cellHeight = ((double) gridHeight) / cellsPerColumn;
-        for (int row = 0; row < cellsPerRow; row++) {
-            for (int column = 0; column < cellsPerColumn; column++) {
-                Cell myCell = createCell(cellType, cellWidth, cellHeight, row, column);
-                addCell(row, column, myCell);
-                group.getChildren().add(myCell.getShape());
-            }
-        }
-        populateNeighbors();
-    }
+    public abstract void init(String cellType);
 
     /**
      * Populate neighbors of all cells.
      */
-    private void populateNeighbors() {
+    void populateNeighbors() {
         for (int r = 0; r < cellsPerRow; r++) {
             for (int c = 0; c < cellsPerColumn; c++) {
                 traverseNeighbors(r, c);
@@ -195,11 +161,38 @@ public class Grid {
     }
 
 
+    /**
+     * Create a cell of type cellType.
+     *
+     * @param cellType   the type of cell
+     * @param cellWidth  the cell's width
+     * @param cellHeight the cell's height
+     * @param row        the cell's row
+     * @param column     the cell's column
+     * @return a cell of type cellType OR a Fire cell if exception
+     */
+    Cell createCell(String cellType, double cellWidth,
+                    double cellHeight, int row, int column) {
+        Cell myCell;
+        try {
+            Class cellClass = Class.forName("Cell." + cellType + "Cell");
+            myCell = (Cell) cellClass.newInstance();
+        } catch (InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException e) {
+            myCell = new FireCell();
+        }
+        double x = row * cellWidth;
+        double y = column * cellHeight;
+        myCell.init(getShape(), cellWidth, cellHeight, x, y, row, column);
+        return myCell;
+    }
+
     public Group getGroup() {
         return group;
     }
 
-    private void addCell(int r, int c, Cell cell) {
+    void addCell(int r, int c, Cell cell) {
         grid.put(getKey(r, c), cell);
     }
 
@@ -209,6 +202,24 @@ public class Grid {
 
     private List<Integer> getKey(int r, int c) {
         return asList(r, c);
+    }
+
+    protected abstract CellShape getShape();
+
+    public int getCellsPerRow() {
+        return cellsPerRow;
+    }
+
+    public int getGridWidth() {
+        return gridWidth;
+    }
+
+    public int getGridHeight() {
+        return gridHeight;
+    }
+
+    public int getCellsPerColumn() {
+        return cellsPerColumn;
     }
 
     public enum EdgeType {
