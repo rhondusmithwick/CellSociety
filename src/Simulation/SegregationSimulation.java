@@ -3,6 +3,7 @@ package Simulation;
 import Cell.Cell;
 import Cell.SegregationCell;
 import Cell.SegregationCell.Mark;
+import Cell.SegregationCell.State;
 import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
@@ -52,7 +53,6 @@ public class SegregationSimulation extends Simulation {
     void assignInitialState(Cell c) {
         int randomNum = getRandomNum(1, 100);
         final SegregationCell sc = (SegregationCell) c;
-        sc.setThreshold(threshold);
         sc.setVisuals(emptyVisual, group1Visual, group2Visual);
         if (randomNum <= emptyPercent) {
             sc.setMark(Mark.EMPTY);
@@ -66,11 +66,25 @@ public class SegregationSimulation extends Simulation {
 
     @Override
     public void step() {
-        super.step();
+        modifyAllCells();
         emptyCellsToAdd = new ArrayList<>();
         getAllUpdates();
         changeStates();
         emptyCells.addAll(emptyCellsToAdd);
+    }
+
+
+    private void modifyAllCells() {
+        getTheCells().stream().map(c -> (SegregationCell) c).forEach(this::modifyCell);
+    }
+
+    private void modifyCell(SegregationCell sc) {
+        if (sc.getState() != State.EMPTY) {
+            if (!sc.getSatisifed(threshold)) {
+                sc.setMark(Mark.EMPTY);
+            }
+
+        }
     }
 
     private void getAllUpdates() {
