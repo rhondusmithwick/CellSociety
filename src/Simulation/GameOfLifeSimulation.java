@@ -47,6 +47,7 @@ public class GameOfLifeSimulation extends Simulation {
         }
     }
 
+
     @Override
     void setSpecificProperties() {
         if (doesTypeMatch("GameOfLife")) {

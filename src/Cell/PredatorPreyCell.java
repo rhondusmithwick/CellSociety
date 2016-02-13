@@ -12,6 +12,7 @@ import java.util.List;
  * @author Rhondu Smithwick
  */
 public class PredatorPreyCell extends Cell {
+    private int starveCounter = 0;
     /**
      * This cell's state.
      */
@@ -20,9 +21,7 @@ public class PredatorPreyCell extends Cell {
      * This cell's mark.
      */
     private Mark mark;
-
-    private int breedTimer;
-    private int starveCounter;
+    private int breedTimer = 0;
     private boolean shouldBreed = false;
 
     private Paint emptyVisual;
@@ -128,7 +127,7 @@ public class PredatorPreyCell extends Cell {
     }
 
 
-    public void setShouldBreed(boolean t) {
+    private void setShouldBreed(boolean t) {
         shouldBreed = t;
     }
 
@@ -144,7 +143,7 @@ public class PredatorPreyCell extends Cell {
         this.mark = mark;
     }
 
-    public void setBreedTimer(int breedTimer) {
+    private void setBreedTimer(int breedTimer) {
         this.breedTimer = breedTimer;
     }
 
@@ -164,7 +163,14 @@ public class PredatorPreyCell extends Cell {
                 || (mark == Mark.TO_EMPTY);
     }
 
-    public boolean shouldBreed(int fishBreedTime, int sharkBreedTime) {
+    public void breedIfShould(int fishBreedTime, int sharkBreedTime) {
+        if (shouldBreed(fishBreedTime, sharkBreedTime)) {
+            setShouldBreed(true);
+            setBreedTimer(0);
+        }
+    }
+
+    private boolean shouldBreed(int fishBreedTime, int sharkBreedTime) {
         return fishShouldBreed(fishBreedTime) ||
                 sharkShouldBreed(sharkBreedTime);
     }

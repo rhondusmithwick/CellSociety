@@ -79,4 +79,5 @@ public class XMLParser {
         return Integer.parseInt(getTextValue(rootElement, tagName));
     }
 
+
 }
