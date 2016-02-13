@@ -2,6 +2,7 @@ package Simulation;
 
 import Cell.Cell;
 import Cell.Grid.EdgeType;
+import Main.CellSocietyProperties;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -17,13 +18,10 @@ import java.util.Random;
  * @author Rhondu Smithwick
  */
 public abstract class Simulation {
+    private final CellSocietyProperties simProperties = new CellSocietyProperties();
     private final Random rn;
     private final Timeline simulationLoop;
 
-    private int gridWidth;
-    private int gridHeight;
-    private int cellsPerRow;
-    private int cellsPerColumn;
     private EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
     private String type;
     private Collection<Cell> theCells;
@@ -96,10 +94,14 @@ public abstract class Simulation {
     }
 
     private void setGenericProperties(Element simElem) {
-        gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
-        gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
-        cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
-        cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
+        int gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
+        simProperties.put("gridWidth", gridWidth);
+        int gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
+        simProperties.put("gridHeight", gridHeight);
+        int cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
+        simProperties.put("cellsPerRow", cellsPerRow);
+        int cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
+        simProperties.put("cellsPerColumn", cellsPerColumn);
 //        edgeType = EdgeType.valueOf(XMLParser.getTextValue(simElem, "edgeType"));
     }
 
@@ -132,8 +134,8 @@ public abstract class Simulation {
 
     public final boolean resetCellSize(int numCells) {
         if (numCells > 1) {
-            cellsPerRow = numCells;
-            cellsPerColumn = numCells;
+            simProperties.put("cellsPerRow", numCells);
+            simProperties.put("cellsPerColumn" , numCells);
             return true;
         } else {
             return false;
@@ -141,36 +143,14 @@ public abstract class Simulation {
     }
 
 
-    public final int getGridWidth() {
-        return gridWidth;
-    }
-
-    public final EdgeType getEdgeType() {
-        return edgeType;
-    }
-
-    public final int getGridHeight() {
-        return gridHeight;
-    }
-
-
-    public final int getCellsPerRow() {
-        return cellsPerRow;
-    }
-
-
-    public final int getCellsPerColumn() {
-        return cellsPerColumn;
-    }
-
 
     String getType() {
-        return type;
+      return  simProperties.get("type");
     }
 
 
     public void setType(String type) {
-        this.type = type;
+        simProperties.put("type", type);
     }
 
     final Collection<Cell> getTheCells() {
@@ -179,6 +159,29 @@ public abstract class Simulation {
 
     public final void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
+    }
+
+
+    public final EdgeType getEdgeType() {
+        return edgeType;
+    }
+
+    public final int getGridWidth() {
+        return simProperties.getInt("gridWidth");
+    }
+
+    public final int getGridHeight() {
+        return simProperties.getInt("gridHeight");
+    }
+
+
+    public final int getCellsPerRow() {
+        return simProperties.getInt("cellsPerRow");
+
+    }
+
+    public final int getCellsPerColumn() {
+        return simProperties.getInt("cellsPerColumn");
     }
 
 }
