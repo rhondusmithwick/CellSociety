@@ -152,7 +152,8 @@ public class SegregationSimulation extends Simulation {
         return threshold;
     }
 
-    public void setThreshold(int newThreshold) {
-        threshold = newThreshold;
+    public void setThreshold(int intValue) {
+        threshold = intValue;
     }
+
 }

@@ -86,6 +86,10 @@ abstract class Config {
         mySpeedSlider.valueProperty().addListener(speedChanger);
     }
 
+    public void deactivateSize() {
+        mySizeSlider.setDisable(true);
+    }
+
     private void createSizeSlider() {
         mySizeSlider = makeSlider(2, 150, 10);
         ChangeListener<Number> sizeChanger = (ov, oldVal, newVal)
@@ -93,8 +97,8 @@ abstract class Config {
         mySizeSlider.valueProperty().addListener(sizeChanger);
     }
 
-    Slider makeSlider(int start, int end, int incr) {
-        Slider slider = new Slider(start, end, incr);
+    Slider makeSlider(double start, double end, double inc) {
+        Slider slider = new Slider(start, end, inc);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
         return slider;

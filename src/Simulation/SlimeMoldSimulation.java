@@ -41,17 +41,16 @@ public class SlimeMoldSimulation extends Simulation {
 
     private final int slimePercent = DEFAULT_SLIME_AMOUNT;
     private final int obstaclePercent = DEFAULT_OBSTACLES_AMOUNT;
-    private final double sniffThreshold = DEFAULT_SNIFF_THRESHOLD;
     private final Point2D[] sniffAngles = DEFAULT_SNIFF_ANGLES;
     private final Point2D[] wiggleAngles = DEFAULT_WIGGLE_ANGLES;
-    private final double evaporationRate = DEFAULT_EVAPORATION_RATE;
-    private final double diffusionRate = DEFAULT_DIFFUSION_RATE;
-    private final double chemicalDrops = DEFAULT_CHEMICAL_DROPS;
-
     private final Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
     private final Paint slimeVisual = DEFAULT_SLIME_VISUAL;
     private final Paint cAMPVisual = DEFAULT_cAMP_VISUAL;
     private final Paint obstacleVisual = DEFAULT_OBSTACLES_VISUAL;
+    private double sniffThreshold = DEFAULT_SNIFF_THRESHOLD;
+    private double evaporationRate = DEFAULT_EVAPORATION_RATE;
+    private double diffusionRate = DEFAULT_DIFFUSION_RATE;
+    private double chemicalDrops = DEFAULT_CHEMICAL_DROPS;
 
 
     public SlimeMoldSimulation() throws XMLException {
@@ -138,6 +137,48 @@ public class SlimeMoldSimulation extends Simulation {
     @Override
     void setSpecificProperties() {
         // TODO Auto-generated method stub
+
+    }
+
+    public double getSniff() {
+        return sniffThreshold;
+    }
+
+    public double getDiffusion() {
+        // TODO Auto-generated method stub
+        return diffusionRate;
+    }
+
+    public void setDiffusion(double intValue) {
+        // TODO Auto-generated method stub
+        diffusionRate = intValue;
+
+    }
+
+    public double getChemicalDrops() {
+        // TODO Auto-generated method stub
+        return chemicalDrops;
+    }
+
+    public void setChemicalDrops(int intValue) {
+        // TODO Auto-generated method stub
+        chemicalDrops = intValue;
+    }
+
+    public double getEvaporation() {
+        // TODO Auto-generated method stub
+        return evaporationRate;
+    }
+
+    public void setEvaporation(int intValue) {
+        // TODO Auto-generated method stub
+        evaporationRate = intValue;
+
+    }
+
+    public void getSniff(int intValue) {
+        // TODO Auto-generated method stub
+        sniffThreshold = intValue;
 
     }
 }

@@ -41,13 +41,13 @@ public class ForagingAntsSimulation extends Simulation {
     private final Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
     private final Paint nestVisual = DEFAULT_NEST_VISUAL;
     private final Paint foodVisual = DEFAULT_FOOD_VISUAL;
-    private final int maxAnts = DEFAULT_MAX_ANTS;
-    private final int antLifetime = DEFAULT_ANT_LIFETIME;
-    private final int antsBorn = DEFAULT_ANTS_BORN;
-    private final double evaporationRate = DEFAULT_EVAPORATION_RATE;
-    private final double diffusionRate = DEFAULT_DIFFUSION_RATE;
-    private final double K = DEFAULT_K;
-    private final double N = DEFAULT_N;
+    private int maxAnts = DEFAULT_MAX_ANTS;
+    private int antLifetime = DEFAULT_ANT_LIFETIME;
+    private int antsBorn = DEFAULT_ANTS_BORN;
+    private double evaporationRate = DEFAULT_EVAPORATION_RATE;
+    private double diffusionRate = DEFAULT_DIFFUSION_RATE;
+    private double K = DEFAULT_K;
+    private double N = DEFAULT_N;
     private ForagingAntsCell nest;
     private int currAnts = 0;
 
@@ -132,6 +132,63 @@ public class ForagingAntsSimulation extends Simulation {
             }
         }
         return false;
+    }
+
+
+    public double getDiffusionRate() {
+        return diffusionRate;
+    }
+
+    public void setDiffusionRate(double d) {
+        diffusionRate = d;
+    }
+
+    public double getEvaporationRate() {
+        return evaporationRate;
+    }
+
+    public void setEvaporationRate(double d) {
+        evaporationRate = d;
+    }
+
+    public double getAntsBorn() {
+        return antsBorn;
+    }
+
+    public void setAntsBorn(double d) {
+        antsBorn = (int) d;
+    }
+
+    public double getLifeTime() {
+        return antLifetime;
+    }
+
+    public void setLifeTime(double d) {
+        antLifetime = (int) d;
+    }
+
+    public double getMaxAnts() {
+        return maxAnts;
+    }
+
+    public void setMaxAnts(double d) {
+        maxAnts = (int) d;
+    }
+
+    public double getK() {
+        return K;
+    }
+
+    public void setK(double d) {
+        K = d;
+    }
+
+    public double getN() {
+        return N;
+    }
+
+    public void setN(double d) {
+        N = d;
     }
 
 
