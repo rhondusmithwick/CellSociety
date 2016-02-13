@@ -52,9 +52,9 @@ abstract class Config {
         return myResources;
     }
 
-    private void changeSize(int new_val) {
+    private void changeSize(int newSize) {
         mySimControl.stop();
-        mySimControl.sizeChange(new_val);
+        mySimControl.sizeChange(newSize);
     }
 
     private void addControl(Node e) {
