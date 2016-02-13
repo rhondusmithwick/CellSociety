@@ -113,52 +113,6 @@ public class ForagingAntsCell extends Cell {
         }
     }
 
-    @Override
-    public void setVisuals(Paint... visuals) {
-        addToVisualMap(State.OPEN, visuals[0]);
-        addToVisualMap(State.NEST, visuals[1]);
-        addToVisualMap(State.FOOD, visuals[2]);
-        setStroke(Color.BLACK);
-    }
-
-    public void setMaxAntsPer(int maxAntsPer) {
-        this.maxAntsPer = maxAntsPer;
-    }
-
-    public int getNumAnts() {
-        return myAnts.size();
-    }
-
-    void addAnt(Ant ant) {
-        antsToAdd.add(ant);
-    }
-
-
-    public void setProbChoice(double K, double N) {
-        probChoice = Math.pow(K + foodPheromones, N);
-    }
-
-    public double getProbChoice() {
-        return probChoice;
-    }
-
-    double getHomePheromones() {
-        return homePheromones;
-    }
-
-    public void setInitialPheromones(double min, double max) {
-        foodPheromones = min;
-        homePheromones = min;
-        maxAmountPhero = max;
-    }
-
-    public void setMark(Mark mark) {
-        this.mark = mark;
-    }
-
-    public State getState() {
-        return state;
-    }
 
     boolean isValid() {
         return myAnts.size() < maxAntsPer;
@@ -208,6 +162,52 @@ public class ForagingAntsCell extends Cell {
     void saveTypeCellState() {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void setVisuals(Paint... visuals) {
+        addToVisualMap(State.OPEN, visuals[0]);
+        addToVisualMap(State.NEST, visuals[1]);
+        addToVisualMap(State.FOOD, visuals[2]);
+        setStroke(Color.BLACK);
+    }
+
+    public void setMaxAntsPer(int maxAntsPer) {
+        this.maxAntsPer = maxAntsPer;
+    }
+
+    public int getNumAnts() {
+        return myAnts.size();
+    }
+
+    void addAnt(Ant ant) {
+        antsToAdd.add(ant);
+    }
+
+    public void setProbChoice(double K, double N) {
+        probChoice = Math.pow(K + foodPheromones, N);
+    }
+
+    public double getProbChoice() {
+        return probChoice;
+    }
+
+    double getHomePheromones() {
+        return homePheromones;
+    }
+
+    public void setInitialPheromones(double min, double max) {
+        foodPheromones = min;
+        homePheromones = min;
+        maxAmountPhero = max;
+    }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
+    }
+
+    public State getState() {
+        return state;
     }
 
     public enum State {

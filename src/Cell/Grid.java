@@ -93,7 +93,6 @@ public class Grid extends Group {
 
     /**
      * Initialize this cell manager.
-     *
      */
     public void init(Collection<Cell> theCells) {
         this.theCells = theCells;

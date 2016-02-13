@@ -27,17 +27,17 @@ import java.util.Random;
 public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
+    private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
+    private final NumberAxis xAxis = new NumberAxis();
+    private final NumberAxis yAxis = new NumberAxis();
     XMLParser xmlProperties;
     Map<String, Object> savedValues;
     private int gridWidth;
     private int gridHeight;
     private int numCellsPerRow;
     private int numCellsPerColumn;
-    private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
     private String type;
     private Collection<Cell> theCells;
-    private final NumberAxis xAxis = new NumberAxis();
-    private final NumberAxis yAxis = new NumberAxis();
     private LineChart<Number, Number> lineChart;
     private boolean isPlaying = false;
 

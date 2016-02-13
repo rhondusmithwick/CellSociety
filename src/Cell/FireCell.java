@@ -41,7 +41,6 @@ public class FireCell extends Cell {
     /**
      * Update this fire cell.
      */
-    @Override
     public void handleUpdate() {
         burnTimer++;
     }

@@ -64,7 +64,7 @@ public class XMLOutput {
 		     */
 
 		/*
-		makeIntElement("gridWidth",sim.getGridWidth());
+        makeIntElement("gridWidth",sim.getGridWidth());
 		makeIntElement("gridHeight",sim.getGridHeight());
 		makeIntElement("cellsPerRow",sim.getCellsPerRow());
 		makeIntElement("cellsPerColumn",sim.getCellsPerColumn());

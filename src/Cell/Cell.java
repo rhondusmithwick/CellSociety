@@ -25,7 +25,7 @@ public abstract class Cell {
      */
     private final Rectangle shape = new Rectangle();
     private final Map<Enum, Paint> visualMap = new HashMap<>();
-    protected Map<String, Object> cellState;
+    private Map<String, Object> cellState;
     /**
      * This cell's row in the grid.
      */

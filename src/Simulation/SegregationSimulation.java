@@ -83,7 +83,6 @@ public class SegregationSimulation extends Simulation {
             if (!sc.getSatisifed(threshold)) {
                 sc.setMark(Mark.EMPTY);
             }
-
         }
     }
 

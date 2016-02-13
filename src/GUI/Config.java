@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public abstract class Config {
+abstract class Config {
 
     private static final String GUI_PROPERTY_PATH = "GUIstrings";
 

@@ -4,11 +4,9 @@ import Simulation.GameOfLifeSimulation;
 
 public class GameOfLifeConfig extends Config {
 
-    private GameOfLifeSimulation lifeSim;
-
     @Override
     public void init() {
-        lifeSim = (GameOfLifeSimulation) this.getSimulation();
+        GameOfLifeSimulation lifeSim = (GameOfLifeSimulation) this.getSimulation();
         createMainSliders();
         createMainLabels();
         setMain();
