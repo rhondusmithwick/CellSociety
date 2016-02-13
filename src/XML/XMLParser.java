@@ -1,4 +1,4 @@
-package Simulation;
+package XML;
 
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Document;
@@ -16,16 +16,19 @@ import java.io.IOException;
  *
  * @author Tavo Loaiza
  */
-public final class XMLParser {
+public class XMLParser {
 
-    private XMLParser() {
+    private final Element rootElement;
+
+    public XMLParser(Element rootElement) {
+        this.rootElement = rootElement;
     }
 
     public static String getSimType(Element simElem) {
         return simElem.getAttribute("SimulationType");
     }
 
-    public static Element getXmlElement(String xmlFilename) {
+    public static Element getXmlElement(String xmlFilename) throws XMLException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -34,8 +37,8 @@ public final class XMLParser {
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {
-            pce.printStackTrace();//Bad
-            return null;
+            //return null;
+            throw new XMLException("XML Read error");
         }
     }
 
@@ -56,5 +59,28 @@ public final class XMLParser {
     public static int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
+
+    public Element getRootElement() {
+        return rootElement;
+    }
+
+    public String getSimType() {
+        return rootElement.getAttribute("SimulationType");
+    }
+
+    public String getTextValue(String tagName) {
+
+        return getTextValue(rootElement, tagName);
+    }
+
+    public Paint getPaintValue(String tagName) {
+        return Paint.valueOf(getTextValue(rootElement, tagName));
+
+    }
+
+    public int getIntValue(String tagName) {
+        return Integer.parseInt(getTextValue(rootElement, tagName));
+    }
+
 
 }

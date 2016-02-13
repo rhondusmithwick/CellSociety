@@ -18,19 +18,18 @@ public class GameOfLifeCell extends Cell {
     private Mark mark;
 
     /**
-     * The dead visual.
-     */
-    private Paint deadVisual;
-    /**
-     * The alive visual.
-     */
-    private Paint aliveVisual;
-
-    /**
      * Construct the game of life cell.
      */
     public GameOfLifeCell() {
         super();
+    }
+
+    @Override
+    void saveTypeCellState() {
+    /*	cellState.put("",);
+        cellState.put("",);
+		cellState.put("",);
+		*/
     }
 
     /**
@@ -40,9 +39,9 @@ public class GameOfLifeCell extends Cell {
     public void handleUpdate() {
         int aliveNeighbors = countAliveNeighbors();
         if (shouldDie(aliveNeighbors)) {
-            setMark(Mark.DESTROY);
+            setMark(Mark.DEAD);
         } else if (shouldResurect(aliveNeighbors)) {
-            setMark(Mark.RESURECT);
+            setMark(Mark.ALIVE);
         }
     }
 
@@ -68,19 +67,11 @@ public class GameOfLifeCell extends Cell {
      */
     @Override
     public void changeState() {
-        switch (mark) {
-            case NONE:
-                return;
-            case DESTROY:
-                setFill(deadVisual);
-                state = State.DEAD;
-                break;
-            case RESURECT:
-                setFill(aliveVisual);
-                state = State.ALIVE;
-                break;
-            default:
+        if (mark == Mark.NONE) {
+            return;
         }
+        state = State.valueOf(mark.toString());
+        setFill(getVisual(state));
         setMark(Mark.NONE);
     }
 
@@ -113,8 +104,8 @@ public class GameOfLifeCell extends Cell {
      * @param visuals this cell's visuals
      */
     public void setVisuals(Paint... visuals) {
-        deadVisual = visuals[0];
-        aliveVisual = visuals[1];
+        addToVisualMap(State.DEAD, visuals[0]);
+        addToVisualMap(State.ALIVE, visuals[1]);
     }
 
     /**
@@ -146,6 +137,6 @@ public class GameOfLifeCell extends Cell {
      * Game of Life's mark enum.
      */
     public enum Mark {
-        DESTROY, RESURECT, NONE
+        ALIVE, DEAD, NONE
     }
 }

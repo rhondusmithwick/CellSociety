@@ -1,19 +1,22 @@
 package Simulation;
 
 import Cell.Cell;
+import Cell.Grid.EdgeType;
+import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
-import javafx.scene.chart.LineChart;
-
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -24,40 +27,59 @@ import java.util.Random;
 public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
-    
+    private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
+    private final NumberAxis xAxis = new NumberAxis();
+    private final NumberAxis yAxis = new NumberAxis();
+    XMLParser xmlProperties;
+    Map<String, Object> savedValues;
     private int gridWidth;
     private int gridHeight;
-    private int cellsPerRow;
-    private int cellsPerColumn;
+    private int numCellsPerRow;
+    private int numCellsPerColumn;
     private String type;
     private Collection<Cell> theCells;
-    private boolean isPlaying = false;
-    private NumberAxis xAxis = new NumberAxis();
-    private NumberAxis yAxis = new NumberAxis();
     private LineChart<Number, Number> lineChart;
+    private boolean isPlaying = false;
 
     Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
         createGraph();
     }
-    
+
     private void createGraph() {
-    	xAxis.setLabel("Frame");
-    	yAxis.setLabel("Number of Cells");
-    	lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-    	GridPane.setConstraints(lineChart, 0, 20, 1, 1, HPos.CENTER, VPos.CENTER);
+        xAxis.setLabel("Frame");
+        yAxis.setLabel("Number of Cells");
+        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+        GridPane.setConstraints(lineChart, 0, 20, 1, 1, HPos.CENTER, VPos.CENTER);
     }
 
-    public LineChart<Number,Number> getGraph(){
-    	return lineChart;
+
+    public LineChart<Number, Number> getGraph() {
+        return lineChart;
     }
-	
-  
+
     public final void setProperties(Element simElem) {
-        setGenericProperties(simElem);
-        setSpecificProperties(simElem);
+        xmlProperties = new XMLParser(simElem);
+        setGenericProperties();
+        setSpecificProperties();
     }
+
+    public Map<String, Object> getSavedValues() {
+        return savedValues;
+    }
+
+    public void saveValues() {
+        savedValues = new HashMap<>();
+        //savedValues.put("type", type);
+        savedValues.put("gridWidth", gridWidth);
+        savedValues.put("gridHeight", gridHeight);
+        savedValues.put("numCellsPerRow", numCellsPerRow);
+        savedValues.put("numCellsPerColumn", numCellsPerColumn);
+        saveSpecificValues();
+    }
+
+    abstract void saveSpecificValues();
 
     private Timeline buildLoop() {
         final KeyFrame keyFrame = new KeyFrame(Duration.seconds(.5), t -> step());
@@ -68,22 +90,18 @@ public abstract class Simulation {
     }
 
     public void init() {
-        for (Cell c : getTheCells()) {
-            assignInitialState(c);
-        }
+        getTheCells().stream().forEach(this::assignInitialState);
         changeStates();
     }
 
     abstract void assignInitialState(Cell c);
 
     public void step() {
-        getTheCells().forEach(c -> c.handleUpdate());
+        getTheCells().stream().forEach(Cell::handleUpdate);
     }
 
-	final void changeStates() {
-        for (Cell c : getTheCells()) {
-            c.changeState();
-        }
+    final void changeStates() {
+        getTheCells().stream().forEach(Cell::changeState);
     }
 
     private void beginLoop() {
@@ -119,60 +137,24 @@ public abstract class Simulation {
         return rn.nextInt(range) + min;
     }
 
-    private void setGenericProperties(Element simElem) {
-        gridWidth = XMLParser.getIntValue(simElem, "gridWidth");
-        gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
-        cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
-        cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
+    private void setGenericProperties() {
+        type = xmlProperties.getSimType();
+        gridWidth = xmlProperties.getIntValue("gridWidth");
+        gridHeight = xmlProperties.getIntValue("gridHeight");
+        numCellsPerRow = xmlProperties.getIntValue("numCellsPerRow");
+        numCellsPerColumn = xmlProperties.getIntValue("numCellsPerColumn");
+//	edgeType = EdgeType.valueOf(xmlProperties.getTextValue("edgeType"));
     }
 
-    abstract void setSpecificProperties(Element simElem);
-
-
-    public final int getGridWidth() {
-        return gridWidth;
+    boolean doesTypeMatch(String myType) {
+        return (getType() == null || !getType().equals(myType));
     }
 
-
-    public final int getGridHeight() {
-        return gridHeight;
-    }
-
-
-    public final int getCellsPerRow() {
-        return cellsPerRow;
-    }
-
-
-    public final int getCellsPerColumn() {
-        return cellsPerColumn;
-    }
-
-
-    String getType() {
-        return type;
-    }
-
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    final Collection<Cell> getTheCells() {
-        return theCells;
-    }
-
-    public final void setTheCells(Collection<Cell> theCells) {
-        this.theCells = theCells;
-    }
-    
-    public final void changeRate(int rate){
-    	simulationLoop.setRate(rate);
-    }
+    abstract void setSpecificProperties();
 
     public final boolean increaseRate() {
         double currentRate = simulationLoop.getRate();
-        if (currentRate <= 10) {
+        if (currentRate <= 15) {
             simulationLoop.setRate(currentRate + .5);
             return true;
         }
@@ -196,21 +178,69 @@ public abstract class Simulation {
 
     public final boolean resetCellSize(int numCells) {
         if (numCells > 1) {
-            cellsPerRow = numCells;
-            cellsPerColumn = numCells;
+            numCellsPerRow = numCells;
+            numCellsPerColumn = numCells;
             return true;
         } else {
             return false;
         }
     }
 
-	public double getSpeed() {
-		return simulationLoop.getRate();
-	}
 
-	public double getSize() {
-		return cellsPerRow;
-	}
+    public final int getGridWidth() {
+        return gridWidth;
+    }
 
+    public final EdgeType getEdgeType() {
+        return edgeType;
+    }
+
+    public final int getGridHeight() {
+        return gridHeight;
+    }
+
+
+    public final int getCellsPerRow() {
+        return numCellsPerRow;
+    }
+
+
+    public final int getCellsPerColumn() {
+        return numCellsPerColumn;
+    }
+
+
+    public String getType() {
+        return type;
+    }
+
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    final Collection<Cell> getTheCells() {
+        return theCells;
+    }
+
+    public final void setTheCells(Collection<Cell> theCells) {
+        this.theCells = theCells;
+    }
+
+    public XMLParser getXmlProperties() {
+        return xmlProperties;
+    }
+
+    public double getSpeed() {
+        return simulationLoop.getRate();
+    }
+
+    public final void changeRate(int rate) {
+        simulationLoop.setRate(rate);
+    }
+
+    public double getSize() {
+        return numCellsPerRow;
+    }
 }
 

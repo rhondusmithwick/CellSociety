@@ -5,8 +5,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * The base class for a cell.
@@ -22,6 +24,8 @@ public abstract class Cell {
      * This cell's shape.
      */
     private final Rectangle shape = new Rectangle();
+    private final Map<Enum, Paint> visualMap = new HashMap<>();
+    private Map<String, Object> cellState;
     /**
      * This cell's row in the grid.
      */
@@ -38,6 +42,19 @@ public abstract class Cell {
         super();
     }
 
+    public void saveCellState() {
+        cellState = new HashMap<>();
+        cellState.put("cellWidth", shape.getWidth());
+        cellState.put("cellHeight", shape.getHeight());
+        cellState.put("x", shape.getX());
+        cellState.put("y", shape.getY());
+        cellState.put("row", row);
+        cellState.put("column", column);
+        saveTypeCellState();
+    }
+
+    abstract void saveTypeCellState();
+
     /**
      * Initialize this cell with these parameters.
      *
@@ -45,9 +62,10 @@ public abstract class Cell {
      * @param cellHeight the cell's height
      * @param x          the cell's x-coordinate
      * @param y          the cell's y-coordinate
-     * @param row        te cell's row
+     * @param row        the cell's row
      * @param column     the cell's column
      */
+
     public final void init(double cellWidth, double cellHeight, double x, double y, int row, int column) {
         shape.setWidth(cellWidth);
         shape.setHeight(cellHeight);
@@ -65,13 +83,16 @@ public abstract class Cell {
         Iterator<Cell> iter = neighbors.iterator();
         while (iter.hasNext()) {
             Cell neighbor = iter.next();
-            int rowDiff = Math.abs(neighbor.getRow() - getRow());
-            int columnDiff = Math.abs(neighbor.getColumn() - getColumn());
-            if (rowDiff == 1 && columnDiff == 1) {
+            if (checkDiagonal(neighbor)) {
                 iter.remove();
             }
         }
     }
+
+    public Map<String, Object> getCellState() {
+        return cellState;
+    }
+
 
     /**
      * Change this cell's state.
@@ -128,7 +149,6 @@ public abstract class Cell {
         this.column = column;
     }
 
-
     /**
      * Set this cell's visuals.
      *
@@ -170,5 +190,22 @@ public abstract class Cell {
      */
     void setStroke(Paint value) {
         shape.setStroke(value);
+    }
+
+
+    boolean checkDiagonal(Cell neighbor) {
+        int rowDiff = Math.abs(neighbor.getRow() - getRow());
+        int columnDiff = Math.abs(neighbor.getColumn() - getColumn());
+        return (rowDiff >= 1)
+                && (columnDiff >= 1);
+    }
+
+
+    void addToVisualMap(Enum state, Paint visual) {
+        visualMap.put(state, visual);
+    }
+
+    Paint getVisual(Enum state) {
+        return visualMap.get(state);
     }
 }

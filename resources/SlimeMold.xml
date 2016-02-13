@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation SimulationType="SlimeMold">
+    <gridWidth>600</gridWidth>
+    <gridHeight>600</gridHeight>
+    <numCellsPerRow>100</numCellsPerRow>
+    <numCellsPerColumn>100</numCellsPerColumn>
+</Simulation>

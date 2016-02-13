@@ -3,9 +3,10 @@ package Simulation;
 import Cell.Cell;
 import Cell.GameOfLifeCell;
 import Cell.GameOfLifeCell.Mark;
+import XML.XMLException;
+import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.w3c.dom.Element;
 
 /**
  * Created by rhondusmithwick on 1/31/16.
@@ -23,7 +24,7 @@ public class GameOfLifeSimulation extends Simulation {
     private Paint deadVisual;
     private Paint aliveVisual;
 
-    public GameOfLifeSimulation() {
+    public GameOfLifeSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "GameOfLife.xml"));
     }
@@ -40,22 +41,30 @@ public class GameOfLifeSimulation extends Simulation {
         final GameOfLifeCell gc = (GameOfLifeCell) c;
         gc.setVisuals(deadVisual, aliveVisual);
         if (randomNum <= probStartDead) {
-            gc.setMark(Mark.DESTROY);
+            gc.setMark(Mark.DEAD);
         } else {
-            gc.setMark(Mark.RESURECT);
+            gc.setMark(Mark.ALIVE);
         }
     }
 
+
     @Override
-    void setSpecificProperties(Element simElem) {
-        if (getType() == null || !getType().equals("GameOfLife")) {
+    void setSpecificProperties() {
+        if (doesTypeMatch("GameOfLife")) {
             probStartDead = DEFAULT_START_DEAD;
             deadVisual = DEFAULT_DEAD_VISUAL;
             aliveVisual = DEFAULT_ALIVE_VISUAL;
         } else {
-            probStartDead = XMLParser.getIntValue(simElem, "probStartDead");
-            deadVisual = XMLParser.getPaintValue(simElem, "deadVisual");
-            aliveVisual = XMLParser.getPaintValue(simElem, "aliveVisual");
+            probStartDead = xmlProperties.getIntValue("probStartDead");
+            deadVisual = xmlProperties.getPaintValue("deadVisual");
+            aliveVisual = xmlProperties.getPaintValue("aliveVisual");
         }
+    }
+
+    @Override
+    void saveSpecificValues() {
+        savedValues.put("probStartDead", probStartDead);
+        savedValues.put("deadVisual", deadVisual);
+        savedValues.put("aliveVisual", aliveVisual);
     }
 }

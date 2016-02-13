@@ -8,11 +8,11 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,7 +20,6 @@ import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -46,6 +45,7 @@ public class GUI {
     private Button myStepButton;
     private Button myResetButton;
     private Button myPlayAgainButton;
+    private Button mySaveToFileButton;
 
     /**
      * Sets starting GUI parameters and links GUI to simulation control class
@@ -103,7 +103,7 @@ public class GUI {
         setAndAdd();
     }
 
-	/**
+    /**
      * Creates the comboBox with a change listener.
      */
     private void createComboBox() {
@@ -118,13 +118,14 @@ public class GUI {
      * Creates all buttons using makeButton.
      */
     private void createButtons() {
-        myFileButton = makeButton(myResources.getString("XMLLoadPrompt"), event -> setUpFileChooser());
+        myFileButton = makeButton(myResources.getString("XMLLoadPrompt"), event -> openFile(getFileChooser()));
         myPlayPauseButton = makeButton(myResources.getString("PlayPauseButton"), event -> mySimControl.playPause());
         myStepButton = makeButton(myResources.getString("StepButton"), event -> mySimControl.step());
         myResetButton = makeButton(myResources.getString("ResetButton"), event -> mySimControl.reset());
         myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"), event -> mySimControl.playAgain());
+        mySaveToFileButton = makeButton(myResources.getString("SaveToFileButton"), event -> saveFile(getFileChooser()));
     }
-    
+
     /**
      * Calls setAndAdd for all controls.
      */
@@ -136,6 +137,7 @@ public class GUI {
         setAndAdd(myStepButton, 4, 2, 2, 1);
         setAndAdd(comboBox, 1, 1, 5, 1);
         setAndAdd(simLabel, 1, 7, 3, 3);
+        setAndAdd(mySaveToFileButton, 1, 9, 3, 3);
     }
 
     /**
@@ -154,18 +156,28 @@ public class GUI {
     }
 
     /**
-     * Sets up and displays the file chooser interacting box.
+     * Sets up and displays the file chooser interactin box.
      */
-    private void setUpFileChooser() {
+
+    private FileChooser getFileChooser() {
         mySimControl.stop();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
         fileChooser.setInitialDirectory(getLocalDir());
+        return fileChooser;
+    }
+
+    private void openFile(FileChooser fileChooser) {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             mySimControl.openFile(file);
         }
+    }
+
+    private void saveFile(FileChooser fileChooser) {
+        File file = fileChooser.showSaveDialog(new Stage());
+        mySimControl.saveSimulation(file);
     }
 
     /**

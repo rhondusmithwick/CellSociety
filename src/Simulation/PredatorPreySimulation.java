@@ -4,9 +4,10 @@ import Cell.Cell;
 import Cell.PredatorPreyCell;
 import Cell.PredatorPreyCell.Mark;
 import Cell.PredatorPreyCell.State;
+import XML.XMLException;
+import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.w3c.dom.Element;
 
 /**
  * Created by rhondusmithwick on 2/3/16.
@@ -35,7 +36,7 @@ public class PredatorPreySimulation extends Simulation {
     private Paint sharkVisual;
 
 
-    public PredatorPreySimulation() {
+    public PredatorPreySimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
     }
@@ -47,12 +48,11 @@ public class PredatorPreySimulation extends Simulation {
         final PredatorPreyCell ppc = (PredatorPreyCell) c;
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
-            ppc.setMark(Mark.TO_EMPTY);
-        } else if (randomNum > emptyPercent
-                && randomNum <= emptyPercent + fishPercent) {
-            ppc.setMark(Mark.TO_FISH);
+            ppc.setMark(Mark.EMPTY);
+        } else if (randomNum <= emptyPercent + fishPercent) {
+            ppc.setMark(Mark.FISH);
         } else {
-            ppc.setMark(Mark.TO_SHARK);
+            ppc.setMark(Mark.SHARK);
         }
     }
 
@@ -66,32 +66,29 @@ public class PredatorPreySimulation extends Simulation {
 
 
     private void breedAll() {
-        PredatorPreyCell ppc;
-        for (Cell c : getTheCells()) {
-            ppc = (PredatorPreyCell) c;
-            if (ppc.shouldBreed(fishBreedTime, sharkBreedTime)) {
-                ppc.setShouldBreed(true);
-                ppc.setBreedTimer(0);
-            }
-        }
+        getTheCells().stream()
+                .map(c -> (PredatorPreyCell) c)
+                .forEach(ppc -> ppc.breedIfShould(fishBreedTime, sharkBreedTime));
     }
+
 
     private void moveAll() {
-        PredatorPreyCell ppc;
-        for (Cell c : getTheCells()) {
-            ppc = (PredatorPreyCell) c;
-            if (ppc.getState() == State.SHARK) {
-                sharkUpdate(ppc);
-            } else if (ppc.canMoveOrSpawn()) {
-                ppc.move();
-            }
-        }
+        getTheCells().stream()
+                .map(c -> (PredatorPreyCell) c)
+                .forEach(this::doMove);
     }
 
+    private void doMove(PredatorPreyCell ppc) {
+        if (ppc.getState() == State.SHARK) {
+            sharkUpdate(ppc);
+        } else if (ppc.canMoveOrSpawn()) {
+            ppc.move();
+        }
+    }
 
     private void sharkUpdate(PredatorPreyCell shark) {
         if (shark.shouldStarve(starveTime)) {
-            shark.setMark(Mark.TO_EMPTY);
+            shark.setMark(Mark.EMPTY);
         } else if (!shark.sharkEat()) {
             if (shark.canMoveOrSpawn()) {
                 shark.move();
@@ -100,8 +97,8 @@ public class PredatorPreySimulation extends Simulation {
     }
 
     @Override
-    void setSpecificProperties(Element simElem) {
-        if (getType() == null || !getType().equals("PredatorPrey")) {
+    void setSpecificProperties() {
+        if (doesTypeMatch("PredatorPrey")) {
             sharkBreedTime = DEFAULT_SHARK_BREED_TIME;
             fishBreedTime = DEFAULT_FISH_BREED_TIME;
             starveTime = DEFAULT_STARVE_TIME;
@@ -111,47 +108,57 @@ public class PredatorPreySimulation extends Simulation {
             fishVisual = DEFAULT_FISH_VISUAL;
             sharkVisual = DEFAULT_SHARK_VISUAL;
         } else {
-            sharkBreedTime = XMLParser.getIntValue(simElem, "sharkBreedTime");
-            fishBreedTime = XMLParser.getIntValue(simElem, "fishBreedTime");
-            starveTime = XMLParser.getIntValue(simElem, "starveTime");
-            emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
-            fishPercent = XMLParser.getIntValue(simElem, "fishPercent");
-            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
-            fishVisual = XMLParser.getPaintValue(simElem, "fishVisual");
-            sharkVisual = XMLParser.getPaintValue(simElem, "sharkVisual");
+            sharkBreedTime = xmlProperties.getIntValue("sharkBreedTime");
+            fishBreedTime = xmlProperties.getIntValue("fishBreedTime");
+            starveTime = xmlProperties.getIntValue("starveTime");
+            emptyPercent = xmlProperties.getIntValue("emptyPercent");
+            fishPercent = xmlProperties.getIntValue("fishPercent");
+            emptyVisual = xmlProperties.getPaintValue("emptyVisual");
+            fishVisual = xmlProperties.getPaintValue("fishVisual");
+            sharkVisual = xmlProperties.getPaintValue("sharkVisual");
         }
     }
 
-
-	public double getSharkBreedTime() {
-		
-		return sharkBreedTime;
-	}
-
-
-	public double getFishBreedTime() {
-		return fishBreedTime;
-	}
-
-
-	public double getStarveTime() {
-		return starveTime;
-	}
+    @Override
+    void saveSpecificValues() {
+        savedValues.put("sharkBreedTime", sharkBreedTime);
+        savedValues.put("fishBreedTime", fishBreedTime);
+        savedValues.put("starveTime", starveTime);
+        savedValues.put("emptyPercent", emptyPercent);
+        savedValues.put("fishPercent", fishPercent);
+        savedValues.put("emptyVisual", emptyVisual);
+        savedValues.put("fishVisual", fishVisual);
+        savedValues.put("sharkVisual", sharkVisual);
+    }
 
 
-	public void setSharkBreed(int intValue) {
-		sharkBreedTime = intValue;
-		
-	}
+    public double getSharkBreedTime() {
+
+        return sharkBreedTime;
+    }
 
 
-	public void setFishBreed(int intValue) {
-		fishBreedTime = intValue;
-		
-	}
+    public double getFishBreedTime() {
+        return fishBreedTime;
+    }
 
 
-	public void setStarveTime(int intValue) {
-		starveTime = intValue;
-	}
+    public double getStarveTime() {
+        return starveTime;
+    }
+
+    public void setStarveTime(int intValue) {
+        starveTime = intValue;
+    }
+
+    public void setSharkBreed(int intValue) {
+        sharkBreedTime = intValue;
+
+    }
+
+    public void setFishBreed(int intValue) {
+        fishBreedTime = intValue;
+
+    }
+
 }

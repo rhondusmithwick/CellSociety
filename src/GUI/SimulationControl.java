@@ -3,11 +3,12 @@ package GUI;
 import Cell.Grid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
-import Simulation.XMLParser;
+import XML.XMLException;
+import XML.XMLOutput;
+import XML.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.chart.NumberAxis;
+import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -40,7 +41,6 @@ public class SimulationControl {
     private Grid grid;
     private int newSize = 0;
     private File myXMLFile = null;
-   
 
     /**
      * Sets starting simulation control parameters.
@@ -61,34 +61,36 @@ public class SimulationControl {
      * @param o Simulation object to switch t
      */
     public void switchSimulation(Object o) {
-    	//display.getChildren().remove(sim.getGraph()); 
+        //display.getChildren().remove(sim.getGraph());
         myXMLFile = null;
         newSize = 0;
         simType = o.toString();
-        
         sim = getSimulation();
         setSimulation();
         config = getConfig();
         setConfigControls();
-        //display.getChildren().add(sim.getGraph());  
+        //display.getChildren().add(sim.getGraph());
+
     }
-    
-    public Config getConfig(){
-    	removeConfigControls();
-    	Config config;
-	try {
-        Class myClass = Class.forName("GUI." + simType + "Config");
-        config = (Config) myClass.newInstance();
-    } catch (InstantiationException
-            | IllegalAccessException
-            | ClassNotFoundException e) {
-    	System.out.println("in catch");
-    	config = new FireConfig();
+
+
+    private Config getConfig() {
+        removeConfigControls();
+        Config config;
+        try {
+            Class myClass = Class.forName("GUI." + simType + "Config");
+            config = (Config) myClass.newInstance();
+        } catch (InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException e) {
+            System.out.println("in catch");
+            config = new FireConfig();
+        }
+        config.setSim(this, sim);
+        config.init();
+        return config;
     }
-	config.setSim(this,sim);
-	config.init();
-	return config;
-    }
+
 
     /**
      * Switches between simulations when the new simulation is a loaded XML
@@ -97,15 +99,16 @@ public class SimulationControl {
      * @param simElem Simulation element from the XML file parser.
      */
     private void switchSimulation(Element simElem) {
-    	//display.getChildren().remove(sim.getGraph()); 
+        //display.getChildren().remove(sim.getGraph());
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
-        
+
+        assert sim != null;
         sim.setType(simType);
         sim.setProperties(simElem);
         config = getConfig();
         setConfigControls();
-        //display.getChildren().add(sim.getGraph()); 
+        //display.getChildren().add(sim.getGraph());
     }
 
     /**
@@ -118,15 +121,24 @@ public class SimulationControl {
         sim.init();
     }
 
+    public void saveSimulation(File file) {
+        sim.saveValues();
+        XMLOutput simSave = new XMLOutput(sim);
+        simSave.theCells = grid.getCells();
+        simSave.writeXML(file);
+
+    }
+
     /**
      * Displays cells and sets the grid.
      */
     private void displayNewCells() {
         display.getChildren().remove(grid);
-        grid = createCellManager(simType);
-        GridPane.setConstraints(grid, 0, 0);
-        GridPane.setRowSpan(grid, 9);
-        display.getChildren().add(grid);
+        grid = createGrid(simType);
+        Group gridGroup = grid.getGroup();
+        GridPane.setConstraints(gridGroup, 0, 0);
+        GridPane.setRowSpan(gridGroup, 9);
+        display.getChildren().add(gridGroup);
     }
 
     /**
@@ -141,7 +153,12 @@ public class SimulationControl {
             Class c = Class.forName(simClassName);
             sim = (Simulation) c.newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            sim = new FireSimulation();
+            try {
+                sim = new FireSimulation();
+            } catch (XMLException e1) {
+                showError("XML read error");
+                return null;
+            }
         }
         return sim;
     }
@@ -154,12 +171,12 @@ public class SimulationControl {
     public ObservableList<String> getSimulations() {
         return mySimulations;
     }
-    
-	public void speed(int new_val, int old_val) {
-		if(new_val != old_val){
-		sim.changeRate(new_val);
-		}
-	}
+
+    public void speed(int new_val, int old_val) {
+        if (new_val != old_val) {
+            sim.changeRate(new_val);
+        }
+    }
 
     /**
      * Decreases simulation rate. Displays error when rate can no longer be
@@ -169,7 +186,6 @@ public class SimulationControl {
         if (!sim.decreaseRate()) {
             showError(myResources.getString("DecreaseError"));
         }
-
     }
 
     /**
@@ -181,6 +197,7 @@ public class SimulationControl {
             showError(myResources.getString("IncreaseError"));
         }
     }
+
 
     /**
      * Steps through simulation one frame at a time.
@@ -225,6 +242,7 @@ public class SimulationControl {
         } catch (Exception e) {
             sim = getSimulation();
         }
+        assert sim != null;
         sim.resetCellSize(newSize);
         setSimulation();
     }
@@ -235,9 +253,11 @@ public class SimulationControl {
      * @param simType the currently saved simulation type
      * @result grid the new grid
      */
-    private Grid createCellManager(String simType) {
+    private Grid createGrid(String simType) {
         Grid grid = new Grid();
-        grid.setGrid(sim.getGridWidth(), sim.getGridHeight(), sim.getCellsPerRow(), sim.getCellsPerColumn());
+        grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
+                sim.getCellsPerRow(),
+                sim.getCellsPerColumn(), sim.getEdgeType());
         grid.init(simType);
         return grid;
     }
@@ -246,26 +266,8 @@ public class SimulationControl {
      * Changes number of rows and columns per line on the grid based on user
      * input.
      *
-     * @param string the size string from the user
+     * @param the size string from the user
      */
-    public void sizeChange(String string) {
-        try {
-            int trySize = Integer.parseInt(string);
-            try {
-                switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
-            } catch (Exception e) {
-                sim = getSimulation();
-            }
-            if (!sim.resetCellSize(trySize)) {
-                throw new Exception();
-            }
-            newSize = trySize;
-            setSimulation();
-        } catch (Exception e) {
-            showError(myResources.getString("SizeError"));
-        }
-    }
-
     public void sizeChange(int size) {
         try {
             try {
@@ -282,7 +284,7 @@ public class SimulationControl {
             showError(myResources.getString("SizeError"));
         }
     }
-    
+
     /**
      * Opens new XML file and sets the chosen simulation
      *
@@ -291,7 +293,11 @@ public class SimulationControl {
     public void openFile(File file) {
         newSize = 0;
         myXMLFile = file;
-        switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
+        try {
+            switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
+        } catch (XMLException e) {
+            showError(myResources.getString("XMLReadError"));
+        }
         setSimulation();
     }
 
@@ -313,7 +319,7 @@ public class SimulationControl {
     private ObservableList<String> createSimulationsList() {
         return FXCollections.observableArrayList(myResources.getString("GameOfLifeSim"),
                 myResources.getString("SegregationSim"), myResources.getString("FireSim"),
-                myResources.getString("PredatorPreySim"));
+                myResources.getString("PredatorPreySim"), "ForagingAnts", "SlimeMold");
     }
 
     /**
@@ -325,13 +331,13 @@ public class SimulationControl {
         simLabel.setStyle("-fx-font-size: 2em;");
         return simLabel;
     }
-    
-    private void setConfigControls(){
-    	display.getChildren().addAll(config.getControls());
+
+    private void setConfigControls() {
+        display.getChildren().addAll(config.getControls());
     }
-    
-    private void removeConfigControls(){
-    	display.getChildren().removeAll(config.getControls());
+
+    private void removeConfigControls() {
+        display.getChildren().removeAll(config.getControls());
     }
 
     /**
@@ -340,5 +346,4 @@ public class SimulationControl {
     private void setSimLabel() {
         simLabel.setText(simType);
     }
-
 }
