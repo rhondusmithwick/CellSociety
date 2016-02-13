@@ -1,4 +1,4 @@
-package Simulation;
+package XML;
 
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Document;
@@ -12,7 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+import XML.XMLException;
 /**
  * Created by SudoTavo on 02/05/16.
  *
@@ -35,7 +35,7 @@ public class XMLParser {
         return simElem.getAttribute("SimulationType");
     }
 
-    public static Element getXmlElement(String xmlFilename) {
+    public static Element getXmlElement(String xmlFilename){
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -44,8 +44,8 @@ public class XMLParser {
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {
-            pce.printStackTrace();//Bad
-            return null;
+        	return null;
+           // throw new XMLException("XML Read error");
         }
     }
 
@@ -74,7 +74,7 @@ public class XMLParser {
         return Paint.valueOf(getTextValue(rootElement, tagName));
 
     }
-
+    
     public int getIntValue( String tagName) {
         return Integer.parseInt(getTextValue(rootElement, tagName));
     }

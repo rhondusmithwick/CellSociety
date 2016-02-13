@@ -4,6 +4,7 @@ import Cell.Cell;
 import Cell.SegregationCell;
 import Cell.SegregationCell.Mark;
 import Cell.SegregationCell.State;
+import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
@@ -114,7 +115,7 @@ public class SegregationSimulation extends Simulation {
 
     @Override
     void setSpecificProperties() {
-        if (getType() == null || !getType().equals("Segregation")) {
+    	if (doesTypeMatch("Segregation")) {
             threshold = DEFAULT_THRESHOLD;
             emptyPercent = DEFAULT_EMPTY_PERCENT;
             group1Percent = DEFAULT_GROUP1_PERCENT;

@@ -22,6 +22,18 @@ public class SegregationCell extends Cell {
         super();
     }
 
+	@Override
+	void saveTypeCellState() {
+		/*
+		cellState.put("",);
+		cellState.put("",);
+		cellState.put("",);
+		cellState.put("",);
+		cellState.put("",);
+		cellState.put("",);
+		*/
+	}
+
     @Override
     public void handleUpdate() {
         if (getState() != State.EMPTY) {

@@ -33,6 +33,15 @@ public class PredatorPreyCell extends Cell {
         super();
     }
 
+	@Override
+	void saveTypeCellState() {
+	/*
+		cellState.put("",);
+		cellState.put("",);
+
+		*/
+	}
+
     public void handleUpdate() {
         breedTimer++;
         starveCounter++;

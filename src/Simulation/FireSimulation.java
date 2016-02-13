@@ -4,6 +4,7 @@ import Cell.Cell;
 import Cell.FireCell;
 import Cell.FireCell.Mark;
 import Cell.FireCell.State;
+import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
@@ -76,7 +77,7 @@ public class FireSimulation extends Simulation {
 
     @Override
     void setSpecificProperties() {
-        if (getType() == null || !getType().equals("Fire")) {
+        if (doesTypeMatch("Fire")) {
             burnTime = DEFAULT_BURN_TIME;
             probCatch = DEFAULT_PROB_CATCH;
             emptyVisual = DEFAULT_EMPTY_VISUAL;

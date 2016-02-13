@@ -33,6 +33,14 @@ public class GameOfLifeCell extends Cell {
         super();
     }
 
+	@Override
+	void saveTypeCellState() {
+	/*	cellState.put("",);
+		cellState.put("",);
+		cellState.put("",);
+		*/
+	}
+
     /**
      * Update this game of life cell.
      */

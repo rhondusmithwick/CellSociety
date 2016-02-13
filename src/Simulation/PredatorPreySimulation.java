@@ -4,6 +4,7 @@ import Cell.Cell;
 import Cell.PredatorPreyCell;
 import Cell.PredatorPreyCell.Mark;
 import Cell.PredatorPreyCell.State;
+import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
@@ -101,7 +102,7 @@ public class PredatorPreySimulation extends Simulation {
 
     @Override
     void setSpecificProperties() {
-        if (getType() == null || !getType().equals("PredatorPrey")) {
+        if (doesTypeMatch("PredatorPrey")) {
             sharkBreedTime = DEFAULT_SHARK_BREED_TIME;
             fishBreedTime = DEFAULT_FISH_BREED_TIME;
             starveTime = DEFAULT_STARVE_TIME;

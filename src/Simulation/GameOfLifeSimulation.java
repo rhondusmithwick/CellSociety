@@ -3,6 +3,7 @@ package Simulation;
 import Cell.Cell;
 import Cell.GameOfLifeCell;
 import Cell.GameOfLifeCell.Mark;
+import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
@@ -48,7 +49,7 @@ public class GameOfLifeSimulation extends Simulation {
 
     @Override
     void setSpecificProperties() {
-        if (getType() == null || !getType().equals("GameOfLife")) {
+        if (doesTypeMatch("GameOfLife")) {
             probStartDead = DEFAULT_START_DEAD;
             deadVisual = DEFAULT_DEAD_VISUAL;
             aliveVisual = DEFAULT_ALIVE_VISUAL;

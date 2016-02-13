@@ -43,6 +43,14 @@ public class FireCell extends Cell {
         super();
     }
 
+	@Override
+	void saveTypeCellState() {
+	//	cellState.put("state",);
+	//	cellState.put("",);
+	//	cellState.put("",);
+
+	}
+
     /**
      * Update this fire cell.
      */
@@ -154,4 +162,6 @@ public class FireCell extends Cell {
     public enum Mark {
         TO_BURNING, TO_TREE, TO_EMPTY, NONE
     }
+
+
 }

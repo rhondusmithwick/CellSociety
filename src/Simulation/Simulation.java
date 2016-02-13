@@ -1,6 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
+import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -121,8 +122,12 @@ public abstract class Simulation {
         numCellsPerRow = xmlProperties.getIntValue("numCellsPerRow");
         numCellsPerColumn = xmlProperties.getIntValue("numCellsPerColumn");
     }
-    abstract void setSpecificProperties();
 
+    protected boolean doesTypeMatch(String myType){
+    	return (getType() == null || !getType().equals(myType));
+    }
+
+    abstract void setSpecificProperties();
 
     public final int getGridWidth() {
         return gridWidth;
@@ -144,7 +149,7 @@ public abstract class Simulation {
     }
 
 
-    String getType() {
+    public String getType() {
         return type;
     }
 
