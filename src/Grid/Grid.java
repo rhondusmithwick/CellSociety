@@ -19,7 +19,7 @@ import static java.util.Arrays.asList;
  * @author Rhondu Smithwick
  */
 public abstract class Grid {
-    final Group group = new Group();
+    private final Group group = new Group();
     private final Map<List<Integer>, Cell> grid = new HashMap<>();
     /**
      * This grid's width.
@@ -62,10 +62,7 @@ public abstract class Grid {
      * Initialize this cell manager.
      */
     public void init(Collection<Cell> theCells) {
-        for (Cell c : theCells) {
-            addCell(c.getRow(), c.getColumn(), c);
-            group.getChildren().add(c.getShape());
-        }
+        theCells.stream().forEach(this::add);
         populateNeighbors();
     }
 
@@ -110,7 +107,6 @@ public abstract class Grid {
     private void addTorodialNeighbor(Cell myCell, int neighborR, int neighborC) {
         if (!checkBound(neighborR, cellsPerRow)) {
             neighborR = getTorodialVal(neighborR, cellsPerRow);
-
         }
         if (!checkBound(neighborC, cellsPerColumn)) {
             neighborC = getTorodialVal(neighborC, cellsPerColumn);
@@ -182,7 +178,7 @@ public abstract class Grid {
         return group;
     }
 
-    void addCell(int r, int c, Cell cell) {
+    private void addCell(int r, int c, Cell cell) {
         grid.put(getKey(r, c), cell);
     }
 
@@ -208,6 +204,11 @@ public abstract class Grid {
 
     int getCellsPerColumn() {
         return cellsPerColumn;
+    }
+
+    void add(Cell c) {
+        addCell(c.getRow(), c.getColumn(), c);
+        group.getChildren().add(c.getGroup());
     }
 
     public enum EdgeType {

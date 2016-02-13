@@ -74,20 +74,20 @@ public class SlimeMoldConfig extends Config {
         evaporation.setValue(slimeSim.getEvaporation());
     }
 
-    protected void changeEvaporation(int intValue) {
+    private void changeEvaporation(int intValue) {
         slimeSim.setEvaporation(intValue);
 
     }
 
-    protected void changeChemicalDrops(int intValue) {
+    private void changeChemicalDrops(int intValue) {
         slimeSim.setChemicalDrops(intValue);
     }
 
-    protected void changeDiffusion(double intValue) {
+    private void changeDiffusion(double intValue) {
         slimeSim.setDiffusion(intValue);
     }
 
-    protected void changeSniff(int intValue) {
+    private void changeSniff(int intValue) {
         slimeSim.getSniff(intValue);
     }
 

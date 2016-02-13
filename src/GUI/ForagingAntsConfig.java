@@ -108,32 +108,32 @@ public class ForagingAntsConfig extends Config {
         N.setValue(antsSim.getN());
     }
 
-    protected void changeN(double d) {
+    private void changeN(double d) {
         antsSim.setN(d);
 
     }
 
-    protected void changeK(double d) {
+    private void changeK(double d) {
         antsSim.setK(d);
     }
 
-    protected void changeMaxAnts(double d) {
+    private void changeMaxAnts(double d) {
         antsSim.setMaxAnts(d);
     }
 
-    protected void changeAntLifeTime(double d) {
+    private void changeAntLifeTime(double d) {
         antsSim.setLifeTime(d);
     }
 
-    protected void changeAntsBorn(double d) {
+    private void changeAntsBorn(double d) {
         antsSim.setAntsBorn(d);
     }
 
-    protected void changeEvaporationRate(double d) {
+    private void changeEvaporationRate(double d) {
         antsSim.setEvaporationRate(d);
     }
 
-    protected void changeDiffusionRate(double d) {
+    private void changeDiffusionRate(double d) {
         antsSim.setDiffusionRate(d);
     }
 

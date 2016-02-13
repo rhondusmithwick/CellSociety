@@ -21,8 +21,7 @@ public class TriangleGrid extends Grid {
                 Triangle triangle = new Triangle(x, y, cellWidth, cellHeight, prevTriangle);
                 CellShape shape = new TriangleShape(triangle);
                 Cell myCell = createCell(shape, cellType, row, column);
-                addCell(row, column, myCell);
-                group.getChildren().add(myCell.getShape());
+                add(myCell);
                 prevTriangle = triangle;
             }
         }

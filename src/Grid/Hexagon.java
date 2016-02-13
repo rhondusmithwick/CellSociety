@@ -5,7 +5,7 @@ package Grid;
  *
  * @author Rhondu Smithwick
  */
-public class Hexagon extends CustomPolygon {
+class Hexagon extends CustomPolygon {
     Hexagon prevHexagon;
 
     public Hexagon(double x, double y, double width, double height, Hexagon prevHexagon) {

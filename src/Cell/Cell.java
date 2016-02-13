@@ -1,8 +1,8 @@
 package Cell;
 
 import Grid.CellShape;
+import javafx.scene.Group;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Shape;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,6 +21,7 @@ public abstract class Cell {
      */
     private final Collection<Cell> neighbors = new LinkedList<>();
     private final Map<Enum, Paint> visualMap = new HashMap<>();
+    private final Group group = new Group();
     /**
      * This cell's shape.
      */
@@ -58,16 +59,13 @@ public abstract class Cell {
     /**
      * Initialize this cell with these parameters.
      *
-     * @param cellWidth  the cell's width
-     * @param cellHeight the cell's height
-     * @param x          the cell's x-coordinate
-     * @param y          the cell's y-coordinate
-     * @param row        the cell's row
-     * @param column     the cell's column
+     * @param row    the cell's row
+     * @param column the cell's column
      */
 
     public final void init(CellShape shape, int row, int column) {
         this.shape = shape;
+        group.getChildren().add(shape.getMyShape());
         setRow(row);
         setColumn(column);
     }
@@ -167,8 +165,8 @@ public abstract class Cell {
      *
      * @return this cell's shape
      */
-    public Shape getShape() {
-        return shape.getMyShape();
+    public Group getGroup() {
+        return group;
     }
 
     /**

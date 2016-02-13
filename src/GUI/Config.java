@@ -86,7 +86,7 @@ abstract class Config {
         mySpeedSlider.valueProperty().addListener(speedChanger);
     }
 
-    public void deactivateSize() {
+    void deactivateSize() {
         mySizeSlider.setDisable(true);
     }
 

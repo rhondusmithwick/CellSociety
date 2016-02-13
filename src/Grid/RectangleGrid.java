@@ -19,8 +19,7 @@ public class RectangleGrid extends Grid {
                 double y = column * cellHeight;
                 CellShape shape = new RectangleShape(x, y, cellWidth, cellHeight);
                 Cell myCell = createCell(shape, cellType, row, column);
-                addCell(row, column, myCell);
-                group.getChildren().add(myCell.getShape());
+                add(myCell);
             }
         }
         populateNeighbors();
