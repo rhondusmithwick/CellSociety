@@ -3,7 +3,6 @@ package Simulation;
 import Cell.Cell;
 import Cell.SegregationCell;
 import Cell.SegregationCell.Mark;
-import Cell.SegregationCell.State;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;

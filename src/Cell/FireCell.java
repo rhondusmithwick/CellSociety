@@ -2,9 +2,6 @@ package Cell;
 
 import javafx.scene.paint.Paint;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by rhondusmithwick on 2/4/16.
  *

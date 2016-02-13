@@ -141,17 +141,17 @@ public class SlimeMoldCell extends Cell {
                 && (smc.mark != Mark.SLIME);
     }
 
+    private boolean needsColorChange() {
+        return (state == State.EMPTY)
+                && (cAMPAmount > 0);
+    }
+
     public enum State {
         EMPTY, SLIME, OBSTACLE
     }
 
     public enum Mark {
         EMPTY, SLIME, NONE, OBSTACLE
-    }
-
-    private boolean needsColorChange() {
-        return (state == State.EMPTY)
-                && (cAMPAmount > 0);
     }
 
 }

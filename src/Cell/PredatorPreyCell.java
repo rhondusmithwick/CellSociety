@@ -4,9 +4,7 @@ import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rhondusmithwick on 2/1/16.

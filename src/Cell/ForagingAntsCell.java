@@ -32,7 +32,7 @@ public class ForagingAntsCell extends Cell {
 
     @Override
     public void changeState() {
-        switch(mark) {
+        switch (mark) {
             case NONE:
                 return;
             case CHANGE_ANTS:
@@ -209,7 +209,7 @@ public class ForagingAntsCell extends Cell {
     }
 
     public enum Mark {
-        FOOD, NEST, OPEN,  CHANGE_ANTS, NONE
+        FOOD, NEST, OPEN, CHANGE_ANTS, NONE
     }
 
 }
