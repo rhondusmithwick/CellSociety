@@ -3,12 +3,10 @@ package Simulation;
 import Cell.Cell;
 import Cell.SegregationCell;
 import Cell.SegregationCell.Mark;
-import Cell.SegregationCell.State;
 import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,12 +55,12 @@ public class SegregationSimulation extends Simulation {
         sc.setThreshold(threshold);
         sc.setVisuals(emptyVisual, group1Visual, group2Visual);
         if (randomNum <= emptyPercent) {
-            sc.setMark(Mark.TO_EMPTY);
+            sc.setMark(Mark.EMPTY);
             emptyCells.add(sc);
         } else if (randomNum <= emptyPercent + group1Percent) {
-            sc.setMark(Mark.TO_GROUP1);
+            sc.setMark(Mark.GROUP1);
         } else {
-            sc.setMark(Mark.TO_GROUP2);
+            sc.setMark(Mark.GROUP2);
         }
     }
 
@@ -92,11 +90,8 @@ public class SegregationSimulation extends Simulation {
     }
 
     private void swap(SegregationCell sc, SegregationCell emptyCell) {
-        if (sc.getState() == State.GROUP1) {
-            emptyCell.setMark(Mark.TO_GROUP1);
-        } else {
-            emptyCell.setMark(Mark.TO_GROUP2);
-        }
+        Mark markForEmpty = Mark.valueOf(sc.getState().toString());
+        emptyCell.setMark(markForEmpty);
         emptyCellsToAdd.add(sc);
     }
 
@@ -104,7 +99,7 @@ public class SegregationSimulation extends Simulation {
         List<SegregationCell> cellsToMove = new ArrayList<>();
         for (Cell c : getTheCells()) {
             SegregationCell sc = (SegregationCell) c;
-            if (sc.getMark() == Mark.TO_EMPTY) {
+            if (sc.getMark() == Mark.EMPTY) {
                 cellsToMove.add(sc);
             }
         }
@@ -113,7 +108,7 @@ public class SegregationSimulation extends Simulation {
 
     @Override
     void setSpecificProperties() {
-    	if (doesTypeMatch("Segregation")) {
+        if (doesTypeMatch("Segregation")) {
             threshold = DEFAULT_THRESHOLD;
             emptyPercent = DEFAULT_EMPTY_PERCENT;
             group1Percent = DEFAULT_GROUP1_PERCENT;
@@ -129,14 +124,15 @@ public class SegregationSimulation extends Simulation {
             group2Visual = xmlProperties.getPaintValue("group2Visual");
         }
     }
-	@Override
-	void saveSpecificValues() {
-		savedValues.put("threshold",threshold);
-		savedValues.put("emptyPercent",emptyPercent);
-		savedValues.put("group1Percent",group1Percent);
-		savedValues.put("emptyVisual",emptyVisual);
-		savedValues.put("group1Visual",group1Visual);
-		savedValues.put("group2Visual",group2Visual);
-	}
+
+    @Override
+    void saveSpecificValues() {
+        savedValues.put("threshold", threshold);
+        savedValues.put("emptyPercent", emptyPercent);
+        savedValues.put("group1Percent", group1Percent);
+        savedValues.put("emptyVisual", emptyVisual);
+        savedValues.put("group1Visual", group1Visual);
+        savedValues.put("group2Visual", group2Visual);
+    }
 
 }

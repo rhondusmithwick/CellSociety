@@ -97,11 +97,11 @@ public class Grid extends Group {
      * @param cellType this Cell Manager's cell type.
      */
     public void init(String cellType, Collection<Cell> theCells) {
-    	this.theCells = theCells;
-        for (Cell c: theCells) {
-                grid[c.getRow()][c.getColumn()] = c;
-                this.getChildren().add(c.getShape());
-            }
+        this.theCells = theCells;
+        for (Cell c : theCells) {
+            grid[c.getRow()][c.getColumn()] = c;
+            this.getChildren().add(c.getShape());
+        }
 
         populateNeighbors();
     }
@@ -119,6 +119,7 @@ public class Grid extends Group {
         }
         populateNeighbors();
     }
+
     /**
      * Populate neighbors of all cells.
      */
@@ -201,11 +202,11 @@ public class Grid extends Group {
         return Collections.unmodifiableCollection(theCells);
     }
 
+    public void setCells(Collection<Cell> newCells) {
+        theCells = newCells;
+    }
 
     public enum EdgeType {
         NORMAL, TORODIAL
-    }
-    public void setCells(Collection<Cell> newCells) {
-        theCells = newCells;
     }
 }

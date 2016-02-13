@@ -24,6 +24,8 @@ public abstract class Cell {
      * This cell's shape.
      */
     private final Rectangle shape = new Rectangle();
+    protected Map<String, Object> cellState;
+    private final Map<Enum, Paint> visualMap = new HashMap<>();
     /**
      * This cell's row in the grid.
      */
@@ -33,7 +35,6 @@ public abstract class Cell {
      */
     private int column;
 
-    protected Map<String,Object> cellState;
     /**
      * Construct a cell.
      */
@@ -41,15 +42,15 @@ public abstract class Cell {
         super();
     }
 
-    public void saveCellState(){
-    	cellState = new HashMap<String,Object>();
-    	cellState.put("cellWidth",shape.getWidth());
-    	cellState.put("cellHeight",shape.getHeight() );
-    	cellState.put("x",  shape.getX());
-    	cellState.put("y",  shape.getY());
-    	cellState.put("row", row );
-    	cellState.put("column", column );
-    	saveTypeCellState();
+    public void saveCellState() {
+        cellState = new HashMap<>();
+        cellState.put("cellWidth", shape.getWidth());
+        cellState.put("cellHeight", shape.getHeight());
+        cellState.put("x", shape.getX());
+        cellState.put("y", shape.getY());
+        cellState.put("row", row);
+        cellState.put("column", column);
+        saveTypeCellState();
     }
 
     abstract void saveTypeCellState();
@@ -75,7 +76,6 @@ public abstract class Cell {
     }
 
 
-
     /**
      * Remove this cell's diagonal neighbors.
      */
@@ -89,11 +89,9 @@ public abstract class Cell {
         }
     }
 
-    public Map<String,Object> getCellState(){
-    	return cellState;
+    public Map<String, Object> getCellState() {
+        return cellState;
     }
-
-
 
 
     /**
@@ -202,4 +200,12 @@ public abstract class Cell {
                 && (columnDiff >= 1);
     }
 
+
+    void addToVisualMap(Enum state, Paint visual) {
+        visualMap.put(state, visual);
+    }
+
+    Paint getVisual(Enum state) {
+        return visualMap.get(state);
+    }
 }

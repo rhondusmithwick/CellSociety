@@ -24,32 +24,19 @@ public class FireCell extends Cell {
     private int burnTimer;
 
     /**
-     * This fire cell's empty visual.
-     */
-    private Paint emptyVisual;
-    /**
-     * This fire cell's burning visual.
-     */
-    private Paint burningVisual;
-    /**
-     * This fire cell's tree visual.
-     */
-    private Paint treeVisual;
-
-    /**
      * Construct a fire cell.
      */
     public FireCell() {
         super();
     }
 
-	@Override
-	void saveTypeCellState() {
-	//	cellState.put("state",);
-	//	cellState.put("",);
-	//	cellState.put("",);
+    @Override
+    void saveTypeCellState() {
+        //	cellState.put("state",);
+        //	cellState.put("",);
+        //	cellState.put("",);
 
-	}
+    }
 
     /**
      * Update this fire cell.
@@ -81,22 +68,11 @@ public class FireCell extends Cell {
      */
     @Override
     public void changeState() {
-        switch (mark) {
-            case NONE:
-                return;
-            case TO_EMPTY:
-                setFill(emptyVisual);
-                state = State.EMPTY;
-                break;
-            case TO_BURNING:
-                setFill(burningVisual);
-                state = State.BURNING;
-                break;
-            case TO_TREE:
-                setFill(treeVisual);
-                state = State.TREE;
-                break;
+        if (mark == Mark.NONE) {
+            return;
         }
+        state = State.valueOf(mark.toString());
+        setFill(getVisual(state));
         setBurnTimer(0);
         setMark(Mark.NONE);
     }
@@ -108,10 +84,11 @@ public class FireCell extends Cell {
      */
     @Override
     public void setVisuals(Paint... visuals) {
-        emptyVisual = visuals[0];
-        burningVisual = visuals[1];
-        treeVisual = visuals[2];
+        addToVisualMap(State.EMPTY, visuals[0]);
+        addToVisualMap(State.BURNING, visuals[1]);
+        addToVisualMap(State.TREE, visuals[2]);
     }
+
 
     /**
      * Get this fire cell's state.
@@ -160,7 +137,7 @@ public class FireCell extends Cell {
      * The fire cell Mark enum.
      */
     public enum Mark {
-        TO_BURNING, TO_TREE, TO_EMPTY, NONE
+        BURNING, TREE, EMPTY, NONE
     }
 
 

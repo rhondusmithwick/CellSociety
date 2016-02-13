@@ -1,9 +1,8 @@
 package Simulation;
 
 import Cell.Cell;
-import XML.XMLParser;
 import Cell.Grid.EdgeType;
-
+import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,40 +22,42 @@ import java.util.Random;
 public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
-
+    protected XMLParser xmlProperties;
+    protected Map<String, Object> savedValues;
     private int gridWidth;
     private int gridHeight;
-
     private int numCellsPerRow;
     private int numCellsPerColumn;
     private EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
     private String type;
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
-    protected XMLParser xmlProperties;
-    protected Map<String,Object> savedValues;
+
     Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
     }
 
     public final void setProperties(Element simElem) {
-    	xmlProperties = new XMLParser(simElem);
+        xmlProperties = new XMLParser(simElem);
         setGenericProperties();
         setSpecificProperties();
     }
-    public Map<String,Object> getSavedValues(){
-    	return savedValues;
+
+    public Map<String, Object> getSavedValues() {
+        return savedValues;
     }
-    public void saveValues(){
-    	savedValues = new HashMap<String,Object>();
-    	//savedValues.put("type", type);
-    	savedValues.put("gridWidth", gridWidth);
-    	savedValues.put("gridHeight", gridHeight);
-    	savedValues.put("numCellsPerRow", numCellsPerRow);
-    	savedValues.put("numCellsPerColumn", numCellsPerColumn);
-    	saveSpecificValues();
+
+    public void saveValues() {
+        savedValues = new HashMap<>();
+        //savedValues.put("type", type);
+        savedValues.put("gridWidth", gridWidth);
+        savedValues.put("gridHeight", gridHeight);
+        savedValues.put("numCellsPerRow", numCellsPerRow);
+        savedValues.put("numCellsPerColumn", numCellsPerColumn);
+        saveSpecificValues();
     }
+
     abstract void saveSpecificValues();
 
     private Timeline buildLoop() {
@@ -116,7 +117,7 @@ public abstract class Simulation {
     }
 
     private void setGenericProperties() {
-    	type = xmlProperties.getSimType();
+        type = xmlProperties.getSimType();
         gridWidth = xmlProperties.getIntValue("gridWidth");
         gridHeight = xmlProperties.getIntValue("gridHeight");
         numCellsPerRow = xmlProperties.getIntValue("numCellsPerRow");
@@ -124,8 +125,8 @@ public abstract class Simulation {
 //	edgeType = EdgeType.valueOf(xmlProperties.getTextValue("edgeType"));
     }
 
-    protected boolean doesTypeMatch(String myType){
-    	return (getType() == null || !getType().equals(myType));
+    protected boolean doesTypeMatch(String myType) {
+        return (getType() == null || !getType().equals(myType));
     }
 
     abstract void setSpecificProperties();
@@ -204,12 +205,10 @@ public abstract class Simulation {
     public final void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
-    
-    public XMLParser getXmlProperties(){
-    	return xmlProperties;
-    }
 
-    
+    public XMLParser getXmlProperties() {
+        return xmlProperties;
+    }
 
 
 }

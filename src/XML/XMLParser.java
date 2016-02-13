@@ -10,9 +10,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import XML.XMLException;
+
 /**
  * Created by SudoTavo on 02/05/16.
  *
@@ -20,22 +18,17 @@ import XML.XMLException;
  */
 public class XMLParser {
 
-	private Element rootElement;
+    private Element rootElement;
 
     public XMLParser(Element rootElement) {
-    	this.rootElement = rootElement;
+        this.rootElement = rootElement;
     }
-    public Element getRootElement(){
-    	return rootElement;
-    }
-    public String getSimType() {
-        return rootElement.getAttribute("SimulationType");
-    }
+
     public static String getSimType(Element simElem) {
         return simElem.getAttribute("SimulationType");
     }
 
-    public static Element getXmlElement(String xmlFilename) throws XMLException{
+    public static Element getXmlElement(String xmlFilename) throws XMLException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -44,7 +37,7 @@ public class XMLParser {
         } catch (ParserConfigurationException
                 | SAXException
                 | IOException pce) {
-        	//return null;
+            //return null;
             throw new XMLException("XML Read error");
         }
     }
@@ -59,10 +52,6 @@ public class XMLParser {
         return textVal;
     }
 
-    public String getTextValue(String tagName) {
-
-    	return getTextValue(rootElement, tagName);
-    }
     public static Paint getPaintValue(Element ele, String tagName) {
         return Paint.valueOf(getTextValue(ele, tagName));
     }
@@ -70,12 +59,26 @@ public class XMLParser {
     public static int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
+
+    public Element getRootElement() {
+        return rootElement;
+    }
+
+    public String getSimType() {
+        return rootElement.getAttribute("SimulationType");
+    }
+
+    public String getTextValue(String tagName) {
+
+        return getTextValue(rootElement, tagName);
+    }
+
     public Paint getPaintValue(String tagName) {
         return Paint.valueOf(getTextValue(rootElement, tagName));
 
     }
 
-    public int getIntValue( String tagName) {
+    public int getIntValue(String tagName) {
         return Integer.parseInt(getTextValue(rootElement, tagName));
     }
 

@@ -75,6 +75,7 @@ public class SimulationControl {
     private void switchSimulation(Element simElem) {
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
+        assert sim != null;
         sim.setType(simType);
         sim.setProperties(simElem);
     }
@@ -88,11 +89,12 @@ public class SimulationControl {
         sim.setTheCells(grid.getCells());
         sim.init();
     }
+
     public void saveSimulation(File file) {
-    	sim.saveValues();
-    	XMLOutput simSave = new XMLOutput(sim);
-    	simSave.theCells = grid.getCells();
-    	simSave.writeXML(file);
+        sim.saveValues();
+        XMLOutput simSave = new XMLOutput(sim);
+        simSave.theCells = grid.getCells();
+        simSave.writeXML(file);
 
     }
 
@@ -120,11 +122,11 @@ public class SimulationControl {
             sim = (Simulation) c.newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             try {
-				sim = new FireSimulation();
-			} catch (XMLException e1) {
-				showError("XML read error");
-				return null;
-			}
+                sim = new FireSimulation();
+            } catch (XMLException e1) {
+                showError("XML read error");
+                return null;
+            }
         }
         return sim;
     }
@@ -202,6 +204,7 @@ public class SimulationControl {
         } catch (Exception e) {
             sim = getSimulation();
         }
+        assert sim != null;
         sim.resetCellSize(newSize);
         setSimulation();
     }
@@ -235,6 +238,7 @@ public class SimulationControl {
             } catch (Exception e) {
                 sim = getSimulation();
             }
+            assert sim != null;
             if (!sim.resetCellSize(trySize)) {
                 throw new Exception();
             }
@@ -254,10 +258,10 @@ public class SimulationControl {
         newSize = 0;
         myXMLFile = file;
         try {
-			switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
-		} catch (XMLException e) {
-			showError(myResources.getString("XMLReadError"));
-		}
+            switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
+        } catch (XMLException e) {
+            showError(myResources.getString("XMLReadError"));
+        }
         setSimulation();
     }
 

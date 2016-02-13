@@ -8,7 +8,6 @@ import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.w3c.dom.Element;
 
 
 /**
@@ -44,11 +43,11 @@ public class FireSimulation extends Simulation {
         fc.setVisuals(emptyVisual, burningVisual, treeVisual);
         fc.setBurnTimer(burnTime);
         if (checkOnEdge(fc)) {
-            fc.setMark(Mark.TO_EMPTY);
+            fc.setMark(Mark.EMPTY);
         } else if (checkInMiddle(fc)) {
-            fc.setMark(Mark.TO_BURNING);
+            fc.setMark(Mark.BURNING);
         } else {
-            fc.setMark(Mark.TO_TREE);
+            fc.setMark(Mark.TREE);
         }
     }
 
@@ -66,9 +65,9 @@ public class FireSimulation extends Simulation {
 
     private void getUpdate(FireCell fc) {
         if (treeShouldBurn(fc)) {
-            fc.setMark(Mark.TO_BURNING);
+            fc.setMark(Mark.BURNING);
         } else if (treeDoneBurning(fc)) {
-            fc.setMark(Mark.TO_EMPTY);
+            fc.setMark(Mark.EMPTY);
         }
     }
 
@@ -82,20 +81,21 @@ public class FireSimulation extends Simulation {
             treeVisual = DEFAULT_TREE_VISUAL;
         } else {
             burnTime = xmlProperties.getIntValue("burnTime");
-            probCatch = xmlProperties.getIntValue( "probCatch");
-            emptyVisual = xmlProperties.getPaintValue( "emptyVisual");
+            probCatch = xmlProperties.getIntValue("probCatch");
+            emptyVisual = xmlProperties.getPaintValue("emptyVisual");
             burningVisual = xmlProperties.getPaintValue("burningVisual");
             treeVisual = xmlProperties.getPaintValue("treeVisual");
         }
     }
+
     @Override
-	void saveSpecificValues() {
-		savedValues.put("burnTime", burnTime);
-		savedValues.put("probCatch",probCatch);
-		savedValues.put("emptyVisual",emptyVisual);
-		savedValues.put("burningVisual",burningVisual);
-		savedValues.put("treeVisual",treeVisual);
-	}
+    void saveSpecificValues() {
+        savedValues.put("burnTime", burnTime);
+        savedValues.put("probCatch", probCatch);
+        savedValues.put("emptyVisual", emptyVisual);
+        savedValues.put("burningVisual", burningVisual);
+        savedValues.put("treeVisual", treeVisual);
+    }
 
     private boolean treeShouldBurn(FireCell fc) {
         int randomNum = getRandomNum(1, 100);

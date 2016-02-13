@@ -8,7 +8,6 @@ import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.w3c.dom.Element;
 
 /**
  * Created by rhondusmithwick on 2/3/16.
@@ -49,11 +48,11 @@ public class PredatorPreySimulation extends Simulation {
         final PredatorPreyCell ppc = (PredatorPreyCell) c;
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
-            ppc.setMark(Mark.TO_EMPTY);
+            ppc.setMark(Mark.EMPTY);
         } else if (randomNum <= emptyPercent + fishPercent) {
-            ppc.setMark(Mark.TO_FISH);
+            ppc.setMark(Mark.FISH);
         } else {
-            ppc.setMark(Mark.TO_SHARK);
+            ppc.setMark(Mark.SHARK);
         }
     }
 
@@ -89,7 +88,7 @@ public class PredatorPreySimulation extends Simulation {
 
     private void sharkUpdate(PredatorPreyCell shark) {
         if (shark.shouldStarve(starveTime)) {
-            shark.setMark(Mark.TO_EMPTY);
+            shark.setMark(Mark.EMPTY);
         } else if (!shark.sharkEat()) {
             if (shark.canMoveOrSpawn()) {
                 shark.move();
@@ -109,7 +108,7 @@ public class PredatorPreySimulation extends Simulation {
             fishVisual = DEFAULT_FISH_VISUAL;
             sharkVisual = DEFAULT_SHARK_VISUAL;
         } else {
-            sharkBreedTime = xmlProperties.getIntValue( "sharkBreedTime");
+            sharkBreedTime = xmlProperties.getIntValue("sharkBreedTime");
             fishBreedTime = xmlProperties.getIntValue("fishBreedTime");
             starveTime = xmlProperties.getIntValue("starveTime");
             emptyPercent = xmlProperties.getIntValue("emptyPercent");
@@ -119,15 +118,16 @@ public class PredatorPreySimulation extends Simulation {
             sharkVisual = xmlProperties.getPaintValue("sharkVisual");
         }
     }
-	@Override
-	void saveSpecificValues() {
-		savedValues.put("sharkBreedTime",sharkBreedTime);
-		savedValues.put("fishBreedTime",fishBreedTime);
-		savedValues.put("starveTime",starveTime);
-		savedValues.put("emptyPercent",emptyPercent);
-		savedValues.put("fishPercent",fishPercent);
-		savedValues.put("emptyVisual",emptyVisual);
-		savedValues.put("fishVisual",fishVisual);
-		savedValues.put("sharkVisual",sharkVisual);
-	}
+
+    @Override
+    void saveSpecificValues() {
+        savedValues.put("sharkBreedTime", sharkBreedTime);
+        savedValues.put("fishBreedTime", fishBreedTime);
+        savedValues.put("starveTime", starveTime);
+        savedValues.put("emptyPercent", emptyPercent);
+        savedValues.put("fishPercent", fishPercent);
+        savedValues.put("emptyVisual", emptyVisual);
+        savedValues.put("fishVisual", fishVisual);
+        savedValues.put("sharkVisual", sharkVisual);
+    }
 }

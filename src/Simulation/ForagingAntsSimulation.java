@@ -1,14 +1,13 @@
 package Simulation;
 
 import Cell.Cell;
-import XML.XMLException;
-import XML.XMLParser;
 import Cell.ForagingAntsCell;
 import Cell.ForagingAntsCell.Mark;
+import XML.XMLException;
+import XML.XMLParser;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.w3c.dom.Element;
 
 
 /**
@@ -58,22 +57,21 @@ public class ForagingAntsSimulation extends Simulation {
     }
 
 
-
-
     private static boolean isLocation(Cell c, Point2D loc) {
         return (c.getRow() == loc.getY())
                 && (c.getColumn() == loc.getX());
     }
 
-	@Override
-	void saveSpecificValues() {
+    @Override
+    void saveSpecificValues() {
 
-	}
+    }
 
-	@Override
-	void setSpecificProperties() {
+    @Override
+    void setSpecificProperties() {
 
-	}
+    }
+
     public void step() {
         stepSetup();
         spawnAnts();
@@ -112,20 +110,21 @@ public class ForagingAntsSimulation extends Simulation {
         fac.setMaxAntsPer(maxAntsPer);
         fac.setInitialPheromones(minAmountPheromone, maxAmountPheromone);
         if (isLocation(fac, nestLocation)) {
-            fac.setMark(Mark.TO_NEST);
+            fac.setMark(Mark.NEST);
             nest = fac;
         } else if (isFoodLocation(fac)) {
-            fac.setMark(Mark.TO_FOOD);
+            fac.setMark(Mark.FOOD);
         } else {
-            fac.setMark(Mark.TO_EMPTY);
+            fac.setMark(Mark.OPEN);
         }
     }
-/*
-    @Override
-    void setSpecificProperties(Element simElem) {
 
-    }
-*/
+    /*
+        @Override
+        void setSpecificProperties(Element simElem) {
+
+        }
+    */
     private boolean isFoodLocation(Cell c) {
         for (Point2D food : foodLocations) {
             if (isLocation(c, food)) {
@@ -134,7 +133,6 @@ public class ForagingAntsSimulation extends Simulation {
         }
         return false;
     }
-
 
 
 }

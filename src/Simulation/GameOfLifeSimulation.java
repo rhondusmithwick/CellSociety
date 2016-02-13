@@ -7,7 +7,6 @@ import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.w3c.dom.Element;
 
 /**
  * Created by rhondusmithwick on 1/31/16.
@@ -42,9 +41,9 @@ public class GameOfLifeSimulation extends Simulation {
         final GameOfLifeCell gc = (GameOfLifeCell) c;
         gc.setVisuals(deadVisual, aliveVisual);
         if (randomNum <= probStartDead) {
-            gc.setMark(Mark.DESTROY);
+            gc.setMark(Mark.DEAD);
         } else {
-            gc.setMark(Mark.RESURECT);
+            gc.setMark(Mark.ALIVE);
         }
     }
 
@@ -62,10 +61,10 @@ public class GameOfLifeSimulation extends Simulation {
         }
     }
 
-	@Override
-	void saveSpecificValues() {
-		savedValues.put("probStartDead",probStartDead);
-		savedValues.put("deadVisual",deadVisual);
-		savedValues.put("aliveVisual",aliveVisual);
-	}
+    @Override
+    void saveSpecificValues() {
+        savedValues.put("probStartDead", probStartDead);
+        savedValues.put("deadVisual", deadVisual);
+        savedValues.put("aliveVisual", aliveVisual);
+    }
 }

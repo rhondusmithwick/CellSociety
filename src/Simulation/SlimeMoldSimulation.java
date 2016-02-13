@@ -1,15 +1,14 @@
 package Simulation;
 
 import Cell.Cell;
-import XML.XMLException;
-import XML.XMLParser;
 import Cell.SlimeMoldCell;
 import Cell.SlimeMoldCell.Mark;
 import Cell.SlimeMoldCell.State;
+import XML.XMLException;
+import XML.XMLParser;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.w3c.dom.Element;
 
 /**
  * Created by rhondusmithwick on 2/11/16.
@@ -89,8 +88,8 @@ public class SlimeMoldSimulation extends Simulation {
     }
 
     private void swap(SlimeMoldCell cellToMove, SlimeMoldCell cellToMoveTo) {
-        cellToMoveTo.setMark(Mark.TO_SLIME);
-        cellToMove.setMark(Mark.TO_EMPTY);
+        cellToMoveTo.setMark(Mark.SLIME);
+        cellToMove.setMark(Mark.EMPTY);
     }
 
     private void dropChemicals() {
@@ -116,11 +115,11 @@ public class SlimeMoldSimulation extends Simulation {
         SlimeMoldCell smc = (SlimeMoldCell) c;
         int randomNum = getRandomNum(1, 100);
         if (randomNum <= slimePercent) {
-            smc.setMark(Mark.TO_SLIME);
+            smc.setMark(Mark.SLIME);
         } else if (randomNum <= slimePercent + obstaclePercent) {
-            smc.setMark(Mark.TO_OBSTACLE);
+            smc.setMark(Mark.OBSTACLE);
         } else {
-            smc.setMark(Mark.TO_EMPTY);
+            smc.setMark(Mark.EMPTY);
         }
     }
 
@@ -130,15 +129,15 @@ public class SlimeMoldSimulation extends Simulation {
 
     }*/
 
-	@Override
-	void saveSpecificValues() {
-		// TODO Auto-generated method stub
+    @Override
+    void saveSpecificValues() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	void setSpecificProperties() {
-		// TODO Auto-generated method stub
+    @Override
+    void setSpecificProperties() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 }

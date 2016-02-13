@@ -1,13 +1,11 @@
 package XML;
 
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.List;
+import Cell.Cell;
+import Simulation.Simulation;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,45 +18,38 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
-import Cell.Cell;
-import Simulation.Simulation;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
+import java.beans.XMLEncoder;
+import java.io.File;
+import java.util.Collection;
 
 public class XMLOutput {
 
-	private final String WRITE_DIR = "resources";
-	private Element rootElement;
-	private DocumentBuilderFactory factory;
-	private DocumentBuilder docBuild;
-	private static Document doc;
-	private StreamResult output;
-	private XMLEncoder encoder;
-	public  Collection<Cell> theCells;
-	public XMLOutput(Simulation sim) {
-		init();
-		rootElement = doc.createElement("Simulation");
+    private static Document doc;
+    private final String WRITE_DIR = "resources";
+    public Collection<Cell> theCells;
+    private final Element rootElement;
+    private DocumentBuilder docBuild;
+    private XMLEncoder encoder;
+
+    public XMLOutput(Simulation sim) {
+        init();
+        rootElement = doc.createElement("Simulation");
         rootElement.setAttribute("SimulationType", sim.getType());
         doc.appendChild(rootElement);
-		for(String tag: sim.getSavedValues().keySet()){
-			Object value = sim.getSavedValues().get(tag);
+        for (String tag : sim.getSavedValues().keySet()) {
+            Object value = sim.getSavedValues().get(tag);
 
-			if (value instanceof Integer) {
-				addElement(makeIntElement(tag,(int)value));
-				}
-			if (value instanceof String) {
-				addElement(makeTextElement(tag,(String)value));
-				}
-			if (value instanceof Paint) {
-				addElement(makePaintElement(tag, (Paint)value));
-				}
-		}
-		/*
+            if (value instanceof Integer) {
+                addElement(makeIntElement(tag, (int) value));
+            }
+            if (value instanceof String) {
+                addElement(makeTextElement(tag, (String) value));
+            }
+            if (value instanceof Paint) {
+                addElement(makePaintElement(tag, (Paint) value));
+            }
+        }
+        /*
 		 try {
 			Class simClass = Class.forName("Simulation."+sim.getType()+"Simulation");
 			Field[] fields = simClass.getDeclaredFields(); //includes fields declared in the Shape abstract class
@@ -78,43 +69,45 @@ public class XMLOutput {
 		makeIntElement("cellsPerRow",sim.getCellsPerRow());
 		makeIntElement("cellsPerColumn",sim.getCellsPerColumn());
 		*/
-	}
-/*
-	public void initSimXML(String simType){
-		Element simElem = makeTextElement("String", simType);
-		init(simElem);
-	}
-	*/
+    }
+
+    /*
+        public void initSimXML(String simType){
+            Element simElem = makeTextElement("String", simType);
+            init(simElem);
+        }
+        */
 /*
 	public XMLOutput(Element rootElement) {
 		init(rootElement);
 	}
 	*/
-	public void init(){
-		factory = DocumentBuilderFactory.newInstance();
-		try {
-			docBuild = factory.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		}
-		doc = docBuild.newDocument();
-		//this.rootElement=rootElement;
-		//doc.appendChild(rootElement);
-	}
-	public void addElement(Element child){
-		rootElement.appendChild(child);
-	}
+    public void init() {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            docBuild = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        doc = docBuild.newDocument();
+        //this.rootElement=rootElement;
+        //doc.appendChild(rootElement);
+    }
+
+    public void addElement(Element child) {
+        rootElement.appendChild(child);
+    }
 
 
+    public void writeCell(Rectangle c, File file) throws Exception {
 
-	    public void writeCell(Rectangle c, File file) throws Exception{
+        encoder.writeObject(c);
+        encoder.close();
+    }
 
-	        encoder.writeObject(c);
-	        encoder.close();
-	    }
-	    public void addCell(XMLEncoder encoder, Cell c){
-	    	encoder.writeObject(c);
-	    }
+    public void addCell(XMLEncoder encoder, Cell c) {
+        encoder.writeObject(c);
+    }
 /*
 	    public void writeXML(File file){
 	    	try {
@@ -127,45 +120,42 @@ public class XMLOutput {
 	    }
 	    */
 
-	public void writeXML(File file){
-		//File file = new File(WRITE_DIR,filename);
-		 Transformer transformer;
-		try {
-			transformer = TransformerFactory.newInstance().newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-	         DOMSource source = new DOMSource(doc);
-	         output = new StreamResult(file);
-	         try {
-				transformer.transform(source, output);
-			} catch (TransformerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerFactoryConfigurationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public void writeXML(File file) {
+        //File file = new File(WRITE_DIR,filename);
+        Transformer transformer;
+        try {
+            transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+            StreamResult output = new StreamResult(file);
+            try {
+                transformer.transform(source, output);
+            } catch (TransformerException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
 
+    }
 
-	}
+    private Element makeIntElement(String name, int value) {
+        return makeTextElement(name, Integer.toString(value));
+    }
 
-	    private Element makeIntElement(String name, int value) {
-	        return makeTextElement(name, Integer.toString(value));
-	    }
+    // utility method to create text node
+    private Element makeTextElement(String tag, String value) {
+        Element elem = doc.createElement(tag);
+        elem.appendChild(doc.createTextNode(value));
+        return elem;
+    }
 
-	    // utility method to create text node
-	    private Element makeTextElement(String tag, String value) {
-	        Element elem = doc.createElement(tag);
-	        elem.appendChild(doc.createTextNode(value));
-	        return elem;
-	    }
-	    private Element makePaintElement(String tag, Paint value){
-	    	return makeTextElement(tag, value.toString());
-	    }
+    private Element makePaintElement(String tag, Paint value) {
+        return makeTextElement(tag, value.toString());
+    }
 
 }
 

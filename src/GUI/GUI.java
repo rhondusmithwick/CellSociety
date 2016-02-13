@@ -98,7 +98,7 @@ public class GUI {
         }
         return dir;
     }
-    
+
     /**
      * Creates and sets up all controls with their necessary parameters.
      */
@@ -193,17 +193,18 @@ public class GUI {
         return fileChooser;
     }
 
-    private void openFile(FileChooser fileChooser){
-	    File file = fileChooser.showOpenDialog(new Stage());
-	    if (file != null) {
-	        mySimControl.openFile(file);
-	    }
+    private void openFile(FileChooser fileChooser) {
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            mySimControl.openFile(file);
+        }
     }
 
-    private void saveFile(FileChooser fileChooser){
-	    File file = fileChooser.showSaveDialog(new Stage());
-	    mySimControl.saveSimulation(file);
+    private void saveFile(FileChooser fileChooser) {
+        File file = fileChooser.showSaveDialog(new Stage());
+        mySimControl.saveSimulation(file);
     }
+
     /**
      * Gets the list containing all controls.
      *
