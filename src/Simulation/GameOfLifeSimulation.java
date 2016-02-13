@@ -40,9 +40,9 @@ public class GameOfLifeSimulation extends Simulation {
         final GameOfLifeCell gc = (GameOfLifeCell) c;
         gc.setVisuals(deadVisual, aliveVisual);
         if (randomNum <= probStartDead) {
-            gc.setMark(Mark.ALIVE);
-        } else {
             gc.setMark(Mark.DEAD);
+        } else {
+            gc.setMark(Mark.ALIVE);
         }
     }
 

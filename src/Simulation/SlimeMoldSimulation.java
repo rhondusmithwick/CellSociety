@@ -87,8 +87,8 @@ public class SlimeMoldSimulation extends Simulation {
     }
 
     private void swap(SlimeMoldCell cellToMove, SlimeMoldCell cellToMoveTo) {
-        cellToMoveTo.setMark(Mark.TO_SLIME);
-        cellToMove.setMark(Mark.TO_EMPTY);
+        cellToMoveTo.setMark(Mark.SLIME);
+        cellToMove.setMark(Mark.EMPTY);
     }
 
     private void dropChemicals() {
@@ -114,11 +114,11 @@ public class SlimeMoldSimulation extends Simulation {
         SlimeMoldCell smc = (SlimeMoldCell) c;
         int randomNum = getRandomNum(1, 100);
         if (randomNum <= slimePercent) {
-            smc.setMark(Mark.TO_SLIME);
+            smc.setMark(Mark.SLIME);
         } else if (randomNum <= slimePercent + obstaclePercent) {
-            smc.setMark(Mark.TO_OBSTACLE);
+            smc.setMark(Mark.OBSTACLE);
         } else {
-            smc.setMark(Mark.TO_EMPTY);
+            smc.setMark(Mark.EMPTY);
         }
     }
 

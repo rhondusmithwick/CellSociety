@@ -4,7 +4,9 @@ import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rhondusmithwick on 2/1/16.
@@ -23,10 +25,6 @@ public class PredatorPreyCell extends Cell {
     private Mark mark;
     private int breedTimer = 0;
     private boolean shouldBreed = false;
-
-    private Paint emptyVisual;
-    private Paint fishVisual;
-    private Paint sharkVisual;
 
     public PredatorPreyCell() {
         super();
@@ -76,20 +74,14 @@ public class PredatorPreyCell extends Cell {
     private void moveSpawn(PredatorPreyCell cellToMoveTo) {
         swap(cellToMoveTo);
         if (shouldMakeEmpty()) {
-            setMark(Mark.TO_EMPTY);
+            setMark(Mark.EMPTY);
         }
         setShouldBreed(false);
     }
 
     private void swap(PredatorPreyCell cellToMoveTo) {
-        switch (getState()) {
-            case FISH:
-                cellToMoveTo.setMark(Mark.TO_FISH);
-                break;
-            case SHARK:
-                cellToMoveTo.setMark(Mark.TO_SHARK);
-                break;
-        }
+        Mark cellToMoveToMark = Mark.valueOf(state.toString());
+        cellToMoveTo.setMark(cellToMoveToMark);
         cellToMoveTo.setBreedTimer(breedTimer);
         cellToMoveTo.setStarveCounter(starveCounter);
         setBreedTimer(0);
@@ -97,23 +89,11 @@ public class PredatorPreyCell extends Cell {
     }
 
     public void changeState() {
-        switch (getMark()) {
-            case NONE:
-                return;
-            case TO_FISH:
-                setFill(fishVisual);
-                state = State.FISH;
-                break;
-            case TO_SHARK:
-                setFill(sharkVisual);
-                state = State.SHARK;
-                break;
-            case TO_EMPTY:
-                setFill(emptyVisual);
-                state = State.EMPTY;
-                break;
-            default:
+        if (mark == Mark.NONE) {
+            return;
         }
+        state = State.valueOf(mark.toString());
+        setFill(getVisual(state));
         setMark(Mark.NONE);
     }
 
@@ -144,14 +124,14 @@ public class PredatorPreyCell extends Cell {
 
     @Override
     public void setVisuals(Paint... visuals) {
-        emptyVisual = visuals[0];
-        fishVisual = visuals[1];
-        sharkVisual = visuals[2];
+        addToVisualMap(State.EMPTY, visuals[0]);
+        addToVisualMap(State.FISH, visuals[1]);
+        addToVisualMap(State.SHARK, visuals[2]);
     }
 
     private boolean shouldMakeEmpty() {
         return (!shouldBreed)
-                || (mark == Mark.TO_EMPTY);
+                || (mark == Mark.EMPTY);
     }
 
     public void breedIfShould(int fishBreedTime, int sharkBreedTime) {
@@ -182,7 +162,7 @@ public class PredatorPreyCell extends Cell {
 
     public boolean canMoveOrSpawn() {
         return (state != State.EMPTY)
-                && ((mark != Mark.TO_EMPTY) || (shouldBreed));
+                && ((mark != Mark.EMPTY) || (shouldBreed));
     }
 
     public enum State {
@@ -191,7 +171,7 @@ public class PredatorPreyCell extends Cell {
 
 
     public enum Mark {
-        TO_FISH, TO_SHARK, TO_EMPTY, NONE
+        FISH, SHARK, EMPTY, NONE
     }
 
 

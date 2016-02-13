@@ -27,7 +27,7 @@ public class SegregationCell extends Cell {
         if (getState() != State.EMPTY) {
             double likeMePercent = getLikeMePercent();
             if (likeMePercent < threshold) {
-                setMark(Mark.TO_EMPTY);
+                setMark(Mark.EMPTY);
             }
         }
     }
@@ -50,30 +50,20 @@ public class SegregationCell extends Cell {
 
     @Override
     public void changeState() {
-        switch (getMark()) {
-            case NONE:
-                return;
-            case TO_EMPTY:
-                setFill(emptyVisual);
-                setState(State.EMPTY);
-                break;
-            case TO_GROUP1:
-                setFill(group1Visual);
-                setState(State.GROUP1);
-                break;
-            case TO_GROUP2:
-                setFill(group2Visual);
-                setState(State.GROUP2);
-                break;
+        if (mark == Mark.NONE) {
+            return;
         }
+        state = State.valueOf(mark.toString());
+        setFill(getVisual(state));
+        setMark(Mark.NONE);
         setMark(Mark.NONE);
     }
 
     @Override
     public void setVisuals(Paint... visuals) {
-        emptyVisual = visuals[0];
-        group1Visual = visuals[1];
-        group2Visual = visuals[2];
+        addToVisualMap(State.EMPTY, visuals[0]);
+        addToVisualMap(State.GROUP1, visuals[1]);
+        addToVisualMap(State.GROUP2, visuals[2]);
         setStroke(Color.BLACK);
     }
 
@@ -102,6 +92,6 @@ public class SegregationCell extends Cell {
     }
 
     public enum Mark {
-        TO_EMPTY, TO_GROUP1, TO_GROUP2, NONE
+        EMPTY, GROUP1, GROUP2, NONE
     }
 }

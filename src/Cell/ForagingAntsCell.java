@@ -26,37 +26,23 @@ public class ForagingAntsCell extends Cell {
     private int maxAntsPer;
     private double probChoice;
 
-    private Paint emptyVisual;
-    private Paint nestVisual;
-    private Paint foodVisual;
-    private Color currVisual;
-
-
     public ForagingAntsCell() {
         super();
     }
 
     @Override
     public void changeState() {
-        switch (mark) {
+        switch(mark) {
             case NONE:
                 return;
             case CHANGE_ANTS:
                 updateAnts();
                 break;
-            case TO_FOOD:
-                state = State.FOOD;
-                break;
-            case TO_EMPTY:
-                state = State.OPEN;
-                break;
-            case TO_NEST:
-                state = State.NEST;
-                break;
             default:
+                state = State.valueOf(mark.toString());
         }
-        setMark(Mark.NONE);
         changeVisual();
+        setMark(Mark.NONE);
     }
 
     @Override
@@ -96,17 +82,7 @@ public class ForagingAntsCell extends Cell {
     }
 
     private void changeVisual() {
-        switch (state) {
-            case OPEN:
-                currVisual = (Color) emptyVisual;
-                break;
-            case NEST:
-                currVisual = (Color) nestVisual;
-                break;
-            case FOOD:
-                currVisual = (Color) foodVisual;
-                break;
-        }
+        Color currVisual = (Color) getVisual(state);
         for (int i = 0; i < myAnts.size(); i++) {
             currVisual = currVisual.darker();
         }
@@ -139,9 +115,9 @@ public class ForagingAntsCell extends Cell {
 
     @Override
     public void setVisuals(Paint... visuals) {
-        emptyVisual = visuals[0];
-        nestVisual = visuals[1];
-        foodVisual = visuals[2];
+        addToVisualMap(State.OPEN, visuals[0]);
+        addToVisualMap(State.NEST, visuals[1]);
+        addToVisualMap(State.FOOD, visuals[2]);
         setStroke(Color.BLACK);
     }
 
@@ -233,7 +209,7 @@ public class ForagingAntsCell extends Cell {
     }
 
     public enum Mark {
-        TO_FOOD, TO_NEST, CHANGE_ANTS, TO_EMPTY, NONE
+        FOOD, NEST, OPEN,  CHANGE_ANTS, NONE
     }
 
 }

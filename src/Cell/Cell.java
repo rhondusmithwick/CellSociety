@@ -5,8 +5,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * The base class for a cell.
@@ -22,6 +24,9 @@ public abstract class Cell {
      * This cell's shape.
      */
     private final Rectangle shape = new Rectangle();
+
+    private Map<Enum, Paint> visualMap = new HashMap<>();
+
     /**
      * This cell's row in the grid.
      */
@@ -178,4 +183,12 @@ public abstract class Cell {
                 && (columnDiff >= 1);
     }
 
+
+    void addToVisualMap(Enum state, Paint visual) {
+        visualMap.put(state, visual);
+    }
+
+    Paint getVisual(Enum state) {
+        return visualMap.get(state);
+    }
 }

@@ -54,12 +54,12 @@ public class SegregationSimulation extends Simulation {
         sc.setThreshold(threshold);
         sc.setVisuals(emptyVisual, group1Visual, group2Visual);
         if (randomNum <= emptyPercent) {
-            sc.setMark(Mark.TO_EMPTY);
+            sc.setMark(Mark.EMPTY);
             emptyCells.add(sc);
         } else if (randomNum <= emptyPercent + group1Percent) {
-            sc.setMark(Mark.TO_GROUP1);
+            sc.setMark(Mark.GROUP1);
         } else {
-            sc.setMark(Mark.TO_GROUP2);
+            sc.setMark(Mark.GROUP2);
         }
     }
 
@@ -89,11 +89,8 @@ public class SegregationSimulation extends Simulation {
     }
 
     private void swap(SegregationCell sc, SegregationCell emptyCell) {
-        if (sc.getState() == State.GROUP1) {
-            emptyCell.setMark(Mark.TO_GROUP1);
-        } else {
-            emptyCell.setMark(Mark.TO_GROUP2);
-        }
+        Mark markForEmpty = Mark.valueOf(sc.getState().toString());
+        emptyCell.setMark(markForEmpty);
         emptyCellsToAdd.add(sc);
     }
 
@@ -101,7 +98,7 @@ public class SegregationSimulation extends Simulation {
         List<SegregationCell> cellsToMove = new ArrayList<>();
         for (Cell c : getTheCells()) {
             SegregationCell sc = (SegregationCell) c;
-            if (sc.getMark() == Mark.TO_EMPTY) {
+            if (sc.getMark() == Mark.EMPTY) {
                 cellsToMove.add(sc);
             }
         }

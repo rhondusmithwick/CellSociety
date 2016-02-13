@@ -26,8 +26,6 @@ public class FireCell extends Cell {
      */
     private int burnTimer;
 
-    private Map<State, Paint> visualMap = new HashMap<>();
-
     /**
      * Construct a fire cell.
      */
@@ -69,7 +67,7 @@ public class FireCell extends Cell {
             return;
         }
         state = State.valueOf(mark.toString());
-        setFill(visualMap.get(state));
+        setFill(getVisual(state));
         setBurnTimer(0);
         setMark(Mark.NONE);
     }
@@ -81,9 +79,9 @@ public class FireCell extends Cell {
      */
     @Override
     public void setVisuals(Paint... visuals) {
-        visualMap.put(State.EMPTY, visuals[0]);
-        visualMap.put(State.BURNING, visuals[1]);
-        visualMap.put(State.TREE, visuals[2]);
+        addToVisualMap(State.EMPTY, visuals[0]);
+        addToVisualMap(State.BURNING, visuals[1]);
+        addToVisualMap(State.TREE, visuals[2]);
     }
 
 

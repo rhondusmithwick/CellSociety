@@ -15,10 +15,8 @@ public class SlimeMoldCell extends Cell {
 
     private double cAMPAmount = 0;
 
-    private Paint emptyVisual;
-    private Paint slimeVisual;
     private Paint cAMPVisual;
-    private Paint obstacleVisual;
+
 
     public SlimeMoldCell() {
         super();
@@ -26,23 +24,15 @@ public class SlimeMoldCell extends Cell {
 
     @Override
     public void changeState() {
-        switch (mark) {
-            case NONE:
-                return;
-            case TO_EMPTY:
-                state = State.EMPTY;
-                modifyColor();
-                break;
-            case TO_OBSTACLE:
-                state = State.OBSTACLE;
-                setFill(obstacleVisual);
-                break;
-            case TO_SLIME:
-                state = State.SLIME;
-                setFill(slimeVisual);
-                break;
+        if (mark == Mark.NONE) {
+            return;
         }
+        state = State.valueOf(mark.toString());
+        setFill(getVisual(state));
         setMark(Mark.NONE);
+        if (needsColorChange()) {
+            modifyColor();
+        }
     }
 
     @Override
@@ -51,10 +41,10 @@ public class SlimeMoldCell extends Cell {
 
     @Override
     public void setVisuals(Paint... visuals) {
-        emptyVisual = visuals[0];
-        slimeVisual = visuals[1];
+        addToVisualMap(State.EMPTY, visuals[0]);
+        addToVisualMap(State.SLIME, visuals[1]);
         cAMPVisual = visuals[2];
-        obstacleVisual = visuals[3];
+        addToVisualMap(State.OBSTACLE, visuals[3]);
     }
 
 
@@ -64,15 +54,11 @@ public class SlimeMoldCell extends Cell {
 
 
     private void modifyColor() {
-        if (cAMPAmount == 0) {
-            setFill(emptyVisual);
-        } else {
-            Color visual = (Color) cAMPVisual;
-            for (int i = 0; i < Math.ceil(cAMPAmount); i++) {
-                visual = visual.darker();
-            }
-            setFill(visual);
+        Color visual = (Color) cAMPVisual;
+        for (int i = 0; i < Math.ceil(cAMPAmount); i++) {
+            visual = visual.darker();
         }
+        setFill(visual);
     }
 
     public void evaporate(double evaporationRate) {
@@ -152,7 +138,7 @@ public class SlimeMoldCell extends Cell {
     private boolean notFull(SlimeMoldCell smc) {
         return (smc.state != State.SLIME)
                 && (smc.state != State.OBSTACLE)
-                && (smc.mark != Mark.TO_SLIME);
+                && (smc.mark != Mark.SLIME);
     }
 
     public enum State {
@@ -160,7 +146,12 @@ public class SlimeMoldCell extends Cell {
     }
 
     public enum Mark {
-        TO_EMPTY, TO_SLIME, NONE, TO_OBSTACLE
+        EMPTY, SLIME, NONE, OBSTACLE
+    }
+
+    private boolean needsColorChange() {
+        return (state == State.EMPTY)
+                && (cAMPAmount > 0);
     }
 
 }

@@ -98,12 +98,12 @@ public class ForagingAntsSimulation extends Simulation {
         fac.setMaxAntsPer(maxAntsPer);
         fac.setInitialPheromones(minAmountPheromone, maxAmountPheromone);
         if (isLocation(fac, nestLocation)) {
-            fac.setMark(Mark.TO_NEST);
+            fac.setMark(Mark.NEST);
             nest = fac;
         } else if (isFoodLocation(fac)) {
-            fac.setMark(Mark.TO_FOOD);
+            fac.setMark(Mark.FOOD);
         } else {
-            fac.setMark(Mark.TO_EMPTY);
+            fac.setMark(Mark.OPEN);
         }
     }
 

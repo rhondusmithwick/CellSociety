@@ -20,11 +20,6 @@ public class GameOfLifeCell extends Cell {
      */
     private Mark mark;
 
-
-    private Map<State, Paint> visualMap = new HashMap<>();
-
-    private Paint deadVisual;
-    private Paint aliveVisual;
     /**
      * Construct the game of life cell.
      */
@@ -39,9 +34,9 @@ public class GameOfLifeCell extends Cell {
     public void handleUpdate() {
         int aliveNeighbors = countAliveNeighbors();
         if (shouldDie(aliveNeighbors)) {
-            setMark(Mark.ALIVE);
-        } else if (shouldResurect(aliveNeighbors)) {
             setMark(Mark.DEAD);
+        } else if (shouldResurect(aliveNeighbors)) {
+            setMark(Mark.ALIVE);
         }
     }
 
@@ -67,19 +62,11 @@ public class GameOfLifeCell extends Cell {
      */
     @Override
     public void changeState() {
-        switch (mark) {
-            case NONE:
-                return;
-            case DEAD:
-                setFill(deadVisual);
-                state = State.DEAD;
-                break;
-            case ALIVE:
-                setFill(aliveVisual);
-                state = State.ALIVE;
-                break;
-            default:
+        if (mark == Mark.NONE) {
+            return;
         }
+        state = State.valueOf(mark.toString());
+        setFill(getVisual(state));
         setMark(Mark.NONE);
     }
 
@@ -112,10 +99,8 @@ public class GameOfLifeCell extends Cell {
      * @param visuals this cell's visuals
      */
     public void setVisuals(Paint... visuals) {
-        visualMap.put(State.DEAD, visuals[0]);
-        visualMap.put(State.ALIVE, visuals[1]);
-        deadVisual = visuals[0];
-        aliveVisual = visuals[1];
+        addToVisualMap(State.DEAD, visuals[0]);
+        addToVisualMap(State.ALIVE, visuals[1]);
     }
 
     /**

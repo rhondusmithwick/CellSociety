@@ -47,11 +47,11 @@ public class PredatorPreySimulation extends Simulation {
         final PredatorPreyCell ppc = (PredatorPreyCell) c;
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
-            ppc.setMark(Mark.TO_EMPTY);
+            ppc.setMark(Mark.EMPTY);
         } else if (randomNum <= emptyPercent + fishPercent) {
-            ppc.setMark(Mark.TO_FISH);
+            ppc.setMark(Mark.FISH);
         } else {
-            ppc.setMark(Mark.TO_SHARK);
+            ppc.setMark(Mark.SHARK);
         }
     }
 
@@ -87,7 +87,7 @@ public class PredatorPreySimulation extends Simulation {
 
     private void sharkUpdate(PredatorPreyCell shark) {
         if (shark.shouldStarve(starveTime)) {
-            shark.setMark(Mark.TO_EMPTY);
+            shark.setMark(Mark.EMPTY);
         } else if (!shark.sharkEat()) {
             if (shark.canMoveOrSpawn()) {
                 shark.move();
