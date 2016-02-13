@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
@@ -21,7 +20,6 @@ import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -45,9 +43,6 @@ public class GUI {
     private Button myFileButton;
     private Button myPlayPauseButton;
     private Button myStepButton;
-    private Button mySpeedUpButton;
-    private Button mySlowDownButton;
-    private Button mySetSizeButton;
     private Button myResetButton;
     private Button myPlayAgainButton;
     private Button mySaveToFileButton;
@@ -124,11 +119,8 @@ public class GUI {
      */
     private void createButtons() {
         myFileButton = makeButton(myResources.getString("XMLLoadPrompt"), event -> openFile(getFileChooser()));
-        mySetSizeButton = makeButton(myResources.getString("SetSizeButton"), event -> setUpSizeInput());
         myPlayPauseButton = makeButton(myResources.getString("PlayPauseButton"), event -> mySimControl.playPause());
         myStepButton = makeButton(myResources.getString("StepButton"), event -> mySimControl.step());
-        mySpeedUpButton = makeButton(myResources.getString("FasterButton"), event -> mySimControl.speedUp());
-        mySlowDownButton = makeButton(myResources.getString("SlowerButton"), event -> mySimControl.slowDown());
         myResetButton = makeButton(myResources.getString("ResetButton"), event -> mySimControl.reset());
         myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"), event -> mySimControl.playAgain());
         mySaveToFileButton = makeButton(myResources.getString("SaveToFileButton"), event -> saveFile(getFileChooser()));
@@ -138,17 +130,14 @@ public class GUI {
      * Calls setAndAdd for all controls.
      */
     private void setAndAdd() {
-        setAndAdd(myFileButton, 1, 0, 2, 1);
-        setAndAdd(myResetButton, 1, 6, 2, 1);
-        setAndAdd(myPlayAgainButton, 1, 5, 2, 1);
-        setAndAdd(mySetSizeButton, 1, 2, 2, 1);
-        setAndAdd(myPlayPauseButton, 1, 3, 1, 1);
-        setAndAdd(myStepButton, 2, 3, 1, 1);
-        setAndAdd(mySlowDownButton, 1, 4, 1, 1);
-        setAndAdd(mySpeedUpButton, 2, 4, 1, 1);
-        setAndAdd(mySaveToFileButton, 1, 9, 3, 3);
-        setAndAdd(comboBox, 1, 1, 2, 1);
+        setAndAdd(myFileButton, 1, 0, 5, 1);
+        setAndAdd(myResetButton, 1, 4, 5, 1);
+        setAndAdd(myPlayAgainButton, 1, 3, 5, 1);
+        setAndAdd(myPlayPauseButton, 1, 2, 2, 1);
+        setAndAdd(myStepButton, 4, 2, 2, 1);
+        setAndAdd(comboBox, 1, 1, 5, 1);
         setAndAdd(simLabel, 1, 7, 3, 3);
+        setAndAdd(mySaveToFileButton, 1, 9, 3, 3);
     }
 
     /**
@@ -164,20 +153,6 @@ public class GUI {
         GridPane.setConstraints(node, col, row, colSpan, rowSpan, HPos.CENTER, VPos.CENTER);
         controlList.add(node);
         ((Region) node).setMaxWidth(Double.MAX_VALUE);
-    }
-
-    /**
-     * Sets up and displays a size input interaction box.
-     */
-    private void setUpSizeInput() {
-        mySimControl.stop();
-        TextInputDialog input = new TextInputDialog("");
-        input.setTitle(myResources.getString("SizePromptTitle"));
-        input.setContentText(myResources.getString("SizePrompt"));
-        Optional<String> response = input.showAndWait();
-        if (response.isPresent()) {
-            mySimControl.sizeChange(response.get());
-        }
     }
 
     /**

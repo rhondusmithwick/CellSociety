@@ -6,6 +6,11 @@ import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
 
@@ -22,20 +27,36 @@ import java.util.Random;
 public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
-    protected XMLParser xmlProperties;
-    protected Map<String, Object> savedValues;
+    XMLParser xmlProperties;
+    Map<String, Object> savedValues;
     private int gridWidth;
     private int gridHeight;
     private int numCellsPerRow;
     private int numCellsPerColumn;
-    private EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
+    private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
     private String type;
     private Collection<Cell> theCells;
+    private final NumberAxis xAxis = new NumberAxis();
+    private final NumberAxis yAxis = new NumberAxis();
+    private LineChart<Number, Number> lineChart;
     private boolean isPlaying = false;
 
     Simulation() {
         simulationLoop = buildLoop();
         rn = new Random();
+        createGraph();
+    }
+
+    private void createGraph() {
+        xAxis.setLabel("Frame");
+        yAxis.setLabel("Number of Cells");
+        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+        GridPane.setConstraints(lineChart, 0, 20, 1, 1, HPos.CENTER, VPos.CENTER);
+    }
+
+
+    public LineChart<Number, Number> getGraph() {
+        return lineChart;
     }
 
     public final void setProperties(Element simElem) {
@@ -125,7 +146,7 @@ public abstract class Simulation {
 //	edgeType = EdgeType.valueOf(xmlProperties.getTextValue("edgeType"));
     }
 
-    protected boolean doesTypeMatch(String myType) {
+    boolean doesTypeMatch(String myType) {
         return (getType() == null || !getType().equals(myType));
     }
 
@@ -210,6 +231,16 @@ public abstract class Simulation {
         return xmlProperties;
     }
 
+    public double getSpeed() {
+        return simulationLoop.getRate();
+    }
 
+    public final void changeRate(int rate) {
+        simulationLoop.setRate(rate);
+    }
+
+    public double getSize() {
+        return numCellsPerRow;
+    }
 }
 

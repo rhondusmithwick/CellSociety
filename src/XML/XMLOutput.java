@@ -26,8 +26,8 @@ public class XMLOutput {
 
     private static Document doc;
     private final String WRITE_DIR = "resources";
-    public Collection<Cell> theCells;
     private final Element rootElement;
+    public Collection<Cell> theCells;
     private DocumentBuilder docBuild;
     private XMLEncoder encoder;
 
@@ -50,7 +50,7 @@ public class XMLOutput {
             }
         }
         /*
-		 try {
+         try {
 			Class simClass = Class.forName("Simulation."+sim.getType()+"Simulation");
 			Field[] fields = simClass.getDeclaredFields(); //includes fields declared in the Shape abstract class
 			System.out.println("Fields: ");
@@ -82,7 +82,7 @@ public class XMLOutput {
 		init(rootElement);
 	}
 	*/
-    public void init() {
+    private void init() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             docBuild = factory.newDocumentBuilder();
@@ -94,7 +94,7 @@ public class XMLOutput {
         //doc.appendChild(rootElement);
     }
 
-    public void addElement(Element child) {
+    private void addElement(Element child) {
         rootElement.appendChild(child);
     }
 

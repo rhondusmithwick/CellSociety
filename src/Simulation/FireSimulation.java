@@ -121,4 +121,20 @@ public class FireSimulation extends Simulation {
                 && (fc.getColumn() == getCellsPerColumn() / 2);
     }
 
+
+    public double getBurnTime() {
+        return burnTime;
+    }
+
+    public void setBurnTime(int newTime) {
+        burnTime = newTime;
+    }
+
+    public double getCatchFire() {
+        return probCatch;
+    }
+
+    public void setProbCatch(int newProb) {
+        probCatch = newProb;
+    }
 }

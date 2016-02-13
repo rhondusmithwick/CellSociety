@@ -19,7 +19,7 @@ public class SegregationCell extends Cell {
     @Override
     void saveTypeCellState() {
         /*
-		cellState.put("",);
+        cellState.put("",);
 		cellState.put("",);
 		cellState.put("",);
 		cellState.put("",);
@@ -37,7 +37,7 @@ public class SegregationCell extends Cell {
         return getLikeMePercent() >= threshold;
     }
 
-    public double getLikeMePercent() {
+    private double getLikeMePercent() {
         int count = 0;
         int num = 0;
         SegregationCell sc;

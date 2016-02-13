@@ -130,4 +130,35 @@ public class PredatorPreySimulation extends Simulation {
         savedValues.put("fishVisual", fishVisual);
         savedValues.put("sharkVisual", sharkVisual);
     }
+
+
+    public double getSharkBreedTime() {
+
+        return sharkBreedTime;
+    }
+
+
+    public double getFishBreedTime() {
+        return fishBreedTime;
+    }
+
+
+    public double getStarveTime() {
+        return starveTime;
+    }
+
+    public void setStarveTime(int intValue) {
+        starveTime = intValue;
+    }
+
+    public void setSharkBreed(int intValue) {
+        sharkBreedTime = intValue;
+
+    }
+
+    public void setFishBreed(int intValue) {
+        fishBreedTime = intValue;
+
+    }
+
 }

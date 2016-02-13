@@ -94,9 +94,8 @@ public class Grid extends Group {
     /**
      * Initialize this cell manager.
      *
-     * @param cellType this Cell Manager's cell type.
      */
-    public void init(String cellType, Collection<Cell> theCells) {
+    public void init(Collection<Cell> theCells) {
         this.theCells = theCells;
         for (Cell c : theCells) {
             grid[c.getRow()][c.getColumn()] = c;

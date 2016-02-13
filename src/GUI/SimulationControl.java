@@ -36,6 +36,7 @@ public class SimulationControl {
     private final Label simLabel = new Label();
     private String simType = DEFAULT_SIM_TYPE;
     private Simulation sim;
+    private Config config = new FireConfig();
     private Grid grid;
     private int newSize = 0;
     private File myXMLFile = null;
@@ -59,12 +60,36 @@ public class SimulationControl {
      * @param o Simulation object to switch t
      */
     public void switchSimulation(Object o) {
+        //display.getChildren().remove(sim.getGraph());
         myXMLFile = null;
         newSize = 0;
         simType = o.toString();
         sim = getSimulation();
         setSimulation();
+        config = getConfig();
+        setConfigControls();
+        //display.getChildren().add(sim.getGraph());
+
     }
+
+
+    private Config getConfig() {
+        removeConfigControls();
+        Config config;
+        try {
+            Class myClass = Class.forName("GUI." + simType + "Config");
+            config = (Config) myClass.newInstance();
+        } catch (InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException e) {
+            System.out.println("in catch");
+            config = new FireConfig();
+        }
+        config.setSim(this, sim);
+        config.init();
+        return config;
+    }
+
 
     /**
      * Switches between simulations when the new simulation is a loaded XML
@@ -73,11 +98,16 @@ public class SimulationControl {
      * @param simElem Simulation element from the XML file parser.
      */
     private void switchSimulation(Element simElem) {
+        //display.getChildren().remove(sim.getGraph());
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
+
         assert sim != null;
         sim.setType(simType);
         sim.setProperties(simElem);
+        config = getConfig();
+        setConfigControls();
+        //display.getChildren().add(sim.getGraph());
     }
 
     /**
@@ -105,7 +135,7 @@ public class SimulationControl {
         display.getChildren().remove(grid);
         grid = createGrid(simType);
         GridPane.setConstraints(grid, 0, 0);
-        GridPane.setRowSpan(grid, 8);
+        GridPane.setRowSpan(grid, 9);
         display.getChildren().add(grid);
     }
 
@@ -140,6 +170,12 @@ public class SimulationControl {
         return mySimulations;
     }
 
+    public void speed(int new_val, int old_val) {
+        if (new_val != old_val) {
+            sim.changeRate(new_val);
+        }
+    }
+
     /**
      * Decreases simulation rate. Displays error when rate can no longer be
      * decreased.
@@ -148,7 +184,6 @@ public class SimulationControl {
         if (!sim.decreaseRate()) {
             showError(myResources.getString("DecreaseError"));
         }
-
     }
 
     /**
@@ -160,6 +195,7 @@ public class SimulationControl {
             showError(myResources.getString("IncreaseError"));
         }
     }
+
 
     /**
      * Steps through simulation one frame at a time.
@@ -230,19 +266,17 @@ public class SimulationControl {
      *
      * @param string the size string from the user
      */
-    public void sizeChange(String string) {
+    public void sizeChange(int size) {
         try {
-            int trySize = Integer.parseInt(string);
             try {
                 switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
             } catch (Exception e) {
                 sim = getSimulation();
             }
-            assert sim != null;
-            if (!sim.resetCellSize(trySize)) {
+            if (!sim.resetCellSize(size)) {
                 throw new Exception();
             }
-            newSize = trySize;
+            newSize = size;
             setSimulation();
         } catch (Exception e) {
             showError(myResources.getString("SizeError"));
@@ -294,6 +328,14 @@ public class SimulationControl {
     public Label getSimLabel() {
         simLabel.setStyle("-fx-font-size: 2em;");
         return simLabel;
+    }
+
+    private void setConfigControls() {
+        display.getChildren().addAll(config.getControls());
+    }
+
+    private void removeConfigControls() {
+        display.getChildren().removeAll(config.getControls());
     }
 
     /**

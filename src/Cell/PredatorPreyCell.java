@@ -31,7 +31,7 @@ public class PredatorPreyCell extends Cell {
     @Override
     void saveTypeCellState() {
     /*
-		cellState.put("",);
+        cellState.put("",);
 		cellState.put("",);
 
 		*/

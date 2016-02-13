@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 public class XMLParser {
 
-    private Element rootElement;
+    private final Element rootElement;
 
     public XMLParser(Element rootElement) {
         this.rootElement = rootElement;
