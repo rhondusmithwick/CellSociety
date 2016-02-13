@@ -3,14 +3,17 @@ package GUI;
 import Simulation.GameOfLifeSimulation;
 
 public class GameOfLifeConfig extends Config {
+	
+	public GameOfLifeConfig(){
+		super();
+	}
 
     @Override
     public void init() {
         GameOfLifeSimulation lifeSim = (GameOfLifeSimulation) this.getSimulation();
         createMainSliders();
         createMainLabels();
-        setMain();
-        addMain();
+        setAndAddMain();
     }
 
     @Override
@@ -26,15 +29,10 @@ public class GameOfLifeConfig extends Config {
     }
 
     @Override
-    public void addAll() {
+    public void setAndAddAll() {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
-    public void setAll() {
-        // TODO Auto-generated method stub
-
-    }
 
 }

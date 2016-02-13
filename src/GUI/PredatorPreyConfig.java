@@ -13,8 +13,6 @@ import java.util.ResourceBundle;
 
 public class PredatorPreyConfig extends Config {
 
-    private final ResourceBundle myResources = ResourceBundle.getBundle("GUIstrings");
-
     private Slider sharkBreedTime;
     private Slider fishBreedTime;
     private Slider starveTime;
@@ -22,32 +20,29 @@ public class PredatorPreyConfig extends Config {
     private Label fishBreedLabel;
     private Label starveLabel;
     private PredatorPreySimulation ppSim;
+    
+    public PredatorPreyConfig(){
+    	super();
+    }
 
     @Override
     public void init() {
         ppSim = (PredatorPreySimulation) this.getSimulation();
-        createMainSliders();
-        createMainLabels();
-        setMain();
-        addMain();
         createControls();
         createLabels();
-        setAll();
-        addAll();
+        setAndAddAll();
     }
 
     @Override
     public void createLabels() {
-        fishBreedLabel = new Label(myResources.getString("fishBreed"));
-        sharkBreedLabel = new Label(myResources.getString("sharkBreed"));
-        starveLabel = new Label(myResources.getString("starveTime"));
+        fishBreedLabel = makeLabel(getResources().getString("fishBreed"));
+        sharkBreedLabel = makeLabel(getResources().getString("sharkBreed"));
+        starveLabel = makeLabel(getResources().getString("starveTime"));
     }
 
     @Override
     public void createControls() {
-        sharkBreedTime = new Slider(1, 30, 1);
-        sharkBreedTime.setShowTickMarks(true);
-        sharkBreedTime.setShowTickLabels(true);
+        sharkBreedTime = makeSlider(1, 30, 1);
         sharkBreedTime.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
@@ -55,9 +50,7 @@ public class PredatorPreyConfig extends Config {
             }
         });
         sharkBreedTime.setValue(ppSim.getSharkBreedTime());
-        fishBreedTime = new Slider(1, 30, 1);
-        fishBreedTime.setShowTickMarks(true);
-        fishBreedTime.setShowTickLabels(true);
+        fishBreedTime = makeSlider(1, 30, 1);
         fishBreedTime.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
@@ -65,9 +58,7 @@ public class PredatorPreyConfig extends Config {
             }
         });
         fishBreedTime.setValue(ppSim.getFishBreedTime());
-        starveTime = new Slider(1, 30, 1);
-        starveTime.setShowTickMarks(true);
-        starveTime.setShowTickLabels(true);
+        starveTime = makeSlider(1, 30, 1);
         starveTime.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
@@ -92,23 +83,13 @@ public class PredatorPreyConfig extends Config {
     }
 
     @Override
-    public void addAll() {
-        this.addControl(fishBreedTime);
-        this.addControl(sharkBreedTime);
-        this.addControl(starveTime);
-        this.addControl(starveLabel);
-        this.addControl(fishBreedLabel);
-        this.addControl(sharkBreedLabel);
-    }
-
-    @Override
-    public void setAll() {
-        GridPane.setConstraints(fishBreedTime, 5, 5, 1, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(sharkBreedTime, 5, 6, 1, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(starveTime, 5, 7, 1, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(starveLabel, 4, 7, 1, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(sharkBreedLabel, 4, 6, 1, 1, HPos.CENTER, VPos.CENTER);
-        GridPane.setConstraints(fishBreedLabel, 4, 5, 1, 1, HPos.CENTER, VPos.CENTER);
+    public void setAndAddAll() {
+        setAndAdd(fishBreedTime, 5, 5, 1, 1);
+        setAndAdd(sharkBreedTime, 5, 6, 1, 1);
+        setAndAdd(starveTime, 5, 7, 1, 1);
+        setAndAdd(starveLabel, 4, 7, 1, 1);
+        setAndAdd(sharkBreedLabel, 4, 6, 1, 1);
+        setAndAdd(fishBreedLabel, 4, 5, 1, 1);
     }
 
 }
