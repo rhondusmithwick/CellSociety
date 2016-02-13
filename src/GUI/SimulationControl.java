@@ -272,13 +272,7 @@ public class SimulationControl {
      */
     public void sizeChange(int size) {
         try {
-            try {
-                switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
-            } catch (Exception e) {
-                sim = getSimulation();
-            }
-            assert sim != null;
-            if (!sim.resetCellSize(size)) {
+            if (sim == null || !sim.resetCellSize(size)) {
                 throw new Exception();
             }
             newSize = size;
@@ -287,6 +281,7 @@ public class SimulationControl {
             showError(myResources.getString("SizeError"));
         }
     }
+
 
     /**
      * Opens new XML file and sets the chosen simulation
