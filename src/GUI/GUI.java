@@ -50,6 +50,7 @@ public class GUI {
     private Button mySetSizeButton;
     private Button myResetButton;
     private Button myPlayAgainButton;
+    private Button mySaveToFileButton;
 
     /**
      * Sets starting GUI parameters and links GUI to simulation control class
@@ -122,7 +123,7 @@ public class GUI {
      * Creates all buttons using makeButton.
      */
     private void createButtons() {
-        myFileButton = makeButton(myResources.getString("XMLLoadPrompt"), event -> setUpFileChooser());
+        myFileButton = makeButton(myResources.getString("XMLLoadPrompt"), event -> openFile(getFileChooser()));
         mySetSizeButton = makeButton(myResources.getString("SetSizeButton"), event -> setUpSizeInput());
         myPlayPauseButton = makeButton(myResources.getString("PlayPauseButton"), event -> mySimControl.playPause());
         myStepButton = makeButton(myResources.getString("StepButton"), event -> mySimControl.step());
@@ -130,6 +131,7 @@ public class GUI {
         mySlowDownButton = makeButton(myResources.getString("SlowerButton"), event -> mySimControl.slowDown());
         myResetButton = makeButton(myResources.getString("ResetButton"), event -> mySimControl.reset());
         myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"), event -> mySimControl.playAgain());
+        mySaveToFileButton = makeButton(myResources.getString("SaveToFileButton"), event -> saveFile(getFileChooser()));
     }
 
     /**
@@ -144,6 +146,7 @@ public class GUI {
         setAndAdd(myStepButton, 2, 3, 1, 1);
         setAndAdd(mySlowDownButton, 1, 4, 1, 1);
         setAndAdd(mySpeedUpButton, 2, 4, 1, 1);
+        setAndAdd(mySaveToFileButton, 1, 9, 3, 3);
         setAndAdd(comboBox, 1, 1, 2, 1);
         setAndAdd(simLabel, 1, 7, 3, 3);
     }
@@ -180,18 +183,27 @@ public class GUI {
     /**
      * Sets up and displays the file chooser interactin box.
      */
-    private void setUpFileChooser() {
+
+    private FileChooser getFileChooser() {
         mySimControl.stop();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(myResources.getString("XMLChoosePrompt"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
         fileChooser.setInitialDirectory(getLocalDir());
-        File file = fileChooser.showOpenDialog(new Stage());
-        if (file != null) {
-            mySimControl.openFile(file);
-        }
+        return fileChooser;
     }
 
+    private void openFile(FileChooser fileChooser){
+	    File file = fileChooser.showOpenDialog(new Stage());
+	    if (file != null) {
+	        mySimControl.openFile(file);
+	    }
+    }
+
+    private void saveFile(FileChooser fileChooser){
+	    File file = fileChooser.showSaveDialog(new Stage());
+	    mySimControl.saveSimulation(file);
+    }
     /**
      * Gets the list containing all controls.
      *

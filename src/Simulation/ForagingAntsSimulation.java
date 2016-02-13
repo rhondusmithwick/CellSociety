@@ -1,6 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
+import XML.XMLParser;
 import Cell.ForagingAntsCell;
 import Cell.ForagingAntsCell.Mark;
 import javafx.geometry.Point2D;
@@ -106,12 +107,12 @@ public class ForagingAntsSimulation extends Simulation {
             fac.setMark(Mark.TO_EMPTY);
         }
     }
-
+/*
     @Override
     void setSpecificProperties(Element simElem) {
 
     }
-
+*/
     private boolean isFoodLocation(Cell c) {
         for (Point2D food : foodLocations) {
             if (isLocation(c, food)) {
@@ -120,5 +121,17 @@ public class ForagingAntsSimulation extends Simulation {
         }
         return false;
     }
+
+	@Override
+	void saveSpecificValues() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	void setSpecificProperties() {
+		// TODO Auto-generated method stub
+
+	}
 
 }

@@ -236,5 +236,11 @@ public class ForagingAntsCell extends Cell {
         TO_FOOD, TO_NEST, CHANGE_ANTS, TO_EMPTY, NONE
     }
 
+	@Override
+	void saveTypeCellState() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
 

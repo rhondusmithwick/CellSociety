@@ -5,8 +5,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * The base class for a cell.
@@ -31,12 +33,26 @@ public abstract class Cell {
      */
     private int column;
 
+    protected Map<String,Object> cellState;
     /**
      * Construct a cell.
      */
     Cell() {
         super();
     }
+
+    public void saveCellState(){
+    	cellState = new HashMap<String,Object>();
+    	cellState.put("cellWidth",shape.getWidth());
+    	cellState.put("cellHeight",shape.getHeight() );
+    	cellState.put("x",  shape.getX());
+    	cellState.put("y",  shape.getY());
+    	cellState.put("row", row );
+    	cellState.put("column", column );
+    	saveTypeCellState();
+    }
+
+    abstract void saveTypeCellState();
 
     /**
      * Initialize this cell with these parameters.
@@ -45,9 +61,10 @@ public abstract class Cell {
      * @param cellHeight the cell's height
      * @param x          the cell's x-coordinate
      * @param y          the cell's y-coordinate
-     * @param row        te cell's row
+     * @param row        the cell's row
      * @param column     the cell's column
      */
+
     public final void init(double cellWidth, double cellHeight, double x, double y, int row, int column) {
         shape.setWidth(cellWidth);
         shape.setHeight(cellHeight);
@@ -56,6 +73,7 @@ public abstract class Cell {
         setRow(row);
         setColumn(column);
     }
+
 
 
     /**
@@ -70,6 +88,13 @@ public abstract class Cell {
             }
         }
     }
+
+    public Map<String,Object> getCellState(){
+    	return cellState;
+    }
+
+
+
 
     /**
      * Change this cell's state.
@@ -125,7 +150,6 @@ public abstract class Cell {
     private void setColumn(int column) {
         this.column = column;
     }
-
 
     /**
      * Set this cell's visuals.

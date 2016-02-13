@@ -1,6 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
+import XML.XMLParser;
 import Cell.SlimeMoldCell;
 import Cell.SlimeMoldCell.Mark;
 import Cell.SlimeMoldCell.State;
@@ -122,8 +123,21 @@ public class SlimeMoldSimulation extends Simulation {
         }
     }
 
+    /*
     @Override
     void setSpecificProperties(Element simElem) {
 
-    }
+    }*/
+
+	@Override
+	void saveSpecificValues() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	void setSpecificProperties() {
+		// TODO Auto-generated method stub
+
+	}
 }

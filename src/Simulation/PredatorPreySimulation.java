@@ -4,6 +4,7 @@ import Cell.Cell;
 import Cell.PredatorPreyCell;
 import Cell.PredatorPreyCell.Mark;
 import Cell.PredatorPreyCell.State;
+import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import org.w3c.dom.Element;
@@ -96,8 +97,8 @@ public class PredatorPreySimulation extends Simulation {
     }
 
     @Override
-    void setSpecificProperties(Element simElem) {
-        if (getType() == null || !getType().equals("PredatorPrey")) {
+    void setSpecificProperties() {
+        if (doesTypeMatch("PredatorPrey")) {
             sharkBreedTime = DEFAULT_SHARK_BREED_TIME;
             fishBreedTime = DEFAULT_FISH_BREED_TIME;
             starveTime = DEFAULT_STARVE_TIME;
@@ -107,14 +108,25 @@ public class PredatorPreySimulation extends Simulation {
             fishVisual = DEFAULT_FISH_VISUAL;
             sharkVisual = DEFAULT_SHARK_VISUAL;
         } else {
-            sharkBreedTime = XMLParser.getIntValue(simElem, "sharkBreedTime");
-            fishBreedTime = XMLParser.getIntValue(simElem, "fishBreedTime");
-            starveTime = XMLParser.getIntValue(simElem, "starveTime");
-            emptyPercent = XMLParser.getIntValue(simElem, "emptyPercent");
-            fishPercent = XMLParser.getIntValue(simElem, "fishPercent");
-            emptyVisual = XMLParser.getPaintValue(simElem, "emptyVisual");
-            fishVisual = XMLParser.getPaintValue(simElem, "fishVisual");
-            sharkVisual = XMLParser.getPaintValue(simElem, "sharkVisual");
+            sharkBreedTime = xmlProperties.getIntValue( "sharkBreedTime");
+            fishBreedTime = xmlProperties.getIntValue("fishBreedTime");
+            starveTime = xmlProperties.getIntValue("starveTime");
+            emptyPercent = xmlProperties.getIntValue("emptyPercent");
+            fishPercent = xmlProperties.getIntValue("fishPercent");
+            emptyVisual = xmlProperties.getPaintValue("emptyVisual");
+            fishVisual = xmlProperties.getPaintValue("fishVisual");
+            sharkVisual = xmlProperties.getPaintValue("sharkVisual");
         }
     }
+	@Override
+	void saveSpecificValues() {
+		savedValues.put("sharkBreedTime",sharkBreedTime);
+		savedValues.put("fishBreedTime",fishBreedTime);
+		savedValues.put("starveTime",starveTime);
+		savedValues.put("emptyPercent",emptyPercent);
+		savedValues.put("fishPercent",fishPercent);
+		savedValues.put("emptyVisual",emptyVisual);
+		savedValues.put("fishVisual",fishVisual);
+		savedValues.put("sharkVisual",sharkVisual);
+	}
 }

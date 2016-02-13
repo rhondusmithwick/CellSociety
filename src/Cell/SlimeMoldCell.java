@@ -163,4 +163,10 @@ public class SlimeMoldCell extends Cell {
         TO_EMPTY, TO_SLIME, NONE, TO_OBSTACLE
     }
 
+	@Override
+	void saveTypeCellState() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
