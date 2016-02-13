@@ -1,6 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
+import Cell.Grid.EdgeType;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,6 +24,7 @@ public abstract class Simulation {
     private int gridHeight;
     private int cellsPerRow;
     private int cellsPerColumn;
+    private EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
     private String type;
     private Collection<Cell> theCells;
     private boolean isPlaying = false;
@@ -46,22 +48,18 @@ public abstract class Simulation {
     }
 
     public void init() {
-        for (Cell c : getTheCells()) {
-            assignInitialState(c);
-        }
+        getTheCells().stream().forEach(this::assignInitialState);
         changeStates();
     }
 
     abstract void assignInitialState(Cell c);
 
     public void step() {
-        getTheCells().forEach(c -> c.handleUpdate());
+        getTheCells().stream().forEach(Cell::handleUpdate);
     }
 
     final void changeStates() {
-        for (Cell c : getTheCells()) {
-            c.changeState();
-        }
+        getTheCells().stream().forEach(Cell::changeState);
     }
 
     private void beginLoop() {
@@ -102,15 +100,54 @@ public abstract class Simulation {
         gridHeight = XMLParser.getIntValue(simElem, "gridHeight");
         cellsPerRow = XMLParser.getIntValue(simElem, "numCellsPerRow");
         cellsPerColumn = XMLParser.getIntValue(simElem, "numCellsPerColumn");
+//        edgeType = EdgeType.valueOf(XMLParser.getTextValue(simElem, "edgeType"));
     }
 
     abstract void setSpecificProperties(Element simElem);
+
+
+    public final boolean increaseRate() {
+        double currentRate = simulationLoop.getRate();
+        if (currentRate <= 15) {
+            simulationLoop.setRate(currentRate + .5);
+            return true;
+        }
+        return false;
+    }
+
+    public final boolean decreaseRate() {
+        double currentRate = simulationLoop.getRate();
+        if (currentRate > 0) {
+            simulationLoop.setRate(currentRate - .5);
+            return true;
+        }
+        return false;
+
+    }
+
+    public final void resetRate() {
+        simulationLoop.setRate(1.0);
+    }
+
+
+    public final boolean resetCellSize(int numCells) {
+        if (numCells > 1) {
+            cellsPerRow = numCells;
+            cellsPerColumn = numCells;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     public final int getGridWidth() {
         return gridWidth;
     }
 
+    public final EdgeType getEdgeType() {
+        return edgeType;
+    }
 
     public final int getGridHeight() {
         return gridHeight;
@@ -142,40 +179,6 @@ public abstract class Simulation {
 
     public final void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
-    }
-
-    public final boolean increaseRate() {
-        double currentRate = simulationLoop.getRate();
-        if (currentRate <= 10) {
-            simulationLoop.setRate(currentRate + .5);
-            return true;
-        }
-        return false;
-    }
-
-    public final boolean decreaseRate() {
-        double currentRate = simulationLoop.getRate();
-        if (currentRate > 0) {
-            simulationLoop.setRate(currentRate - .5);
-            return true;
-        }
-        return false;
-
-    }
-
-    public final void resetRate() {
-        simulationLoop.setRate(1.0);
-    }
-
-
-    public final boolean resetCellSize(int numCells) {
-        if (numCells > 1) {
-            cellsPerRow = numCells;
-            cellsPerColumn = numCells;
-            return true;
-        } else {
-            return false;
-        }
     }
 
 }

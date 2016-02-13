@@ -59,11 +59,7 @@ public class FireSimulation extends Simulation {
 
 
     private void getAllUpdates() {
-        FireCell fc;
-        for (Cell c : getTheCells()) {
-            fc = (FireCell) c;
-            getUpdate(fc);
-        }
+        getTheCells().stream().map(c -> (FireCell) c).forEach(this::getUpdate);
     }
 
     private void getUpdate(FireCell fc) {

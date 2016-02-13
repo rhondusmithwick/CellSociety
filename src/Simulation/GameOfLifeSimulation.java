@@ -46,6 +46,7 @@ public class GameOfLifeSimulation extends Simulation {
         }
     }
 
+
     @Override
     void setSpecificProperties(Element simElem) {
         if (getType() == null || !getType().equals("GameOfLife")) {

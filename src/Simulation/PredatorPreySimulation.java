@@ -48,8 +48,7 @@ public class PredatorPreySimulation extends Simulation {
         ppc.setVisuals(emptyVisual, fishVisual, sharkVisual);
         if (randomNum <= emptyPercent) {
             ppc.setMark(Mark.TO_EMPTY);
-        } else if (randomNum > emptyPercent
-                && randomNum <= emptyPercent + fishPercent) {
+        } else if (randomNum <= emptyPercent + fishPercent) {
             ppc.setMark(Mark.TO_FISH);
         } else {
             ppc.setMark(Mark.TO_SHARK);
@@ -66,28 +65,25 @@ public class PredatorPreySimulation extends Simulation {
 
 
     private void breedAll() {
-        PredatorPreyCell ppc;
-        for (Cell c : getTheCells()) {
-            ppc = (PredatorPreyCell) c;
-            if (ppc.shouldBreed(fishBreedTime, sharkBreedTime)) {
-                ppc.setShouldBreed(true);
-                ppc.setBreedTimer(0);
-            }
-        }
+        getTheCells().stream()
+                .map(c -> (PredatorPreyCell) c)
+                .forEach(ppc -> ppc.breedIfShould(fishBreedTime, sharkBreedTime));
     }
+
 
     private void moveAll() {
-        PredatorPreyCell ppc;
-        for (Cell c : getTheCells()) {
-            ppc = (PredatorPreyCell) c;
-            if (ppc.getState() == State.SHARK) {
-                sharkUpdate(ppc);
-            } else if (ppc.canMoveOrSpawn()) {
-                ppc.move();
-            }
-        }
+        getTheCells().stream()
+                .map(c -> (PredatorPreyCell) c)
+                .forEach(this::doMove);
     }
 
+    private void doMove(PredatorPreyCell ppc) {
+        if (ppc.getState() == State.SHARK) {
+            sharkUpdate(ppc);
+        } else if (ppc.canMoveOrSpawn()) {
+            ppc.move();
+        }
+    }
 
     private void sharkUpdate(PredatorPreyCell shark) {
         if (shark.shouldStarve(starveTime)) {

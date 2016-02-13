@@ -44,13 +44,11 @@ public class SegregationSimulation extends Simulation {
     }
 
     private static void cleanUp(List<SegregationCell> cellsToMove) {
-        for (SegregationCell sc : cellsToMove) {
-            sc.setMark(Mark.NONE);
-        }
+        cellsToMove.stream().forEach(sc -> sc.setMark(Mark.NONE));
     }
 
     @Override
-    void assignInitialState( Cell c) {
+    void assignInitialState(Cell c) {
         int randomNum = getRandomNum(1, 100);
         final SegregationCell sc = (SegregationCell) c;
         sc.setThreshold(threshold);
@@ -58,8 +56,7 @@ public class SegregationSimulation extends Simulation {
         if (randomNum <= emptyPercent) {
             sc.setMark(Mark.TO_EMPTY);
             emptyCells.add(sc);
-        } else if (randomNum > emptyPercent
-                && randomNum <= emptyPercent + group1Percent) {
+        } else if (randomNum <= emptyPercent + group1Percent) {
             sc.setMark(Mark.TO_GROUP1);
         } else {
             sc.setMark(Mark.TO_GROUP2);

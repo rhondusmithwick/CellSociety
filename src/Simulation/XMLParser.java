@@ -57,4 +57,5 @@ public final class XMLParser {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
 
+
 }
