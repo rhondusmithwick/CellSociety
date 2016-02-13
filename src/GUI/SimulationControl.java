@@ -8,6 +8,7 @@ import XML.XMLOutput;
 import XML.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -134,9 +135,10 @@ public class SimulationControl {
     private void displayNewCells() {
         display.getChildren().remove(grid);
         grid = createGrid(simType);
-        GridPane.setConstraints(grid, 0, 0);
-        GridPane.setRowSpan(grid, 9);
-        display.getChildren().add(grid);
+        Group gridGroup = grid.getGroup();
+        GridPane.setConstraints(gridGroup, 0, 0);
+        GridPane.setRowSpan(gridGroup, 9);
+        display.getChildren().add(gridGroup);
     }
 
     /**
@@ -264,7 +266,7 @@ public class SimulationControl {
      * Changes number of rows and columns per line on the grid based on user
      * input.
      *
-     * @param string the size string from the user
+     * @param the size string from the user
      */
     public void sizeChange(int size) {
         try {

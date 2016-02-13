@@ -4,7 +4,11 @@ import javafx.scene.Group;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.asList;
 
 /**
  * The class for the Grid, which contains all the cells.
@@ -12,15 +16,9 @@ import java.util.LinkedList;
  *
  * @author Rhondu Smithwick
  */
-public class Grid extends Group {
-    /**
-     * The cells.
-     */
-    private Collection<Cell> theCells = new LinkedList<>();
-    /**
-     * The internal 2D array for keeping track of neighbors.
-     */
-    private Cell[][] grid;
+public class Grid {
+    private final Map<List<Integer>, Cell> grid = new HashMap<>();
+    private final Group group = new Group();
     /**
      * This grid's width.
      */
@@ -88,19 +86,16 @@ public class Grid extends Group {
         this.cellsPerRow = cellsPerRow;
         this.cellsPerColumn = cellsPerColumn;
         this.edgeType = edgeType;
-        grid = new Cell[cellsPerRow][cellsPerColumn];
     }
 
     /**
      * Initialize this cell manager.
      */
     public void init(Collection<Cell> theCells) {
-        this.theCells = theCells;
         for (Cell c : theCells) {
-            grid[c.getRow()][c.getColumn()] = c;
-            this.getChildren().add(c.getShape());
+            addCell(c.getRow(), c.getColumn(), c);
+            group.getChildren().add(c.getShape());
         }
-
         populateNeighbors();
     }
 
@@ -110,9 +105,8 @@ public class Grid extends Group {
         for (int row = 0; row < cellsPerRow; row++) {
             for (int column = 0; column < cellsPerColumn; column++) {
                 Cell myCell = createCell(cellType, cellWidth, cellHeight, row, column);
-                grid[row][column] = myCell;
-                this.getChildren().add(myCell.getShape());
-                theCells.add(myCell);
+                addCell(row, column, myCell);
+                group.getChildren().add(myCell.getShape());
             }
         }
         populateNeighbors();
@@ -137,14 +131,14 @@ public class Grid extends Group {
      * @param c this cell's column
      */
     private void traverseNeighbors(int r, int c) {
-        Cell myCell = grid[r][c];
+        Cell myCell = getCell(r, c);
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (!(j == 0 && i == 0)) {
                     int neighborR = r + i;
                     int neighborC = c + j;
                     if (inBounds(neighborR, neighborC)) {
-                        Cell neighbor = grid[neighborR][neighborC];
+                        Cell neighbor = getCell(neighborR, neighborC);
                         myCell.addNeighbor(neighbor);
                     } else if (edgeType == EdgeType.TORODIAL) {
                         addTorodialNeighbor(myCell, neighborR, neighborC);
@@ -162,7 +156,7 @@ public class Grid extends Group {
         if (!checkBound(neighborC, cellsPerColumn)) {
             neighborC = getTorodialVal(neighborC, cellsPerColumn);
         }
-        Cell neighbor = grid[neighborR][neighborC];
+        Cell neighbor = getCell(neighborR, neighborC);
         myCell.addNeighbor(neighbor);
     }
 
@@ -197,11 +191,24 @@ public class Grid extends Group {
      * @return this cell manager's cells
      */
     public Collection<Cell> getCells() {
-        return Collections.unmodifiableCollection(theCells);
+        return Collections.unmodifiableCollection(grid.values());
     }
 
-    public void setCells(Collection<Cell> newCells) {
-        theCells = newCells;
+
+    public Group getGroup() {
+        return group;
+    }
+
+    private void addCell(int r, int c, Cell cell) {
+        grid.put(getKey(r, c), cell);
+    }
+
+    private Cell getCell(int r, int c) {
+        return grid.get(getKey(r, c));
+    }
+
+    private List<Integer> getKey(int r, int c) {
+        return asList(r, c);
     }
 
     public enum EdgeType {

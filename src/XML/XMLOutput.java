@@ -78,7 +78,7 @@ public class XMLOutput {
         }
         */
 /*
-	public XMLOutput(Element rootElement) {
+    public XMLOutput(Element rootElement) {
 		init(rootElement);
 	}
 	*/
