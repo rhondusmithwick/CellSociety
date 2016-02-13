@@ -136,8 +136,8 @@ public class GUI {
         setAndAdd(myPlayPauseButton, 1, 2, 2, 1);
         setAndAdd(myStepButton, 4, 2, 2, 1);
         setAndAdd(comboBox, 1, 1, 5, 1);
-        setAndAdd(simLabel, 1, 7, 3, 3);
-        setAndAdd(mySaveToFileButton, 1, 9, 3, 3);
+        setAndAdd(simLabel, 0, 0, 1, 1);
+        setAndAdd(mySaveToFileButton, 0, 11, 1, 1);
     }
 
     /**

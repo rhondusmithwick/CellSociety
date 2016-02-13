@@ -136,8 +136,8 @@ public class SimulationControl {
         display.getChildren().remove(grid);
         grid = createGrid(simType);
         Group gridGroup = grid.getGroup();
-        GridPane.setConstraints(gridGroup, 0, 0);
-        GridPane.setRowSpan(gridGroup, 9);
+        GridPane.setConstraints(gridGroup, 0, 1);
+        GridPane.setRowSpan(gridGroup, 10);
         display.getChildren().add(gridGroup);
     }
 
