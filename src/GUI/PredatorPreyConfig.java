@@ -2,14 +2,8 @@ package GUI;
 
 import Simulation.PredatorPreySimulation;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.GridPane;
-
-import java.util.ResourceBundle;
 
 public class PredatorPreyConfig extends Config {
 
@@ -20,9 +14,9 @@ public class PredatorPreyConfig extends Config {
     private Label fishBreedLabel;
     private Label starveLabel;
     private PredatorPreySimulation ppSim;
-    
-    public PredatorPreyConfig(){
-    	super();
+
+    public PredatorPreyConfig() {
+        super();
     }
 
     @Override
@@ -42,32 +36,32 @@ public class PredatorPreyConfig extends Config {
 
     @Override
     public void createControls() {
-        sharkBreedTime = makeSlider(1, 30, 1);
-        sharkBreedTime.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeSharkBreed(new_val.intValue());
-            }
-        });
-        sharkBreedTime.setValue(ppSim.getSharkBreedTime());
-        fishBreedTime = makeSlider(1, 30, 1);
-        fishBreedTime.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeFishBreed(new_val.intValue());
-            }
-        });
-        fishBreedTime.setValue(ppSim.getFishBreedTime());
-        starveTime = makeSlider(1, 30, 1);
-        starveTime.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeStarveTime(new_val.intValue());
-            }
-        });
-        starveTime.setValue(ppSim.getStarveTime());
+        createSharkBreedTimeSlider();
+        createFishBreedTimeSlider();
+        createStarveTimeSlider();
     }
 
+
+    private void createSharkBreedTimeSlider() {
+        sharkBreedTime = makeSlider(1, 30, 1);
+        ChangeListener<Number> sharkChanger = (ov, oldVal, newVal) -> changeSharkBreed(newVal.intValue());
+        sharkBreedTime.valueProperty().addListener(sharkChanger);
+        sharkBreedTime.setValue(ppSim.getSharkBreedTime());
+    }
+
+    private void createFishBreedTimeSlider() {
+        fishBreedTime = makeSlider(1, 30, 1);
+        ChangeListener<Number> fishChanger = (ov, oldVal, newVal) -> changeFishBreed(newVal.intValue());
+        fishBreedTime.valueProperty().addListener(fishChanger);
+        fishBreedTime.setValue(ppSim.getFishBreedTime());
+    }
+
+    private void createStarveTimeSlider() {
+        starveTime = makeSlider(1, 30, 1);
+        ChangeListener<Number> starveChanger = (ov, oldVal, newVal) -> changeStarveTime(newVal.intValue());
+        starveTime.valueProperty().addListener(starveChanger);
+        starveTime.setValue(ppSim.getStarveTime());
+    }
 
     private void changeSharkBreed(int intValue) {
         ppSim.setSharkBreed(intValue);

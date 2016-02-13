@@ -3,10 +3,10 @@ package GUI;
 import Simulation.GameOfLifeSimulation;
 
 public class GameOfLifeConfig extends Config {
-	
-	public GameOfLifeConfig(){
-		super();
-	}
+
+    public GameOfLifeConfig() {
+        super();
+    }
 
     @Override
     public void init() {

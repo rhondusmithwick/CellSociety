@@ -275,6 +275,7 @@ public class SimulationControl {
             } catch (Exception e) {
                 sim = getSimulation();
             }
+            assert sim != null;
             if (!sim.resetCellSize(size)) {
                 throw new Exception();
             }

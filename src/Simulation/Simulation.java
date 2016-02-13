@@ -50,7 +50,7 @@ public abstract class Simulation {
     private void createGraph() {
         xAxis.setLabel("Frame");
         yAxis.setLabel("Number of Cells");
-        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+        lineChart = new LineChart<>(xAxis, yAxis);
         GridPane.setConstraints(lineChart, 0, 20, 1, 1, HPos.CENTER, VPos.CENTER);
     }
 
