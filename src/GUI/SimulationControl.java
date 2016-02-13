@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.w3c.dom.Element;
+import Grid.Grid.EdgeType;
 
 import java.io.File;
 import java.util.ResourceBundle;
@@ -297,6 +298,11 @@ public class SimulationControl {
             showError(myResources.getString("XMLReadError"));
         }
         setSimulation();
+    }
+
+    public void changeEdgeType(Object o) {
+        EdgeType edgeType = Grid.EdgeType.valueOf(o.toString());
+        grid.changeEdgeType(edgeType);
     }
 
     /**

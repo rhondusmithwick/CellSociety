@@ -214,4 +214,9 @@ public abstract class Grid {
     public enum EdgeType {
         NORMAL, TORODIAL
     }
+
+    public void changeEdgeType(EdgeType edgeType) {
+        this.edgeType = edgeType;
+        populateNeighbors();
+    }
 }
