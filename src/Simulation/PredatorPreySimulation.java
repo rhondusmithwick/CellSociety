@@ -4,6 +4,7 @@ import Cell.Cell;
 import Cell.PredatorPreyCell;
 import Cell.PredatorPreyCell.Mark;
 import Cell.PredatorPreyCell.State;
+import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -36,7 +37,7 @@ public class PredatorPreySimulation extends Simulation {
     private Paint sharkVisual;
 
 
-    public PredatorPreySimulation() {
+    public PredatorPreySimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
     }

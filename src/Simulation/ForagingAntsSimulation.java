@@ -1,6 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
+import XML.XMLException;
 import XML.XMLParser;
 import Cell.ForagingAntsCell;
 import Cell.ForagingAntsCell.Mark;
@@ -51,16 +52,28 @@ public class ForagingAntsSimulation extends Simulation {
     private ForagingAntsCell nest;
     private int currAnts = 0;
 
-    public ForagingAntsSimulation() {
+    public ForagingAntsSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/ForagingAnts.xml"));
     }
+
+
+
 
     private static boolean isLocation(Cell c, Point2D loc) {
         return (c.getRow() == loc.getY())
                 && (c.getColumn() == loc.getX());
     }
 
+	@Override
+	void saveSpecificValues() {
+
+	}
+
+	@Override
+	void setSpecificProperties() {
+
+	}
     public void step() {
         stepSetup();
         spawnAnts();
@@ -122,16 +135,6 @@ public class ForagingAntsSimulation extends Simulation {
         return false;
     }
 
-	@Override
-	void saveSpecificValues() {
-		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	void setSpecificProperties() {
-		// TODO Auto-generated method stub
-
-	}
 
 }

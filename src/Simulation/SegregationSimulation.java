@@ -4,6 +4,7 @@ import Cell.Cell;
 import Cell.SegregationCell;
 import Cell.SegregationCell.Mark;
 import Cell.SegregationCell.State;
+import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -40,7 +41,7 @@ public class SegregationSimulation extends Simulation {
     private Paint group2Visual;
 
 
-    public SegregationSimulation() {
+    public SegregationSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "Segregation.xml"));
     }

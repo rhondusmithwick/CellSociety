@@ -204,12 +204,12 @@ public abstract class Simulation {
     public final void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
-
+    
     public XMLParser getXmlProperties(){
     	return xmlProperties;
     }
 
-
+    
 
 
 }

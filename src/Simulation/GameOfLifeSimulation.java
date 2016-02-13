@@ -3,6 +3,7 @@ package Simulation;
 import Cell.Cell;
 import Cell.GameOfLifeCell;
 import Cell.GameOfLifeCell.Mark;
+import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -24,7 +25,7 @@ public class GameOfLifeSimulation extends Simulation {
     private Paint deadVisual;
     private Paint aliveVisual;
 
-    public GameOfLifeSimulation() {
+    public GameOfLifeSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "GameOfLife.xml"));
     }

@@ -4,6 +4,7 @@ import Cell.Cell;
 import Cell.FireCell;
 import Cell.FireCell.Mark;
 import Cell.FireCell.State;
+import XML.XMLException;
 import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -29,7 +30,7 @@ public class FireSimulation extends Simulation {
     private Paint burningVisual;
     private Paint treeVisual;
 
-    public FireSimulation() {
+    public FireSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"));
 
