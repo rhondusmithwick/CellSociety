@@ -2,6 +2,9 @@ package Cell;
 
 import javafx.scene.paint.Paint;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by rhondusmithwick on 2/4/16.
  *
@@ -23,18 +26,7 @@ public class FireCell extends Cell {
      */
     private int burnTimer;
 
-    /**
-     * This fire cell's empty visual.
-     */
-    private Paint emptyVisual;
-    /**
-     * This fire cell's burning visual.
-     */
-    private Paint burningVisual;
-    /**
-     * This fire cell's tree visual.
-     */
-    private Paint treeVisual;
+    private Map<State, Paint> visualMap = new HashMap<>();
 
     /**
      * Construct a fire cell.
@@ -73,22 +65,11 @@ public class FireCell extends Cell {
      */
     @Override
     public void changeState() {
-        switch (mark) {
-            case NONE:
-                return;
-            case TO_EMPTY:
-                setFill(emptyVisual);
-                state = State.EMPTY;
-                break;
-            case TO_BURNING:
-                setFill(burningVisual);
-                state = State.BURNING;
-                break;
-            case TO_TREE:
-                setFill(treeVisual);
-                state = State.TREE;
-                break;
+        if (mark == Mark.NONE) {
+            return;
         }
+        state = State.valueOf(mark.toString());
+        setFill(visualMap.get(state));
         setBurnTimer(0);
         setMark(Mark.NONE);
     }
@@ -100,10 +81,11 @@ public class FireCell extends Cell {
      */
     @Override
     public void setVisuals(Paint... visuals) {
-        emptyVisual = visuals[0];
-        burningVisual = visuals[1];
-        treeVisual = visuals[2];
+        visualMap.put(State.EMPTY, visuals[0]);
+        visualMap.put(State.BURNING, visuals[1]);
+        visualMap.put(State.TREE, visuals[2]);
     }
+
 
     /**
      * Get this fire cell's state.
@@ -152,6 +134,6 @@ public class FireCell extends Cell {
      * The fire cell Mark enum.
      */
     public enum Mark {
-        TO_BURNING, TO_TREE, TO_EMPTY, NONE
+        BURNING, TREE, EMPTY, NONE
     }
 }

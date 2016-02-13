@@ -2,6 +2,9 @@ package Cell;
 
 import javafx.scene.paint.Paint;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by rhondusmithwick on 1/31/16.
  *
@@ -17,15 +20,11 @@ public class GameOfLifeCell extends Cell {
      */
     private Mark mark;
 
-    /**
-     * The dead visual.
-     */
-    private Paint deadVisual;
-    /**
-     * The alive visual.
-     */
-    private Paint aliveVisual;
 
+    private Map<State, Paint> visualMap = new HashMap<>();
+
+    private Paint deadVisual;
+    private Paint aliveVisual;
     /**
      * Construct the game of life cell.
      */
@@ -40,9 +39,9 @@ public class GameOfLifeCell extends Cell {
     public void handleUpdate() {
         int aliveNeighbors = countAliveNeighbors();
         if (shouldDie(aliveNeighbors)) {
-            setMark(Mark.DESTROY);
+            setMark(Mark.ALIVE);
         } else if (shouldResurect(aliveNeighbors)) {
-            setMark(Mark.RESURECT);
+            setMark(Mark.DEAD);
         }
     }
 
@@ -71,11 +70,11 @@ public class GameOfLifeCell extends Cell {
         switch (mark) {
             case NONE:
                 return;
-            case DESTROY:
+            case DEAD:
                 setFill(deadVisual);
                 state = State.DEAD;
                 break;
-            case RESURECT:
+            case ALIVE:
                 setFill(aliveVisual);
                 state = State.ALIVE;
                 break;
@@ -113,6 +112,8 @@ public class GameOfLifeCell extends Cell {
      * @param visuals this cell's visuals
      */
     public void setVisuals(Paint... visuals) {
+        visualMap.put(State.DEAD, visuals[0]);
+        visualMap.put(State.ALIVE, visuals[1]);
         deadVisual = visuals[0];
         aliveVisual = visuals[1];
     }
@@ -146,6 +147,6 @@ public class GameOfLifeCell extends Cell {
      * Game of Life's mark enum.
      */
     public enum Mark {
-        DESTROY, RESURECT, NONE
+        ALIVE, DEAD, NONE
     }
 }
