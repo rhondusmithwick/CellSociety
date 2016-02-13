@@ -123,4 +123,12 @@ public class FireSimulation extends Simulation {
         return (fc.getRow() == getCellsPerRow() / 2)
                 && (fc.getColumn() == getCellsPerColumn() / 2);
     }
+
+	public double getBurnTime() {
+		return burnTime;
+	}
+
+	public double getCatchFire() {
+		return probCatch;
+	}
 }

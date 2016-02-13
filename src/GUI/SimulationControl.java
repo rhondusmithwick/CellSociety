@@ -65,22 +65,24 @@ public class SimulationControl {
         myXMLFile = null;
         newSize = 0;
         simType = o.toString();
+        
         sim = getSimulation();
+        setSimulation();
         config = getConfig();
         setConfigControls();
-        setSimulation();
-        display.getChildren().add(sim.getGraph());  
+        //display.getChildren().add(sim.getGraph());  
     }
     
     public Config getConfig(){
     	removeConfigControls();
     	Config config;
 	try {
-        Class myClass = Class.forName("Config." + simType + "Config");
+        Class myClass = Class.forName("GUI." + simType + "Config");
         config = (Config) myClass.newInstance();
     } catch (InstantiationException
             | IllegalAccessException
             | ClassNotFoundException e) {
+    	System.out.println("in catch");
     	config = new FireConfig();
     }
 	config.setSim(this,sim);
@@ -98,11 +100,12 @@ public class SimulationControl {
     	//display.getChildren().remove(sim.getGraph()); 
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
-        config = getConfig();
-        setConfigControls();
+        
         sim.setType(simType);
         sim.setProperties(simElem);
-        display.getChildren().add(sim.getGraph()); 
+        config = getConfig();
+        setConfigControls();
+        //display.getChildren().add(sim.getGraph()); 
     }
 
     /**

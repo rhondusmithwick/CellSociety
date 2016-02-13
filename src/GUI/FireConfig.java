@@ -29,6 +29,11 @@ public class FireConfig extends Config {
 	
 	@Override
 	public void init(){
+		fireSim = (FireSimulation) this.getSimulation();
+		createMainSliders();
+		createMainLabels();
+		setMain();
+		addMain();
 		createControls();
 		createLabels();
 		setAll();
@@ -68,6 +73,7 @@ public class FireConfig extends Config {
 	            		changeCatchFire(new_val.intValue());
 	            }
 	        });
+	    	//probCatchFire.setValue(fireSim.getCatchFire());
 	    	burnTime = new Slider(1,10,1);
 	    	burnTime.setShowTickMarks(true);
 	    	burnTime.setShowTickLabels(true);
@@ -77,16 +83,17 @@ public class FireConfig extends Config {
 	    			changeBurnTime(new_val.intValue());
 	            }
 	        });
+	    	//burnTime.setValue(fireSim.getBurnTime());
 	    }
 		
 		
 	private void changeBurnTime(int new_val) {
-		FireSimulation fireSim = (FireSimulation) this.getSimulation();
+		//FireSimulation fireSim = (FireSimulation) this.getSimulation();
 		fireSim.setBurnTime(new_val);
 	}
 
 	private void changeCatchFire(int new_val) {
-		FireSimulation fireSim = (FireSimulation) this.getSimulation();
+		//FireSimulation fireSim = (FireSimulation) this.getSimulation();
 		fireSim.setProbCatch(new_val);
 	}
 		

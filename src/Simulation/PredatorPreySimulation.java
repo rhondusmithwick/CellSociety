@@ -121,4 +121,37 @@ public class PredatorPreySimulation extends Simulation {
             sharkVisual = XMLParser.getPaintValue(simElem, "sharkVisual");
         }
     }
+
+
+	public double getSharkBreedTime() {
+		
+		return sharkBreedTime;
+	}
+
+
+	public double getFishBreedTime() {
+		return fishBreedTime;
+	}
+
+
+	public double getStarveTime() {
+		return starveTime;
+	}
+
+
+	public void setSharkBreed(int intValue) {
+		sharkBreedTime = intValue;
+		
+	}
+
+
+	public void setFishBreed(int intValue) {
+		fishBreedTime = intValue;
+		
+	}
+
+
+	public void setStarveTime(int intValue) {
+		starveTime = intValue;
+	}
 }

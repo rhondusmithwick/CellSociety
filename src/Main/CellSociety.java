@@ -17,7 +17,7 @@ class CellSociety {
     /**
      * Stylesheet option.
      */
-    private static final String STYLESHEET = "heart.css";
+    private static final String STYLESHEET = "vivid.css";
     /**
      * The dimensions of the Scene.
      */

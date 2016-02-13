@@ -80,7 +80,7 @@ public abstract class Simulation {
         getTheCells().forEach(c -> c.handleUpdate());
     }
 
-    final void changeStates() {
+	final void changeStates() {
         for (Cell c : getTheCells()) {
             c.changeState();
         }
@@ -203,6 +203,14 @@ public abstract class Simulation {
             return false;
         }
     }
+
+	public double getSpeed() {
+		return simulationLoop.getRate();
+	}
+
+	public double getSize() {
+		return cellsPerRow;
+	}
 
 }
 
