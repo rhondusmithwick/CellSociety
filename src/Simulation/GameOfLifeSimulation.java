@@ -69,6 +69,11 @@ public class GameOfLifeSimulation extends Simulation {
     }
 
 	@Override
+
+	void assignLoadState(Cell c) {
+		// TODO Auto-generated method stub
+	}
+
 	boolean hasGraph() {
 		return false;
 	}

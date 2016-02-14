@@ -148,7 +148,7 @@ public class SlimeMoldSimulation extends Simulation {
     public double getSniff() {
         return sniffThreshold;
     }
-    
+
     public void setSniff(int newSniff) {
         sniffThreshold = newSniff;
 
@@ -185,5 +185,12 @@ public class SlimeMoldSimulation extends Simulation {
 		return false;
 	}
 
-   
+
+
+	@Override
+	void assignLoadState(Cell c) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

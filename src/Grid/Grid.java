@@ -21,7 +21,8 @@ import static java.util.Arrays.asList;
  */
 public abstract class Grid {
     private final Group group = new Group();
-    private final Map<List<Integer>, Cell> grid = new HashMap<>();
+    private Map<List<Integer>, Cell> grid = new HashMap<>();
+  //  private String shapeType;
     /**
      * This grid's width.
      */
@@ -62,9 +63,13 @@ public abstract class Grid {
     /**
      * Initialize this cell manager.
      */
-    public final void init(Collection<Cell> theCells) {
-        theCells.stream().forEach(this::add);
-        populateNeighbors();
+
+    public void init(Collection<Cell> theCells) {
+    	grid = new HashMap<>();
+    	for(Cell c: theCells){
+    		add(c);
+    	}
+    	populateNeighbors();
     }
 
     public abstract void init(String cellType);
@@ -161,7 +166,8 @@ public abstract class Grid {
      * @param column     the cell's column
      * @return a cell of type cellType OR a Fire cell if exception
      */
-    final Cell createCell(CellShape shape, String cellType, int row, int column) {
+
+    public Cell createCell(CellShape shape, String cellType, int row, int column) {
         Cell myCell;
         try {
             Class<?> cellClass = Class.forName("Cell." + cellType + "Cell");

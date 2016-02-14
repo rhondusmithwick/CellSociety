@@ -231,4 +231,11 @@ public class ForagingAntsSimulation extends Simulation {
 		return true;
 	}
 
+	@Override
+	void assignLoadState(Cell c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

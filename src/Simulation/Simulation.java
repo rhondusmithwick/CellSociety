@@ -2,6 +2,7 @@ package Simulation;
 
 import Cell.Cell;
 import Grid.Grid.EdgeType;
+import XML.XMLException;
 import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -59,10 +60,14 @@ public abstract class Simulation {
         return myResources;
     }
 
-    public final void setProperties(Element simElem) {
+    public void setProperties(Element simElem) throws XMLException {
         xmlProperties = new XMLParser(simElem);
         setGenericProperties();
         setSpecificProperties();
+        if(xmlProperties.tagExists(type+"Cells")){
+        	saveValues();
+        	theCells = xmlProperties.getCells((type+"Cells"));
+        }
     }
 
     public Map<String, Object> getSavedValues() {
@@ -77,6 +82,7 @@ public abstract class Simulation {
         savedValues.put("numCellsPerRow", numCellsPerRow);
         savedValues.put("numCellsPerColumn", numCellsPerColumn);
         saveSpecificValues();
+        saveCellStates();
     }
 
     abstract void saveSpecificValues();
@@ -93,14 +99,19 @@ public abstract class Simulation {
         getTheCells().stream().forEach(this::assignInitialState);
         changeStates();
     }
+    public void initLoad() {
+    	setSpecificProperties() ;
+        getTheCells().stream().forEach(this::assignLoadState);
+        changeStates();
+    }
 
     abstract void assignInitialState(Cell c);
-
+    abstract void assignLoadState(Cell c);
     public void step() {
         getTheCells().stream().forEach(Cell::handleUpdate);
     }
 
-    final void changeStates() {
+    public final void changeStates() {
         getTheCells().stream().forEach(Cell::changeState);
     }
 
@@ -223,7 +234,7 @@ public abstract class Simulation {
         return theCells;
     }
 
-    public final void setTheCells(Collection<Cell> theCells) {
+    public void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
 
@@ -242,7 +253,12 @@ public abstract class Simulation {
     public double getSize() {
         return numCellsPerRow;
     }
-    
+    public void saveCellStates(){
+    	for(Cell c: theCells)
+    	c.saveCellState();
+    }
+
+
     private void createGraph() {
         xAxis.setLabel(myResources.getString("Frame"));
         yAxis.setLabel(myResources.getString("NumberOfCells"));
@@ -252,13 +268,13 @@ public abstract class Simulation {
     public LineChart<Number, Number> getGraph() {
         return lineChart;
     }
-    
+
     abstract boolean hasGraph();
 
     public boolean setGraph(GridPane graph) {
         graph.getChildren().add(lineChart);
         return hasGraph();
     }
-    
+
 }
 

@@ -88,7 +88,7 @@ public class PredatorPreySimulation extends Simulation {
         updateGraph();
         clearMap();
     }
-    
+
     private void updateMap(){
         for (Cell cell: getTheCells()){
             addToMap((PredatorPreyCell) cell);
@@ -209,8 +209,17 @@ public class PredatorPreySimulation extends Simulation {
     }
 
 
+
+
+	@Override
+	void assignLoadState(Cell c) {
+		// TODO Auto-generated method stub
+
+	}
+
 	@Override
 	boolean hasGraph() {
 		return true;
 	}
+
 }

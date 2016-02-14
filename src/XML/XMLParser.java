@@ -6,10 +6,22 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import Cell.Cell;
+import Cell.FireCell;
+import Grid.Grid;
+import Grid.RectangleGrid;
+import Grid.RectangleShape;
+import Simulation.FireSimulation;
+import Simulation.Simulation;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Created by SudoTavo on 02/05/16.
@@ -19,10 +31,60 @@ import java.io.IOException;
 public class XMLParser {
 
     private final Element rootElement;
-
+    private Collection<Cell> cells;
     public XMLParser(Element rootElement) {
         this.rootElement = rootElement;
     }
+
+    public Collection<Cell> getCells(String cellType) throws XMLException{
+    	cells = new LinkedList<Cell>();
+    	//Cell base = getCell(cellType);
+    	//base.saveCellState();
+    	Element cellsElem = getElement("Cells");
+    	int cellCount = getIntValue(cellsElem,"cellCount");
+    	for(int i=0; i<cellCount; i++){
+        	String tag = "cell"+Integer.toString(i);
+        	Cell newCell = makeCell(cellType,getElement(cellsElem,tag));
+    		cells.add(newCell);
+    		//System.out.println("New Cell #"+i);
+    		//System.out.println("row: "+newCell.getRow());
+    	}
+
+    	return cells;
+    }
+
+    public Cell makeCell(String cellType, Element cellElem) throws XMLException{
+
+		double x = getDoubleValue(cellElem,"x");
+		double y = getDoubleValue(cellElem,"y");
+		double cellWidth = getDoubleValue(cellElem,"cellWidth");
+		double cellHeight = getDoubleValue(cellElem,"cellHeight");
+		int row = getIntValue(cellElem,"row");
+		int column = getIntValue(cellElem,"column");
+		//System.out.println(cellHeight);
+		Grid g = new RectangleGrid();
+		Cell cell = g.createCell(new RectangleShape(x,y , cellWidth, cellHeight),cellType,row, column);
+		//Cell//getCell(cellType);
+
+		cell.saveCellState();
+
+		Map<String,String> stateMap = new HashMap<String,String>();
+		for(String tag: cell.getCellState().keySet()){
+			stateMap.put(tag, getTextValue(cellElem,tag));
+		}
+
+		//cell.init(new RectangleShape(x,y , cellWidth, cellHeight),row, column);
+
+		if(cell instanceof FireCell){
+			 ((FireCell)cell).loadCellState(stateMap);
+			// ((FireCell)cell).changeState();
+		}
+
+		return cell;
+    }
+
+
+
 
     public static String getSimType(Element simElem) {
         return simElem.getAttribute("SimulationType");
@@ -42,6 +104,20 @@ public class XMLParser {
         }
     }
 
+
+
+    private Element getElement(String tagName) {
+        return getElement(rootElement,tagName);
+    }
+
+    private Element getElement(Element parent, String tagName) {
+        Element el = null;
+        NodeList nl = parent.getElementsByTagName(tagName);
+        if (nl != null && nl.getLength() > 0) {
+           el = (Element) nl.item(0);
+        }
+        return el;
+    }
     private static String getTextValue(Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
@@ -51,6 +127,12 @@ public class XMLParser {
         }
         return textVal;
     }
+    public boolean tagExists(String tagName) {
+    	NodeList nl = rootElement.getElementsByTagName(tagName);
+    	return(nl != null && nl.getLength() > 0);
+    }
+
+
 
     public static Paint getPaintValue(Element ele, String tagName) {
         return Paint.valueOf(getTextValue(ele, tagName));
@@ -58,6 +140,9 @@ public class XMLParser {
 
     public static int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
+    }
+    public static double getDoubleValue(Element ele, String tagName) {
+        return Double.parseDouble(getTextValue(ele, tagName));
     }
 
     public Element getRootElement() {

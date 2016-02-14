@@ -49,6 +49,7 @@ public class SimulationControl {
     private Group gridGroup;
     private int newSize = 0;
     private File myXMLFile = null;
+    private XMLParser parser;
 	private boolean hasSecondaryStage = false;
 	private Stage secondaryStage;
 
@@ -92,7 +93,7 @@ public class SimulationControl {
         } catch (InstantiationException
                 | IllegalAccessException
                 | ClassNotFoundException e) {
-            System.out.println("in catch");
+            //System.out.println("in catch");
             config = new FireConfig();
         }
         config.setSim(this, sim);
@@ -108,13 +109,20 @@ public class SimulationControl {
      * @param simElem Simulation element from the XML file parser.
      */
     private void switchSimulation(Element simElem) {
+        //display.getChildren().remove(sim.getGraph());
+        simType = parser.getSimType();
     	stageCheck();
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
 
         assert sim != null;
         sim.setType(simType);
-        sim.setProperties(simElem);
+        try {
+			sim.setProperties(simElem);
+		} catch (XMLException e) {
+			showError(myResources.getString("XMLReadError"));
+		}
+
         config = getConfig();
         setConfigControls();
     }
@@ -128,12 +136,24 @@ public class SimulationControl {
         sim.setTheCells(grid.getCells());
         sim.init();
     }
+    private void setCellSimulation() {
+        setSimLabel();
+        displayLoadedCells();
+        sim.setTheCells(grid.getCells());
+        sim.initLoad();
+    }
 
     public void saveSimulation(File file) {
         sim.saveValues();
         XMLOutput simSave = new XMLOutput(sim);
-        simSave.theCells = grid.getCells();
-        simSave.writeXML(file);
+        if(sim instanceof FireSimulation){
+        	simSave.addCells(sim.getType(), grid.getCells());
+        }
+        try {
+			simSave.writeXML(file);
+		} catch (XMLException e) {
+			showError(myResources.getString("XMLSaveError"));
+		}
     }
 
     /**
@@ -142,10 +162,27 @@ public class SimulationControl {
     private void displayNewCells() {
         if (gridGroup != null) display.getChildren().remove(gridGroup);
         grid = createGrid(simType);
-        gridGroup = grid.getGroup();
-        GridPane.setConstraints(gridGroup, 0, 1);
-        GridPane.setRowSpan(gridGroup, 11);
-        display.getChildren().add(gridGroup);
+        grid.init(simType);
+        setGroup();
+    }
+
+
+    private void displayLoadedCells() {
+        if (gridGroup != null) display.getChildren().remove(gridGroup);
+        grid = createGrid(simType);
+        try {
+			grid.init(parser.getCells(simType));
+		} catch (XMLException e) {
+			 showError(myResources.getString("XMLReadError"));
+		}
+        setGroup();
+    }
+
+    private void setGroup(){
+    	gridGroup = grid.getGroup();
+    	GridPane.setConstraints(gridGroup, 0, 1);
+    	GridPane.setRowSpan(gridGroup, 11);
+    	display.getChildren().add(gridGroup);
     }
 
     /**
@@ -163,7 +200,7 @@ public class SimulationControl {
             try {
                 sim = new FireSimulation();
             } catch (XMLException e1) {
-                showError("XML read error");
+                showError(myResources.getString("XMLReadError"));
                 return null;
             }
         }
@@ -259,7 +296,7 @@ public class SimulationControl {
         sim.resetCellSize(newSize);
         setSimulation();
     }
-    
+
     public void stageCheck(){
     	if (hasSecondaryStage){
     		secondaryStage.close();
@@ -278,9 +315,9 @@ public class SimulationControl {
         grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
                 sim.getCellsPerRow(),
                 sim.getCellsPerColumn(), sim.getEdgeType());
-        grid.init(simType);
         return grid;
     }
+
 
     /**
      * Changes number of rows and columns per line on the grid based on user
@@ -309,12 +346,21 @@ public class SimulationControl {
     public void openFile(File file) {
         newSize = 0;
         myXMLFile = file;
+
         try {
-            switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
+        	parser = new XMLParser (XMLParser.getXmlElement(myXMLFile.getPath()));
+            switchSimulation(parser.getRootElement());
+
         } catch (XMLException e) {
             showError(myResources.getString("XMLReadError"));
         }
-        setSimulation();
+        if(parser.tagExists("Cells")){
+        	setCellSimulation();
+        }
+        else{
+        	setSimulation();
+        }
+
     }
 
     public void changeEdgeType(Object o) {

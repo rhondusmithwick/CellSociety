@@ -49,6 +49,14 @@ public class FireSimulation extends Simulation {
             fc.setMark(Mark.TREE);
         }
     }
+    @Override
+    void assignLoadState(Cell c){
+    	 FireCell fc = (FireCell) c;
+    fc.removeDiagonals();
+    fc.setVisuals(emptyVisual, burningVisual, treeVisual);
+    fc.setBurnTimer(burnTime);
+    setLoadState(fc);
+    }
 
     @Override
     public void step() {
@@ -65,9 +73,25 @@ public class FireSimulation extends Simulation {
     private void getUpdate(FireCell fc) {
         if (treeShouldBurn(fc)) {
             fc.setMark(Mark.BURNING);
-        } else if (treeDoneBurning(fc)) {
+        }
+
+        else if (treeDoneBurning(fc)) {
             fc.setMark(Mark.EMPTY);
         }
+        setLoadState(fc);
+
+    }
+    private void setLoadState(FireCell fc){
+        if(fc.getState()==State.BURNING){
+        	fc.setFill(burningVisual);
+        }
+        if(fc.getState()==State.TREE){
+        	fc.setFill(treeVisual);
+        }
+        if(fc.getState()==State.EMPTY){
+        	fc.setFill(emptyVisual);
+        }
+
     }
 
     @Override
