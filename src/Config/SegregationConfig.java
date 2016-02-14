@@ -5,6 +5,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
+/**
+ *SegregationConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+ * <p>
+ * Created by bliborio on 2/11/16.
+ *
+ * @author Bruna Liborio
+ */
+
 public class SegregationConfig extends Config {
 
     private SegregationSimulation segSim;

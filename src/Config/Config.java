@@ -15,6 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Config Class: Abstract class allowing for the addition of sliders to dynamically control the simulation.
+ * <p>
+ * Created by bliborio on 2/11/16.
+ *
+ * @author Bruna Liborio
+ */
+
 public abstract class Config {
 
     private static final String GUI_PROPERTY_PATH = "GUIstrings";

@@ -5,6 +5,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
+/**
+ *PredatorPreyConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+ * <p>
+ * Created by bliborio on 2/11/16.
+ *
+ * @author Bruna Liborio
+ */
+
 public class PredatorPreyConfig extends Config {
 
     private Slider sharkBreedTime;

@@ -134,7 +134,6 @@ public class SimulationControl {
         XMLOutput simSave = new XMLOutput(sim);
         simSave.theCells = grid.getCells();
         simSave.writeXML(file);
-
     }
 
     /**
