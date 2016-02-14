@@ -193,8 +193,12 @@ public class ForagingAntsCell extends Cell {
         return probChoice;
     }
 
-    double getHomePheromones() {
+    public double getHomePheromones() {
         return homePheromones;
+    }
+
+    public double getFoodPheromones() {
+        return foodPheromones;
     }
 
     public void setInitialPheromones(double min, double max) {

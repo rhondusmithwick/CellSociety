@@ -13,10 +13,12 @@ import XML.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import org.w3c.dom.Element;
 
 import java.io.File;
@@ -363,5 +365,16 @@ public class SimulationControl {
      */
     private void setSimLabel() {
         simLabel.setText(simType);
+    }
+
+    public void startGraph(){
+        Stage secondaryStage = new Stage();
+        GridPane graph = new GridPane();
+        Scene graphScene = new Scene(graph,500,300);
+        graphScene.getStylesheets().add("vivid.css");
+        secondaryStage.setScene(graphScene);
+        sim.setGraph(graph);
+        secondaryStage.setTitle(simLabel.getText().toString());
+        secondaryStage.show();
     }
 }

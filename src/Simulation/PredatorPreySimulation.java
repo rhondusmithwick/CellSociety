@@ -6,8 +6,13 @@ import Cell.PredatorPreyCell.Mark;
 import Cell.PredatorPreyCell.State;
 import XML.XMLException;
 import XML.XMLParser;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by rhondusmithwick on 2/3/16.
@@ -36,11 +41,29 @@ public class PredatorPreySimulation extends Simulation {
     private Paint sharkVisual;
 
 
+
+    private XYChart.Series fish = new XYChart.Series();
+    private XYChart.Series shark = new XYChart.Series();
+    private int frame = 0;
+    private LineChart lineChart;
+
+    private Map<String,Integer> graphMap = new HashMap<String,Integer>();
+
+
     public PredatorPreySimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
+        lineChart = this.getGraph();
+        setUpChart();
     }
 
+
+    private void setUpChart() {
+        shark.setName(this.getResources().getString("Shark"));
+        fish.setName(this.getResources().getString("Fish"));
+        this.getGraph().getData().add(fish);
+        this.getGraph().getData().add(shark);
+    }
 
     @Override
     void assignInitialState(Cell c) {
@@ -59,11 +82,45 @@ public class PredatorPreySimulation extends Simulation {
     @Override
     public void step() {
         super.step();
+        frame ++;
         breedAll();
         moveAll();
         changeStates();
+        updateMap();
+        updateGraph();
+        clearMap();
     }
 
+    private void updateGraph() {
+        shark.getData().add(new XYChart.Data(frame,graphMap.get("SHARK")));
+        fish.getData().add(new XYChart.Data(frame,graphMap.get("FISH")));
+    }
+
+
+    private void clearMap() {
+        for (Map.Entry entry : graphMap.entrySet()){
+            graphMap.put((String) entry.getKey(),0);
+        }
+    }
+
+
+    private void updateMap(){
+        for (Cell cell: getTheCells()){
+            addToMap((PredatorPreyCell) cell);
+        }
+    }
+
+
+    private void addToMap(PredatorPreyCell cell) {
+        String state = cell.getStateString();
+        if (graphMap.containsKey(state)){
+            int frequ = graphMap.get(state);
+            graphMap.put(state,frequ+1);
+        }
+        else{
+            graphMap.put(state, 1);
+        }
+    }
 
     private void breedAll() {
         getTheCells().stream()

@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 /**
  * Created by rhondusmithwick on 1/31/16.
@@ -25,6 +26,8 @@ import java.util.Random;
  * @author Rhondu Smithwick
  */
 public abstract class Simulation {
+    private static final String GUI_PROPERTY_PATH = "GUIstrings";
+    private final ResourceBundle myResources;
     private final Random rn;
     private final Timeline simulationLoop;
     private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
@@ -40,20 +43,26 @@ public abstract class Simulation {
     private Collection<Cell> theCells;
     private LineChart<Number, Number> lineChart;
     private boolean isPlaying = false;
+    private boolean hasGraph = false;
+
 
     Simulation() {
+        myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
+        createGraph();
         simulationLoop = buildLoop();
         rn = new Random();
-        createGraph();
+    }
+
+
+    ResourceBundle getResources() {
+        return myResources;
     }
 
     private void createGraph() {
-        xAxis.setLabel("Frame");
-        yAxis.setLabel("Number of Cells");
+        xAxis.setLabel(myResources.getString("Frame"));
+        yAxis.setLabel(myResources.getString("NumberOfCells"));
         lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-        GridPane.setConstraints(lineChart, 0, 20, 1, 1, HPos.CENTER, VPos.CENTER);
     }
-
 
     public LineChart<Number, Number> getGraph() {
         return lineChart;
@@ -241,6 +250,12 @@ public abstract class Simulation {
 
     public double getSize() {
         return numCellsPerRow;
+    }
+
+    public void setGraph(GridPane graph) {
+        //createGraph();
+        graph.getChildren().add(lineChart);
+        hasGraph  = true;
     }
 }
 

@@ -137,6 +137,11 @@ public class PredatorPreyCell extends Cell {
         addToVisualMap(State.SHARK, visuals[2]);
     }
 
+    public String getStateString() {
+        return state.toString();
+    }
+
+
     private boolean shouldMakeEmpty() {
         return (!shouldBreed)
                 || (mark == Mark.EMPTY);
