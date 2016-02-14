@@ -1,6 +1,7 @@
 package Simulation;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -10,8 +11,12 @@ import Cell.PredatorPreyCell.Mark;
 import Cell.PredatorPreyCell.State;
 import XML.XMLException;
 import XML.XMLParser;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -36,31 +41,31 @@ public class PredatorPreySimulation extends Simulation {
     private int starveTime;
     private int emptyPercent;
     private int fishPercent;
-
+    
     private Paint emptyVisual;
     private Paint fishVisual;
     private Paint sharkVisual;
     
-    private XYChart.Series fish;
-    private XYChart.Series sharks;
+    private XYChart.Series fish = new XYChart.Series();
+    private XYChart.Series shark = new XYChart.Series();
     private int frame = 0;
+    private LineChart lineChart;
 
     private Map<String,Integer> graphMap = new HashMap<String,Integer>();
 
     public PredatorPreySimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
+        lineChart = this.getGraph();
         setUpChart();
     }
 
 
     private void setUpChart() {
-    	sharks = new XYChart.Series();
-    	sharks.setName("Sharks");
-    	fish = new XYChart.Series<>();
+    	shark.setName("Sharks");
     	fish.setName("Fish");
-    	this.getGraph().getData().add(sharks);
     	this.getGraph().getData().add(fish);
+    	this.getGraph().getData().add(shark);
 	}
 
 
@@ -91,13 +96,13 @@ public class PredatorPreySimulation extends Simulation {
     }
     
     private void updateGraph() {
-    	LineChart lineChart = this.getGraph();
-    	sharks.getData().add(new XYChart.Data(frame,graphMap.get("SHARK")));
+    	shark.getData().add(new XYChart.Data(frame,graphMap.get("SHARK")));
 		fish.getData().add(new XYChart.Data(frame,graphMap.get("FISH")));
-		lineChart.getData().remove(sharks);
-		lineChart.getData().remove(fish);
-		lineChart.getData().add(sharks);
-		lineChart.getData().add(fish);
+		//lineChart.getData().remove(sharks);
+		//lineChart.getData().remove(fish);
+		//lineChart.getData().add(sharks);
+		//lineChart.getData().add(fish);
+		
 	}
 
 

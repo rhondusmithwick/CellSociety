@@ -245,7 +245,6 @@ public abstract class Simulation {
     } 
 
 	public void setGraph(GridPane graph) {
-		createGraph();
 		graph.getChildren().add(lineChart);
 		hasGraph  = true;
 	}
