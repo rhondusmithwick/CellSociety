@@ -25,39 +25,39 @@ abstract class CustomPolygon extends Polygon {
 
     abstract void createPoints();
 
-    void setPoints() {
+    final void setPoints() {
         for (Point2D point : points) {
             getPoints().addAll(point.getX(), point.getY());
         }
     }
 
-    public double getY() {
+    public final double getY() {
         return y;
     }
 
-    public double getX() {
+    public final double getX() {
         return x;
     }
 
-    public double getWidth() {
+    public final double getWidth() {
         return width;
     }
 
 
-    public double getHeight() {
+    public final double getHeight() {
         return height;
     }
 
 
-    void addPoint(int i, Point2D point) {
+    final void addPoint(int i, Point2D point) {
         points[i] = point;
     }
 
-    Point2D getPoint(int i) {
+    final Point2D getPoint(int i) {
         return points[i];
     }
 
-    void setPoints(Point2D[] points) {
+    final void setPoints(Point2D[] points) {
         this.points = points;
     }
 }

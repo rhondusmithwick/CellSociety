@@ -36,20 +36,20 @@ public abstract class Config {
         setAndAddMain();
     }
 
-    public void setSim(SimulationControl newControl, Simulation newSimulation) {
+    public final void setSim(SimulationControl newControl, Simulation newSimulation) {
         mySimControl = newControl;
         mySimulation = newSimulation;
     }
 
-    public SimulationControl getSimControl() {
+    public final SimulationControl getSimControl() {
         return mySimControl;
     }
 
-    Simulation getSimulation() {
+    final Simulation getSimulation() {
         return mySimulation;
     }
 
-    ResourceBundle getResources() {
+    final ResourceBundle getResources() {
         return myResources;
     }
 
@@ -62,20 +62,20 @@ public abstract class Config {
         newControls.add(e);
     }
 
-    public List<Node> getControls() {
+    public final List<Node> getControls() {
         return newControls;
     }
 
-    void createMainLabels() {
+    final void createMainLabels() {
         sizeLabel = makeLabel(getResources().getString("SizeLabel"));
         speedLabel = makeLabel(getResources().getString("SpeedLabel"));
     }
 
-    Label makeLabel(String string) {
+    final Label makeLabel(String string) {
         return new Label(string);
     }
 
-    void createMainSliders() {
+    final void createMainSliders() {
         createSpeedSlider();
         createSizeSlider();
     }
@@ -87,7 +87,7 @@ public abstract class Config {
         mySpeedSlider.valueProperty().addListener(speedChanger);
     }
 
-    void deactivateSize() {
+    final void deactivateSize() {
         mySizeSlider.setDisable(true);
     }
 
@@ -105,14 +105,14 @@ public abstract class Config {
         return slider;
     }
 
-    void setAndAddMain() {
+    final void setAndAddMain() {
         setAndAdd(speedLabel, 1, 6, 1, 1);
         setAndAdd(sizeLabel, 1, 7, 1, 1);
         setAndAdd(mySpeedSlider, 2, 6, 1, 1);
         setAndAdd(mySizeSlider, 2, 7, 1, 1);
     }
 
-    void setAndAdd(Node node, int col, int row, int colSpan, int rowSpan) {
+    final void setAndAdd(Node node, int col, int row, int colSpan, int rowSpan) {
         GridPane.setConstraints(node, col, row, colSpan, rowSpan, HPos.CENTER, VPos.CENTER);
         this.addControl(node);
         ((Region) node).setMaxWidth(Double.MAX_VALUE);

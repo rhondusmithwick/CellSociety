@@ -51,7 +51,7 @@ public abstract class Grid {
      * @param cellsPerRow    the number of cells per row
      * @param cellsPerColumn the number of cells per column
      */
-    public void setGrid(int gridWidth, int gridHeight, int cellsPerRow, int cellsPerColumn, EdgeType edgeType) {
+    public final void setGrid(int gridWidth, int gridHeight, int cellsPerRow, int cellsPerColumn, EdgeType edgeType) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
         this.cellsPerRow = cellsPerRow;
@@ -62,7 +62,7 @@ public abstract class Grid {
     /**
      * Initialize this cell manager.
      */
-    public void init(Collection<Cell> theCells) {
+    public final void init(Collection<Cell> theCells) {
         theCells.stream().forEach(this::add);
         populateNeighbors();
     }
@@ -72,7 +72,7 @@ public abstract class Grid {
     /**
      * Populate neighbors of all cells.
      */
-    void populateNeighbors() {
+    final void populateNeighbors() {
         for (int r = 0; r < cellsPerRow; r++) {
             for (int c = 0; c < cellsPerColumn; c++) {
                 traverseNeighbors(r, c);
@@ -146,7 +146,7 @@ public abstract class Grid {
      *
      * @return this cell manager's cells
      */
-    public Collection<Cell> getCells() {
+    public final Collection<Cell> getCells() {
         return Collections.unmodifiableCollection(grid.values());
     }
 
@@ -161,7 +161,7 @@ public abstract class Grid {
      * @param column     the cell's column
      * @return a cell of type cellType OR a Fire cell if exception
      */
-    Cell createCell(CellShape shape, String cellType, int row, int column) {
+    final Cell createCell(CellShape shape, String cellType, int row, int column) {
         Cell myCell;
         try {
             Class<?> cellClass = Class.forName("Cell." + cellType + "Cell");
@@ -173,27 +173,27 @@ public abstract class Grid {
         return myCell;
     }
 
-    public Group getGroup() {
+    public final Group getGroup() {
         return group;
     }
 
-    int getCellsPerRow() {
+    final int getCellsPerRow() {
         return cellsPerRow;
     }
 
-    int getGridWidth() {
+    final int getGridWidth() {
         return gridWidth;
     }
 
-    int getGridHeight() {
+    final int getGridHeight() {
         return gridHeight;
     }
 
-    int getCellsPerColumn() {
+    final int getCellsPerColumn() {
         return cellsPerColumn;
     }
 
-    void add(Cell c) {
+    final void add(Cell c) {
         addCellToGrid(c.getRow(), c.getColumn(), c);
         group.getChildren().add(c.getGroup());
     }
@@ -212,7 +212,7 @@ public abstract class Grid {
     }
 
 
-    public void changeEdgeType(EdgeType edgeType) {
+    public final void changeEdgeType(EdgeType edgeType) {
         this.edgeType = edgeType;
         populateNeighbors();
     }
