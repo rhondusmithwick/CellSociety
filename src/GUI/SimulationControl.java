@@ -50,7 +50,6 @@ public class SimulationControl {
     private int newSize = 0;
     private File myXMLFile = null;
     private XMLParser parser;
-    private boolean xmlCells = false;
 	private boolean hasSecondaryStage = false;
 	private Stage secondaryStage;
 
@@ -164,14 +163,9 @@ public class SimulationControl {
         if (gridGroup != null) display.getChildren().remove(gridGroup);
         grid = createGrid(simType);
         grid.init(simType);
+        setGroup();
     }
 
-    private void setGroup(){
-    	gridGroup = grid.getGroup();
-    	GridPane.setConstraints(gridGroup, 0, 1);
-    	GridPane.setRowSpan(gridGroup, 11);
-    	display.getChildren().add(gridGroup);
-    }
 
     private void displayLoadedCells() {
         if (gridGroup != null) display.getChildren().remove(gridGroup);
@@ -182,6 +176,13 @@ public class SimulationControl {
 			 showError(myResources.getString("XMLReadError"));
 		}
         setGroup();
+    }
+
+    private void setGroup(){
+    	gridGroup = grid.getGroup();
+    	GridPane.setConstraints(gridGroup, 0, 1);
+    	GridPane.setRowSpan(gridGroup, 11);
+    	display.getChildren().add(gridGroup);
     }
 
     /**
@@ -354,10 +355,10 @@ public class SimulationControl {
             showError(myResources.getString("XMLReadError"));
         }
         if(parser.tagExists("Cells")){
-        	setSimulation();
+        	setCellSimulation();
         }
         else{
-        	setCellSimulation();
+        	setSimulation();
         }
 
     }
