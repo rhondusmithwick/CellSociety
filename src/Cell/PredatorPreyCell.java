@@ -112,6 +112,10 @@ public class PredatorPreyCell extends Cell {
     public State getState() {
         return state;
     }
+    
+    public String getStateString() {
+    	return state.toString();
+    }
 
     private Mark getMark() {
         return mark;

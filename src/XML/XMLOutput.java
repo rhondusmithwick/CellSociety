@@ -109,7 +109,7 @@ public class XMLOutput {
         encoder.writeObject(c);
     }
 /*
-	    public void writeXML(File file){
+        public void writeXML(File file){
 	    	try {
 				encoder = new XMLEncoder(new BufferedOutputStream (new FileOutputStream(file))) ;
 			} catch (FileNotFoundException e) {

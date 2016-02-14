@@ -1,11 +1,17 @@
 package Simulation;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import Cell.Cell;
 import Cell.PredatorPreyCell;
 import Cell.PredatorPreyCell.Mark;
 import Cell.PredatorPreyCell.State;
 import XML.XMLException;
 import XML.XMLParser;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -34,15 +40,31 @@ public class PredatorPreySimulation extends Simulation {
     private Paint emptyVisual;
     private Paint fishVisual;
     private Paint sharkVisual;
+    
+    private XYChart.Series fish;
+    private XYChart.Series sharks;
+    private int frame = 0;
 
+    private Map<String,Integer> graphMap = new HashMap<String,Integer>();
 
     public PredatorPreySimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "PredatorPrey.xml"));
+        setUpChart();
     }
 
 
-    @Override
+    private void setUpChart() {
+    	sharks = new XYChart.Series();
+    	sharks.setName("Sharks");
+    	fish = new XYChart.Series<>();
+    	fish.setName("Fish");
+    	this.getGraph().getData().add(sharks);
+    	this.getGraph().getData().add(fish);
+	}
+
+
+	@Override
     void assignInitialState(Cell c) {
         int randomNum = getRandomNum(1, 100);
         final PredatorPreyCell ppc = (PredatorPreyCell) c;
@@ -59,13 +81,53 @@ public class PredatorPreySimulation extends Simulation {
     @Override
     public void step() {
         super.step();
+        frame ++;
         breedAll();
         moveAll();
         changeStates();
+        updateMap();
+        updateGraph();
+        clearMap();
+    }
+    
+    private void updateGraph() {
+    	LineChart lineChart = this.getGraph();
+    	sharks.getData().add(new XYChart.Data(frame,graphMap.get("SHARK")));
+		fish.getData().add(new XYChart.Data(frame,graphMap.get("FISH")));
+		lineChart.getData().remove(sharks);
+		lineChart.getData().remove(fish);
+		lineChart.getData().add(sharks);
+		lineChart.getData().add(fish);
+	}
+
+
+	private void clearMap() {
+		for (Entry entry : graphMap.entrySet()){
+			graphMap.put((String) entry.getKey(),0);
+		}
+	}
+
+
+	private void updateMap(){
+    	for (Cell cell: getTheCells()){
+    		addToMap((PredatorPreyCell) cell);
+    	}
     }
 
 
-    private void breedAll() {
+    private void addToMap(PredatorPreyCell cell) {
+    	String state = cell.getStateString();
+		if (graphMap.containsKey(state)){
+			int frequ = graphMap.get(state);
+			graphMap.put(state,frequ+1);
+		}
+		else{
+			graphMap.put(state, 1);
+		}
+	}
+
+
+	private void breedAll() {
         getTheCells().stream()
                 .map(c -> (PredatorPreyCell) c)
                 .forEach(ppc -> ppc.breedIfShould(fishBreedTime, sharkBreedTime));

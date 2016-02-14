@@ -1,6 +1,8 @@
 package GUI;
 
-import Cell.Grid;
+import Grid.Grid;
+import Grid.Grid.EdgeType;
+import Grid.RectangleGrid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
 import XML.XMLException;
@@ -9,11 +11,17 @@ import XML.XMLParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
 import org.w3c.dom.Element;
+
+import Config.Config;
+import Config.FireConfig;
 
 import java.io.File;
 import java.util.ResourceBundle;
@@ -34,11 +42,13 @@ public class SimulationControl {
     private final ResourceBundle myResources;
     private final GridPane display;
     private final ObservableList<String> mySimulations;
+    private final ObservableList<String> myEdgeTypes;
     private final Label simLabel = new Label();
     private String simType = DEFAULT_SIM_TYPE;
     private Simulation sim;
     private Config config = new FireConfig();
     private Grid grid;
+    private Group gridGroup;
     private int newSize = 0;
     private File myXMLFile = null;
 
@@ -51,6 +61,7 @@ public class SimulationControl {
         this.display = display;
         myResources = ResourceBundle.getBundle(DEFAULT_GUI_PROPERTY);
         mySimulations = createSimulationsList();
+        myEdgeTypes = createEdgeList();
         switchSimulation(DEFAULT_SIM_TYPE);
     }
 
@@ -78,7 +89,7 @@ public class SimulationControl {
         removeConfigControls();
         Config config;
         try {
-            Class myClass = Class.forName("GUI." + simType + "Config");
+            Class myClass = Class.forName("Config." + simType + "Config");
             config = (Config) myClass.newInstance();
         } catch (InstantiationException
                 | IllegalAccessException
@@ -133,11 +144,11 @@ public class SimulationControl {
      * Displays cells and sets the grid.
      */
     private void displayNewCells() {
-        display.getChildren().remove(grid);
+        if (gridGroup != null) display.getChildren().remove(gridGroup);
         grid = createGrid(simType);
-        Group gridGroup = grid.getGroup();
-        GridPane.setConstraints(gridGroup, 0, 0);
-        GridPane.setRowSpan(gridGroup, 9);
+        gridGroup = grid.getGroup();
+        GridPane.setConstraints(gridGroup, 0, 1);
+        GridPane.setRowSpan(gridGroup, 11);
         display.getChildren().add(gridGroup);
     }
 
@@ -170,6 +181,10 @@ public class SimulationControl {
      */
     public ObservableList<String> getSimulations() {
         return mySimulations;
+    }
+    
+    public ObservableList<String> getEdgeType(){
+    	return myEdgeTypes;
     }
 
     public void speed(int new_val, int old_val) {
@@ -254,7 +269,7 @@ public class SimulationControl {
      * @result grid the new grid
      */
     private Grid createGrid(String simType) {
-        Grid grid = new Grid();
+        Grid grid = new RectangleGrid(); // testing
         grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
                 sim.getCellsPerRow(),
                 sim.getCellsPerColumn(), sim.getEdgeType());
@@ -266,16 +281,11 @@ public class SimulationControl {
      * Changes number of rows and columns per line on the grid based on user
      * input.
      *
-     * @param the size string from the user
+     * @param size string from the user
      */
     public void sizeChange(int size) {
         try {
-            try {
-                switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
-            } catch (Exception e) {
-                sim = getSimulation();
-            }
-            if (!sim.resetCellSize(size)) {
+            if (sim == null || !sim.resetCellSize(size)) {
                 throw new Exception();
             }
             newSize = size;
@@ -284,6 +294,7 @@ public class SimulationControl {
             showError(myResources.getString("SizeError"));
         }
     }
+
 
     /**
      * Opens new XML file and sets the chosen simulation
@@ -299,6 +310,11 @@ public class SimulationControl {
             showError(myResources.getString("XMLReadError"));
         }
         setSimulation();
+    }
+
+    public void changeEdgeType(Object o) {
+        EdgeType edgeType = Grid.EdgeType.valueOf(o.toString());
+        grid.changeEdgeType(edgeType);
     }
 
     /**
@@ -320,6 +336,11 @@ public class SimulationControl {
         return FXCollections.observableArrayList(myResources.getString("GameOfLifeSim"),
                 myResources.getString("SegregationSim"), myResources.getString("FireSim"),
                 myResources.getString("PredatorPreySim"), "ForagingAnts", "SlimeMold");
+    }
+    
+    private ObservableList<String> createEdgeList(){
+    	return FXCollections.observableArrayList(myResources.getString("Normal"),
+    			myResources.getString("Torodial"));
     }
 
     /**
@@ -346,4 +367,17 @@ public class SimulationControl {
     private void setSimLabel() {
         simLabel.setText(simType);
     }
+    
+    public void startGraph(){
+    	Stage secondaryStage = new Stage();
+    	GridPane graph = new GridPane();
+    	Scene graphScene = new Scene(graph,500,300);
+    	graphScene.getStylesheets().add("vivid.css");
+    	secondaryStage.setScene(graphScene);
+    	sim.setGraph(graph);
+    	secondaryStage.setTitle(simLabel.getText().toString());
+    	secondaryStage.show();
+    }
+    
+    
 }

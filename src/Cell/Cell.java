@@ -1,8 +1,8 @@
 package Cell;
 
+import Grid.CellShape;
+import javafx.scene.Group;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,11 +20,12 @@ public abstract class Cell {
      * This cell's neighbors.
      */
     private final Collection<Cell> neighbors = new LinkedList<>();
+    private final Map<Enum, Paint> visualMap = new HashMap<>();
+    private final Group group = new Group();
     /**
      * This cell's shape.
      */
-    private final Rectangle shape = new Rectangle();
-    private final Map<Enum, Paint> visualMap = new HashMap<>();
+    private CellShape shape;
     private Map<String, Object> cellState;
     /**
      * This cell's row in the grid.
@@ -58,19 +59,13 @@ public abstract class Cell {
     /**
      * Initialize this cell with these parameters.
      *
-     * @param cellWidth  the cell's width
-     * @param cellHeight the cell's height
-     * @param x          the cell's x-coordinate
-     * @param y          the cell's y-coordinate
-     * @param row        the cell's row
-     * @param column     the cell's column
+     * @param row    the cell's row
+     * @param column the cell's column
      */
 
-    public final void init(double cellWidth, double cellHeight, double x, double y, int row, int column) {
-        shape.setWidth(cellWidth);
-        shape.setHeight(cellHeight);
-        shape.setX(x);
-        shape.setY(y);
+    public final void init(CellShape shape, int row, int column) {
+        this.shape = shape;
+        group.getChildren().add(shape.getMyShape());
         setRow(row);
         setColumn(column);
     }
@@ -170,8 +165,8 @@ public abstract class Cell {
      *
      * @return this cell's shape
      */
-    Shape getShape() {
-        return shape;
+    public Group getGroup() {
+        return group;
     }
 
     /**
@@ -208,4 +203,6 @@ public abstract class Cell {
     Paint getVisual(Enum state) {
         return visualMap.get(state);
     }
+    
+    
 }

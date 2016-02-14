@@ -1,7 +1,8 @@
 package Simulation;
 
 import Cell.Cell;
-import Cell.Grid.EdgeType;
+import Cell.FireCell;
+import Grid.Grid.EdgeType;
 import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -10,6 +11,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.input.TouchPoint;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
@@ -40,20 +42,19 @@ public abstract class Simulation {
     private Collection<Cell> theCells;
     private LineChart<Number, Number> lineChart;
     private boolean isPlaying = false;
+	private boolean hasGraph = false;
 
     Simulation() {
+    	createGraph();
         simulationLoop = buildLoop();
         rn = new Random();
-        createGraph();
     }
 
     private void createGraph() {
         xAxis.setLabel("Frame");
         yAxis.setLabel("Number of Cells");
         lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-        GridPane.setConstraints(lineChart, 0, 20, 1, 1, HPos.CENTER, VPos.CENTER);
     }
-
 
     public LineChart<Number, Number> getGraph() {
         return lineChart;
@@ -241,6 +242,12 @@ public abstract class Simulation {
 
     public double getSize() {
         return numCellsPerRow;
-    }
+    } 
+
+	public void setGraph(GridPane graph) {
+		createGraph();
+		graph.getChildren().add(lineChart);
+		hasGraph  = true;
+	}
 }
 

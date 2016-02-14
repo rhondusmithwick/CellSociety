@@ -32,8 +32,8 @@ public class FireSimulation extends Simulation {
     public FireSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"));
-    }
 
+    }
 
     @Override
     void assignInitialState(Cell c) {
