@@ -40,10 +40,8 @@ public class PredatorPreySimulation extends Simulation {
     private Paint fishVisual;
     private Paint sharkVisual;
 
-
-
-    private XYChart.Series fish = new XYChart.Series();
-    private XYChart.Series shark = new XYChart.Series();
+    private XYChart.Series fishSeries = new XYChart.Series();
+    private XYChart.Series sharkSeries = new XYChart.Series();
     private int frame = 0;
     private LineChart lineChart;
 
@@ -59,10 +57,10 @@ public class PredatorPreySimulation extends Simulation {
 
 
     private void setUpChart() {
-        shark.setName(this.getResources().getString("Shark"));
-        fish.setName(this.getResources().getString("Fish"));
-        this.getGraph().getData().add(fish);
-        this.getGraph().getData().add(shark);
+        sharkSeries.setName(this.getResources().getString("Shark"));
+        fishSeries.setName(this.getResources().getString("Fish"));
+        this.getGraph().getData().add(fishSeries);
+        this.getGraph().getData().add(sharkSeries);
     }
 
     @Override
@@ -90,35 +88,31 @@ public class PredatorPreySimulation extends Simulation {
         updateGraph();
         clearMap();
     }
-
-    private void updateGraph() {
-        shark.getData().add(new XYChart.Data(frame,graphMap.get("SHARK")));
-        fish.getData().add(new XYChart.Data(frame,graphMap.get("FISH")));
-    }
-
-
-    private void clearMap() {
-        for (Map.Entry entry : graphMap.entrySet()){
-            graphMap.put((String) entry.getKey(),0);
-        }
-    }
-
-
+    
     private void updateMap(){
         for (Cell cell: getTheCells()){
             addToMap((PredatorPreyCell) cell);
         }
     }
 
-
     private void addToMap(PredatorPreyCell cell) {
         String state = cell.getStateString();
         if (graphMap.containsKey(state)){
-            int frequ = graphMap.get(state);
-            graphMap.put(state,frequ+1);
+            graphMap.put(state,graphMap.get(state)+1);
         }
         else{
             graphMap.put(state, 1);
+        }
+    }
+
+    private void updateGraph() {
+        sharkSeries.getData().add(new XYChart.Data(frame,graphMap.get(getResources().getString("SHARK"))));
+        fishSeries.getData().add(new XYChart.Data(frame,graphMap.get(getResources().getString("FISH"))));
+    }
+
+    private void clearMap() {
+        for (Map.Entry entry : graphMap.entrySet()){
+            graphMap.put((String) entry.getKey(),0);
         }
     }
 
@@ -127,7 +121,6 @@ public class PredatorPreySimulation extends Simulation {
                 .map(c -> (PredatorPreyCell) c)
                 .forEach(ppc -> ppc.breedIfShould(fishBreedTime, sharkBreedTime));
     }
-
 
     private void moveAll() {
         getTheCells().stream()
@@ -194,28 +187,30 @@ public class PredatorPreySimulation extends Simulation {
         return sharkBreedTime;
     }
 
+    public void setSharkBreed(int newBreedTime) {
+        sharkBreedTime = newBreedTime;
+
+    }
 
     public double getFishBreedTime() {
         return fishBreedTime;
     }
 
+    public void setFishBreed(int newBreedTime) {
+        fishBreedTime = newBreedTime;
+    }
 
     public double getStarveTime() {
         return starveTime;
     }
 
-    public void setStarveTime(int intValue) {
-        starveTime = intValue;
+    public void setStarveTime(int newStarveTime) {
+        starveTime = newStarveTime;
     }
 
-    public void setSharkBreed(int intValue) {
-        sharkBreedTime = intValue;
 
-    }
-
-    public void setFishBreed(int intValue) {
-        fishBreedTime = intValue;
-
-    }
-
+	@Override
+	boolean hasGraph() {
+		return true;
+	}
 }

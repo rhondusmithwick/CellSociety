@@ -49,6 +49,8 @@ public class SimulationControl {
     private Group gridGroup;
     private int newSize = 0;
     private File myXMLFile = null;
+	private boolean hasSecondaryStage = false;
+	private Stage secondaryStage;
 
     /**
      * Sets starting simulation control parameters.
@@ -70,7 +72,7 @@ public class SimulationControl {
      * @param o Simulation object to switch t
      */
     public void switchSimulation(Object o) {
-        //display.getChildren().remove(sim.getGraph());
+    	stageCheck();
         myXMLFile = null;
         newSize = 0;
         simType = o.toString();
@@ -78,8 +80,6 @@ public class SimulationControl {
         setSimulation();
         config = getConfig();
         setConfigControls();
-        //display.getChildren().add(sim.getGraph());
-
     }
 
 
@@ -108,7 +108,7 @@ public class SimulationControl {
      * @param simElem Simulation element from the XML file parser.
      */
     private void switchSimulation(Element simElem) {
-        //display.getChildren().remove(sim.getGraph());
+    	stageCheck();
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
 
@@ -117,7 +117,6 @@ public class SimulationControl {
         sim.setProperties(simElem);
         config = getConfig();
         setConfigControls();
-        //display.getChildren().add(sim.getGraph());
     }
 
     /**
@@ -239,6 +238,7 @@ public class SimulationControl {
      * all user changes.
      */
     public void reset() {
+    	stageCheck();
         myXMLFile = null;
         newSize = 0;
         sim = getSimulation();
@@ -250,6 +250,7 @@ public class SimulationControl {
      * different initial, random placement .
      */
     public void playAgain() {
+    	stageCheck();
         try {
             switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
         } catch (Exception e) {
@@ -258,6 +259,13 @@ public class SimulationControl {
         assert sim != null;
         sim.resetCellSize(newSize);
         setSimulation();
+    }
+    
+    public void stageCheck(){
+    	if (hasSecondaryStage){
+    		secondaryStage.close();
+    		hasSecondaryStage = false;
+    	}
     }
 
     /**
@@ -368,13 +376,18 @@ public class SimulationControl {
     }
 
     public void startGraph(){
-        Stage secondaryStage = new Stage();
+        secondaryStage = new Stage();
         GridPane graph = new GridPane();
         Scene graphScene = new Scene(graph,500,300);
         graphScene.getStylesheets().add("vivid.css");
         secondaryStage.setScene(graphScene);
-        sim.setGraph(graph);
+        if (sim.setGraph(graph)){
+        hasSecondaryStage  = true;
         secondaryStage.setTitle(simLabel.getText().toString());
         secondaryStage.show();
+        }
+        else {
+        	showError(myResources.getString("NoGraph"));
+        }
     }
 }

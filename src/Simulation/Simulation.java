@@ -10,6 +10,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
@@ -43,7 +45,6 @@ public abstract class Simulation {
     private Collection<Cell> theCells;
     private LineChart<Number, Number> lineChart;
     private boolean isPlaying = false;
-    private boolean hasGraph = false;
 
 
     Simulation() {
@@ -56,16 +57,6 @@ public abstract class Simulation {
 
     ResourceBundle getResources() {
         return myResources;
-    }
-
-    private void createGraph() {
-        xAxis.setLabel(myResources.getString("Frame"));
-        yAxis.setLabel(myResources.getString("NumberOfCells"));
-        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-    }
-
-    public LineChart<Number, Number> getGraph() {
-        return lineChart;
     }
 
     public final void setProperties(Element simElem) {
@@ -251,11 +242,23 @@ public abstract class Simulation {
     public double getSize() {
         return numCellsPerRow;
     }
-
-    public void setGraph(GridPane graph) {
-        //createGraph();
-        graph.getChildren().add(lineChart);
-        hasGraph  = true;
+    
+    private void createGraph() {
+        xAxis.setLabel(myResources.getString("Frame"));
+        yAxis.setLabel(myResources.getString("NumberOfCells"));
+        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
     }
+
+    public LineChart<Number, Number> getGraph() {
+        return lineChart;
+    }
+    
+    abstract boolean hasGraph();
+
+    public boolean setGraph(GridPane graph) {
+        graph.getChildren().add(lineChart);
+        return hasGraph();
+    }
+    
 }
 

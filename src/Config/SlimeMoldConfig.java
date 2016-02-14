@@ -87,7 +87,7 @@ public class SlimeMoldConfig extends Config {
     }
 
     private void changeSniff(int intValue) {
-        slimeSim.getSniff(intValue);
+        slimeSim.setSniff(intValue);
     }
 
     @Override

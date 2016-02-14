@@ -148,13 +148,18 @@ public class SlimeMoldSimulation extends Simulation {
     public double getSniff() {
         return sniffThreshold;
     }
+    
+    public void setSniff(int newSniff) {
+        sniffThreshold = newSniff;
+
+    }
 
     public double getDiffusion() {
         return diffusionRate;
     }
 
-    public void setDiffusion(double intValue) {
-        diffusionRate = intValue;
+    public void setDiffusion(double newRate) {
+        diffusionRate = newRate;
 
     }
 
@@ -162,21 +167,23 @@ public class SlimeMoldSimulation extends Simulation {
         return chemicalDrops;
     }
 
-    public void setChemicalDrops(int intValue) {
-        chemicalDrops = intValue;
+    public void setChemicalDrops(int newChem) {
+        chemicalDrops = newChem;
     }
 
     public double getEvaporation() {
         return evaporationRate;
     }
 
-    public void setEvaporation(int intValue) {
-        evaporationRate = intValue;
+    public void setEvaporation(int newRate) {
+        evaporationRate = newRate;
 
     }
 
-    public void getSniff(int intValue) {
-        sniffThreshold = intValue;
+	@Override
+	boolean hasGraph() {
+		return false;
+	}
 
-    }
+   
 }
