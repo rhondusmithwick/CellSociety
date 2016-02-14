@@ -156,4 +156,10 @@ public class SegregationSimulation extends Simulation {
         threshold = intValue;
     }
 
+	@Override
+	void assignLoadState(Cell c) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

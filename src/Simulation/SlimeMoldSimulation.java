@@ -181,4 +181,10 @@ public class SlimeMoldSimulation extends Simulation {
         sniffThreshold = intValue;
 
     }
+
+	@Override
+	void assignLoadState(Cell c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

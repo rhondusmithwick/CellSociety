@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import Cell.Cell;
+import Cell.FireCell;
 import Grid.Grid;
 import Grid.RectangleShape;
 import Simulation.FireSimulation;
@@ -17,6 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -58,9 +60,22 @@ public class XMLParser {
 		double cellHeight = getDoubleValue(cellElem,"cellHeight");
 		int row = getIntValue(cellElem,"row");
 		int column = getIntValue(cellElem,"column");
-		System.out.println(cellType);
+		//System.out.println(cellHeight);
 		Cell cell = getCell(cellType);
+		cell.saveCellState();
+
+		Map<String,String> stateMap = new HashMap<String,String>();
+		for(String tag: cell.getCellState().keySet()){
+			stateMap.put(tag, getTextValue(cellElem,tag));
+		}
+
 		cell.init(new RectangleShape(x,y , cellWidth, cellHeight),row, column);
+
+		if(cell instanceof FireCell){
+			 ((FireCell)cell).loadCellState(stateMap);
+			 ((FireCell)cell).changeState();
+		}
+
 		return cell;
     }
 

@@ -60,7 +60,7 @@ public abstract class Simulation {
         return lineChart;
     }
 
-    public final void setProperties(Element simElem) throws XMLException {
+    public void setProperties(Element simElem) throws XMLException {
         xmlProperties = new XMLParser(simElem);
         setGenericProperties();
         setSpecificProperties();
@@ -99,14 +99,19 @@ public abstract class Simulation {
         getTheCells().stream().forEach(this::assignInitialState);
         changeStates();
     }
+    public void initLoad() {
+    	setSpecificProperties() ;
+        getTheCells().stream().forEach(this::assignLoadState);
+        changeStates();
+    }
 
     abstract void assignInitialState(Cell c);
-
+    abstract void assignLoadState(Cell c);
     public void step() {
         getTheCells().stream().forEach(Cell::handleUpdate);
     }
 
-    final void changeStates() {
+    public final void changeStates() {
         getTheCells().stream().forEach(Cell::changeState);
     }
 
@@ -229,7 +234,7 @@ public abstract class Simulation {
         return theCells;
     }
 
-    public final void setTheCells(Collection<Cell> theCells) {
+    public void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
 

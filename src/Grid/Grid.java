@@ -67,6 +67,7 @@ public abstract class Grid {
     	for(Cell c: theCells){
     		add(c);
     	}
+    	System.out.println("Size: "+theCells.size());
         populateNeighbors();
     }
 

@@ -70,6 +70,7 @@ public class XMLOutput {
    	 	cellsElement.appendChild(makeIntElement("cellCount",cells.size()));
    	 	int cellCount = 0;
    	 	for(Cell c: cells){
+   	 		c.saveCellState();
    	 		String tag = "cell"+Integer.toString(cellCount);
    	 		cellsElement.appendChild(makeCellElement(tag,c));
    	 		cellCount++;
@@ -81,6 +82,7 @@ public class XMLOutput {
     public Element makeCellElement(String tag, Cell c) {
     	 Element elem = doc.createElement(tag);
 	 		for(String t: c.getCellState().keySet()){
+	 			//System.out.println(t);
 	 			addObjectElement(elem,t,c.getCellState().get(t));
 	 		}
     	return elem;

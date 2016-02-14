@@ -67,4 +67,10 @@ public class GameOfLifeSimulation extends Simulation {
         savedValues.put("deadVisual", deadVisual);
         savedValues.put("aliveVisual", aliveVisual);
     }
+
+	@Override
+	void assignLoadState(Cell c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -1,8 +1,10 @@
 package Cell;
 
 import Grid.CellShape;
+import Grid.RectangleShape;
 import javafx.scene.Group;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Shape;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,22 +45,22 @@ public abstract class Cell {
         super();
     }
 
-    public void loadCellState(Map<String,Object> cellState) {
+   //  void loadCellState(Map<String,Object> cellState) {
 
     	//new CellShape();
     	//shape = new
-        cellState.put("cellWidth", shape.getWidth());
-        cellState.put("cellHeight", shape.getHeight());
-        cellState.put("x", shape.getX());
-        cellState.put("y", shape.getY());
-        cellState.put("row", row);
-        cellState.put("column", column);
-        saveTypeCellState();
-    }
 
-    public void saveCellState() {
+
+  //  }
+
+   // abstract void LoadTypeCellState();
+
+	public void saveCellState() {
 
         cellState = new HashMap<>();
+        if(shape == null){
+        	shape= new RectangleShape(0, 0, 0, 0);
+        }
         cellState.put("cellWidth", shape.getWidth());
         cellState.put("cellHeight", shape.getHeight());
         cellState.put("x", shape.getX());
@@ -188,7 +190,7 @@ public abstract class Cell {
      *
      * @param value this cell's new background
      */
-    void setFill(Paint value) {
+    public void setFill(Paint value) {
         shape.setFill(value);
     }
 

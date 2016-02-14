@@ -161,4 +161,11 @@ public class PredatorPreySimulation extends Simulation {
 
     }
 
+
+	@Override
+	void assignLoadState(Cell c) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

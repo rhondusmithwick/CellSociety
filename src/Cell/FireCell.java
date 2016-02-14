@@ -1,5 +1,7 @@
 package Cell;
 
+import java.util.Map;
+
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -30,12 +32,21 @@ public class FireCell extends Cell {
     public FireCell() {
         super();
     }
-    
-    
+
+    public void loadCellState(Map<String,String> cellState){
+    	state =  State.valueOf(cellState.get("state"));
+    	mark =  Mark.valueOf( cellState.get("state"));
+    	burnTimer = Integer.parseInt(cellState.get("burnTimer"));
+    	// setFill(getVisual(state));
+    }
     @Override
     void saveTypeCellState() {
+    	if(state==null||mark == null){
+    		state = State.TREE;
+    		mark = Mark.TREE;
+    	}
         	cellState.put("state",state.name());
-        	cellState.put("mark",state.name());
+        	cellState.put("mark",mark.name());
         	cellState.put("burnTimer", burnTimer);
 
     }
@@ -100,7 +111,9 @@ public class FireCell extends Cell {
     public State getState() {
         return state;
     }
-
+    public void setState(State state) {
+        this.state = state;
+    }
     /**
      * Set this fire cell's mark.
      *
@@ -151,7 +164,7 @@ public class FireCell extends Cell {
         public static Mark type(String token){
     		return Mark.valueOf(token);
     	}
-    	public static String token(State t){
+    	public static String token(Mark t){
     		return t.name();
     	}
     	/*
