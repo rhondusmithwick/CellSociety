@@ -1,4 +1,4 @@
-package GUI;
+package Config;
 
 import Simulation.SlimeMoldSimulation;
 import javafx.beans.value.ChangeListener;
@@ -93,14 +93,14 @@ public class SlimeMoldConfig extends Config {
 
     @Override
     public void setAndAddAll() {
-        setAndAdd(sniff, 5, 5, 1, 1);
-        setAndAdd(diffusion, 5, 6, 1, 1);
-        setAndAdd(evaporation, 5, 7, 1, 1);
-        setAndAdd(evaporationLabel, 4, 7, 1, 1);
-        setAndAdd(diffusionLabel, 4, 6, 1, 1);
-        setAndAdd(sniffLabel, 4, 5, 1, 1);
-        setAndAdd(chemicalDrops, 5, 8, 1, 1);
-        setAndAdd(chemicalLabel, 4, 8, 1, 1);
+        setAndAdd(sniff, 5, 6, 1, 1);
+        setAndAdd(diffusion, 5, 7, 1, 1);
+        setAndAdd(evaporation, 5, 8, 1, 1);
+        setAndAdd(evaporationLabel, 4, 8, 1, 1);
+        setAndAdd(diffusionLabel, 4, 7, 1, 1);
+        setAndAdd(sniffLabel, 4, 6, 1, 1);
+        setAndAdd(chemicalDrops, 5, 9, 1, 1);
+        setAndAdd(chemicalLabel, 4, 9, 1, 1);
     }
 
 }

@@ -1,4 +1,4 @@
-package GUI;
+package Config;
 
 import Simulation.GameOfLifeSimulation;
 

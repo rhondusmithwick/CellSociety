@@ -1,4 +1,4 @@
-package GUI;
+package Config;
 
 import Simulation.ForagingAntsSimulation;
 import javafx.beans.value.ChangeListener;
@@ -139,20 +139,20 @@ public class ForagingAntsConfig extends Config {
 
     @Override
     public void setAndAddAll() {
-        setAndAdd(evaporationRate, 5, 5, 1, 1);
-        setAndAdd(diffusionRate, 5, 6, 1, 1);
-        setAndAdd(maxAnts, 5, 7, 1, 1);
-        setAndAdd(antLifeTime, 5, 8, 1, 1);
-        setAndAdd(antsBorn, 5, 9, 1, 1);
-        setAndAdd(antsBornLabel, 4, 9, 1, 1);
-        setAndAdd(antsLifeTimeLabel, 4, 8, 1, 1);
-        setAndAdd(maxAntsLabel, 4, 7, 1, 1);
-        setAndAdd(diffusionLabel, 4, 6, 1, 1);
-        setAndAdd(N, 2, 7, 1, 1);
-        setAndAdd(K, 2, 8, 1, 1);
-        setAndAdd(NLabel, 1, 7, 1, 1);
-        setAndAdd(KLabel, 1, 8, 1, 1);
-        setAndAdd(evaporationLabel, 4, 5, 1, 1);
+        setAndAdd(evaporationRate, 5, 6, 1, 1);
+        setAndAdd(diffusionRate, 5, 7, 1, 1);
+        setAndAdd(maxAnts, 5, 8, 1, 1);
+        setAndAdd(antLifeTime, 5, 9, 1, 1);
+        setAndAdd(antsBorn, 5, 10, 1, 1);
+        setAndAdd(antsBornLabel, 4, 10, 1, 1);
+        setAndAdd(antsLifeTimeLabel, 4, 9, 1, 1);
+        setAndAdd(maxAntsLabel, 4, 8, 1, 1);
+        setAndAdd(diffusionLabel, 4, 7, 1, 1);
+        setAndAdd(N, 2, 8, 1, 1);
+        setAndAdd(K, 2, 9, 1, 1);
+        setAndAdd(NLabel, 1, 8, 1, 1);
+        setAndAdd(KLabel, 1, 9, 1, 1);
+        setAndAdd(evaporationLabel, 4, 6, 1, 1);
         this.deactivateSize();
     }
 

@@ -1,4 +1,4 @@
-package GUI;
+package Config;
 
 import Simulation.FireSimulation;
 import javafx.beans.value.ChangeListener;
@@ -31,10 +31,10 @@ public class FireConfig extends Config {
 
     @Override
     public void setAndAddAll() {
-        setAndAdd(probCatchFire, 5, 5, 1, 1);
-        setAndAdd(burnTime, 5, 6, 1, 1);
-        setAndAdd(burnTimeLabel, 4, 6, 1, 1);
-        setAndAdd(catchFireLabel, 4, 5, 1, 1);
+        setAndAdd(probCatchFire, 5, 6, 1, 1);
+        setAndAdd(burnTime, 5, 7, 1, 1);
+        setAndAdd(burnTimeLabel, 4, 7, 1, 1);
+        setAndAdd(catchFireLabel, 4, 6, 1, 1);
     }
 
     @Override

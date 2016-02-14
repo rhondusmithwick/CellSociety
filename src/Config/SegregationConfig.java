@@ -1,4 +1,4 @@
-package GUI;
+package Config;
 
 import Simulation.SegregationSimulation;
 import javafx.beans.value.ChangeListener;
@@ -46,8 +46,8 @@ public class SegregationConfig extends Config {
 
     @Override
     public void setAndAddAll() {
-        setAndAdd(threshold, 5, 5, 1, 1);
-        setAndAdd(thresholdLabel, 4, 5, 1, 1);
+        setAndAdd(threshold, 5, 6, 1, 1);
+        setAndAdd(thresholdLabel, 4, 6, 1, 1);
     }
 
 }

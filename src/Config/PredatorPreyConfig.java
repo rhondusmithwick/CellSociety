@@ -1,4 +1,4 @@
-package GUI;
+package Config;
 
 import Simulation.PredatorPreySimulation;
 import javafx.beans.value.ChangeListener;
@@ -78,12 +78,12 @@ public class PredatorPreyConfig extends Config {
 
     @Override
     public void setAndAddAll() {
-        setAndAdd(fishBreedTime, 5, 5, 1, 1);
-        setAndAdd(sharkBreedTime, 5, 6, 1, 1);
-        setAndAdd(starveTime, 5, 7, 1, 1);
-        setAndAdd(starveLabel, 4, 7, 1, 1);
-        setAndAdd(sharkBreedLabel, 4, 6, 1, 1);
-        setAndAdd(fishBreedLabel, 4, 5, 1, 1);
+        setAndAdd(fishBreedTime, 5, 6, 1, 1);
+        setAndAdd(sharkBreedTime, 5, 7, 1, 1);
+        setAndAdd(starveTime, 5, 8, 1, 1);
+        setAndAdd(starveLabel, 4, 8, 1, 1);
+        setAndAdd(sharkBreedLabel, 4, 7, 1, 1);
+        setAndAdd(fishBreedLabel, 4, 6, 1, 1);
     }
 
 }

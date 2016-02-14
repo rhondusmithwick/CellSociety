@@ -17,6 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.w3c.dom.Element;
 
+import Config.Config;
+import Config.FireConfig;
+
 import java.io.File;
 import java.util.ResourceBundle;
 
@@ -36,6 +39,7 @@ public class SimulationControl {
     private final ResourceBundle myResources;
     private final GridPane display;
     private final ObservableList<String> mySimulations;
+    private final ObservableList<String> myEdgeTypes;
     private final Label simLabel = new Label();
     private String simType = DEFAULT_SIM_TYPE;
     private Simulation sim;
@@ -54,6 +58,7 @@ public class SimulationControl {
         this.display = display;
         myResources = ResourceBundle.getBundle(DEFAULT_GUI_PROPERTY);
         mySimulations = createSimulationsList();
+        myEdgeTypes = createEdgeList();
         switchSimulation(DEFAULT_SIM_TYPE);
     }
 
@@ -81,7 +86,7 @@ public class SimulationControl {
         removeConfigControls();
         Config config;
         try {
-            Class myClass = Class.forName("GUI." + simType + "Config");
+            Class myClass = Class.forName("Config." + simType + "Config");
             config = (Config) myClass.newInstance();
         } catch (InstantiationException
                 | IllegalAccessException
@@ -140,7 +145,7 @@ public class SimulationControl {
         grid = createGrid(simType);
         gridGroup = grid.getGroup();
         GridPane.setConstraints(gridGroup, 0, 1);
-        GridPane.setRowSpan(gridGroup, 10);
+        GridPane.setRowSpan(gridGroup, 11);
         display.getChildren().add(gridGroup);
     }
 
@@ -173,6 +178,10 @@ public class SimulationControl {
      */
     public ObservableList<String> getSimulations() {
         return mySimulations;
+    }
+    
+    public ObservableList<String> getEdgeType(){
+    	return myEdgeTypes;
     }
 
     public void speed(int new_val, int old_val) {
@@ -324,6 +333,11 @@ public class SimulationControl {
         return FXCollections.observableArrayList(myResources.getString("GameOfLifeSim"),
                 myResources.getString("SegregationSim"), myResources.getString("FireSim"),
                 myResources.getString("PredatorPreySim"), "ForagingAnts", "SlimeMold");
+    }
+    
+    private ObservableList<String> createEdgeList(){
+    	return FXCollections.observableArrayList(myResources.getString("Normal"),
+    			myResources.getString("Torodial"));
     }
 
     /**

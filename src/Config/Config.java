@@ -1,4 +1,4 @@
-package GUI;
+package Config;
 
 import Simulation.Simulation;
 import javafx.beans.value.ChangeListener;
@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-abstract class Config {
+import GUI.SimulationControl;
+
+public abstract class Config {
 
     private static final String GUI_PROPERTY_PATH = "GUIstrings";
 
@@ -105,10 +107,10 @@ abstract class Config {
     }
 
     void setAndAddMain() {
-        setAndAdd(speedLabel, 1, 5, 1, 1);
-        setAndAdd(sizeLabel, 1, 6, 1, 1);
-        setAndAdd(mySpeedSlider, 2, 5, 1, 1);
-        setAndAdd(mySizeSlider, 2, 6, 1, 1);
+        setAndAdd(speedLabel, 1, 6, 1, 1);
+        setAndAdd(sizeLabel, 1, 7, 1, 1);
+        setAndAdd(mySpeedSlider, 2, 6, 1, 1);
+        setAndAdd(mySizeSlider, 2, 7, 1, 1);
     }
 
     void setAndAdd(Node node, int col, int row, int colSpan, int rowSpan) {
