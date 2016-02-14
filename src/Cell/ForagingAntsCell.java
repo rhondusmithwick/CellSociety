@@ -60,8 +60,7 @@ public class ForagingAntsCell extends Cell {
             }
         }
     }
-
-
+    
     private boolean canSpawn() {
         return (state == State.NEST)
                 && myAnts.size() < maxAntsPer;
@@ -192,8 +191,12 @@ public class ForagingAntsCell extends Cell {
         return probChoice;
     }
 
-    double getHomePheromones() {
+    public double getHomePheromones() {
         return homePheromones;
+    }
+    
+    public double getFoodPheromones() {
+        return foodPheromones;
     }
 
     public void setInitialPheromones(double min, double max) {

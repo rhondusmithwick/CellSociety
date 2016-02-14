@@ -62,8 +62,8 @@ public class PredatorPreySimulation extends Simulation {
 
 
     private void setUpChart() {
-    	shark.setName("Sharks");
-    	fish.setName("Fish");
+    	shark.setName(this.getResources().getString("Shark"));
+    	fish.setName(this.getResources().getString("Fish"));
     	this.getGraph().getData().add(fish);
     	this.getGraph().getData().add(shark);
 	}
@@ -97,12 +97,7 @@ public class PredatorPreySimulation extends Simulation {
     
     private void updateGraph() {
     	shark.getData().add(new XYChart.Data(frame,graphMap.get("SHARK")));
-		fish.getData().add(new XYChart.Data(frame,graphMap.get("FISH")));
-		//lineChart.getData().remove(sharks);
-		//lineChart.getData().remove(fish);
-		//lineChart.getData().add(sharks);
-		//lineChart.getData().add(fish);
-		
+		fish.getData().add(new XYChart.Data(frame,graphMap.get("FISH")));		
 	}
 
 

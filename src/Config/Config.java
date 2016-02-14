@@ -46,11 +46,11 @@ public abstract class Config {
         return mySimControl;
     }
 
-    Simulation getSimulation() {
+    public Simulation getSimulation() {
         return mySimulation;
     }
 
-    ResourceBundle getResources() {
+    public ResourceBundle getResources() {
         return myResources;
     }
 

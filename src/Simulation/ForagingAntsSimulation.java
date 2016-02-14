@@ -1,11 +1,18 @@
 package Simulation;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import Cell.Cell;
 import Cell.ForagingAntsCell;
+import Cell.PredatorPreyCell;
 import Cell.ForagingAntsCell.Mark;
 import XML.XMLException;
 import XML.XMLParser;
 import javafx.geometry.Point2D;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -50,12 +57,48 @@ public class ForagingAntsSimulation extends Simulation {
     private double N = DEFAULT_N;
     private ForagingAntsCell nest;
     private int currAnts = 0;
+    
+    private XYChart.Series ants = new XYChart.Series();
+    private XYChart.Series food = new XYChart.Series();
+    private XYChart.Series home = new XYChart.Series();
+    private int frame = 0;
+    private LineChart lineChart;
+
+	private double foodPheromones = 0;
+	private double homePheromones = 0;
 
     public ForagingAntsSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/ForagingAnts.xml"));
+        lineChart = this.getGraph();
+        setUpChart();
     }
-
+    
+    private void setUpChart() {
+    	home.setName(this.getResources().getString("Home"));
+    	food.setName(this.getResources().getString("Food"));
+    	ants.setName(this.getResources().getString("Ants"));
+    	this.getGraph().getData().add(home);
+    	this.getGraph().getData().add(food);
+    	this.getGraph().getData().add(ants);
+	}
+	
+	private void updatePheromones(){
+    	for (Cell cell: getTheCells()){
+    		ForagingAntsCell newCell = (ForagingAntsCell) cell;
+    		foodPheromones = foodPheromones + (double) newCell.getFoodPheromones();
+    		homePheromones = homePheromones + (double) newCell.getHomePheromones();
+    	}
+    }
+	
+	
+    private void updateGraph() {
+    	ants.getData().add(new XYChart.Data(frame,currAnts));
+		//home.getData().add(new XYChart.Data(frame,homePheromones));
+		//food.getData().add(new XYChart.Data(frame,foodPheromones));
+		homePheromones = 0;
+		foodPheromones = 0;
+	}
 
     private static boolean isLocation(Cell c, Point2D loc) {
         return (c.getRow() == loc.getY())
@@ -73,10 +116,13 @@ public class ForagingAntsSimulation extends Simulation {
     }
 
     public void step() {
+    	frame ++;
         stepSetup();
         spawnAnts();
         super.step();
         changeStates();
+        updatePheromones();
+        updateGraph();
     }
 
     private void stepSetup() {

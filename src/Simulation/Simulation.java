@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 /**
  * Created by rhondusmithwick on 1/31/16.
@@ -27,6 +28,9 @@ import java.util.Random;
  * @author Rhondu Smithwick
  */
 public abstract class Simulation {
+	private static final String GUI_PROPERTY_PATH = "GUIstrings";
+	private final ResourceBundle myResources;
+	
     private final Random rn;
     private final Timeline simulationLoop;
     private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
@@ -45,14 +49,19 @@ public abstract class Simulation {
 	private boolean hasGraph = false;
 
     Simulation() {
+    	myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
     	createGraph();
         simulationLoop = buildLoop();
         rn = new Random();
     }
+    
+    ResourceBundle getResources() {
+        return myResources;
+    }
 
     private void createGraph() {
-        xAxis.setLabel("Frame");
-        yAxis.setLabel("Number of Cells");
+        xAxis.setLabel(myResources.getString("Frame"));
+        yAxis.setLabel(myResources.getString("NumberOfCells"));
         lineChart = new LineChart<Number, Number>(xAxis, yAxis);
     }
 
@@ -245,6 +254,7 @@ public abstract class Simulation {
     } 
 
 	public void setGraph(GridPane graph) {
+		//createGraph();
 		graph.getChildren().add(lineChart);
 		hasGraph  = true;
 	}
