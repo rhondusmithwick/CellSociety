@@ -1,5 +1,6 @@
 package Cell;
 
+import Grid.CellShape;
 import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class PredatorPreyCell extends Cell {
     private int breedTimer = 0;
     private boolean shouldBreed = false;
 
-    public PredatorPreyCell() {
-        super();
+    public PredatorPreyCell(CellShape shape, int row, int column) {
+        super(shape, row, column);
     }
 
     @Override

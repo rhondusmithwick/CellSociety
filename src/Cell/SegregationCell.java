@@ -1,5 +1,6 @@
 package Cell;
 
+import Grid.CellShape;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -12,8 +13,8 @@ public class SegregationCell extends Cell {
     private State state;
     private Mark mark;
 
-    public SegregationCell() {
-        super();
+    public SegregationCell(CellShape shape, int row, int column) {
+        super(shape, row, column);
     }
 
     @Override

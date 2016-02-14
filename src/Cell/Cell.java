@@ -16,60 +16,23 @@ import java.util.Map;
  * @author Rhondu Smithwick
  */
 public abstract class Cell {
-    /**
-     * This cell's neighbors.
-     */
     private final Collection<Cell> neighbors = new LinkedList<>();
     private final Map<Enum, Paint> visualMap = new HashMap<>();
     private final Group group = new Group();
-    /**
-     * This cell's shape.
-     */
-    private CellShape shape;
+    private final CellShape shape;
     private Map<String, Object> cellState;
-    /**
-     * This cell's row in the grid.
-     */
-    private int row;
-    /**
-     * This cell's column in the grid.
-     */
-    private int column;
+    private final int row;
+    private final int column;
 
-    /**
-     * Construct a cell.
-     */
-    Cell() {
-        super();
-    }
-
-    public void saveCellState() {
-        cellState = new HashMap<>();
-        cellState.put("cellWidth", shape.getWidth());
-        cellState.put("cellHeight", shape.getHeight());
-        cellState.put("x", shape.getX());
-        cellState.put("y", shape.getY());
-        cellState.put("row", row);
-        cellState.put("column", column);
-        saveTypeCellState();
-    }
-
-    abstract void saveTypeCellState();
-
-    /**
-     * Initialize this cell with these parameters.
-     *
-     * @param row    the cell's row
-     * @param column the cell's column
-     */
-
-    public final void init(CellShape shape, int row, int column) {
+    Cell(CellShape shape, int row, int column) {
         this.shape = shape;
         group.getChildren().add(shape.getMyShape());
-        setRow(row);
-        setColumn(column);
+        this.row = row;
+        this.column = column;
     }
 
+
+    abstract void saveTypeCellState();
 
     /**
      * Remove this cell's diagonal neighbors.
@@ -83,11 +46,6 @@ public abstract class Cell {
             }
         }
     }
-
-    public Map<String, Object> getCellState() {
-        return cellState;
-    }
-
 
     /**
      * Change this cell's state.
@@ -118,15 +76,6 @@ public abstract class Cell {
     }
 
     /**
-     * Set this cell's row.
-     *
-     * @param row this cell's new row
-     */
-    private void setRow(int row) {
-        this.row = row;
-    }
-
-    /**
      * Get this cell's column.
      *
      * @return this cell's column
@@ -136,20 +85,43 @@ public abstract class Cell {
     }
 
     /**
-     * Set this cell's column.
-     *
-     * @param column this cell's new column
-     */
-    private void setColumn(int column) {
-        this.column = column;
-    }
-
-    /**
      * Set this cell's visuals.
      *
      * @param visuals this cell's visuals.
      */
     public abstract void setVisuals(Paint... visuals);
+
+
+    final boolean checkDiagonal(Cell neighbor) {
+        int rowDiff = Math.abs(neighbor.getRow() - getRow());
+        int columnDiff = Math.abs(neighbor.getColumn() - getColumn());
+        return (rowDiff >= 1)
+                && (columnDiff >= 1);
+    }
+
+
+    final void addToVisualMap(Enum state, Paint visual) {
+        visualMap.put(state, visual);
+    }
+
+    final Paint getVisual(Enum state) {
+        return visualMap.get(state);
+    }
+
+    public void saveCellState() {
+        cellState = new HashMap<>();
+        cellState.put("cellWidth", shape.getWidth());
+        cellState.put("cellHeight", shape.getHeight());
+        cellState.put("x", shape.getX());
+        cellState.put("y", shape.getY());
+        cellState.put("row", row);
+        cellState.put("column", column);
+        saveTypeCellState();
+    }
+
+    public Map<String, Object> getCellState() {
+        return cellState;
+    }
 
     /**
      * Get this cell's neighbors.
@@ -165,7 +137,7 @@ public abstract class Cell {
      *
      * @return this cell's shape
      */
-    public Group getGroup() {
+    final public Group getGroup() {
         return group;
     }
 
@@ -174,7 +146,7 @@ public abstract class Cell {
      *
      * @param value this cell's new background
      */
-    void setFill(Paint value) {
+    final void setFill(Paint value) {
         shape.setFill(value);
     }
 
@@ -183,24 +155,7 @@ public abstract class Cell {
      *
      * @param value this cell's new outline
      */
-    void setStroke(Paint value) {
+    final void setStroke(Paint value) {
         shape.setStroke(value);
-    }
-
-
-    boolean checkDiagonal(Cell neighbor) {
-        int rowDiff = Math.abs(neighbor.getRow() - getRow());
-        int columnDiff = Math.abs(neighbor.getColumn() - getColumn());
-        return (rowDiff >= 1)
-                && (columnDiff >= 1);
-    }
-
-
-    void addToVisualMap(Enum state, Paint visual) {
-        visualMap.put(state, visual);
-    }
-
-    Paint getVisual(Enum state) {
-        return visualMap.get(state);
     }
 }

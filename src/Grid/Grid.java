@@ -4,6 +4,7 @@ import Cell.Cell;
 import Cell.FireCell;
 import javafx.scene.Group;
 
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -163,31 +164,17 @@ public abstract class Grid {
     Cell createCell(CellShape shape, String cellType, int row, int column) {
         Cell myCell;
         try {
-            Class cellClass = Class.forName("Cell." + cellType + "Cell");
-            myCell = (Cell) cellClass.newInstance();
-        } catch (InstantiationException
-                | IllegalAccessException
-                | ClassNotFoundException e) {
-            myCell = new FireCell();
+            Class<?> cellClass = Class.forName("Cell." + cellType + "Cell");
+            Constructor<?> constructor = cellClass.getConstructor(CellShape.class, int.class, int.class);
+            myCell = (Cell) constructor.newInstance(shape, row, column);
+        } catch (Exception e) {
+            myCell = new FireCell(shape, row, column);
         }
-        myCell.init(shape, row, column);
         return myCell;
     }
 
     public Group getGroup() {
         return group;
-    }
-
-    private void addCell(int r, int c, Cell cell) {
-        grid.put(getKey(r, c), cell);
-    }
-
-    private Cell getCell(int r, int c) {
-        return grid.get(getKey(r, c));
-    }
-
-    private List<Integer> getKey(int r, int c) {
-        return asList(r, c);
     }
 
     int getCellsPerRow() {
@@ -207,9 +194,23 @@ public abstract class Grid {
     }
 
     void add(Cell c) {
-        addCell(c.getRow(), c.getColumn(), c);
+        addCellToGrid(c.getRow(), c.getColumn(), c);
         group.getChildren().add(c.getGroup());
     }
+
+
+    private void addCellToGrid(int r, int c, Cell cell) {
+        grid.put(getKey(r, c), cell);
+    }
+
+    private Cell getCell(int r, int c) {
+        return grid.get(getKey(r, c));
+    }
+
+    private List<Integer> getKey(int r, int c) {
+        return asList(r, c);
+    }
+
 
     public void changeEdgeType(EdgeType edgeType) {
         this.edgeType = edgeType;

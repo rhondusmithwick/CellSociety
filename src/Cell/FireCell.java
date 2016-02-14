@@ -1,5 +1,6 @@
 package Cell;
 
+import Grid.CellShape;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -24,11 +25,8 @@ public class FireCell extends Cell {
      */
     private int burnTimer;
 
-    /**
-     * Construct a fire cell.
-     */
-    public FireCell() {
-        super();
+    public FireCell(CellShape shape, int row, int column) {
+        super(shape, row, column);
     }
 
     @Override

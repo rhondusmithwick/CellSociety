@@ -332,7 +332,8 @@ public class SimulationControl {
     private ObservableList<String> createSimulationsList() {
         return FXCollections.observableArrayList(myResources.getString("GameOfLifeSim"),
                 myResources.getString("SegregationSim"), myResources.getString("FireSim"),
-                myResources.getString("PredatorPreySim"), "ForagingAnts", "SlimeMold");
+                myResources.getString("PredatorPreySim"), myResources.getString("ForagingAntsSim"),
+                myResources.getString("SlimeMoldSim"));
     }
     
     private ObservableList<String> createEdgeList(){

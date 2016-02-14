@@ -1,5 +1,6 @@
 package Cell;
 
+import Grid.CellShape;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -17,9 +18,8 @@ public class SlimeMoldCell extends Cell {
 
     private Paint cAMPVisual;
 
-
-    public SlimeMoldCell() {
-        super();
+    public SlimeMoldCell(CellShape shape, int row, int column) {
+        super(shape, row, column);
     }
 
     @Override
