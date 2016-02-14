@@ -8,7 +8,7 @@ class Triangle extends CustomPolygon {
     Triangle(double x, double y, double width, double height,
              Triangle prevTriangle) {
         super(x, y, width, height);
-        points = new Point2D[3];
+        setPoints(new Point2D[3]);
         this.prevTriangle = prevTriangle;
         createPoints();
         setPoints();
@@ -16,15 +16,19 @@ class Triangle extends CustomPolygon {
 
     @Override
     void createPoints() {
+        Point2D point1, point2, point3;
         if (prevTriangle == null) {
-            points[0] = new Point2D(getX(), getY());
-            points[1] = new Point2D(getX() + getWidth() / 2, getY() + getHeight());
-            points[2] = new Point2D(getX() + getWidth(), getY());
+            point1 = new Point2D(getX(), getY());
+            point2 = new Point2D(getX() + getWidth() / 2, getY() + getHeight());
+            point3 = new Point2D(getX() + getWidth(), getY());
         } else {
-            points[0] = prevTriangle.points[1];
-            points[1] = prevTriangle.points[2];
-            points[2] = new Point2D(points[0].getX() + getWidth(), points[0].getY());
+            point1 = prevTriangle.getPoint(1);
+            point2 = prevTriangle.getPoint(2);
+            point3 = new Point2D(point1.getX() + getWidth(), point1.getY());
         }
+        addPoint(0, point1);
+        addPoint(1, point2);
+        addPoint(2, point3);
     }
 
 }

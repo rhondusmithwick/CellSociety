@@ -211,12 +211,12 @@ public abstract class Grid {
         group.getChildren().add(c.getGroup());
     }
 
-    public enum EdgeType {
-        NORMAL, TORODIAL
-    }
-
     public void changeEdgeType(EdgeType edgeType) {
         this.edgeType = edgeType;
         populateNeighbors();
+    }
+
+    public enum EdgeType {
+        NORMAL, TORODIAL
     }
 }

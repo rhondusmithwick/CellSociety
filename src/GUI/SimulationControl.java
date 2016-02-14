@@ -1,6 +1,7 @@
 package GUI;
 
 import Grid.Grid;
+import Grid.Grid.EdgeType;
 import Grid.RectangleGrid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
@@ -15,7 +16,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.w3c.dom.Element;
-import Grid.Grid.EdgeType;
 
 import java.io.File;
 import java.util.ResourceBundle;

@@ -13,7 +13,7 @@ abstract class CustomPolygon extends Polygon {
     private final double y;
     private final double width;
     private final double height;
-    Point2D[] points;
+    private Point2D[] points;
 
     CustomPolygon(double x, double y, double width, double height) {
         this.x = x;
@@ -46,5 +46,18 @@ abstract class CustomPolygon extends Polygon {
 
     public double getHeight() {
         return height;
+    }
+
+
+    void addPoint(int i, Point2D point) {
+        points[i] = point;
+    }
+
+    Point2D getPoint(int i) {
+        return points[i];
+    }
+
+    void setPoints(Point2D[] points) {
+        this.points = points;
     }
 }
