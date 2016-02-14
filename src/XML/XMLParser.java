@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import Cell.Cell;
 import Cell.FireCell;
 import Grid.Grid;
+import Grid.RectangleGrid;
 import Grid.RectangleShape;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
@@ -61,7 +62,10 @@ public class XMLParser {
 		int row = getIntValue(cellElem,"row");
 		int column = getIntValue(cellElem,"column");
 		//System.out.println(cellHeight);
-		Cell cell = getCell(cellType);
+		Grid g = new RectangleGrid();
+		Cell cell = g.createCell(new RectangleShape(x,y , cellWidth, cellHeight),cellType,row, column);
+		//Cell//getCell(cellType);
+
 		cell.saveCellState();
 
 		Map<String,String> stateMap = new HashMap<String,String>();
@@ -69,15 +73,18 @@ public class XMLParser {
 			stateMap.put(tag, getTextValue(cellElem,tag));
 		}
 
-		cell.init(new RectangleShape(x,y , cellWidth, cellHeight),row, column);
+		//cell.init(new RectangleShape(x,y , cellWidth, cellHeight),row, column);
 
 		if(cell instanceof FireCell){
 			 ((FireCell)cell).loadCellState(stateMap);
-			 ((FireCell)cell).changeState();
+			// ((FireCell)cell).changeState();
 		}
 
 		return cell;
     }
+
+
+
 
     public static String getSimType(Element simElem) {
         return simElem.getAttribute("SimulationType");
@@ -126,18 +133,6 @@ public class XMLParser {
     }
 
 
-    public Cell getCell(String cellType) throws XMLException{
-	    Cell cell;
-	    try {
-	        String cellClassName = "Cell." + cellType+"Cell";
-	        Class c = Class.forName(cellClassName);
-	        cell = (Cell) c.newInstance();
-	    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-	    		//System.out.println("Could not find cell "+cellType);
-	    		throw new XMLException();
-	        }
-	    return cell;
-    }
 
     public static Paint getPaintValue(Element ele, String tagName) {
         return Paint.valueOf(getTextValue(ele, tagName));

@@ -73,17 +73,22 @@ public class SlimeMoldSimulation extends Simulation {
 
     private void move(SlimeMoldCell smc) {
         if (smc.getState() == State.SLIME) {
-            SlimeMoldCell cellToMoveTo;
-            if (smc.sniffCheck(sniffThreshold)) {
-                cellToMoveTo = smc.chemicalGradientMove(sniffAngles);
-            } else {
-                int randomIndex = getRandomNum(0, wiggleAngles.length - 1);
-                cellToMoveTo = smc.randomMoveHelp(wiggleAngles[randomIndex]);
-            }
+            SlimeMoldCell cellToMoveTo = getCellToMoveTo(smc);
             if (cellToMoveTo != null) {
                 swap(smc, cellToMoveTo);
             }
         }
+    }
+
+    private SlimeMoldCell getCellToMoveTo(SlimeMoldCell smc) {
+        SlimeMoldCell cellToMoveTo;
+        if (smc.sniffCheck(sniffThreshold)) {
+            cellToMoveTo = smc.chemicalGradientMove(sniffAngles);
+        } else {
+            int randomIndex = getRandomNum(0, wiggleAngles.length - 1);
+            cellToMoveTo = smc.randomMoveHelp(wiggleAngles[randomIndex]);
+        }
+        return cellToMoveTo;
     }
 
     private void swap(SlimeMoldCell cellToMove, SlimeMoldCell cellToMoveTo) {
@@ -144,47 +149,48 @@ public class SlimeMoldSimulation extends Simulation {
         return sniffThreshold;
     }
 
+    public void setSniff(int newSniff) {
+        sniffThreshold = newSniff;
+
+    }
+
     public double getDiffusion() {
-        // TODO Auto-generated method stub
         return diffusionRate;
     }
 
-    public void setDiffusion(double intValue) {
-        // TODO Auto-generated method stub
-        diffusionRate = intValue;
+    public void setDiffusion(double newRate) {
+        diffusionRate = newRate;
 
     }
 
     public double getChemicalDrops() {
-        // TODO Auto-generated method stub
         return chemicalDrops;
     }
 
-    public void setChemicalDrops(int intValue) {
-        // TODO Auto-generated method stub
-        chemicalDrops = intValue;
+    public void setChemicalDrops(int newChem) {
+        chemicalDrops = newChem;
     }
 
     public double getEvaporation() {
-        // TODO Auto-generated method stub
         return evaporationRate;
     }
 
-    public void setEvaporation(int intValue) {
-        // TODO Auto-generated method stub
-        evaporationRate = intValue;
-
-    }
-
-    public void getSniff(int intValue) {
-        // TODO Auto-generated method stub
-        sniffThreshold = intValue;
+    public void setEvaporation(int newRate) {
+        evaporationRate = newRate;
 
     }
 
 	@Override
+	boolean hasGraph() {
+		return false;
+	}
+
+
+
+	@Override
 	void assignLoadState(Cell c) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 }

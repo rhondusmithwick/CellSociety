@@ -1,10 +1,17 @@
-package GUI;
+package Config;
 
 import Simulation.SlimeMoldSimulation;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+
+/**
+ *SlimeMoldConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+ * <p>
+ * Created by bliborio on 2/11/16.
+ *
+ * @author Bruna Liborio
+ */
 
 public class SlimeMoldConfig extends Config {
 
@@ -40,37 +47,37 @@ public class SlimeMoldConfig extends Config {
 
     @Override
     public void createControls() {
+        createSniffSlider();
+        createDiffusionSlider();
+        createChemicalDropsSlider();
+        createEvaporationSlider();
+    }
+
+    private void createSniffSlider() {
         sniff = makeSlider(1, 50, 1);
-        sniff.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeSniff(new_val.intValue());
-            }
-        });
+        ChangeListener<Number> sniffListener = (ov, oldVal, newVal) -> changeSniff(newVal.intValue());
+        sniff.valueProperty().addListener(sniffListener);
         sniff.setValue(slimeSim.getSniff());
+    }
+
+    private void createDiffusionSlider() {
         diffusion = makeSlider(0, 1, .1);
-        diffusion.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeDiffusion(new_val.intValue());
-            }
-        });
+        ChangeListener<Number> diffusionListener = (ov, oldVal, newVal) -> changeDiffusion(newVal.intValue());
+        diffusion.valueProperty().addListener(diffusionListener);
         diffusion.setValue(slimeSim.getDiffusion());
+    }
+
+    private void createChemicalDropsSlider() {
         chemicalDrops = makeSlider(0, 10, 1);
-        chemicalDrops.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeChemicalDrops(new_val.intValue());
-            }
-        });
+        ChangeListener<Number> chemicalDropsListener = (ov, oldVal, newVal) -> changeChemicalDrops(newVal.intValue());
+        chemicalDrops.valueProperty().addListener(chemicalDropsListener);
         chemicalDrops.setValue(slimeSim.getChemicalDrops());
-        evaporation = makeSlider(0, 10, 1);
-        evaporation.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeEvaporation(new_val.intValue());
-            }
-        });
+    }
+
+    private void createEvaporationSlider() {
+        evaporation = makeSlider(0, 20, 1);
+        ChangeListener<Number> evaporationListener = (ov, oldVal, newVal) -> changeEvaporation(newVal.intValue());
+        evaporation.valueProperty().addListener(evaporationListener);
         evaporation.setValue(slimeSim.getEvaporation());
     }
 
@@ -88,19 +95,19 @@ public class SlimeMoldConfig extends Config {
     }
 
     private void changeSniff(int intValue) {
-        slimeSim.getSniff(intValue);
+        slimeSim.setSniff(intValue);
     }
 
     @Override
     public void setAndAddAll() {
-        setAndAdd(sniff, 5, 5, 1, 1);
-        setAndAdd(diffusion, 5, 6, 1, 1);
-        setAndAdd(evaporation, 5, 7, 1, 1);
-        setAndAdd(evaporationLabel, 4, 7, 1, 1);
-        setAndAdd(diffusionLabel, 4, 6, 1, 1);
-        setAndAdd(sniffLabel, 4, 5, 1, 1);
-        setAndAdd(chemicalDrops, 5, 8, 1, 1);
-        setAndAdd(chemicalLabel, 4, 8, 1, 1);
+        setAndAdd(sniff, 5, 6, 1, 1);
+        setAndAdd(diffusion, 5, 7, 1, 1);
+        setAndAdd(evaporation, 5, 8, 1, 1);
+        setAndAdd(evaporationLabel, 4, 8, 1, 1);
+        setAndAdd(diffusionLabel, 4, 7, 1, 1);
+        setAndAdd(sniffLabel, 4, 6, 1, 1);
+        setAndAdd(chemicalDrops, 5, 9, 1, 1);
+        setAndAdd(chemicalLabel, 4, 9, 1, 1);
     }
 
 }

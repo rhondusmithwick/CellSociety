@@ -11,6 +11,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
@@ -19,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 /**
  * Created by rhondusmithwick on 1/31/16.
@@ -26,6 +29,8 @@ import java.util.Random;
  * @author Rhondu Smithwick
  */
 public abstract class Simulation {
+    private static final String GUI_PROPERTY_PATH = "GUIstrings";
+    private final ResourceBundle myResources;
     private final Random rn;
     private final Timeline simulationLoop;
     private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
@@ -42,22 +47,17 @@ public abstract class Simulation {
     private LineChart<Number, Number> lineChart;
     private boolean isPlaying = false;
 
+
     Simulation() {
+        myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
+        createGraph();
         simulationLoop = buildLoop();
         rn = new Random();
-        createGraph();
-    }
-
-    private void createGraph() {
-        xAxis.setLabel("Frame");
-        yAxis.setLabel("Number of Cells");
-        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-        GridPane.setConstraints(lineChart, 0, 20, 1, 1, HPos.CENTER, VPos.CENTER);
     }
 
 
-    public LineChart<Number, Number> getGraph() {
-        return lineChart;
+    ResourceBundle getResources() {
+        return myResources;
     }
 
     public void setProperties(Element simElem) throws XMLException {
@@ -82,7 +82,7 @@ public abstract class Simulation {
         savedValues.put("numCellsPerRow", numCellsPerRow);
         savedValues.put("numCellsPerColumn", numCellsPerColumn);
         saveSpecificValues();
-       // saveCellStates();
+        saveCellStates();
     }
 
     abstract void saveSpecificValues();
@@ -257,5 +257,24 @@ public abstract class Simulation {
     	for(Cell c: theCells)
     	c.saveCellState();
     }
+
+
+    private void createGraph() {
+        xAxis.setLabel(myResources.getString("Frame"));
+        yAxis.setLabel(myResources.getString("NumberOfCells"));
+        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+    }
+
+    public LineChart<Number, Number> getGraph() {
+        return lineChart;
+    }
+
+    abstract boolean hasGraph();
+
+    public boolean setGraph(GridPane graph) {
+        graph.getChildren().add(lineChart);
+        return hasGraph();
+    }
+
 }
 

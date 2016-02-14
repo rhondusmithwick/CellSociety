@@ -1,7 +1,9 @@
 package Cell;
 
+
 import java.util.Map;
 
+import Grid.CellShape;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -26,18 +28,15 @@ public class FireCell extends Cell {
      */
     private int burnTimer;
 
-    /**
-     * Construct a fire cell.
-     */
-    public FireCell() {
-        super();
+    public FireCell(CellShape shape, int row, int column) {
+        super(shape, row, column);
     }
 
     public void loadCellState(Map<String,String> cellState){
     	state =  State.valueOf(cellState.get("state"));
     	mark =  Mark.valueOf( cellState.get("state"));
     	burnTimer = Integer.parseInt(cellState.get("burnTimer"));
-    	// setFill(getVisual(state));
+    	 setFill(getVisual(state));
     }
     @Override
     void saveTypeCellState() {
@@ -167,14 +166,6 @@ public class FireCell extends Cell {
     	public static String token(Mark t){
     		return t.name();
     	}
-    	/*
-        public static  type(String token){
-    		return .valueOf(token);
-    	}
-    	public static String token(State t){
-    		return t.name();
-    	}
-    	*/
     }
 
 

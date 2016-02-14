@@ -99,6 +99,21 @@ class Ant {
         return null;
     }
 
+    private ForagingAntsCell chooseNeighbor(List<ForagingAntsCell> locSet, double totalProb) {
+        double prob = new Random().nextDouble() * totalProb;
+        double probTracker = 0;
+        double currProb;
+        Collections.sort(locSet, (c1, c2) -> (compare(c1, c2)));
+        for (ForagingAntsCell cell : locSet) {
+            currProb = cell.getProbChoice();
+            if (isRightProbability(prob, probTracker, currProb)) {
+                return cell;
+            }
+            probTracker += currProb;
+        }
+        return locSet.get(locSet.size() / 2);
+    }
+
     private ForagingAntsCell getNeighborMaxPhero(boolean forwardOnly) {
         ForagingAntsCell maxFac = null;
         double currMax = -1;
@@ -117,17 +132,19 @@ class Ant {
     }
 
     private List<ForagingAntsCell> createLocSet(boolean forwardOnly) {
-        ForagingAntsCell neighbor;
         List<ForagingAntsCell> locSet = new ArrayList<>();
-        for (Cell c : myCell.getNeighbors()) {
-            neighbor = (ForagingAntsCell) c;
-            if (moveCheck(neighbor, forwardOnly)) {
-                locSet.add(neighbor);
-            }
-        }
+        myCell.getNeighbors().stream()
+                .map(c -> (ForagingAntsCell) c)
+                .forEach(fac -> addToLocSetIfShould(fac, forwardOnly, locSet));
         return locSet;
     }
 
+    private void addToLocSetIfShould(ForagingAntsCell fac, boolean forwardOnly,
+                                     List<ForagingAntsCell> locSet) {
+        if (moveCheck(fac, forwardOnly)) {
+            locSet.add(fac);
+        }
+    }
 
     private double getTotalProb(List<ForagingAntsCell> locSet) {
         double total = 0.0;
@@ -137,20 +154,6 @@ class Ant {
         return total;
     }
 
-    private ForagingAntsCell chooseNeighbor(List<ForagingAntsCell> locSet, double totalProb) {
-        double prob = new Random().nextDouble() * totalProb;
-        double probTracker = 0;
-        double currProb;
-        Collections.sort(locSet, (c1, c2) -> (compare(c1, c2)));
-        for (ForagingAntsCell cell : locSet) {
-            currProb = cell.getProbChoice();
-            if (isRightProbability(prob, probTracker, currProb)) {
-                return cell;
-            }
-            probTracker += currProb;
-        }
-        return locSet.get(locSet.size() / 2);
-    }
 
     private int compare(ForagingAntsCell c1, ForagingAntsCell c2) {
         return (int) (c1.getProbChoice() - c2.getProbChoice());

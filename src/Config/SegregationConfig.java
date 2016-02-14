@@ -1,9 +1,17 @@
-package GUI;
+package Config;
 
 import Simulation.SegregationSimulation;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+
+/**
+ *SegregationConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+ * <p>
+ * Created by bliborio on 2/11/16.
+ *
+ * @author Bruna Liborio
+ */
 
 public class SegregationConfig extends Config {
 
@@ -46,8 +54,8 @@ public class SegregationConfig extends Config {
 
     @Override
     public void setAndAddAll() {
-        setAndAdd(threshold, 5, 5, 1, 1);
-        setAndAdd(thresholdLabel, 4, 5, 1, 1);
+        setAndAdd(threshold, 5, 6, 1, 1);
+        setAndAdd(thresholdLabel, 4, 6, 1, 1);
     }
 
 }

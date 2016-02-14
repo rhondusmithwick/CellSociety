@@ -1,5 +1,6 @@
-package GUI;
+package Config;
 
+import GUI.SimulationControl;
 import Simulation.Simulation;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
@@ -14,7 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-abstract class Config {
+/**
+ * Config Class: Abstract class allowing for the addition of sliders to dynamically control the simulation.
+ * <p>
+ * Created by bliborio on 2/11/16.
+ *
+ * @author Bruna Liborio
+ */
+
+public abstract class Config {
 
     private static final String GUI_PROPERTY_PATH = "GUIstrings";
 
@@ -35,20 +44,20 @@ abstract class Config {
         setAndAddMain();
     }
 
-    public void setSim(SimulationControl newControl, Simulation newSimulation) {
+    public final void setSim(SimulationControl newControl, Simulation newSimulation) {
         mySimControl = newControl;
         mySimulation = newSimulation;
     }
 
-    public SimulationControl getSimControl() {
+    public final SimulationControl getSimControl() {
         return mySimControl;
     }
 
-    Simulation getSimulation() {
+    final Simulation getSimulation() {
         return mySimulation;
     }
 
-    ResourceBundle getResources() {
+    final ResourceBundle getResources() {
         return myResources;
     }
 
@@ -61,20 +70,20 @@ abstract class Config {
         newControls.add(e);
     }
 
-    public List<Node> getControls() {
+    public final List<Node> getControls() {
         return newControls;
     }
 
-    void createMainLabels() {
+    final void createMainLabels() {
         sizeLabel = makeLabel(getResources().getString("SizeLabel"));
         speedLabel = makeLabel(getResources().getString("SpeedLabel"));
     }
 
-    Label makeLabel(String string) {
+    final Label makeLabel(String string) {
         return new Label(string);
     }
 
-    void createMainSliders() {
+    final void createMainSliders() {
         createSpeedSlider();
         createSizeSlider();
     }
@@ -86,7 +95,7 @@ abstract class Config {
         mySpeedSlider.valueProperty().addListener(speedChanger);
     }
 
-    void deactivateSize() {
+    final void deactivateSize() {
         mySizeSlider.setDisable(true);
     }
 
@@ -104,14 +113,14 @@ abstract class Config {
         return slider;
     }
 
-    void setAndAddMain() {
-        setAndAdd(speedLabel, 1, 5, 1, 1);
-        setAndAdd(sizeLabel, 1, 6, 1, 1);
-        setAndAdd(mySpeedSlider, 2, 5, 1, 1);
-        setAndAdd(mySizeSlider, 2, 6, 1, 1);
+    final void setAndAddMain() {
+        setAndAdd(speedLabel, 1, 6, 1, 1);
+        setAndAdd(sizeLabel, 1, 7, 1, 1);
+        setAndAdd(mySpeedSlider, 2, 6, 1, 1);
+        setAndAdd(mySizeSlider, 2, 7, 1, 1);
     }
 
-    void setAndAdd(Node node, int col, int row, int colSpan, int rowSpan) {
+    final void setAndAdd(Node node, int col, int row, int colSpan, int rowSpan) {
         GridPane.setConstraints(node, col, row, colSpan, rowSpan, HPos.CENTER, VPos.CENTER);
         this.addControl(node);
         ((Region) node).setMaxWidth(Double.MAX_VALUE);

@@ -28,11 +28,11 @@ public abstract class CellShape {
 
     public abstract double getHeight();
 
-    public void setStroke(Paint value) {
+    public final void setStroke(Paint value) {
         myShape.setStroke(value);
     }
 
-    public void setFill(Paint value) {
+    public final void setFill(Paint value) {
         myShape.setFill(value);
     }
 

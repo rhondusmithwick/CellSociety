@@ -1,5 +1,6 @@
 package Cell;
 
+import Grid.CellShape;
 import javafx.scene.paint.Paint;
 
 /**
@@ -17,11 +18,8 @@ public class GameOfLifeCell extends Cell {
      */
     private Mark mark;
 
-    /**
-     * Construct the game of life cell.
-     */
-    public GameOfLifeCell() {
-        super();
+    public GameOfLifeCell(CellShape shape, int row, int column) {
+        super(shape, row, column);
     }
 
     @Override

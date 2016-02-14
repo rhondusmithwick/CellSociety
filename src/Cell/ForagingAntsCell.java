@@ -1,5 +1,6 @@
 package Cell;
 
+import Grid.CellShape;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -26,8 +27,8 @@ public class ForagingAntsCell extends Cell {
     private int maxAntsPer;
     private double probChoice;
 
-    public ForagingAntsCell() {
-        super();
+    public ForagingAntsCell(CellShape shape, int row, int column) {
+        super(shape, row, column);
     }
 
     @Override
@@ -192,8 +193,12 @@ public class ForagingAntsCell extends Cell {
         return probChoice;
     }
 
-    double getHomePheromones() {
+    public double getHomePheromones() {
         return homePheromones;
+    }
+
+    public double getFoodPheromones() {
+        return foodPheromones;
     }
 
     public void setInitialPheromones(double min, double max) {

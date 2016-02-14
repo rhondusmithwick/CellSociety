@@ -6,9 +6,10 @@ import Cell.ForagingAntsCell.Mark;
 import XML.XMLException;
 import XML.XMLParser;
 import javafx.geometry.Point2D;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-
 
 /**
  * Created by rhondusmithwick on 2/7/16.
@@ -17,180 +18,218 @@ import javafx.scene.paint.Paint;
  */
 public class ForagingAntsSimulation extends Simulation {
 
-    private static final Point2D DEFAULT_NEST_LOCATION = new Point2D(0, 0);
-    private static final Point2D[] DEFAULT_FOOD_LOCATIONS = {new Point2D(0, 99), new Point2D(99, 0), new Point2D(99, 99)};
-    private static final int DEFAULT_MAX_ANTS = 1000;
-    private static final int DEFAULT_MAX_ANTS_PER_LOCATION = 10;
-    private static final int DEFAULT_ANT_LIFETIME = 500;
-    private static final int DEFAULT_ANTS_BORN = 20;
-    private static final double DEFAULT_MIN_AMOUNT_PHEROMONE = 0.0;
-    private static final double DEFAULT_MAX_PHEROMONE = 100000.0;
-    private static final double DEFAULT_EVAPORATION_RATE = .001;
-    private static final double DEFAULT_DIFFUSION_RATE = .001;
-    private static final double DEFAULT_K = .001;
-    private static final double DEFAULT_N = 60.0;
-    private static final Paint DEFAULT_EMPTY_VISUAL = Color.WHITE;
-    private static final Paint DEFAULT_NEST_VISUAL = Color.LIGHTGREEN;
-    private static final Paint DEFAULT_FOOD_VISUAL = Color.PALEGOLDENROD;
+	private static final Point2D DEFAULT_NEST_LOCATION = new Point2D(0, 0);
+	private static final Point2D[] DEFAULT_FOOD_LOCATIONS = { new Point2D(0, 99), new Point2D(99, 0),
+			new Point2D(99, 99) };
+	private static final int DEFAULT_MAX_ANTS = 1000;
+	private static final int DEFAULT_MAX_ANTS_PER_LOCATION = 10;
+	private static final int DEFAULT_ANT_LIFETIME = 500;
+	private static final int DEFAULT_ANTS_BORN = 20;
+	private static final double DEFAULT_MIN_AMOUNT_PHEROMONE = 0.0;
+	private static final double DEFAULT_MAX_PHEROMONE = 100000.0;
+	private static final double DEFAULT_EVAPORATION_RATE = .001;
+	private static final double DEFAULT_DIFFUSION_RATE = .001;
+	private static final double DEFAULT_K = .001;
+	private static final double DEFAULT_N = 60.0;
+	private static final Paint DEFAULT_EMPTY_VISUAL = Color.WHITE;
+	private static final Paint DEFAULT_NEST_VISUAL = Color.LIGHTGREEN;
+	private static final Paint DEFAULT_FOOD_VISUAL = Color.PALEGOLDENROD;
 
-    private final Point2D nestLocation = DEFAULT_NEST_LOCATION;
-    private final Point2D[] foodLocations = DEFAULT_FOOD_LOCATIONS;
-    private final double minAmountPheromone = DEFAULT_MIN_AMOUNT_PHEROMONE;
-    private final double maxAmountPheromone = DEFAULT_MAX_PHEROMONE;
-    private final int maxAntsPer = DEFAULT_MAX_ANTS_PER_LOCATION;
-    private final Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
-    private final Paint nestVisual = DEFAULT_NEST_VISUAL;
-    private final Paint foodVisual = DEFAULT_FOOD_VISUAL;
-    private int maxAnts = DEFAULT_MAX_ANTS;
-    private int antLifetime = DEFAULT_ANT_LIFETIME;
-    private int antsBorn = DEFAULT_ANTS_BORN;
-    private double evaporationRate = DEFAULT_EVAPORATION_RATE;
-    private double diffusionRate = DEFAULT_DIFFUSION_RATE;
-    private double K = DEFAULT_K;
-    private double N = DEFAULT_N;
-    private ForagingAntsCell nest;
-    private int currAnts = 0;
+	private final Point2D nestLocation = DEFAULT_NEST_LOCATION;
+	private final Point2D[] foodLocations = DEFAULT_FOOD_LOCATIONS;
+	private final double minAmountPheromone = DEFAULT_MIN_AMOUNT_PHEROMONE;
+	private final double maxAmountPheromone = DEFAULT_MAX_PHEROMONE;
+	private final int maxAntsPer = DEFAULT_MAX_ANTS_PER_LOCATION;
+	private final Paint emptyVisual = DEFAULT_EMPTY_VISUAL;
+	private final Paint nestVisual = DEFAULT_NEST_VISUAL;
+	private final Paint foodVisual = DEFAULT_FOOD_VISUAL;
+	private int maxAnts = DEFAULT_MAX_ANTS;
+	private int antLifetime = DEFAULT_ANT_LIFETIME;
+	private int antsBorn = DEFAULT_ANTS_BORN;
+	private double evaporationRate = DEFAULT_EVAPORATION_RATE;
+	private double diffusionRate = DEFAULT_DIFFUSION_RATE;
+	private double K = DEFAULT_K;
+	private double N = DEFAULT_N;
+	private ForagingAntsCell nest;
+	private int currAnts = 0;
+	private int frame = 0;
 
-    public ForagingAntsSimulation() throws XMLException {
-        super();
-        setProperties(XMLParser.getXmlElement("resources/ForagingAnts.xml"));
-    }
+	private XYChart.Series antsSeries = new XYChart.Series();
+	// private XYChart.Series foodSeries = new XYChart.Series();
+	// private XYChart.Series homeSeries = new XYChart.Series();
 
+	private LineChart lineChart;
 
-    private static boolean isLocation(Cell c, Point2D loc) {
-        return (c.getRow() == loc.getY())
-                && (c.getColumn() == loc.getX());
-    }
+	// private double foodPheromones = 0;
+	// private double homePheromones = 0;
 
-    @Override
-    void saveSpecificValues() {
+	public ForagingAntsSimulation() throws XMLException {
+		super();
+		setProperties(XMLParser.getXmlElement("resources/ForagingAnts.xml"));
+		lineChart = this.getGraph();
+		setUpChart();
+	}
 
-    }
+	private void setUpChart() {
+		antsSeries.setName(this.getResources().getString("Ants"));
+		// homeSeries.setName(this.getResources().getString("Home"));
+		// foodSeries.setName(this.getResources().getString("Food"));
+		this.getGraph().getData().add(antsSeries);
+		// this.getGraph().getData().add(homeSeries);
+		// this.getGraph().getData().add(foodSeries);
+	}
 
-    @Override
-    void setSpecificProperties() {
+	private static boolean isLocation(Cell c, Point2D loc) {
+		return (c.getRow() == loc.getY()) && (c.getColumn() == loc.getX());
+	}
 
-    }
+	@Override
+	void saveSpecificValues() {
 
-    public void step() {
-        stepSetup();
-        spawnAnts();
-        super.step();
-        changeStates();
-    }
+	}
 
-    private void stepSetup() {
-        currAnts = 0;
-        getTheCells().stream()
-                .map(c -> (ForagingAntsCell) c)
-                .forEach(this::preStep);
-    }
+	@Override
+	void setSpecificProperties() {
 
-    private void preStep(ForagingAntsCell c) {
-        currAnts += c.getNumAnts();
-        c.setProbChoice(K, N);
-        c.pheroUpdate(evaporationRate, diffusionRate);
-    }
+	}
 
-    private void spawnAnts() {
-        if (currAnts < maxAnts) {
-            int allowed = maxAnts - currAnts;
-            if (allowed < antsBorn) {
-                nest.spawn(allowed, antLifetime);
-            } else {
-                nest.spawn(antsBorn, antLifetime);
-            }
-        }
-    }
+	public void step() {
+		frame++;
+		stepSetup();
+		spawnAnts();
+		super.step();
+		changeStates();
+		// updatePheromones();
+		updateGraph();
+	}
+	
+	private void spawnAnts() {
+		if (currAnts < maxAnts) {
+			int allowed = maxAnts - currAnts;
+			if (allowed < antsBorn) {
+				nest.spawn(allowed, antLifetime);
+			} else {
+				nest.spawn(antsBorn, antLifetime);
+			}
+		}
+	}
 
-    @Override
-    void assignInitialState(Cell c) {
-        c.setVisuals(emptyVisual, nestVisual, foodVisual);
-        ForagingAntsCell fac = (ForagingAntsCell) c;
-        fac.setMaxAntsPer(maxAntsPer);
-        fac.setInitialPheromones(minAmountPheromone, maxAmountPheromone);
-        if (isLocation(fac, nestLocation)) {
-            fac.setMark(Mark.NEST);
-            nest = fac;
-        } else if (isFoodLocation(fac)) {
-            fac.setMark(Mark.FOOD);
-        } else {
-            fac.setMark(Mark.OPEN);
-        }
-    }
+	@Override
+	void assignInitialState(Cell c) {
+		c.setVisuals(emptyVisual, nestVisual, foodVisual);
+		ForagingAntsCell fac = (ForagingAntsCell) c;
+		fac.setMaxAntsPer(maxAntsPer);
+		fac.setInitialPheromones(minAmountPheromone, maxAmountPheromone);
+		if (isLocation(fac, nestLocation)) {
+			fac.setMark(Mark.NEST);
+			nest = fac;
+		} else if (isFoodLocation(fac)) {
+			fac.setMark(Mark.FOOD);
+		} else {
+			fac.setMark(Mark.OPEN);
+		}
+	}
 
-    /*
-        @Override
-        void setSpecificProperties(Element simElem) {
+	/*
+	 * private void updatePheromones(){ for (Cell cell: getTheCells()){
+	 * ForagingAntsCell newCell = (ForagingAntsCell) cell; foodPheromones =
+	 * foodPheromones + (double) newCell.getFoodPheromones(); homePheromones =
+	 * homePheromones + (double) newCell.getHomePheromones(); } }
+	 */
 
-        }
-    */
-    private boolean isFoodLocation(Cell c) {
-        for (Point2D food : foodLocations) {
-            if (isLocation(c, food)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	private void updateGraph() {
+		antsSeries.getData().add(new XYChart.Data(frame, currAnts));
+		// homeSeries.getData().add(new XYChart.Data(frame,homePheromones));
+		// foodSeries.getData().add(new XYChart.Data(frame,foodPheromones));
+		// homePheromones = 0;
+		// foodPheromones = 0;
+	}
 
+	private void stepSetup() {
+		currAnts = 0;
+		getTheCells().stream().map(c -> (ForagingAntsCell) c).forEach(this::preStep);
+	}
 
-    public double getDiffusionRate() {
-        return diffusionRate;
-    }
+	private void preStep(ForagingAntsCell c) {
+		currAnts += c.getNumAnts();
+		c.setProbChoice(K, N);
+		c.pheroUpdate(evaporationRate, diffusionRate);
+	}
 
-    public void setDiffusionRate(double d) {
-        diffusionRate = d;
-    }
+	/*
+	 * @Override void setSpecificProperties(Element simElem) {
+	 * 
+	 * }
+	 */
+	private boolean isFoodLocation(Cell c) {
+		for (Point2D food : foodLocations) {
+			if (isLocation(c, food)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public double getEvaporationRate() {
-        return evaporationRate;
-    }
+	public double getDiffusionRate() {
+		return diffusionRate;
+	}
 
-    public void setEvaporationRate(double d) {
-        evaporationRate = d;
-    }
+	public void setDiffusionRate(double d) {
+		diffusionRate = d;
+	}
 
-    public double getAntsBorn() {
-        return antsBorn;
-    }
+	public double getEvaporationRate() {
+		return evaporationRate;
+	}
 
-    public void setAntsBorn(double d) {
-        antsBorn = (int) d;
-    }
+	public void setEvaporationRate(double d) {
+		evaporationRate = d;
+	}
 
-    public double getLifeTime() {
-        return antLifetime;
-    }
+	public double getAntsBorn() {
+		return antsBorn;
+	}
 
-    public void setLifeTime(double d) {
-        antLifetime = (int) d;
-    }
+	public void setAntsBorn(double d) {
+		antsBorn = (int) d;
+	}
 
-    public double getMaxAnts() {
-        return maxAnts;
-    }
+	public double getLifeTime() {
+		return antLifetime;
+	}
 
-    public void setMaxAnts(double d) {
-        maxAnts = (int) d;
-    }
+	public void setLifeTime(double d) {
+		antLifetime = (int) d;
+	}
 
-    public double getK() {
-        return K;
-    }
+	public double getMaxAnts() {
+		return maxAnts;
+	}
 
-    public void setK(double d) {
-        K = d;
-    }
+	public void setMaxAnts(double d) {
+		maxAnts = (int) d;
+	}
 
-    public double getN() {
-        return N;
-    }
+	public double getK() {
+		return K;
+	}
 
-    public void setN(double d) {
-        N = d;
-    }
+	public void setK(double d) {
+		K = d;
+	}
 
+	public double getN() {
+		return N;
+	}
+
+	public void setN(double d) {
+		N = d;
+	}
+
+	@Override
+	boolean hasGraph() {
+		return true;
+	}
 
 	@Override
 	void assignLoadState(Cell c) {

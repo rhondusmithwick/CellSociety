@@ -15,8 +15,8 @@ public class RectangleGrid extends Grid {
         double cellHeight = ((double) getGridHeight()) / getCellsPerColumn();
         for (int row = 0; row < getCellsPerRow(); row++) {
             for (int column = 0; column < getCellsPerColumn(); column++) {
-                double x = row * cellWidth;
-                double y = column * cellHeight;
+                double x = column * cellWidth;
+                double y = row * cellHeight;
                 CellShape shape = new RectangleShape(x, y, cellWidth, cellHeight);
                 Cell myCell = createCell(shape, cellType, row, column);
                 add(myCell);

@@ -152,14 +152,16 @@ public class SegregationSimulation extends Simulation {
         return threshold;
     }
 
-    public void setThreshold(int intValue) {
-        threshold = intValue;
+    public void setThreshold(int newThreshold) {
+        threshold = newThreshold;
     }
 
 	@Override
 	void assignLoadState(Cell c) {
 		// TODO Auto-generated method stub
-		
+	}
+	boolean hasGraph() {
+		return false;
 	}
 
 }

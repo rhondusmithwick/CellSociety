@@ -25,12 +25,10 @@ import java.util.Collection;
 public class XMLOutput {
 
     private static Document doc;
-  //  private final String WRITE_DIR = "resources";
     private final Element rootElement;
-    //public Collection<Cell> theCells;
     private DocumentBuilder docBuild;
     private Element cellsElement;
-   // private XMLEncoder encoder;
+
 
     public XMLOutput(Simulation sim) {
         init();
@@ -40,10 +38,8 @@ public class XMLOutput {
         for (String tag : sim.getSavedValues().keySet()) {
         	addObjectElement(rootElement, tag,sim.getSavedValues().get(tag));
         }
-
       }
     private Element addObjectElement(Element parent,String tag, Object value){
-
              parent.appendChild(objectElement(tag, value));
          return parent;
     }
@@ -82,24 +78,12 @@ public class XMLOutput {
     public Element makeCellElement(String tag, Cell c) {
     	 Element elem = doc.createElement(tag);
 	 		for(String t: c.getCellState().keySet()){
-	 			//System.out.println(t);
 	 			addObjectElement(elem,t,c.getCellState().get(t));
 	 		}
     	return elem;
 
     }
 
-    /*
-        public void initSimXML(String simType){
-            Element simElem = makeTextElement("String", simType);
-            init(simElem);
-        }
-        */
-/*
-    public XMLOutput(Element rootElement) {
-		init(rootElement);
-	}
-	*/
     private void init() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
@@ -108,33 +92,13 @@ public class XMLOutput {
             e.printStackTrace();
         }
         doc = docBuild.newDocument();
-        //this.rootElement=rootElement;
-        //doc.appendChild(rootElement);
     }
 
     private void addElement(Element child) {
         rootElement.appendChild(child);
     }
-    /*
-    public void initCells(String cellType) {
-
-    }*/
-
-
-/*
-        public void writeXML(File file){
-	    	try {
-				encoder = new XMLEncoder(new BufferedOutputStream (new FileOutputStream(file))) ;
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace(); //Bad
-			}
-	    	encoder.close();
-	    }
-	    */
 
     public void writeXML(File file) throws XMLException {
-        //File file = new File(WRITE_DIR,filename);
         Transformer transformer;
         try {
             transformer = TransformerFactory.newInstance().newTransformer();
@@ -147,7 +111,6 @@ public class XMLOutput {
                throw new XMLException();
             }
         } catch (NullPointerException | TransformerConfigurationException | TransformerFactoryConfigurationError e) {
-            // TODO Auto-generated catch block
         	throw new XMLException();
         }
 
@@ -162,7 +125,7 @@ public class XMLOutput {
     }
 
 
-    // utility method to create text node
+
     private Element makeTextElement(String tag, String value) {
         Element elem = doc.createElement(tag);
         elem.appendChild(doc.createTextNode(value));

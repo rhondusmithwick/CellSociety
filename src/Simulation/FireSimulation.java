@@ -32,7 +32,6 @@ public class FireSimulation extends Simulation {
     public FireSimulation() throws XMLException {
         super();
         setProperties(XMLParser.getXmlElement("resources/" + "Fire.xml"));
-
     }
 
 
@@ -79,7 +78,8 @@ public class FireSimulation extends Simulation {
         else if (treeDoneBurning(fc)) {
             fc.setMark(Mark.EMPTY);
         }
-       
+        setLoadState(fc);
+
     }
     private void setLoadState(FireCell fc){
         if(fc.getState()==State.BURNING){
@@ -160,4 +160,10 @@ public class FireSimulation extends Simulation {
     public void setProbCatch(int newProb) {
         probCatch = newProb;
     }
+
+
+	@Override
+	boolean hasGraph() {
+		return false;
+	}
 }
