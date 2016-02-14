@@ -40,37 +40,37 @@ public class SlimeMoldConfig extends Config {
 
     @Override
     public void createControls() {
+        createSniffSlider();
+        createDiffusionSlider();
+        createChemicalDropsSlider();
+        createEvaporationSlider();
+    }
+
+    private void createSniffSlider() {
         sniff = makeSlider(1, 50, 1);
-        sniff.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeSniff(new_val.intValue());
-            }
-        });
+        ChangeListener<Number> sniffListener = (ov, oldVal, newVal) -> changeSniff(newVal.intValue());
+        sniff.valueProperty().addListener(sniffListener);
         sniff.setValue(slimeSim.getSniff());
+    }
+
+    private void createDiffusionSlider() {
         diffusion = makeSlider(0, 1, .1);
-        diffusion.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeDiffusion(new_val.intValue());
-            }
-        });
+        ChangeListener<Number> diffusionListener = (ov, oldVal, newVal) -> changeDiffusion(newVal.intValue());
+        diffusion.valueProperty().addListener(diffusionListener);
         diffusion.setValue(slimeSim.getDiffusion());
+    }
+
+    private void createChemicalDropsSlider() {
         chemicalDrops = makeSlider(0, 10, 1);
-        chemicalDrops.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeChemicalDrops(new_val.intValue());
-            }
-        });
+        ChangeListener<Number> chemicalDropsListener = (ov, oldVal, newVal) -> changeChemicalDrops(newVal.intValue());
+        chemicalDrops.valueProperty().addListener(chemicalDropsListener);
         chemicalDrops.setValue(slimeSim.getChemicalDrops());
-        evaporation = makeSlider(0, 10, 1);
-        evaporation.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeEvaporation(new_val.intValue());
-            }
-        });
+    }
+
+    private void createEvaporationSlider() {
+        evaporation = makeSlider(0, 20, 1);
+        ChangeListener<Number> evaporationListener = (ov, oldVal, newVal) -> changeEvaporation(newVal.intValue());
+        evaporation.valueProperty().addListener(evaporationListener);
         evaporation.setValue(slimeSim.getEvaporation());
     }
 
