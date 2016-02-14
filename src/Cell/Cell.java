@@ -43,6 +43,19 @@ public abstract class Cell {
         super();
     }
 
+    public void loadCellState(Map<String,Object> cellState) {
+
+    	//new CellShape();
+    	//shape = new
+        cellState.put("cellWidth", shape.getWidth());
+        cellState.put("cellHeight", shape.getHeight());
+        cellState.put("x", shape.getX());
+        cellState.put("y", shape.getY());
+        cellState.put("row", row);
+        cellState.put("column", column);
+        saveTypeCellState();
+    }
+
     public void saveCellState() {
 
         cellState = new HashMap<>();

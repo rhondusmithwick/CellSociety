@@ -30,7 +30,8 @@ public class FireCell extends Cell {
     public FireCell() {
         super();
     }
-
+    
+    
     @Override
     void saveTypeCellState() {
         	cellState.put("state",state.name());

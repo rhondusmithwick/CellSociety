@@ -43,18 +43,8 @@ public class XMLOutput {
 
       }
     private Element addObjectElement(Element parent,String tag, Object value){
-    	 if (value instanceof Integer) {
-             parent.appendChild(makeIntElement(tag, (Integer) value));
-         }
-    	 if ( value instanceof Double) {
-    		 parent.appendChild(makeDoubleElement(tag, (Double) value));
-       	 	}
-         if (value instanceof String) {
-        	 parent.appendChild(makeTextElement(tag, (String) value));
-         }
-         if (value instanceof Paint) {
-        	 parent.appendChild(makePaintElement(tag, (Paint) value));
-         }
+
+             parent.appendChild(objectElement(tag, value));
          return parent;
     }
 
@@ -76,7 +66,7 @@ public class XMLOutput {
    }
 
     public void addCells(String cellType, Collection<Cell> cells){
-    	cellsElement = doc.createElement(cellType+"Cells");
+    	cellsElement = doc.createElement("Cells");
    	 	cellsElement.appendChild(makeIntElement("cellCount",cells.size()));
    	 	int cellCount = 0;
    	 	for(Cell c: cells){

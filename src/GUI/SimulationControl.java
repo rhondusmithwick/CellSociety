@@ -103,19 +103,28 @@ public class SimulationControl {
      */
     private void switchSimulation(Element simElem) {
         //display.getChildren().remove(sim.getGraph());
-        simType = XMLParser.getSimType(simElem);
-        sim = getSimulation();
+    	XMLParser parser = new XMLParser(simElem);
+        simType = parser.getSimType();
+
 
         assert sim != null;
         sim.setType(simType);
         try {
+
+            sim = getSimulation();
 			sim.setProperties(simElem);
+			grid.init(parser.getCells(simType));
+			displayLoadedCells();
+			
+
 		} catch (XMLException e) {
+			e.printStackTrace();
 			showError(myResources.getString("XMLReadError"));
 		}
 
         config = getConfig();
         setConfigControls();
+        
         //display.getChildren().add(sim.getGraph());
     }
 
@@ -129,10 +138,12 @@ public class SimulationControl {
         sim.init();
     }
 
+
     public void saveSimulation(File file) {
         sim.saveValues();
-        //sim.saveCellStates();
+        sim.saveCellStates();
         XMLOutput simSave = new XMLOutput(sim);
+
         simSave.addCells(sim.getType(), grid.getCells());
         try {
 			simSave.writeXML(file);
@@ -149,6 +160,14 @@ public class SimulationControl {
         if (gridGroup != null) display.getChildren().remove(gridGroup);
         grid = createGrid(simType);
         gridGroup = grid.getGroup();
+        GridPane.setConstraints(gridGroup, 0, 1);
+        GridPane.setRowSpan(gridGroup, 10);
+        display.getChildren().add(gridGroup);
+    }
+    private void displayLoadedCells() {
+        if (gridGroup != null) display.getChildren().remove(gridGroup);
+        grid = createGrid(simType);
+       // gridGroup = grid.getGroup();
         GridPane.setConstraints(gridGroup, 0, 1);
         GridPane.setRowSpan(gridGroup, 10);
         display.getChildren().add(gridGroup);

@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 
 import Cell.Cell;
 import Grid.Grid;
+import Grid.RectangleShape;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
 
@@ -16,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -32,13 +34,34 @@ public class XMLParser {
     }
 
     public Collection<Cell> getCells(String cellType) throws XMLException{
-    	Cell cell = getCell(cellType);
-    	cell.saveCellState();
-    	//Grid grid = new Grid();
-    	Collection<String> valueMap = cell.getCellState().keySet();
-
+    	cells = new LinkedList<Cell>();
+    	//Cell base = getCell(cellType);
+    	//base.saveCellState();
+    	Element cellsElem = getElement("Cells");
+    	int cellCount = getIntValue(cellsElem,"cellCount");
+    	for(int i=0; i<cellCount; i++){
+        	String tag = "cell"+Integer.toString(i);
+        	Cell newCell = makeCell(cellType,getElement(cellsElem,tag));
+    		cells.add(newCell);
+    		//System.out.println("New Cell #"+i);
+    		//System.out.println("row: "+newCell.getRow());
+    	}
 
     	return cells;
+    }
+
+    public Cell makeCell(String cellType, Element cellElem) throws XMLException{
+
+		double x = getDoubleValue(cellElem,"x");
+		double y = getDoubleValue(cellElem,"y");
+		double cellWidth = getDoubleValue(cellElem,"cellWidth");
+		double cellHeight = getDoubleValue(cellElem,"cellHeight");
+		int row = getIntValue(cellElem,"row");
+		int column = getIntValue(cellElem,"column");
+		System.out.println(cellType);
+		Cell cell = getCell(cellType);
+		cell.init(new RectangleShape(x,y , cellWidth, cellHeight),row, column);
+		return cell;
     }
 
     public static String getSimType(Element simElem) {
@@ -59,6 +82,20 @@ public class XMLParser {
         }
     }
 
+
+
+    private Element getElement(String tagName) {
+        return getElement(rootElement,tagName);
+    }
+
+    private Element getElement(Element parent, String tagName) {
+        Element el = null;
+        NodeList nl = parent.getElementsByTagName(tagName);
+        if (nl != null && nl.getLength() > 0) {
+           el = (Element) nl.item(0);
+        }
+        return el;
+    }
     private static String getTextValue(Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
@@ -72,13 +109,16 @@ public class XMLParser {
     	NodeList nl = rootElement.getElementsByTagName(tagName);
     	return(nl != null && nl.getLength() > 0);
     }
+
+
     public Cell getCell(String cellType) throws XMLException{
 	    Cell cell;
 	    try {
-	        String cellClassName = "Cell." + cellType;
+	        String cellClassName = "Cell." + cellType+"Cell";
 	        Class c = Class.forName(cellClassName);
 	        cell = (Cell) c.newInstance();
 	    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+	    		//System.out.println("Could not find cell "+cellType);
 	    		throw new XMLException();
 	        }
 	    return cell;
@@ -90,6 +130,9 @@ public class XMLParser {
 
     public static int getIntValue(Element ele, String tagName) {
         return Integer.parseInt(getTextValue(ele, tagName));
+    }
+    public static double getDoubleValue(Element ele, String tagName) {
+        return Double.parseDouble(getTextValue(ele, tagName));
     }
 
     public Element getRootElement() {
