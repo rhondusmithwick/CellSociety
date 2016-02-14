@@ -2,7 +2,6 @@ package GUI;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -110,19 +109,19 @@ public class GUI {
      * Creates the comboBox with a change listener.
      */
     private void createComboBoxes() {
-        defaultSims = makeComboBox(myResources.getString("SelectionPrompt"),mySimControl.getSimulations());
+        defaultSims = makeComboBox(myResources.getString("SelectionPrompt"), mySimControl.getSimulations());
         defaultSims.getSelectionModel().selectedItemProperty()
-        .addListener((observable, oldValue, newValue) -> mySimControl.switchSimulation(newValue));
+                .addListener((observable, oldValue, newValue) -> mySimControl.switchSimulation(newValue));
         edgeType = makeComboBox(myResources.getString("EdgePrompt"), mySimControl.getEdgeType());
         edgeType.getSelectionModel().selectedItemProperty()
-        .addListener((observable, oldValue, newValue) -> mySimControl.changeEdgeType(newValue));  
+                .addListener((observable, oldValue, newValue) -> mySimControl.changeEdgeType(newValue));
     }
-    
-    private ComboBox<String> makeComboBox(String prompt, ObservableList<String> choices){
-    	ComboBox<String> comboBox = new ComboBox<String>(choices);
-    	comboBox.setEditable(false);
+
+    private ComboBox<String> makeComboBox(String prompt, ObservableList<String> choices) {
+        ComboBox<String> comboBox = new ComboBox<String>(choices);
+        comboBox.setEditable(false);
         comboBox.setPromptText(prompt);
-    	return comboBox;
+        return comboBox;
     }
 
     /**
@@ -143,12 +142,12 @@ public class GUI {
     private void setAndAdd() {
         setAndAdd(myFileButton, 1, 0, 5, 1);
         setAndAdd(defaultSims, 1, 1, 5, 1);
-        setAndAdd(edgeType,1,2,5,1);
+        setAndAdd(edgeType, 1, 2, 5, 1);
         setAndAdd(myPlayPauseButton, 1, 3, 2, 1);
         setAndAdd(myStepButton, 4, 3, 2, 1);
         setAndAdd(myPlayAgainButton, 1, 4, 5, 1);
         setAndAdd(myResetButton, 1, 5, 5, 1);
-        
+
         setAndAdd(simLabel, 0, 0, 1, 1);
         setAndAdd(mySaveToFileButton, 0, 12, 1, 1);
     }

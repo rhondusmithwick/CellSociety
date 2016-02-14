@@ -2,12 +2,10 @@ package Config;
 
 import Simulation.ForagingAntsSimulation;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 public class ForagingAntsConfig extends Config {
-
 
     private Slider diffusionRate;
     private Slider evaporationRate;
@@ -50,63 +48,65 @@ public class ForagingAntsConfig extends Config {
 
     @Override
     public void createControls() {
+        createDiffusionSlider();
+        createEvaporationSlider();
+        createAntsBornSlider();
+        createAntLifeTimeSlider();
+        createMaxAntsSlider();
+        createKSlider();
+        createNSlider();
+    }
+
+    private void createDiffusionSlider() {
         diffusionRate = makeSlider(.001, 1, .01);
-        diffusionRate.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeDiffusionRate(new_val.doubleValue());
-            }
-        });
+        ChangeListener<Number> diffusionListener = (ov, oldVal, newVal) -> changeDiffusionRate(newVal.doubleValue());
+        diffusionRate.valueProperty().addListener(diffusionListener);
         diffusionRate.setValue(antsSim.getDiffusionRate());
+    }
+
+    private void createEvaporationSlider() {
         evaporationRate = makeSlider(.001, 1, .01);
-        evaporationRate.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeEvaporationRate(new_val.doubleValue());
-            }
-        });
+        ChangeListener<Number> evaporationListener = (ov, oldVal, newVal) -> changeEvaporationRate(newVal.doubleValue());
+        evaporationRate.valueProperty().addListener(evaporationListener);
         evaporationRate.setValue(antsSim.getEvaporationRate());
+    }
+
+    private void createAntsBornSlider() {
         antsBorn = makeSlider(0, 500, 20);
-        antsBorn.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeAntsBorn(new_val.doubleValue());
-            }
-        });
+        ChangeListener<Number> antsBornListener = (ov, oldVal, newVal) -> changeAntsBorn(newVal.doubleValue());
+        antsBorn.valueProperty().addListener(antsBornListener);
         antsBorn.setValue(antsSim.getAntsBorn());
+    }
+
+
+    private void createAntLifeTimeSlider() {
         antLifeTime = makeSlider(100, 4900, 400);
-        antsBorn.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeAntLifeTime(new_val.doubleValue());
-            }
-        });
+        ChangeListener<Number> antLifeTimeListener = (ov, oldVal, newVal) -> changeAntLifeTime(newVal.doubleValue());
+        antLifeTime.valueProperty().addListener(antLifeTimeListener);
         antLifeTime.setValue(antsSim.getLifeTime());
+    }
+
+    private void createMaxAntsSlider() {
         maxAnts = makeSlider(500, 10000, 500);
-        maxAnts.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeMaxAnts(new_val.doubleValue());
-            }
-        });
+        ChangeListener<Number> maxAntsListener = (ov, oldVal, newVal) -> changeMaxAnts(newVal.doubleValue());
+        maxAnts.valueProperty().addListener(maxAntsListener);
         maxAnts.setValue(antsSim.getMaxAnts());
+    }
+
+    private void createKSlider() {
         K = makeSlider(.001, 1, .01);
-        K.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeK(new_val.doubleValue());
-            }
-        });
+        ChangeListener<Number> kListener = (ov, oldVal, newVal) -> changeK(newVal.doubleValue());
+        K.valueProperty().addListener(kListener);
         K.setValue(antsSim.getK());
+    }
+
+    private void createNSlider() {
         N = makeSlider(5, 100, 5);
-        N.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                changeN(new_val.doubleValue());
-            }
-        });
+        ChangeListener<Number> nListener = (ov, oldVal, newVal) -> changeN(newVal.doubleValue());
+        N.valueProperty().addListener(nListener);
         N.setValue(antsSim.getN());
     }
+
 
     private void changeN(double d) {
         antsSim.setN(d);

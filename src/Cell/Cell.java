@@ -20,9 +20,9 @@ public abstract class Cell {
     private final Map<Enum, Paint> visualMap = new HashMap<>();
     private final Group group = new Group();
     private final CellShape shape;
-    private Map<String, Object> cellState;
     private final int row;
     private final int column;
+    private Map<String, Object> cellState;
 
     Cell(CellShape shape, int row, int column) {
         this.shape = shape;

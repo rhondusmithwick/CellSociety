@@ -1,5 +1,6 @@
 package Config;
 
+import GUI.SimulationControl;
 import Simulation.Simulation;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
@@ -13,8 +14,6 @@ import javafx.scene.layout.Region;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import GUI.SimulationControl;
 
 public abstract class Config {
 

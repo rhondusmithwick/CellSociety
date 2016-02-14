@@ -1,5 +1,7 @@
 package GUI;
 
+import Config.Config;
+import Config.FireConfig;
 import Grid.Grid;
 import Grid.Grid.EdgeType;
 import Grid.RectangleGrid;
@@ -16,9 +18,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.w3c.dom.Element;
-
-import Config.Config;
-import Config.FireConfig;
 
 import java.io.File;
 import java.util.ResourceBundle;
@@ -179,9 +178,9 @@ public class SimulationControl {
     public ObservableList<String> getSimulations() {
         return mySimulations;
     }
-    
-    public ObservableList<String> getEdgeType(){
-    	return myEdgeTypes;
+
+    public ObservableList<String> getEdgeType() {
+        return myEdgeTypes;
     }
 
     public void speed(int new_val, int old_val) {
@@ -335,10 +334,10 @@ public class SimulationControl {
                 myResources.getString("PredatorPreySim"), myResources.getString("ForagingAntsSim"),
                 myResources.getString("SlimeMoldSim"));
     }
-    
-    private ObservableList<String> createEdgeList(){
-    	return FXCollections.observableArrayList(myResources.getString("Normal"),
-    			myResources.getString("Torodial"));
+
+    private ObservableList<String> createEdgeList() {
+        return FXCollections.observableArrayList(myResources.getString("Normal"),
+                myResources.getString("Torodial"));
     }
 
     /**
