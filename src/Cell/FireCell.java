@@ -15,7 +15,7 @@ public class FireCell extends Cell {
      */
     private State state;
     /**
-     * This fire cell's mark that determines how it will be udpated.
+     * This fire cell's mark that determines how it will be updated.
      */
     private Mark mark;
 
@@ -33,9 +33,9 @@ public class FireCell extends Cell {
 
     @Override
     void saveTypeCellState() {
-        //	cellState.put("state",);
-        //	cellState.put("",);
-        //	cellState.put("",);
+        	cellState.put("state",state.name());
+        	cellState.put("mark",state.name());
+        	cellState.put("burnTimer", burnTimer);
 
     }
 
@@ -131,14 +131,36 @@ public class FireCell extends Cell {
      * The fire cell State enum.
      */
     public enum State {
-        BURNING, TREE, EMPTY
+        BURNING, TREE, EMPTY;
+
+        public static State type(String token){
+    		return State.valueOf(token);
+    	}
+    	public static String token(State t){
+    		return t.name();
+    	}
     }
 
     /**
      * The fire cell Mark enum.
      */
     public enum Mark {
-        BURNING, TREE, EMPTY, NONE
+        BURNING, TREE, EMPTY, NONE;
+
+        public static Mark type(String token){
+    		return Mark.valueOf(token);
+    	}
+    	public static String token(State t){
+    		return t.name();
+    	}
+    	/*
+        public static  type(String token){
+    		return .valueOf(token);
+    	}
+    	public static String token(State t){
+    		return t.name();
+    	}
+    	*/
     }
 
 

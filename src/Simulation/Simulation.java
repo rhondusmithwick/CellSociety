@@ -2,6 +2,7 @@ package Simulation;
 
 import Cell.Cell;
 import Grid.Grid.EdgeType;
+import XML.XMLException;
 import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -59,10 +60,14 @@ public abstract class Simulation {
         return lineChart;
     }
 
-    public final void setProperties(Element simElem) {
+    public final void setProperties(Element simElem) throws XMLException {
         xmlProperties = new XMLParser(simElem);
         setGenericProperties();
         setSpecificProperties();
+        if(xmlProperties.tagExists(type+"Cells")){
+        	saveValues();
+        	theCells = xmlProperties.getCells((type+"Cells"));
+        }
     }
 
     public Map<String, Object> getSavedValues() {
@@ -77,6 +82,7 @@ public abstract class Simulation {
         savedValues.put("numCellsPerRow", numCellsPerRow);
         savedValues.put("numCellsPerColumn", numCellsPerColumn);
         saveSpecificValues();
+       // saveCellStates();
     }
 
     abstract void saveSpecificValues();
@@ -241,6 +247,10 @@ public abstract class Simulation {
 
     public double getSize() {
         return numCellsPerRow;
+    }
+    public void saveCellStates(){
+    	for(Cell c: theCells)
+    	c.saveCellState();
     }
 }
 

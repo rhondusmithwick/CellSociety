@@ -25,11 +25,12 @@ import java.util.Collection;
 public class XMLOutput {
 
     private static Document doc;
-    private final String WRITE_DIR = "resources";
+  //  private final String WRITE_DIR = "resources";
     private final Element rootElement;
-    public Collection<Cell> theCells;
+    //public Collection<Cell> theCells;
     private DocumentBuilder docBuild;
-    private XMLEncoder encoder;
+    private Element cellsElement;
+   // private XMLEncoder encoder;
 
     public XMLOutput(Simulation sim) {
         init();
@@ -37,38 +38,63 @@ public class XMLOutput {
         rootElement.setAttribute("SimulationType", sim.getType());
         doc.appendChild(rootElement);
         for (String tag : sim.getSavedValues().keySet()) {
-            Object value = sim.getSavedValues().get(tag);
-
-            if (value instanceof Integer) {
-                addElement(makeIntElement(tag, (int) value));
-            }
-            if (value instanceof String) {
-                addElement(makeTextElement(tag, (String) value));
-            }
-            if (value instanceof Paint) {
-                addElement(makePaintElement(tag, (Paint) value));
-            }
+        	addObjectElement(rootElement, tag,sim.getSavedValues().get(tag));
         }
-        /*
-         try {
-			Class simClass = Class.forName("Simulation."+sim.getType()+"Simulation");
-			Field[] fields = simClass.getDeclaredFields(); //includes fields declared in the Shape abstract class
-			System.out.println("Fields: ");
-			for (int i=fields.length/2; i<fields.length; i++) {
-	            System.out.println("field name = " + fields[i].getName()); //prints 'numberOfSides' and 'radius'
-	        }
-		 }
-		 catch (Exception e) {
-		        System.out.println("Exception: " + e);
-		     }
-		     */
 
-		/*
-        makeIntElement("gridWidth",sim.getGridWidth());
-		makeIntElement("gridHeight",sim.getGridHeight());
-		makeIntElement("cellsPerRow",sim.getCellsPerRow());
-		makeIntElement("cellsPerColumn",sim.getCellsPerColumn());
-		*/
+      }
+    private Element addObjectElement(Element parent,String tag, Object value){
+    	 if (value instanceof Integer) {
+             parent.appendChild(makeIntElement(tag, (Integer) value));
+         }
+    	 if ( value instanceof Double) {
+    		 parent.appendChild(makeDoubleElement(tag, (Double) value));
+       	 	}
+         if (value instanceof String) {
+        	 parent.appendChild(makeTextElement(tag, (String) value));
+         }
+         if (value instanceof Paint) {
+        	 parent.appendChild(makePaintElement(tag, (Paint) value));
+         }
+         return parent;
+    }
+
+    private Element objectElement(String tag, Object value){
+    	Element elem = null;
+   	 	if ( value instanceof Integer) {
+           elem = makeIntElement(tag, (Integer) value);
+        }
+   	 	if ( value instanceof Double) {
+         elem = makeDoubleElement(tag, (Double) value);
+   	 	}
+        if (value instanceof String) {
+        	 elem = makeTextElement(tag, (String) value);
+        }
+        if (value instanceof Paint) {
+        	 elem = makePaintElement(tag, (Paint) value);
+        }
+        return elem;
+   }
+
+    public void addCells(String cellType, Collection<Cell> cells){
+    	cellsElement = doc.createElement(cellType+"Cells");
+   	 	cellsElement.appendChild(makeIntElement("cellCount",cells.size()));
+   	 	int cellCount = 0;
+   	 	for(Cell c: cells){
+   	 		String tag = "cell"+Integer.toString(cellCount);
+   	 		cellsElement.appendChild(makeCellElement(tag,c));
+   	 		cellCount++;
+   	 	}
+   	 rootElement.appendChild(cellsElement);
+    }
+
+
+    public Element makeCellElement(String tag, Cell c) {
+    	 Element elem = doc.createElement(tag);
+	 		for(String t: c.getCellState().keySet()){
+	 			addObjectElement(elem,t,c.getCellState().get(t));
+	 		}
+    	return elem;
+
     }
 
     /*
@@ -97,17 +123,12 @@ public class XMLOutput {
     private void addElement(Element child) {
         rootElement.appendChild(child);
     }
+    /*
+    public void initCells(String cellType) {
+
+    }*/
 
 
-    public void writeCell(Rectangle c, File file) throws Exception {
-
-        encoder.writeObject(c);
-        encoder.close();
-    }
-
-    public void addCell(XMLEncoder encoder, Cell c) {
-        encoder.writeObject(c);
-    }
 /*
         public void writeXML(File file){
 	    	try {
@@ -120,7 +141,7 @@ public class XMLOutput {
 	    }
 	    */
 
-    public void writeXML(File file) {
+    public void writeXML(File file) throws XMLException {
         //File file = new File(WRITE_DIR,filename);
         Transformer transformer;
         try {
@@ -131,12 +152,11 @@ public class XMLOutput {
             try {
                 transformer.transform(source, output);
             } catch (TransformerException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+               throw new XMLException();
             }
-        } catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
+        } catch (NullPointerException | TransformerConfigurationException | TransformerFactoryConfigurationError e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+        	throw new XMLException();
         }
 
 
@@ -145,6 +165,10 @@ public class XMLOutput {
     private Element makeIntElement(String name, int value) {
         return makeTextElement(name, Integer.toString(value));
     }
+    private Element makeDoubleElement(String name, Double value) {
+        return makeTextElement(name, Double.toString(value));
+    }
+
 
     // utility method to create text node
     private Element makeTextElement(String tag, String value) {

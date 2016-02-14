@@ -6,10 +6,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import Cell.Cell;
+import Grid.Grid;
+import Simulation.FireSimulation;
+import Simulation.Simulation;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by SudoTavo on 02/05/16.
@@ -19,9 +26,19 @@ import java.io.IOException;
 public class XMLParser {
 
     private final Element rootElement;
-
+    private Collection<Cell> cells;
     public XMLParser(Element rootElement) {
         this.rootElement = rootElement;
+    }
+
+    public Collection<Cell> getCells(String cellType) throws XMLException{
+    	Cell cell = getCell(cellType);
+    	cell.saveCellState();
+    	//Grid grid = new Grid();
+    	Collection<String> valueMap = cell.getCellState().keySet();
+
+
+    	return cells;
     }
 
     public static String getSimType(Element simElem) {
@@ -50,6 +67,21 @@ public class XMLParser {
             textVal = el.getFirstChild().getNodeValue();
         }
         return textVal;
+    }
+    public boolean tagExists(String tagName) {
+    	NodeList nl = rootElement.getElementsByTagName(tagName);
+    	return(nl != null && nl.getLength() > 0);
+    }
+    public Cell getCell(String cellType) throws XMLException{
+	    Cell cell;
+	    try {
+	        String cellClassName = "Cell." + cellType;
+	        Class c = Class.forName(cellClassName);
+	        cell = (Cell) c.newInstance();
+	    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+	    		throw new XMLException();
+	        }
+	    return cell;
     }
 
     public static Paint getPaintValue(Element ele, String tagName) {

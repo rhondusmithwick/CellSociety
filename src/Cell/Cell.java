@@ -20,13 +20,13 @@ public abstract class Cell {
      * This cell's neighbors.
      */
     private final Collection<Cell> neighbors = new LinkedList<>();
-    private final Map<Enum, Paint> visualMap = new HashMap<>();
+	private final Map<Enum, Paint> visualMap = new HashMap<>();
     private final Group group = new Group();
     /**
      * This cell's shape.
      */
     private CellShape shape;
-    private Map<String, Object> cellState;
+    protected Map<String, Object> cellState;
     /**
      * This cell's row in the grid.
      */
@@ -44,6 +44,7 @@ public abstract class Cell {
     }
 
     public void saveCellState() {
+
         cellState = new HashMap<>();
         cellState.put("cellWidth", shape.getWidth());
         cellState.put("cellHeight", shape.getHeight());

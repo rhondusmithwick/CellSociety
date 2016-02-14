@@ -108,7 +108,12 @@ public class SimulationControl {
 
         assert sim != null;
         sim.setType(simType);
-        sim.setProperties(simElem);
+        try {
+			sim.setProperties(simElem);
+		} catch (XMLException e) {
+			showError(myResources.getString("XMLReadError"));
+		}
+
         config = getConfig();
         setConfigControls();
         //display.getChildren().add(sim.getGraph());
@@ -126,9 +131,14 @@ public class SimulationControl {
 
     public void saveSimulation(File file) {
         sim.saveValues();
+        //sim.saveCellStates();
         XMLOutput simSave = new XMLOutput(sim);
-        simSave.theCells = grid.getCells();
-        simSave.writeXML(file);
+        simSave.addCells(sim.getType(), grid.getCells());
+        try {
+			simSave.writeXML(file);
+		} catch (XMLException e) {
+			showError(myResources.getString("XMLSaveError"));
+		}
 
     }
 
@@ -159,7 +169,7 @@ public class SimulationControl {
             try {
                 sim = new FireSimulation();
             } catch (XMLException e1) {
-                showError("XML read error");
+                showError(myResources.getString("XMLReadError"));
                 return null;
             }
         }
