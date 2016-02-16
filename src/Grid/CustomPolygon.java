@@ -3,6 +3,11 @@ package Grid;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Polygon;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+// This class is my masterpiece.
+
 /**
  * Created by rhondusmithwick on 2/13/16.
  *
@@ -13,7 +18,7 @@ abstract class CustomPolygon extends Polygon {
     private final double y;
     private final double width;
     private final double height;
-    private Point2D[] points;
+    private final List<Point2D> points = new ArrayList<>();
 
     CustomPolygon(double x, double y, double width, double height) {
         this.x = x;
@@ -26,17 +31,27 @@ abstract class CustomPolygon extends Polygon {
     abstract void createPoints();
 
     final void setPoints() {
-        for (Point2D point : points) {
-            getPoints().addAll(point.getX(), point.getY());
-        }
+        points.stream().forEach(this::addPointToPolygon);
     }
 
-    public final double getY() {
-        return y;
+    private void addPointToPolygon(Point2D point) {
+        getPoints().addAll(point.getX(), point.getY());
+    }
+
+    final void addPoints(Point2D... pointsToAdd) {
+        Collections.addAll(points, pointsToAdd);
+    }
+
+    final Point2D getPoint(int i) {
+        return points.get(i);
     }
 
     public final double getX() {
         return x;
+    }
+
+    public final double getY() {
+        return y;
     }
 
     public final double getWidth() {
@@ -48,16 +63,4 @@ abstract class CustomPolygon extends Polygon {
         return height;
     }
 
-
-    final void addPoint(int i, Point2D point) {
-        points[i] = point;
-    }
-
-    final Point2D getPoint(int i) {
-        return points[i];
-    }
-
-    final void setPoints(Point2D[] points) {
-        this.points = points;
-    }
 }

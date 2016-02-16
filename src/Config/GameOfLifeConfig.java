@@ -3,7 +3,7 @@ package Config;
 import Simulation.GameOfLifeSimulation;
 
 /**
- *GameOfLifeConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+ * GameOfLifeConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
  * <p>
  * Created by bliborio on 2/11/16.
  *

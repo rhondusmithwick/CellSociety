@@ -1,6 +1,7 @@
 package Grid;
 
 import Cell.Cell;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Created by rhondusmithwick on 2/13/16.
@@ -17,7 +18,8 @@ public class RectangleGrid extends Grid {
             for (int column = 0; column < getCellsPerColumn(); column++) {
                 double x = column * cellWidth;
                 double y = row * cellHeight;
-                CellShape shape = new RectangleShape(x, y, cellWidth, cellHeight);
+                Rectangle rectangle = new Rectangle(x, y, cellWidth, cellHeight);
+                CellShape shape = new RectangleShape(rectangle);
                 Cell myCell = createCell(shape, cellType, row, column);
                 add(myCell);
             }

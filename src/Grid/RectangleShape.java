@@ -11,9 +11,9 @@ public class RectangleShape extends CellShape {
 
     private final Rectangle rectangle;
 
-    public RectangleShape(double x, double y, double cellWidth, double cellHeight) {
-        rectangle = new Rectangle(x, y, cellWidth, cellHeight);
-        setMyShape(rectangle);
+    public RectangleShape(Rectangle rectangle) {
+        super(rectangle);
+        this.rectangle = rectangle;
     }
 
     @Override

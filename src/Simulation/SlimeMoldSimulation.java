@@ -180,17 +180,16 @@ public class SlimeMoldSimulation extends Simulation {
 
     }
 
-	@Override
-	boolean hasGraph() {
-		return false;
-	}
+    @Override
+    boolean hasGraph() {
+        return false;
+    }
 
 
+    @Override
+    void assignLoadState(Cell c) {
+        // TODO Auto-generated method stub
 
-	@Override
-	void assignLoadState(Cell c) {
-		// TODO Auto-generated method stub
-
-	}
+    }
 
 }

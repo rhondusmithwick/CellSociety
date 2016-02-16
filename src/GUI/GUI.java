@@ -136,7 +136,7 @@ public class GUI {
         myResetButton = makeButton(myResources.getString("ResetButton"), event -> mySimControl.reset());
         myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"), event -> mySimControl.playAgain());
         mySaveToFileButton = makeButton(myResources.getString("SaveToFileButton"), event -> saveFile(getFileChooser()));
-        myGraphButton = makeButton(myResources.getString("DisplayGraph"), event-> mySimControl.startGraph());
+        myGraphButton = makeButton(myResources.getString("DisplayGraph"), event -> mySimControl.startGraph());
 
     }
 
@@ -154,7 +154,7 @@ public class GUI {
 
         setAndAdd(simLabel, 0, 0, 1, 1);
         setAndAdd(mySaveToFileButton, 0, 12, 1, 1);
-        setAndAdd(myGraphButton,0,13,1,1);
+        setAndAdd(myGraphButton, 0, 13, 1, 1);
 
     }
 

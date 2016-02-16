@@ -2,6 +2,7 @@ package Grid;
 
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
+// This class is my masterpiece.
 
 /**
  * Created by rhondusmithwick on 2/13/16.
@@ -10,14 +11,14 @@ import javafx.scene.shape.Shape;
  */
 public abstract class CellShape {
 
-    private Shape myShape;
+    private final Shape myShape;
+
+    CellShape(Shape myShape) {
+        this.myShape = myShape;
+    }
 
     public Shape getMyShape() {
         return myShape;
-    }
-
-    void setMyShape(Shape myShape) {
-        this.myShape = myShape;
     }
 
     public abstract double getX();

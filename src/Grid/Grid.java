@@ -22,7 +22,7 @@ import static java.util.Arrays.asList;
 public abstract class Grid {
     private final Group group = new Group();
     private Map<List<Integer>, Cell> grid = new HashMap<>();
-  //  private String shapeType;
+    //  private String shapeType;
     /**
      * This grid's width.
      */
@@ -65,11 +65,11 @@ public abstract class Grid {
      */
 
     public void init(Collection<Cell> theCells) {
-    	grid = new HashMap<>();
-    	for(Cell c: theCells){
-    		add(c);
-    	}
-    	populateNeighbors();
+        grid = new HashMap<>();
+        for (Cell c : theCells) {
+            add(c);
+        }
+        populateNeighbors();
     }
 
     public abstract void init(String cellType);

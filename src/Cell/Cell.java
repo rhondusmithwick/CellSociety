@@ -4,7 +4,7 @@ import Grid.CellShape;
 import Grid.RectangleShape;
 import javafx.scene.Group;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.Rectangle;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,13 +19,13 @@ import java.util.Map;
  */
 public abstract class Cell {
     private final Collection<Cell> neighbors = new LinkedList<>();
-	private final Map<Enum, Paint> visualMap = new HashMap<>();
+    private final Map<Enum, Paint> visualMap = new HashMap<>();
     private final Group group = new Group();
+    protected Map<String, Object> cellState;
     /**
      * This cell's shape.
      */
     private CellShape shape;
-    protected Map<String, Object> cellState;
     /**
      * This cell's row in the grid.
      */
@@ -43,11 +43,23 @@ public abstract class Cell {
     }
 
 
-	public void saveCellState() {
+    /**
+     * Initialize this cell with these parameters.
+     *
+     * @param row    the cell's row
+     * @param column the cell's column
+     */
+
+    public Cell(CellShape shape, int row, int column) {
+        init(shape, row, column);
+    }
+
+    public void saveCellState() {
 
         cellState = new HashMap<>();
-        if(shape == null){
-        	shape= new RectangleShape(0, 0, 0, 0);
+        if (shape == null) {
+            Rectangle rectangle = new Rectangle(0, 0, 0, 0);
+            shape = new RectangleShape(rectangle);
         }
         cellState.put("cellWidth", shape.getWidth());
         cellState.put("cellHeight", shape.getHeight());
@@ -60,16 +72,6 @@ public abstract class Cell {
 
     abstract void saveTypeCellState();
 
-    /**
-     * Initialize this cell with these parameters.
-     *
-     * @param row    the cell's row
-     * @param column the cell's column
-     */
-
-    public Cell(CellShape shape, int row, int column) {
-    	init(shape, row, column);
-    }
     public void init(CellShape shape, int row, int column) {
         this.shape = shape;
         group.getChildren().add(shape.getMyShape());

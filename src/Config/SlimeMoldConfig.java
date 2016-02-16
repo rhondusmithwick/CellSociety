@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 /**
- *SlimeMoldConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+ * SlimeMoldConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
  * <p>
  * Created by bliborio on 2/11/16.
  *

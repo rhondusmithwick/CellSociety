@@ -1,11 +1,11 @@
 package Cell;
 
 
-import java.util.Map;
-
 import Grid.CellShape;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+
+import java.util.Map;
 
 /**
  * Created by rhondusmithwick on 2/4/16.
@@ -32,21 +32,22 @@ public class FireCell extends Cell {
         super(shape, row, column);
     }
 
-    public void loadCellState(Map<String,String> cellState){
-    	state =  State.valueOf(cellState.get("state"));
-    	mark =  Mark.valueOf( cellState.get("state"));
-    	burnTimer = Integer.parseInt(cellState.get("burnTimer"));
-    	 setFill(getVisual(state));
+    public void loadCellState(Map<String, String> cellState) {
+        state = State.valueOf(cellState.get("state"));
+        mark = Mark.valueOf(cellState.get("state"));
+        burnTimer = Integer.parseInt(cellState.get("burnTimer"));
+        setFill(getVisual(state));
     }
+
     @Override
     void saveTypeCellState() {
-    	if(state==null||mark == null){
-    		state = State.TREE;
-    		mark = Mark.TREE;
-    	}
-        	cellState.put("state",state.name());
-        	cellState.put("mark",mark.name());
-        	cellState.put("burnTimer", burnTimer);
+        if (state == null || mark == null) {
+            state = State.TREE;
+            mark = Mark.TREE;
+        }
+        cellState.put("state", state.name());
+        cellState.put("mark", mark.name());
+        cellState.put("burnTimer", burnTimer);
 
     }
 
@@ -110,9 +111,11 @@ public class FireCell extends Cell {
     public State getState() {
         return state;
     }
+
     public void setState(State state) {
         this.state = state;
     }
+
     /**
      * Set this fire cell's mark.
      *
@@ -146,12 +149,13 @@ public class FireCell extends Cell {
     public enum State {
         BURNING, TREE, EMPTY;
 
-        public static State type(String token){
-    		return State.valueOf(token);
-    	}
-    	public static String token(State t){
-    		return t.name();
-    	}
+        public static State type(String token) {
+            return State.valueOf(token);
+        }
+
+        public static String token(State t) {
+            return t.name();
+        }
     }
 
     /**
@@ -160,12 +164,13 @@ public class FireCell extends Cell {
     public enum Mark {
         BURNING, TREE, EMPTY, NONE;
 
-        public static Mark type(String token){
-    		return Mark.valueOf(token);
-    	}
-    	public static String token(Mark t){
-    		return t.name();
-    	}
+        public static Mark type(String token) {
+            return Mark.valueOf(token);
+        }
+
+        public static String token(Mark t) {
+            return t.name();
+        }
     }
 
 

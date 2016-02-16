@@ -68,13 +68,12 @@ public class GameOfLifeSimulation extends Simulation {
         savedValues.put("aliveVisual", aliveVisual);
     }
 
-	@Override
+    @Override
+    void assignLoadState(Cell c) {
+        // TODO Auto-generated method stub
+    }
 
-	void assignLoadState(Cell c) {
-		// TODO Auto-generated method stub
-	}
-
-	boolean hasGraph() {
-		return false;
-	}
+    boolean hasGraph() {
+        return false;
+    }
 }

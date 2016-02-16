@@ -1,5 +1,7 @@
 package Grid;
 
+// This class is my masterpiece.
+
 /**
  * Created by rhondusmithwick on 2/13/16.
  *
@@ -10,8 +12,8 @@ public class TriangleShape extends CellShape {
     private final Triangle triangle;
 
     public TriangleShape(Triangle triangle) {
+        super(triangle);
         this.triangle = triangle;
-        setMyShape(triangle);
     }
 
     @Override

@@ -4,7 +4,7 @@ import Config.Config;
 import Config.FireConfig;
 import Grid.Grid;
 import Grid.Grid.EdgeType;
-import Grid.RectangleGrid;
+import Grid.TriangleGrid;
 import Simulation.FireSimulation;
 import Simulation.Simulation;
 import XML.XMLException;
@@ -50,8 +50,8 @@ public class SimulationControl {
     private int newSize = 0;
     private File myXMLFile = null;
     private XMLParser parser;
-	private boolean hasSecondaryStage = false;
-	private Stage secondaryStage;
+    private boolean hasSecondaryStage = false;
+    private Stage secondaryStage;
 
     /**
      * Sets starting simulation control parameters.
@@ -73,7 +73,7 @@ public class SimulationControl {
      * @param o Simulation object to switch t
      */
     public void switchSimulation(Object o) {
-    	stageCheck();
+        stageCheck();
         myXMLFile = null;
         newSize = 0;
         simType = o.toString();
@@ -111,17 +111,17 @@ public class SimulationControl {
     private void switchSimulation(Element simElem) {
         //display.getChildren().remove(sim.getGraph());
         simType = parser.getSimType();
-    	stageCheck();
+        stageCheck();
         simType = XMLParser.getSimType(simElem);
         sim = getSimulation();
 
         assert sim != null;
         sim.setType(simType);
         try {
-			sim.setProperties(simElem);
-		} catch (XMLException e) {
-			showError(myResources.getString("XMLReadError"));
-		}
+            sim.setProperties(simElem);
+        } catch (XMLException e) {
+            showError(myResources.getString("XMLReadError"));
+        }
 
         config = getConfig();
         setConfigControls();
@@ -136,6 +136,7 @@ public class SimulationControl {
         sim.setTheCells(grid.getCells());
         sim.init();
     }
+
     private void setCellSimulation() {
         setSimLabel();
         displayLoadedCells();
@@ -146,14 +147,14 @@ public class SimulationControl {
     public void saveSimulation(File file) {
         sim.saveValues();
         XMLOutput simSave = new XMLOutput(sim);
-        if(sim instanceof FireSimulation){
-        	simSave.addCells(sim.getType(), grid.getCells());
+        if (sim instanceof FireSimulation) {
+            simSave.addCells(sim.getType(), grid.getCells());
         }
         try {
-			simSave.writeXML(file);
-		} catch (XMLException e) {
-			showError(myResources.getString("XMLSaveError"));
-		}
+            simSave.writeXML(file);
+        } catch (XMLException e) {
+            showError(myResources.getString("XMLSaveError"));
+        }
     }
 
     /**
@@ -171,18 +172,18 @@ public class SimulationControl {
         if (gridGroup != null) display.getChildren().remove(gridGroup);
         grid = createGrid(simType);
         try {
-			grid.init(parser.getCells(simType));
-		} catch (XMLException e) {
-			 showError(myResources.getString("XMLReadError"));
-		}
+            grid.init(parser.getCells(simType));
+        } catch (XMLException e) {
+            showError(myResources.getString("XMLReadError"));
+        }
         setGroup();
     }
 
-    private void setGroup(){
-    	gridGroup = grid.getGroup();
-    	GridPane.setConstraints(gridGroup, 0, 1);
-    	GridPane.setRowSpan(gridGroup, 11);
-    	display.getChildren().add(gridGroup);
+    private void setGroup() {
+        gridGroup = grid.getGroup();
+        GridPane.setConstraints(gridGroup, 0, 1);
+        GridPane.setRowSpan(gridGroup, 11);
+        display.getChildren().add(gridGroup);
     }
 
     /**
@@ -274,7 +275,7 @@ public class SimulationControl {
      * all user changes.
      */
     public void reset() {
-    	stageCheck();
+        stageCheck();
         myXMLFile = null;
         newSize = 0;
         sim = getSimulation();
@@ -286,7 +287,7 @@ public class SimulationControl {
      * different initial, random placement .
      */
     public void playAgain() {
-    	stageCheck();
+        stageCheck();
         try {
             switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
         } catch (Exception e) {
@@ -297,11 +298,11 @@ public class SimulationControl {
         setSimulation();
     }
 
-    public void stageCheck(){
-    	if (hasSecondaryStage){
-    		secondaryStage.close();
-    		hasSecondaryStage = false;
-    	}
+    public void stageCheck() {
+        if (hasSecondaryStage) {
+            secondaryStage.close();
+            hasSecondaryStage = false;
+        }
     }
 
     /**
@@ -311,7 +312,7 @@ public class SimulationControl {
      * @result grid the new grid
      */
     private Grid createGrid(String simType) {
-        Grid grid = new RectangleGrid(); // testing
+        Grid grid = new TriangleGrid(); // testing
         grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
                 sim.getCellsPerRow(),
                 sim.getCellsPerColumn(), sim.getEdgeType());
@@ -348,17 +349,16 @@ public class SimulationControl {
         myXMLFile = file;
 
         try {
-        	parser = new XMLParser (XMLParser.getXmlElement(myXMLFile.getPath()));
+            parser = new XMLParser(XMLParser.getXmlElement(myXMLFile.getPath()));
             switchSimulation(parser.getRootElement());
 
         } catch (XMLException e) {
             showError(myResources.getString("XMLReadError"));
         }
-        if(parser.tagExists("Cells")){
-        	setCellSimulation();
-        }
-        else{
-        	setSimulation();
+        if (parser.tagExists("Cells")) {
+            setCellSimulation();
+        } else {
+            setSimulation();
         }
 
     }
@@ -420,19 +420,18 @@ public class SimulationControl {
         simLabel.setText(simType);
     }
 
-    public void startGraph(){
+    public void startGraph() {
         secondaryStage = new Stage();
         GridPane graph = new GridPane();
-        Scene graphScene = new Scene(graph,500,300);
+        Scene graphScene = new Scene(graph, 500, 300);
         graphScene.getStylesheets().add("vivid.css");
         secondaryStage.setScene(graphScene);
-        if (sim.setGraph(graph)){
-        hasSecondaryStage  = true;
-        secondaryStage.setTitle(simLabel.getText().toString());
-        secondaryStage.show();
-        }
-        else {
-        	showError(myResources.getString("NoGraph"));
+        if (sim.setGraph(graph)) {
+            hasSecondaryStage = true;
+            secondaryStage.setTitle(simLabel.getText().toString());
+            secondaryStage.show();
+        } else {
+            showError(myResources.getString("NoGraph"));
         }
     }
 }

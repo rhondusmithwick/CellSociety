@@ -45,7 +45,7 @@ public class PredatorPreySimulation extends Simulation {
     private int frame = 0;
     private LineChart lineChart;
 
-    private Map<String,Integer> graphMap = new HashMap<String,Integer>();
+    private Map<String, Integer> graphMap = new HashMap<String, Integer>();
 
 
     public PredatorPreySimulation() throws XMLException {
@@ -80,7 +80,7 @@ public class PredatorPreySimulation extends Simulation {
     @Override
     public void step() {
         super.step();
-        frame ++;
+        frame++;
         breedAll();
         moveAll();
         changeStates();
@@ -89,30 +89,29 @@ public class PredatorPreySimulation extends Simulation {
         clearMap();
     }
 
-    private void updateMap(){
-        for (Cell cell: getTheCells()){
+    private void updateMap() {
+        for (Cell cell : getTheCells()) {
             addToMap((PredatorPreyCell) cell);
         }
     }
 
     private void addToMap(PredatorPreyCell cell) {
         String state = cell.getStateString();
-        if (graphMap.containsKey(state)){
-            graphMap.put(state,graphMap.get(state)+1);
-        }
-        else{
+        if (graphMap.containsKey(state)) {
+            graphMap.put(state, graphMap.get(state) + 1);
+        } else {
             graphMap.put(state, 1);
         }
     }
 
     private void updateGraph() {
-        sharkSeries.getData().add(new XYChart.Data(frame,graphMap.get(getResources().getString("SHARK"))));
-        fishSeries.getData().add(new XYChart.Data(frame,graphMap.get(getResources().getString("FISH"))));
+        sharkSeries.getData().add(new XYChart.Data(frame, graphMap.get(getResources().getString("SHARK"))));
+        fishSeries.getData().add(new XYChart.Data(frame, graphMap.get(getResources().getString("FISH"))));
     }
 
     private void clearMap() {
-        for (Map.Entry entry : graphMap.entrySet()){
-            graphMap.put((String) entry.getKey(),0);
+        for (Map.Entry entry : graphMap.entrySet()) {
+            graphMap.put((String) entry.getKey(), 0);
         }
     }
 
@@ -209,17 +208,15 @@ public class PredatorPreySimulation extends Simulation {
     }
 
 
+    @Override
+    void assignLoadState(Cell c) {
+        // TODO Auto-generated method stub
 
+    }
 
-	@Override
-	void assignLoadState(Cell c) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	boolean hasGraph() {
-		return true;
-	}
+    @Override
+    boolean hasGraph() {
+        return true;
+    }
 
 }

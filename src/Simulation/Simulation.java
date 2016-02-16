@@ -7,12 +7,8 @@ import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
@@ -64,9 +60,9 @@ public abstract class Simulation {
         xmlProperties = new XMLParser(simElem);
         setGenericProperties();
         setSpecificProperties();
-        if(xmlProperties.tagExists(type+"Cells")){
-        	saveValues();
-        	theCells = xmlProperties.getCells((type+"Cells"));
+        if (xmlProperties.tagExists(type + "Cells")) {
+            saveValues();
+            theCells = xmlProperties.getCells((type + "Cells"));
         }
     }
 
@@ -99,14 +95,17 @@ public abstract class Simulation {
         getTheCells().stream().forEach(this::assignInitialState);
         changeStates();
     }
+
     public void initLoad() {
-    	setSpecificProperties() ;
+        setSpecificProperties();
         getTheCells().stream().forEach(this::assignLoadState);
         changeStates();
     }
 
     abstract void assignInitialState(Cell c);
+
     abstract void assignLoadState(Cell c);
+
     public void step() {
         getTheCells().stream().forEach(Cell::handleUpdate);
     }
@@ -253,9 +252,10 @@ public abstract class Simulation {
     public double getSize() {
         return numCellsPerRow;
     }
-    public void saveCellStates(){
-    	for(Cell c: theCells)
-    	c.saveCellState();
+
+    public void saveCellStates() {
+        for (Cell c : theCells)
+            c.saveCellState();
     }
 
 

@@ -3,7 +3,6 @@ package XML;
 import Cell.Cell;
 import Simulation.Simulation;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -18,7 +17,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.beans.XMLEncoder;
 import java.io.File;
 import java.util.Collection;
 
@@ -36,51 +34,52 @@ public class XMLOutput {
         rootElement.setAttribute("SimulationType", sim.getType());
         doc.appendChild(rootElement);
         for (String tag : sim.getSavedValues().keySet()) {
-        	addObjectElement(rootElement, tag,sim.getSavedValues().get(tag));
+            addObjectElement(rootElement, tag, sim.getSavedValues().get(tag));
         }
-      }
-    private Element addObjectElement(Element parent,String tag, Object value){
-             parent.appendChild(objectElement(tag, value));
-         return parent;
     }
 
-    private Element objectElement(String tag, Object value){
-    	Element elem = null;
-   	 	if ( value instanceof Integer) {
-           elem = makeIntElement(tag, (Integer) value);
+    private Element addObjectElement(Element parent, String tag, Object value) {
+        parent.appendChild(objectElement(tag, value));
+        return parent;
+    }
+
+    private Element objectElement(String tag, Object value) {
+        Element elem = null;
+        if (value instanceof Integer) {
+            elem = makeIntElement(tag, (Integer) value);
         }
-   	 	if ( value instanceof Double) {
-         elem = makeDoubleElement(tag, (Double) value);
-   	 	}
+        if (value instanceof Double) {
+            elem = makeDoubleElement(tag, (Double) value);
+        }
         if (value instanceof String) {
-        	 elem = makeTextElement(tag, (String) value);
+            elem = makeTextElement(tag, (String) value);
         }
         if (value instanceof Paint) {
-        	 elem = makePaintElement(tag, (Paint) value);
+            elem = makePaintElement(tag, (Paint) value);
         }
         return elem;
-   }
+    }
 
-    public void addCells(String cellType, Collection<Cell> cells){
-    	cellsElement = doc.createElement("Cells");
-   	 	cellsElement.appendChild(makeIntElement("cellCount",cells.size()));
-   	 	int cellCount = 0;
-   	 	for(Cell c: cells){
-   	 		c.saveCellState();
-   	 		String tag = "cell"+Integer.toString(cellCount);
-   	 		cellsElement.appendChild(makeCellElement(tag,c));
-   	 		cellCount++;
-   	 	}
-   	 rootElement.appendChild(cellsElement);
+    public void addCells(String cellType, Collection<Cell> cells) {
+        cellsElement = doc.createElement("Cells");
+        cellsElement.appendChild(makeIntElement("cellCount", cells.size()));
+        int cellCount = 0;
+        for (Cell c : cells) {
+            c.saveCellState();
+            String tag = "cell" + Integer.toString(cellCount);
+            cellsElement.appendChild(makeCellElement(tag, c));
+            cellCount++;
+        }
+        rootElement.appendChild(cellsElement);
     }
 
 
     public Element makeCellElement(String tag, Cell c) {
-    	 Element elem = doc.createElement(tag);
-	 		for(String t: c.getCellState().keySet()){
-	 			addObjectElement(elem,t,c.getCellState().get(t));
-	 		}
-    	return elem;
+        Element elem = doc.createElement(tag);
+        for (String t : c.getCellState().keySet()) {
+            addObjectElement(elem, t, c.getCellState().get(t));
+        }
+        return elem;
 
     }
 
@@ -108,10 +107,10 @@ public class XMLOutput {
             try {
                 transformer.transform(source, output);
             } catch (TransformerException e) {
-               throw new XMLException();
+                throw new XMLException();
             }
         } catch (NullPointerException | TransformerConfigurationException | TransformerFactoryConfigurationError e) {
-        	throw new XMLException();
+            throw new XMLException();
         }
 
 
@@ -120,10 +119,10 @@ public class XMLOutput {
     private Element makeIntElement(String name, int value) {
         return makeTextElement(name, Integer.toString(value));
     }
+
     private Element makeDoubleElement(String name, Double value) {
         return makeTextElement(name, Double.toString(value));
     }
-
 
 
     private Element makeTextElement(String tag, String value) {
