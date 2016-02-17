@@ -9,6 +9,7 @@ import java.util.Random;
 /*
     See Ant.java for explanation.
  */
+
 /**
  * Created by rhondusmithwick on 2/17/16.
  *
@@ -19,7 +20,9 @@ final class AntAlgorithms {
     }
 
     static ForagingAntsCell getNeighborTowardsHome(List<ForagingAntsCell> locSet) {
-        return Collections.max(locSet, (loc1, loc2) -> homePheromonesCompare(loc1, loc2));
+        return locSet.stream()
+                .max((loc1, loc2) -> Double.compare(loc1.getHomePheromones(), loc2.getHomePheromones()))
+                .get();
     }
 
     static ForagingAntsCell getNeighborTowardsFood(List<ForagingAntsCell> locSet) {
@@ -34,7 +37,7 @@ final class AntAlgorithms {
         double prob = new Random().nextDouble() * totalProb;
         double probTracker = 0;
         double currProb;
-        Collections.sort(locSet, (loc1, loc2) -> (probChoiceCompare(loc1, loc2)));
+        Collections.sort(locSet, (loc1, loc2) -> Double.compare(loc1.getProbChoice(), loc2.getProbChoice()));
         for (ForagingAntsCell cell : locSet) {
             currProb = cell.getProbChoice();
             boolean isRightProbability = isRightProbability(prob, probTracker, currProb);
@@ -53,20 +56,8 @@ final class AntAlgorithms {
     }
 
     private static double getTotalProbability(List<ForagingAntsCell> locSet) {
-        double total = 0.0;
-        for (ForagingAntsCell fac : locSet) {
-            total += fac.getProbChoice();
-        }
-        return total;
-    }
-
-    private static int homePheromonesCompare(ForagingAntsCell loc1, ForagingAntsCell loc2) {
-        double diffHomePheromones = loc1.getHomePheromones() - loc2.getHomePheromones();
-        return (int) diffHomePheromones;
-    }
-
-    private static int probChoiceCompare(ForagingAntsCell location1, ForagingAntsCell location2) {
-        double diffInProbChoice = location1.getProbChoice() - location2.getProbChoice();
-        return (int) diffInProbChoice;
+        return locSet.stream()
+                .mapToDouble(c -> c.getProbChoice())
+                .sum();
     }
 }
