@@ -164,7 +164,7 @@ public abstract class Grid {
      * @return a cell of type cellType OR a Fire cell if exception
      */
 
-    public final  Cell createCell(CellShape shape, String cellType, int row, int column) {
+    public final Cell createCell(CellShape shape, String cellType, int row, int column) {
         Cell myCell;
         try {
             Class<?> cellClass = Class.forName("Cell." + cellType + "Cell");
