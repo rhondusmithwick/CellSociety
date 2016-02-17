@@ -82,6 +82,22 @@ public class SimulationControl {
         setConfigControls();
     }
 
+    /**
+     * Switches between simulations when the new simulation is a loaded XML
+     * files.
+     *
+     * @param simElem Simulation element from the XML file parser.
+     */
+    private void switchSimulation(Element simElem) {
+    	stageCheck();
+        simType = XMLParser.getSimType(simElem);
+        sim = getSimulation();
+        assert sim != null;
+        sim.setType(simType);
+        sim.setProperties(simElem);
+        config = getConfig();
+        setConfigControls();
+    }
 
     private Config getConfig() {
         removeConfigControls();
@@ -98,25 +114,6 @@ public class SimulationControl {
         config.setSim(this, sim);
         config.init();
         return config;
-    }
-
-
-    /**
-     * Switches between simulations when the new simulation is a loaded XML
-     * files.
-     *
-     * @param simElem Simulation element from the XML file parser.
-     */
-    private void switchSimulation(Element simElem) {
-    	stageCheck();
-        simType = XMLParser.getSimType(simElem);
-        sim = getSimulation();
-
-        assert sim != null;
-        sim.setType(simType);
-        sim.setProperties(simElem);
-        config = getConfig();
-        setConfigControls();
     }
 
     /**
@@ -254,6 +251,8 @@ public class SimulationControl {
             switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
         } catch (Exception e) {
             sim = getSimulation();
+            config = getConfig();
+            setConfigControls();
         }
         assert sim != null;
         sim.resetCellSize(newSize);

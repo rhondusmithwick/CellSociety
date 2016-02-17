@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Bruna Liborio
+
 package Config;
 
 import Simulation.FireSimulation;
@@ -17,8 +20,6 @@ import java.util.ResourceBundle;
 
 public class FireConfig extends Config {
 
-    private ResourceBundle myResources = ResourceBundle.getBundle("GUIstrings");
-
     private Slider probCatchFire;
     private Slider burnTime;
     private Label catchFireLabel;
@@ -34,40 +35,19 @@ public class FireConfig extends Config {
         fireSim = (FireSimulation) this.getSimulation();
         createControls();
         createLabels();
-        setAndAddAll();
-    }
-
-    @Override
-    public void setAndAddAll() {
-        setAndAdd(probCatchFire, 5, 6, 1, 1);
-        setAndAdd(burnTime, 5, 7, 1, 1);
-        setAndAdd(burnTimeLabel, 4, 7, 1, 1);
-        setAndAdd(catchFireLabel, 4, 6, 1, 1);
     }
 
     @Override
     public void createLabels() {
-        catchFireLabel = makeLabel(getResources().getString("catchFire"));
-        burnTimeLabel = makeLabel(getResources().getString("burnTime"));
+        catchFireLabel = makeLabel(getResources().getString("catchFire"),4,6,1,1);
+        burnTimeLabel = makeLabel(getResources().getString("burnTime"),4,7,1,1);
     }
 
     @Override
     public void createControls() {
-        createProbCatchFireSlider();
-        createBurnTimeSlider();
-    }
-
-    private void createProbCatchFireSlider() {
-        probCatchFire = makeSlider(0, 100, 10);
-        ChangeListener<Number> catchFireChanger = (ov, oldVal, newVal) -> changeCatchFire(newVal.intValue());
-        probCatchFire.valueProperty().addListener(catchFireChanger);
+        probCatchFire = createSlider((ov, oldVal, newVal) -> changeCatchFire(newVal.intValue()),0,100,10,5,6,1,1);
         probCatchFire.setValue(fireSim.getCatchFire());
-    }
-
-    private void createBurnTimeSlider() {
-        burnTime = makeSlider(1, 10, 1);
-        ChangeListener<Number> burnTimeChanger = (ov, oldVal, newVal) -> changeBurnTime(newVal.intValue());
-        burnTime.valueProperty().addListener(burnTimeChanger);
+        burnTime = createSlider((ov, oldVal, newVal) -> changeBurnTime(newVal.intValue()),1,10,1,5,7,1,1);
         burnTime.setValue(fireSim.getBurnTime());
     }
 
@@ -78,6 +58,5 @@ public class FireConfig extends Config {
     private void changeCatchFire(int new_val) {
         fireSim.setProbCatch(new_val);
     }
-
 
 }

@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Bruna Liborio
+
 package Config;
 
 import Simulation.SegregationSimulation;
@@ -28,34 +31,21 @@ public class SegregationConfig extends Config {
         segSim = (SegregationSimulation) this.getSimulation();
         createControls();
         createLabels();
-        setAndAddAll();
     }
 
     @Override
     public void createLabels() {
-        thresholdLabel = makeLabel(getResources().getString("ThresholdLabel"));
+        thresholdLabel = makeLabel(getResources().getString("ThresholdLabel"),4,6,1,1);
     }
 
     @Override
     public void createControls() {
-        createThresholdSlider();
-    }
-
-    private void createThresholdSlider() {
-        threshold = makeSlider(5, 100, 1);
-        ChangeListener<Number> changer = (ov, oldVal, newVal) -> changeThreshold(newVal.intValue());
-        threshold.valueProperty().addListener(changer);
+        threshold = createSlider((ov, oldVal, newVal) -> changeThreshold(newVal.intValue()),5,100,1,5,6,1,1);
         threshold.setValue(segSim.getThreshold());
     }
 
     private void changeThreshold(int intValue) {
         segSim.setThreshold(intValue);
-    }
-
-    @Override
-    public void setAndAddAll() {
-        setAndAdd(threshold, 5, 6, 1, 1);
-        setAndAdd(thresholdLabel, 4, 6, 1, 1);
     }
 
 }

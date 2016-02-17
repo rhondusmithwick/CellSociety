@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Bruna Liborio
+
 package Config;
 
 import Simulation.SlimeMoldSimulation;
@@ -34,50 +37,25 @@ public class SlimeMoldConfig extends Config {
         slimeSim = (SlimeMoldSimulation) this.getSimulation();
         createControls();
         createLabels();
-        setAndAddAll();
     }
 
     @Override
     public void createLabels() {
-        sniffLabel = makeLabel(getResources().getString("SniffLabel"));
-        evaporationLabel = makeLabel(getResources().getString("EvaporationLabel"));
-        diffusionLabel = makeLabel(getResources().getString("DiffusionLabel"));
-        chemicalLabel = makeLabel(getResources().getString("ChemicalLabel"));
+        sniffLabel = makeLabel(getResources().getString("SniffLabel"),4,6,1,1);
+        evaporationLabel = makeLabel(getResources().getString("EvaporationLabel"),4,8,1,1);
+        diffusionLabel = makeLabel(getResources().getString("DiffusionLabel"),4,7,1,1);
+        chemicalLabel = makeLabel(getResources().getString("ChemicalLabel"),4,9,1,1);
     }
-
+    
     @Override
     public void createControls() {
-        createSniffSlider();
-        createDiffusionSlider();
-        createChemicalDropsSlider();
-        createEvaporationSlider();
-    }
-
-    private void createSniffSlider() {
-        sniff = makeSlider(1, 50, 1);
-        ChangeListener<Number> sniffListener = (ov, oldVal, newVal) -> changeSniff(newVal.intValue());
-        sniff.valueProperty().addListener(sniffListener);
+        sniff = createSlider((ov, oldVal, newVal) -> changeSniff(newVal.intValue()),1,50,1,5,6,1,1);
         sniff.setValue(slimeSim.getSniff());
-    }
-
-    private void createDiffusionSlider() {
-        diffusion = makeSlider(0, 1, .1);
-        ChangeListener<Number> diffusionListener = (ov, oldVal, newVal) -> changeDiffusion(newVal.intValue());
-        diffusion.valueProperty().addListener(diffusionListener);
+        diffusion = createSlider((ov, oldVal, newVal) -> changeDiffusion(newVal.intValue()),0,1,.1,5,7,1,1);
         diffusion.setValue(slimeSim.getDiffusion());
-    }
-
-    private void createChemicalDropsSlider() {
-        chemicalDrops = makeSlider(0, 10, 1);
-        ChangeListener<Number> chemicalDropsListener = (ov, oldVal, newVal) -> changeChemicalDrops(newVal.intValue());
-        chemicalDrops.valueProperty().addListener(chemicalDropsListener);
+        chemicalDrops = createSlider((ov, oldVal, newVal) -> changeChemicalDrops(newVal.intValue()),0,10,1,5,9,1,1);
         chemicalDrops.setValue(slimeSim.getChemicalDrops());
-    }
-
-    private void createEvaporationSlider() {
-        evaporation = makeSlider(0, 20, 1);
-        ChangeListener<Number> evaporationListener = (ov, oldVal, newVal) -> changeEvaporation(newVal.intValue());
-        evaporation.valueProperty().addListener(evaporationListener);
+        evaporation = createSlider((ov, oldVal, newVal) -> changeEvaporation(newVal.intValue()),0,20,1,5,8,1,1);
         evaporation.setValue(slimeSim.getEvaporation());
     }
 
@@ -96,18 +74,6 @@ public class SlimeMoldConfig extends Config {
 
     private void changeSniff(int intValue) {
         slimeSim.setSniff(intValue);
-    }
-
-    @Override
-    public void setAndAddAll() {
-        setAndAdd(sniff, 5, 6, 1, 1);
-        setAndAdd(diffusion, 5, 7, 1, 1);
-        setAndAdd(evaporation, 5, 8, 1, 1);
-        setAndAdd(evaporationLabel, 4, 8, 1, 1);
-        setAndAdd(diffusionLabel, 4, 7, 1, 1);
-        setAndAdd(sniffLabel, 4, 6, 1, 1);
-        setAndAdd(chemicalDrops, 5, 9, 1, 1);
-        setAndAdd(chemicalLabel, 4, 9, 1, 1);
     }
 
 }
