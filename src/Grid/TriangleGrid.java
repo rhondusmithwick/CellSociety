@@ -13,9 +13,10 @@ public class TriangleGrid extends Grid {
     public void init(String cellType) {
         double cellWidth = ((double) getGridWidth() / getCellsPerRow());
         double cellHeight = ((double) getGridHeight()) / getCellsPerColumn();
-        for (int row = 0; row < getCellsPerRow(); row++) {
-            Triangle prevTriangle = null;
-            for (int column = 0; column < getCellsPerColumn(); column++) {
+        Triangle prevTriangle;
+        for (int row = 0; row < getCellsPerColumn(); row++) {
+            prevTriangle = null;
+            for (int column = 0; column < getCellsPerRow(); column++) {
                 double x = column * cellWidth;
                 double y = row * cellHeight;
                 Triangle triangle = new Triangle(x, y, cellWidth, cellHeight, prevTriangle);

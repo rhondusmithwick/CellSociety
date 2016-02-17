@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Rhondu Smithwick
 package Grid;
 
 import javafx.geometry.Point2D;
@@ -6,7 +8,6 @@ import javafx.scene.shape.Polygon;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-// This class is my masterpiece.
 
 /**
  * Created by rhondusmithwick on 2/13/16.
@@ -27,24 +28,24 @@ abstract class CustomPolygon extends Polygon {
         this.height = height;
     }
 
-
     abstract void createPoints();
+
+    final void addPoints(Point2D... pointsToAdd) {
+        Collections.addAll(points, pointsToAdd);
+    }
 
     final void setPoints() {
         points.stream().forEach(this::addPointToPolygon);
+    }
+
+    final Point2D getPoint(int i) {
+        return points.get(i);
     }
 
     private void addPointToPolygon(Point2D point) {
         getPoints().addAll(point.getX(), point.getY());
     }
 
-    final void addPoints(Point2D... pointsToAdd) {
-        Collections.addAll(points, pointsToAdd);
-    }
-
-    final Point2D getPoint(int i) {
-        return points.get(i);
-    }
 
     public final double getX() {
         return x;

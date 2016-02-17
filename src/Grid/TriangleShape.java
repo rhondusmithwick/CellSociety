@@ -1,6 +1,6 @@
+// This entire file is part of my masterpiece.
+// Rhondu Smithwick
 package Grid;
-
-// This class is my masterpiece.
 
 /**
  * Created by rhondusmithwick on 2/13/16.

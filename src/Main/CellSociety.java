@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 
+
 /**
  * The class for Cell Society that holds a GUI.
  *

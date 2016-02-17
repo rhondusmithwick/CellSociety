@@ -1,8 +1,9 @@
+// This entire file is part of my masterpiece.
+// Rhondu Smithwick
 package Grid;
 
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
-// This class is my masterpiece.
 
 /**
  * Created by rhondusmithwick on 2/13/16.
@@ -17,7 +18,7 @@ public abstract class CellShape {
         this.myShape = myShape;
     }
 
-    public Shape getMyShape() {
+    public final Shape getMyShape() {
         return myShape;
     }
 

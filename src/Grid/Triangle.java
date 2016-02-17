@@ -1,6 +1,7 @@
+// This entire file is part of my masterpiece.
+// Rhondu Smithwick
 package Grid;
 
-// This class is my masterpiece.
 
 import javafx.geometry.Point2D;
 

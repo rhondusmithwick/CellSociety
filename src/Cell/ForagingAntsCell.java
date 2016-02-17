@@ -75,6 +75,7 @@ public class ForagingAntsCell extends Cell {
             Ant currAnt = iter.next();
             if (currAnt.getDeadOrMove()) {
                 iter.remove();
+                currAnt.setMoving(false);
             }
         }
         myAnts.addAll(antsToAdd);

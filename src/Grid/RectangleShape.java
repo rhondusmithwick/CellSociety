@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Rhondu Smithwick
 package Grid;
 
 import javafx.scene.shape.Rectangle;

@@ -41,7 +41,7 @@ class Ant {
     }
 
     private void move(ForagingAntsCell cellToMoveTo) {
-        moving = true;
+        setMoving(true);
         myCell.setMark(Mark.CHANGE_ANTS);
         cellToMoveTo.addAnt(this);
         cellToMoveTo.setMark(Mark.CHANGE_ANTS);
@@ -173,6 +173,10 @@ class Ant {
 
     boolean getDeadOrMove() {
         return isDead || moving;
+    }
+
+    void setMoving(boolean moving) {
+        this.moving = moving;
     }
 
 }
