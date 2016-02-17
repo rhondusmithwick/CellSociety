@@ -131,7 +131,7 @@ public abstract class Cell {
     Collection<Cell> getNeighbors() {
         return neighbors;
     }
-
+    
     /**
      * Get this cell's shape.
      *

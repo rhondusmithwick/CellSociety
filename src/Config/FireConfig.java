@@ -5,13 +5,17 @@ package Config;
 
 import Simulation.FireSimulation;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  *FireConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+ * as well as the addition of a graph to monitor the simulation's progress. 
  * <p>
  * Created by bliborio on 2/11/16.
  *
@@ -22,12 +26,21 @@ public class FireConfig extends Config {
 
     private Slider probCatchFire;
     private Slider burnTime;
-    private Label catchFireLabel;
-    private Label burnTimeLabel;
     private FireSimulation fireSim;
+    
+    private XYChart.Series emptySeries = new XYChart.Series();
+    private XYChart.Series burningSeries = new XYChart.Series();
+    private XYChart.Series treeSeries = new XYChart.Series();
+    
+    private List<XYChart.Series> mySeries = new ArrayList();
+    private List<String> mySeriesName = new ArrayList();
+
+
 
     public FireConfig() {
         super();
+        setUpSeriesList();
+        setUpGraph(mySeries,mySeriesName);
     }
 
     @Override
@@ -39,8 +52,8 @@ public class FireConfig extends Config {
 
     @Override
     public void createLabels() {
-        catchFireLabel = makeLabel(getResources().getString("catchFire"),4,6,1,1);
-        burnTimeLabel = makeLabel(getResources().getString("burnTime"),4,7,1,1);
+        makeLabel(getResources().getString("catchFire"),4,6,1,1);
+        makeLabel(getResources().getString("burnTime"),4,7,1,1);
     }
 
     @Override
@@ -50,7 +63,26 @@ public class FireConfig extends Config {
         burnTime = createSlider((ov, oldVal, newVal) -> changeBurnTime(newVal.intValue()),1,10,1,5,7,1,1);
         burnTime.setValue(fireSim.getBurnTime());
     }
-
+    
+ 	@Override
+ 	boolean hasGraph() {
+ 		return true;
+ 	}
+ 	
+	@Override
+	public void updateGraph() {
+		updateAllSeries(mySeries,mySeriesName);
+	}
+ 	
+ 	private void setUpSeriesList(){
+ 		mySeries.add(emptySeries);
+ 		mySeriesName.add(getResources().getString("EMPTY"));
+ 		mySeries.add(burningSeries);
+ 		mySeriesName.add(getResources().getString("BURNING"));
+ 		mySeries.add(treeSeries);
+ 		mySeriesName.add(getResources().getString("TREE"));
+ 	}
+ 	
     private void changeBurnTime(int new_val) {
         fireSim.setBurnTime(new_val);
     }
@@ -58,5 +90,5 @@ public class FireConfig extends Config {
     private void changeCatchFire(int new_val) {
         fireSim.setProbCatch(new_val);
     }
-
+ 
 }

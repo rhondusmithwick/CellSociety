@@ -4,12 +4,12 @@
 package Config;
 
 import Simulation.ForagingAntsSimulation;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.control.Label;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Slider;
 
 /**
  *ForagingAntsConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+ * as well as the addition of a graph to monitor the simulation's progress. 
  * <p>
  * Created by bliborio on 2/11/16.
  *
@@ -25,19 +25,16 @@ public class ForagingAntsConfig extends Config {
     private Slider maxAnts;
     private Slider K;
     private Slider N;
-    private Label diffusionLabel;
-    private Label evaporationLabel;
-    private Label antsBornLabel;
-    private Label antsLifeTimeLabel;
-    private Label maxAntsLabel;
-    private Label NLabel;
-    private Label KLabel;
     private ForagingAntsSimulation antsSim;
+    
+    @SuppressWarnings("rawtypes")
+	private XYChart.Series antsSeries = new XYChart.Series();
 
     public ForagingAntsConfig() {
         super();
+		setUpGraph();
     }
-
+        
     @Override
     public void init() {
         antsSim = (ForagingAntsSimulation) this.getSimulation();
@@ -48,13 +45,13 @@ public class ForagingAntsConfig extends Config {
 
     @Override
     public void createLabels() {
-        diffusionLabel = makeLabel(getResources().getString("DiffusionLabel"), 4,7,1,1);
-        evaporationLabel = makeLabel(getResources().getString("EvaporationLabel"), 4,6,1,1);
-        antsBornLabel = makeLabel(getResources().getString("AntsBornLabel"), 4,10,1,1);
-        antsLifeTimeLabel = makeLabel(getResources().getString("AntsLifeTimeLabel"),4,9,1,1);
-        maxAntsLabel = makeLabel(getResources().getString("MaxAntsLabel"),4,8,1,1);
-        NLabel = makeLabel(getResources().getString("NLabel"),1,8,1,1);
-        KLabel = makeLabel(getResources().getString("KLabel"),1,9,1,1);     
+        makeLabel(getResources().getString("DiffusionLabel"), 4,7,1,1);
+        makeLabel(getResources().getString("EvaporationLabel"), 4,6,1,1);
+        makeLabel(getResources().getString("AntsBornLabel"), 4,10,1,1);
+        makeLabel(getResources().getString("AntsLifeTimeLabel"),4,9,1,1);
+        makeLabel(getResources().getString("MaxAntsLabel"),4,8,1,1);
+        makeLabel(getResources().getString("NLabel"),1,8,1,1);
+        makeLabel(getResources().getString("KLabel"),1,9,1,1);     
     }
 
     @Override
@@ -74,6 +71,23 @@ public class ForagingAntsConfig extends Config {
         N = createSlider((ov, oldVal, newVal) -> changeN(newVal.doubleValue()),5,100,5,2,8,1,1);
         N.setValue(antsSim.getN());
     }
+    
+	@Override
+	boolean hasGraph() {
+		return true;
+	}
+	
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void updateGraph() {
+		antsSeries.getData().add(new XYChart.Data(antsSim.getFrame(), antsSim.getCurrAnts()));
+	}
+    
+    @SuppressWarnings("unchecked")
+	private void setUpGraph() {
+		antsSeries.setName(this.getResources().getString("Ants"));
+		this.getGraph().getData().add(antsSeries);
+	}
 
     private void changeN(double d) {
         antsSim.setN(d);
@@ -102,5 +116,5 @@ public class ForagingAntsConfig extends Config {
     private void changeDiffusionRate(double d) {
         antsSim.setDiffusionRate(d);
     }
-
+    
 }

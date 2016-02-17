@@ -179,11 +179,5 @@ public class SlimeMoldSimulation extends Simulation {
         evaporationRate = newRate;
 
     }
-
-	@Override
-	boolean hasGraph() {
-		return false;
-	}
-
    
 }

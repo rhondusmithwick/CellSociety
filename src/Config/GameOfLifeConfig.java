@@ -35,5 +35,15 @@ public class GameOfLifeConfig extends Config {
         // TODO Auto-generated method stub
 
     }
+    
+	@Override
+	boolean hasGraph() {
+		return false;
+	}
+
+	@Override
+	public void updateGraph() {
+		
+	}
 
 }

@@ -4,8 +4,6 @@
 package Config;
 
 import Simulation.SlimeMoldSimulation;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 /**
@@ -22,10 +20,6 @@ public class SlimeMoldConfig extends Config {
     private Slider evaporation;
     private Slider diffusion;
     private Slider chemicalDrops;
-    private Label sniffLabel;
-    private Label evaporationLabel;
-    private Label diffusionLabel;
-    private Label chemicalLabel;
     private SlimeMoldSimulation slimeSim;
 
     public SlimeMoldConfig() {
@@ -41,10 +35,10 @@ public class SlimeMoldConfig extends Config {
 
     @Override
     public void createLabels() {
-        sniffLabel = makeLabel(getResources().getString("SniffLabel"),4,6,1,1);
-        evaporationLabel = makeLabel(getResources().getString("EvaporationLabel"),4,8,1,1);
-        diffusionLabel = makeLabel(getResources().getString("DiffusionLabel"),4,7,1,1);
-        chemicalLabel = makeLabel(getResources().getString("ChemicalLabel"),4,9,1,1);
+        makeLabel(getResources().getString("SniffLabel"),4,6,1,1);
+        makeLabel(getResources().getString("EvaporationLabel"),4,8,1,1);
+        makeLabel(getResources().getString("DiffusionLabel"),4,7,1,1);
+        makeLabel(getResources().getString("ChemicalLabel"),4,9,1,1);
     }
     
     @Override
@@ -75,5 +69,16 @@ public class SlimeMoldConfig extends Config {
     private void changeSniff(int intValue) {
         slimeSim.setSniff(intValue);
     }
+    
+	@Override
+	boolean hasGraph() {
+		return false;
+	}
+
+	@Override
+	public void updateGraph() {
+
+		
+	}
 
 }

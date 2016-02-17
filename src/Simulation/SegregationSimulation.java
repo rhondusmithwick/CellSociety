@@ -156,9 +156,4 @@ public class SegregationSimulation extends Simulation {
         threshold = newThreshold;
     }
 
-	@Override
-	boolean hasGraph() {
-		return false;
-	}
-
 }

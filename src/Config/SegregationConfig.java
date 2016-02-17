@@ -4,8 +4,6 @@
 package Config;
 
 import Simulation.SegregationSimulation;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 /**
@@ -20,7 +18,6 @@ public class SegregationConfig extends Config {
 
     private SegregationSimulation segSim;
     private Slider threshold;
-    private Label thresholdLabel;
 
     public SegregationConfig() {
         super();
@@ -35,7 +32,7 @@ public class SegregationConfig extends Config {
 
     @Override
     public void createLabels() {
-        thresholdLabel = makeLabel(getResources().getString("ThresholdLabel"),4,6,1,1);
+        makeLabel(getResources().getString("ThresholdLabel"),4,6,1,1);
     }
 
     @Override
@@ -47,5 +44,15 @@ public class SegregationConfig extends Config {
     private void changeThreshold(int intValue) {
         segSim.setThreshold(intValue);
     }
+    
+	@Override
+	boolean hasGraph() {
+		return false;
+	}
+
+	@Override
+	public void updateGraph() {
+		
+	}
 
 }

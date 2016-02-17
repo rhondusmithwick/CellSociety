@@ -33,6 +33,7 @@ public class GameOfLifeSimulation extends Simulation {
     public void step() {
         super.step();
         changeStates();
+        getConfig().updateGraph();
     }
 
     @Override
@@ -68,8 +69,4 @@ public class GameOfLifeSimulation extends Simulation {
         savedValues.put("aliveVisual", aliveVisual);
     }
 
-	@Override
-	boolean hasGraph() {
-		return false;
-	}
 }

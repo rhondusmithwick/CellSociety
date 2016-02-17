@@ -113,6 +113,7 @@ public class SimulationControl {
         }
         config.setSim(this, sim);
         config.init();
+        sim.setConfig(config);
         return config;
     }
 
@@ -379,7 +380,7 @@ public class SimulationControl {
         Scene graphScene = new Scene(graph,500,300);
         graphScene.getStylesheets().add("vivid.css");
         secondaryStage.setScene(graphScene);
-        if (sim.setGraph(graph)){
+        if (config.setGraph(graph)){
         hasSecondaryStage  = true;
         secondaryStage.setTitle(simLabel.getText().toString());
         secondaryStage.show();

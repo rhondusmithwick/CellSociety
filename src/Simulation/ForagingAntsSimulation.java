@@ -52,31 +52,13 @@ public class ForagingAntsSimulation extends Simulation {
 	private double N = DEFAULT_N;
 	private ForagingAntsCell nest;
 	private int currAnts = 0;
-	private int frame = 0;
 
-	private XYChart.Series antsSeries = new XYChart.Series();
-	// private XYChart.Series foodSeries = new XYChart.Series();
-	// private XYChart.Series homeSeries = new XYChart.Series();
+	
 
-	private LineChart lineChart;
-
-	// private double foodPheromones = 0;
-	// private double homePheromones = 0;
 
 	public ForagingAntsSimulation() throws XMLException {
 		super();
 		setProperties(XMLParser.getXmlElement("resources/ForagingAnts.xml"));
-		lineChart = this.getGraph();
-		setUpChart();
-	}
-
-	private void setUpChart() {
-		antsSeries.setName(this.getResources().getString("Ants"));
-		// homeSeries.setName(this.getResources().getString("Home"));
-		// foodSeries.setName(this.getResources().getString("Food"));
-		this.getGraph().getData().add(antsSeries);
-		// this.getGraph().getData().add(homeSeries);
-		// this.getGraph().getData().add(foodSeries);
 	}
 
 	private static boolean isLocation(Cell c, Point2D loc) {
@@ -94,13 +76,11 @@ public class ForagingAntsSimulation extends Simulation {
 	}
 
 	public void step() {
-		frame++;
 		stepSetup();
 		spawnAnts();
 		super.step();
 		changeStates();
-		// updatePheromones();
-		updateGraph();
+		getConfig().updateGraph();
 	}
 	
 	private void spawnAnts() {
@@ -128,21 +108,6 @@ public class ForagingAntsSimulation extends Simulation {
 		} else {
 			fac.setMark(Mark.OPEN);
 		}
-	}
-
-	/*
-	 * private void updatePheromones(){ for (Cell cell: getTheCells()){
-	 * ForagingAntsCell newCell = (ForagingAntsCell) cell; foodPheromones =
-	 * foodPheromones + (double) newCell.getFoodPheromones(); homePheromones =
-	 * homePheromones + (double) newCell.getHomePheromones(); } }
-	 */
-
-	private void updateGraph() {
-		antsSeries.getData().add(new XYChart.Data(frame, currAnts));
-		// homeSeries.getData().add(new XYChart.Data(frame,homePheromones));
-		// foodSeries.getData().add(new XYChart.Data(frame,foodPheromones));
-		// homePheromones = 0;
-		// foodPheromones = 0;
 	}
 
 	private void stepSetup() {
@@ -226,9 +191,8 @@ public class ForagingAntsSimulation extends Simulation {
 		N = d;
 	}
 
-	@Override
-	boolean hasGraph() {
-		return true;
+	public Object getCurrAnts() {
+		return currAnts;
 	}
 
 }
