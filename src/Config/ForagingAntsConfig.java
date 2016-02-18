@@ -1,6 +1,3 @@
-// This entire file is part of my masterpiece.
-// Bruna Liborio
-
 package Config;
 
 import Simulation.ForagingAntsSimulation;
