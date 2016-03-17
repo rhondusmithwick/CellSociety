@@ -1,6 +1,7 @@
 package Simulation;
 
 import Cell.Cell;
+import Config.Config;
 import Grid.Grid.EdgeType;
 import XML.XMLException;
 import XML.XMLParser;
@@ -30,8 +31,6 @@ public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
     private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
-    private final NumberAxis xAxis = new NumberAxis();
-    private final NumberAxis yAxis = new NumberAxis();
     XMLParser xmlProperties;
     Map<String, Object> savedValues;
     private int gridWidth;
@@ -40,13 +39,12 @@ public abstract class Simulation {
     private int numCellsPerColumn;
     private String type;
     private Collection<Cell> theCells;
-    private LineChart<Number, Number> lineChart;
     private boolean isPlaying = false;
-
+	private Config myConfig;
+	private int frame = 0;
 
     Simulation() {
         myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
-        createGraph();
         simulationLoop = buildLoop();
         rn = new Random();
     }
@@ -107,6 +105,7 @@ public abstract class Simulation {
     abstract void assignLoadState(Cell c);
 
     public void step() {
+    	frame ++;
         getTheCells().stream().forEach(Cell::handleUpdate);
     }
 
@@ -229,7 +228,7 @@ public abstract class Simulation {
         this.type = type;
     }
 
-    final Collection<Cell> getTheCells() {
+    public final Collection<Cell> getTheCells() {
         return theCells;
     }
 
@@ -252,6 +251,7 @@ public abstract class Simulation {
     public double getSize() {
         return numCellsPerRow;
     }
+<<<<<<< HEAD
 
     public void saveCellStates() {
         for (Cell c : theCells)
@@ -276,5 +276,26 @@ public abstract class Simulation {
         return hasGraph();
     }
 
+=======
+    
+	public Object getFrame() {
+		return frame;
+	}
+    
+    public Config getConfig(){
+    	return myConfig;
+    }
+
+
+	public void setConfig(Config config) {
+		myConfig = config;	
+	}
+	
+	public Object getNumOfState(String string){
+		return null;
+	}
+		
+        
+>>>>>>> analysis_bml27
 }
 

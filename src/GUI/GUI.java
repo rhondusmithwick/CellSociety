@@ -1,7 +1,9 @@
 package GUI;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -37,9 +39,9 @@ public class GUI {
     private static final String GUI_PROPERTY_PATH = "GUIstrings";
 
     private final ResourceBundle myResources;
-    private final List<Node> controlList = new ArrayList<>();
+    private final static List<Node> controlList = new ArrayList<>();
     private final SimulationControl mySimControl;
-    private final Label simLabel;
+    private Label simLabel;
     private ComboBox<String> defaultSims;
     private ComboBox<String> edgeType;
     private Button myFileButton;
@@ -57,79 +59,51 @@ public class GUI {
      *
      * @param mySimControl the simulation control class instance for the program
      */
-    public GUI(SimulationControl mySimControl) {
+    public GUI(SimulationControl simControl) {
         myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
-        this.mySimControl = mySimControl;
-        simLabel = mySimControl.getSimLabel();
+        mySimControl = simControl;
         createControls();
-    }
-
-    /**
-     * Creates a new button. Sets the button's text and action.
-     *
-     * @param property the string for the button's displayed text
-     * @param handles  event/action button executes upon being clicked
-     * @return result
-     * the new button
-     */
-    private static Button makeButton(String property, EventHandler<ActionEvent> handler) {
-        Button result = new Button();
-        result.setText(property);
-        result.setOnAction(handler);
-        return result;
-    }
-
-    /**
-     * Sets the local directory as the first to appear in the file chooser interaction box.
-     *
-     * @return dir
-     * the new directory
-     */
-    private static File getLocalDir() {
-        ProtectionDomain pd = GUI.class.getProtectionDomain();
-        CodeSource cs = pd.getCodeSource();
-        URL localDir = cs.getLocation();
-        File dir;
-        try {
-            dir = new File(localDir.toURI());
-        } catch (URISyntaxException e) {
-            dir = new File(localDir.getPath());
-        }
-        return dir;
     }
 
     /**
      * Creates and sets up all controls with their necessary parameters.
      */
     private void createControls() {
-        createComboBoxes();
+    	 createLabels();
+    	createComboBoxes();
         createButtons();
-        setAndAdd();
     }
+    
 
-    /**
+    private void createLabels() {
+    	simLabel = mySimControl.getSimLabel();
+    	setAndAdd(simLabel, 0, 0, 1, 1);
+	}
+
+	/**
      * Creates the comboBox with a change listener.
      */
     private void createComboBoxes() {
-        defaultSims = makeComboBox(myResources.getString("SelectionPrompt"), mySimControl.getSimulations());
-        defaultSims.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> mySimControl.switchSimulation(newValue));
-        edgeType = makeComboBox(myResources.getString("EdgePrompt"), mySimControl.getEdgeType());
-        edgeType.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> mySimControl.changeEdgeType(newValue));
+        defaultSims = makeComboBox(myResources.getString("SelectionPrompt"), mySimControl.getSimulations(),(observable, oldValue, newValue) -> mySimControl.switchSimulation(newValue), 1,1,5,1);
+        edgeType = makeComboBox(myResources.getString("EdgePrompt"), mySimControl.getEdgeType(), (observable, oldValue, newValue) -> mySimControl.changeEdgeType(newValue),1,2,5,1 );
     }
 
-    private ComboBox<String> makeComboBox(String prompt, ObservableList<String> choices) {
+   
+    private ComboBox<String> makeComboBox(String prompt, ObservableList<String> choices, ChangeListener<? super String> event, int col, int row, int colSpan, int rowSpan) {
         ComboBox<String> comboBox = new ComboBox<String>(choices);
         comboBox.setEditable(false);
         comboBox.setPromptText(prompt);
+        comboBox.getSelectionModel().selectedItemProperty()
+        	.addListener(event);
+        setAndAdd(comboBox, col,row, colSpan, rowSpan);
         return comboBox;
     }
-
+    
     /**
      * Creates all buttons using makeButton.
      */
     private void createButtons() {
+<<<<<<< HEAD
         myFileButton = makeButton(myResources.getString("XMLLoadPrompt"), event -> openFile(getFileChooser()));
         myPlayPauseButton = makeButton(myResources.getString("PlayPauseButton"), event -> mySimControl.playPause());
         myStepButton = makeButton(myResources.getString("StepButton"), event -> mySimControl.step());
@@ -138,11 +112,26 @@ public class GUI {
         mySaveToFileButton = makeButton(myResources.getString("SaveToFileButton"), event -> saveFile(getFileChooser()));
         myGraphButton = makeButton(myResources.getString("DisplayGraph"), event -> mySimControl.startGraph());
 
+=======
+        myFileButton = makeButton(myResources.getString("XMLLoadPrompt"), event -> openFile(getFileChooser()),1,0,5,1);
+        myPlayPauseButton = makeButton(myResources.getString("PlayPauseButton"), event -> mySimControl.playPause(),1,3,2,1);
+        myStepButton = makeButton(myResources.getString("StepButton"), event -> mySimControl.step(),4,3,2,1);
+        myResetButton = makeButton(myResources.getString("ResetButton"), event -> mySimControl.reset(),1,5,5,1);
+        myPlayAgainButton = makeButton(myResources.getString("PlayAgainButton"), event -> mySimControl.playAgain(),1,4,5,1);
+        mySaveToFileButton = makeButton(myResources.getString("SaveToFileButton"), event -> saveFile(getFileChooser()),0,12,1,1);
+        myGraphButton = makeButton(myResources.getString("DisplayGraph"), event-> mySimControl.startGraph(),0,13,1,1);
+>>>>>>> analysis_bml27
     }
-
+    
     /**
-     * Calls setAndAdd for all controls.
+     * Creates a new button. Sets the button's text and action.
+     *
+     * @param property the string for the button's displayed text
+     * @param handles  event/action button executes upon being clicked
+     * @return result
+     * the new button
      */
+<<<<<<< HEAD
     private void setAndAdd() {
         setAndAdd(myFileButton, 1, 0, 5, 1);
         setAndAdd(defaultSims, 1, 1, 5, 1);
@@ -156,6 +145,14 @@ public class GUI {
         setAndAdd(mySaveToFileButton, 0, 12, 1, 1);
         setAndAdd(myGraphButton, 0, 13, 1, 1);
 
+=======
+    private static Button makeButton(String property, EventHandler<ActionEvent> handler,int col, int row, int colSpan, int rowSpan) {
+        Button result = new Button();
+        result.setText(property);
+        result.setOnAction(handler);
+        setAndAdd(result, col, row, colSpan, rowSpan);
+        return result;
+>>>>>>> analysis_bml27
     }
 
     /**
@@ -167,12 +164,21 @@ public class GUI {
      * @param colSpan number of columns to be spanned by the control
      * @param row     number of rows to be spanned by the control
      */
-    private void setAndAdd(Node node, int col, int row, int colSpan, int rowSpan) {
+    private static void setAndAdd(Node node, int col, int row, int colSpan, int rowSpan) {
         GridPane.setConstraints(node, col, row, colSpan, rowSpan, HPos.CENTER, VPos.CENTER);
         controlList.add(node);
         ((Region) node).setMaxWidth(Double.MAX_VALUE);
     }
-
+    
+    /**
+     * Gets the list containing all controls.
+     *
+     * @return the complete control list
+     */
+    public List<Node> getControls() {
+        return controlList;
+    }
+    
     /**
      * Sets up and displays the file chooser interactin box.
      */
@@ -197,14 +203,23 @@ public class GUI {
         File file = fileChooser.showSaveDialog(new Stage());
         mySimControl.saveSimulation(file);
     }
-
+    
     /**
-     * Gets the list containing all controls.
+     * Sets the local directory as the first to appear in the file chooser interaction box.
      *
-     * @return the complete control list
+     * @return dir
+     * the new directory
      */
-    public List<Node> getControls() {
-        return controlList;
-    }
-
+    private static File getLocalDir() {
+        ProtectionDomain pd = GUI.class.getProtectionDomain();
+        CodeSource cs = pd.getCodeSource();
+        URL localDir = cs.getLocation();
+        File dir;
+        try {
+            dir = new File(localDir.toURI());
+        } catch (URISyntaxException e) {
+            dir = new File(localDir.getPath());
+        }
+        return dir;
+    }    
 }

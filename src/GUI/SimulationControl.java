@@ -83,6 +83,22 @@ public class SimulationControl {
         setConfigControls();
     }
 
+    /**
+     * Switches between simulations when the new simulation is a loaded XML
+     * files.
+     *
+     * @param simElem Simulation element from the XML file parser.
+     */
+    private void switchSimulation(Element simElem) {
+    	stageCheck();
+        simType = XMLParser.getSimType(simElem);
+        sim = getSimulation();
+        assert sim != null;
+        sim.setType(simType);
+        sim.setProperties(simElem);
+        config = getConfig();
+        setConfigControls();
+    }
 
     private Config getConfig() {
         removeConfigControls();
@@ -98,9 +114,11 @@ public class SimulationControl {
         }
         config.setSim(this, sim);
         config.init();
+        sim.setConfig(config);
         return config;
     }
 
+<<<<<<< HEAD
 
     /**
      * Switches between simulations when the new simulation is a loaded XML
@@ -127,6 +145,8 @@ public class SimulationControl {
         setConfigControls();
     }
 
+=======
+>>>>>>> analysis_bml27
     /**
      * Sets and displays new simulation parameters.
      */
@@ -292,6 +312,8 @@ public class SimulationControl {
             switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
         } catch (Exception e) {
             sim = getSimulation();
+            config = getConfig();
+            setConfigControls();
         }
         assert sim != null;
         sim.resetCellSize(newSize);
@@ -426,12 +448,22 @@ public class SimulationControl {
         Scene graphScene = new Scene(graph, 500, 300);
         graphScene.getStylesheets().add("vivid.css");
         secondaryStage.setScene(graphScene);
+<<<<<<< HEAD
         if (sim.setGraph(graph)) {
             hasSecondaryStage = true;
             secondaryStage.setTitle(simLabel.getText().toString());
             secondaryStage.show();
         } else {
             showError(myResources.getString("NoGraph"));
+=======
+        if (config.setGraph(graph)){
+        hasSecondaryStage  = true;
+        secondaryStage.setTitle(simLabel.getText().toString());
+        secondaryStage.show();
+        }
+        else {
+        	showError(myResources.getString("NoGraph"));
+>>>>>>> analysis_bml27
         }
     }
 }

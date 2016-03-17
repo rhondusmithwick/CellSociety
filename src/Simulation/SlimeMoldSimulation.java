@@ -179,6 +179,7 @@ public class SlimeMoldSimulation extends Simulation {
         evaporationRate = newRate;
 
     }
+<<<<<<< HEAD
 
     @Override
     boolean hasGraph() {
@@ -192,4 +193,7 @@ public class SlimeMoldSimulation extends Simulation {
 
     }
 
+=======
+   
+>>>>>>> analysis_bml27
 }

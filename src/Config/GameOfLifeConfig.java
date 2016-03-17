@@ -1,3 +1,4 @@
+
 package Config;
 
 import Simulation.GameOfLifeSimulation;
@@ -19,9 +20,6 @@ public class GameOfLifeConfig extends Config {
     @Override
     public void init() {
         GameOfLifeSimulation lifeSim = (GameOfLifeSimulation) this.getSimulation();
-        createMainSliders();
-        createMainLabels();
-        setAndAddMain();
     }
 
     @Override
@@ -35,12 +33,15 @@ public class GameOfLifeConfig extends Config {
         // TODO Auto-generated method stub
 
     }
+    
+	@Override
+	boolean hasGraph() {
+		return false;
+	}
 
-    @Override
-    public void setAndAddAll() {
-        // TODO Auto-generated method stub
-
-    }
-
+	@Override
+	public void updateGraph() {
+		
+	}
 
 }

@@ -1,7 +1,11 @@
 package Simulation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Cell.Cell;
 import Cell.FireCell;
+import Cell.PredatorPreyCell;
 import Cell.FireCell.Mark;
 import Cell.FireCell.State;
 import XML.XMLException;
@@ -28,6 +32,8 @@ public class FireSimulation extends Simulation {
     private Paint emptyVisual;
     private Paint burningVisual;
     private Paint treeVisual;
+    
+    private Map<String,Integer> graphMap = new HashMap<String,Integer>();
 
     public FireSimulation() throws XMLException {
         super();
@@ -64,6 +70,9 @@ public class FireSimulation extends Simulation {
         super.step();
         getAllUpdates();
         changeStates();
+        updateMap();
+        getConfig().updateGraph();
+        clearMap();
     }
 
 
@@ -160,10 +169,37 @@ public class FireSimulation extends Simulation {
     public void setProbCatch(int newProb) {
         probCatch = newProb;
     }
+    
+    private void updateMap(){
+        for (Cell cell: this.getTheCells()){
+            addToMap((FireCell) cell);
+        }
+    }
 
+    private void addToMap(FireCell cell) {
+        String state = cell.getState().toString();
+        if (graphMap.containsKey(state)){
+            graphMap.put(state,graphMap.get(state)+1);
+        }
+        else{
+            graphMap.put(state, 1);
+        }
+    }
 
     @Override
     boolean hasGraph() {
         return false;
     }
+
+    private void clearMap() {
+        for (Map.Entry entry : graphMap.entrySet()){
+            graphMap.put((String) entry.getKey(),0);
+        }
+    }
+    
+    @Override
+    public Object getNumOfState(String string) {
+		return graphMap.get(getResources().getString(string));
+	}
+
 }

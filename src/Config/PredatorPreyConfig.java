@@ -1,12 +1,19 @@
 package Config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Simulation.PredatorPreySimulation;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.control.Label;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Slider;
 
 /**
+<<<<<<< HEAD
  * PredatorPreyConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters.
+=======
+ *PredatorPreyConfig Class: Class allowing for the addition of sliders to dynamically control this simulation's parameters, 
+ * as well as the addition of a graph to monitor the simulation's progress. 
+>>>>>>> analysis_bml27
  * <p>
  * Created by bliborio on 2/11/16.
  *
@@ -18,13 +25,21 @@ public class PredatorPreyConfig extends Config {
     private Slider sharkBreedTime;
     private Slider fishBreedTime;
     private Slider starveTime;
-    private Label sharkBreedLabel;
-    private Label fishBreedLabel;
-    private Label starveLabel;
     private PredatorPreySimulation ppSim;
+    
+    @SuppressWarnings("rawtypes")
+	private XYChart.Series fishSeries = new XYChart.Series();
+    @SuppressWarnings("rawtypes")
+	private XYChart.Series sharkSeries = new XYChart.Series();
 
+    private List<XYChart.Series> mySeries = new ArrayList();
+    private List<String> mySeriesName = new ArrayList();
+
+    
     public PredatorPreyConfig() {
         super();
+        setUpSeriesList();
+        setUpGraph(mySeries,mySeriesName);
     }
 
     @Override
@@ -32,44 +47,41 @@ public class PredatorPreyConfig extends Config {
         ppSim = (PredatorPreySimulation) this.getSimulation();
         createControls();
         createLabels();
-        setAndAddAll();
     }
 
     @Override
     public void createLabels() {
-        fishBreedLabel = makeLabel(getResources().getString("fishBreed"));
-        sharkBreedLabel = makeLabel(getResources().getString("sharkBreed"));
-        starveLabel = makeLabel(getResources().getString("starveTime"));
+        makeLabel(getResources().getString("fishBreed"),4,6,1,1);
+        makeLabel(getResources().getString("sharkBreed"),4,7,1,1);
+        makeLabel(getResources().getString("starveTime"),4,8,1,1);
     }
 
     @Override
     public void createControls() {
-        createSharkBreedTimeSlider();
-        createFishBreedTimeSlider();
-        createStarveTimeSlider();
-    }
-
-
-    private void createSharkBreedTimeSlider() {
-        sharkBreedTime = makeSlider(1, 30, 1);
-        ChangeListener<Number> sharkChanger = (ov, oldVal, newVal) -> changeSharkBreed(newVal.intValue());
-        sharkBreedTime.valueProperty().addListener(sharkChanger);
+        sharkBreedTime = createSlider((ov, oldVal, newVal) -> changeSharkBreed(newVal.intValue()),1,30,1,5,7,1,1);
         sharkBreedTime.setValue(ppSim.getSharkBreedTime());
-    }
-
-    private void createFishBreedTimeSlider() {
-        fishBreedTime = makeSlider(1, 30, 1);
-        ChangeListener<Number> fishChanger = (ov, oldVal, newVal) -> changeFishBreed(newVal.intValue());
-        fishBreedTime.valueProperty().addListener(fishChanger);
+        fishBreedTime = createSlider((ov, oldVal, newVal) -> changeFishBreed(newVal.intValue()),1,30,1,5,6,1,1);
         fishBreedTime.setValue(ppSim.getFishBreedTime());
-    }
-
-    private void createStarveTimeSlider() {
-        starveTime = makeSlider(1, 30, 1);
-        ChangeListener<Number> starveChanger = (ov, oldVal, newVal) -> changeStarveTime(newVal.intValue());
-        starveTime.valueProperty().addListener(starveChanger);
+        starveTime = createSlider((ov, oldVal, newVal) -> changeStarveTime(newVal.intValue()),1,30,1,5,8,1,1);
         starveTime.setValue(ppSim.getStarveTime());
     }
+    
+    @Override
+	boolean hasGraph() {
+		return true;
+	}
+    
+	@Override
+ 	public void updateGraph() {
+		updateAllSeries(mySeries,mySeriesName);		
+ 	}
+	
+	private void setUpSeriesList(){
+ 		mySeries.add(sharkSeries);
+ 		mySeriesName.add(getResources().getString("SHARK"));
+ 		mySeries.add(fishSeries);
+ 		mySeriesName.add(getResources().getString("FISH"));
+ 	}
 
     private void changeSharkBreed(int intValue) {
         ppSim.setSharkBreed(intValue);
@@ -83,15 +95,5 @@ public class PredatorPreyConfig extends Config {
     private void changeStarveTime(int intValue) {
         ppSim.setStarveTime(intValue);
     }
-
-    @Override
-    public void setAndAddAll() {
-        setAndAdd(fishBreedTime, 5, 6, 1, 1);
-        setAndAdd(sharkBreedTime, 5, 7, 1, 1);
-        setAndAdd(starveTime, 5, 8, 1, 1);
-        setAndAdd(starveLabel, 4, 8, 1, 1);
-        setAndAdd(sharkBreedLabel, 4, 7, 1, 1);
-        setAndAdd(fishBreedLabel, 4, 6, 1, 1);
-    }
-
+    	  
 }

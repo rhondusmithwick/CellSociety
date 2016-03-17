@@ -33,6 +33,7 @@ public class GameOfLifeSimulation extends Simulation {
     public void step() {
         super.step();
         changeStates();
+        getConfig().updateGraph();
     }
 
     @Override
@@ -68,6 +69,7 @@ public class GameOfLifeSimulation extends Simulation {
         savedValues.put("aliveVisual", aliveVisual);
     }
 
+<<<<<<< HEAD
     @Override
     void assignLoadState(Cell c) {
         // TODO Auto-generated method stub
@@ -76,4 +78,6 @@ public class GameOfLifeSimulation extends Simulation {
     boolean hasGraph() {
         return false;
     }
+=======
+>>>>>>> analysis_bml27
 }

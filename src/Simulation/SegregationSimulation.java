@@ -156,6 +156,7 @@ public class SegregationSimulation extends Simulation {
         threshold = newThreshold;
     }
 
+<<<<<<< HEAD
     @Override
     void assignLoadState(Cell c) {
         // TODO Auto-generated method stub
@@ -165,4 +166,6 @@ public class SegregationSimulation extends Simulation {
         return false;
     }
 
+=======
+>>>>>>> analysis_bml27
 }
