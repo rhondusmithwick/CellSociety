@@ -14,7 +14,7 @@ import java.util.Random;
 class AntAlgorithms {
 
     ForagingAntsCell getNeighborTowardsHome(List<ForagingAntsCell> locSet) {
-        return locSet.stream()
+        return locSet.parallelStream()
                 .max((loc1, loc2) -> Double.compare(loc1.getHomePheromones(), loc2.getHomePheromones()))
                 .get();
     }
@@ -50,7 +50,7 @@ class AntAlgorithms {
     }
 
     private double getTotalProbability(List<ForagingAntsCell> locSet) {
-        return locSet.stream()
+        return locSet.parallelStream()
                 .mapToDouble(ForagingAntsCell::getProbChoice)
                 .sum();
     }

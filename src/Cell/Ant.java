@@ -70,7 +70,7 @@ class Ant {
 
     private List<ForagingAntsCell> createLocSet(boolean forwardOnly) {
         List<ForagingAntsCell> locSet = new ArrayList<>();
-        myCell.getNeighbors().stream()
+        myCell.getNeighbors().parallelStream()
                 .map(c -> (ForagingAntsCell) c)
                 .forEach(fac -> addToLocSetIfShould(fac, forwardOnly, locSet));
         return locSet;
