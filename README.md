@@ -1,16 +1,17 @@
 # cellsociety
-Duke CompSci 308 Cell Society Project
+* Duke CompSci 308 Cell Society Project
+* Link to assignment:
+ [Assignment](http://www.cs.duke.edu/courses/compsci308/spring16/assign/02_cellsociety/)
+
+# Short Description
+Introductory project to teamwork, JavaFX, and Git based around designing a GUI program that models cellular automata simulations such as
+Wator, Game of Life, Fire, Foraging Ants, etc... 
 
 **Name:**  Rhondu Smithwick, Bruna Liborio, Tavo Loaiza
 
 **Date started:** 01/29/2016
 
-**Date finished:** 02/06/2016
-
-**Hours worked:** 
-Rhondu Smithwick - 40 hours
-Bruna Liborio - 30 hours 
-Tavo Loaiza - 20 hours
+**Date finished:** 02/14/2016
 
 **Resources used:** Java API; Piazza; Stackoverflow.com; http://docs.oracle.com/javafx/2/layout/size_align.htm, specifically for the GUI; resources on Cell Society assignment page; links to simulation descriptions; 'lab_browser' code 
 
@@ -42,20 +43,10 @@ The 'Change Cells Per Row/Column' button allow the user to enter in a single int
 No keyboard keys are used in this program for specific commands, but the user should use the keys when entering a new number of cells per row/column parameter for the simulation. 
 Mouse input is used to click buttons, load files, and interact with the simulation. 
 
-**Known bugs:**
-Incorporation of XML file loading was just recently added. Many bugs involving the integration have been found and fixed, but there may be a few left.
-No tests have been done with incorrectly formatted XML files. We do not know what happens then. 
-
 **Extra features:** 
 - Can choose the XML simulation from a file dialogue. 
 - A simulation can be paused, sped up, slowed down, stepped through, played again, or reset.
 - You can change the grid size of running simulations.
 - Error messages pop up when something goes wrong. 
-- Type of simulation appears in text on the GUI.
+- Can save state of simulation (only implemented for Fire)
 
-**Impressions/Suggestions:**
-CSS files will be added to 'jazz up' the GUI.
-More property files will be created to change the buttons from text only to include pictures as well.
-'Try, catch' can be added to throw exceptions.
-An exceptions class can be created for the specific project. 
-XML file loading integration must be further debugged. 

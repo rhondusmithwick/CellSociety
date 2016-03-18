@@ -1,10 +1,5 @@
 package XML;
 
-/**
- * Created by SudoTavo on 02/10/16.
- *
- * @author Tavo Loaiza
- */
 public class XMLException extends Exception {
 
     public XMLException() {

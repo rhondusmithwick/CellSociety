@@ -1,15 +1,12 @@
 package Simulation;
 
 import Cell.Cell;
+import Config.Config;
 import Grid.Grid.EdgeType;
-import XML.XMLException;
 import XML.XMLParser;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import org.w3c.dom.Element;
 
@@ -30,8 +27,6 @@ public abstract class Simulation {
     private final Random rn;
     private final Timeline simulationLoop;
     private final EdgeType edgeType = EdgeType.NORMAL; // for testing; remove later
-    private final NumberAxis xAxis = new NumberAxis();
-    private final NumberAxis yAxis = new NumberAxis();
     XMLParser xmlProperties;
     Map<String, Object> savedValues;
     private int gridWidth;
@@ -40,13 +35,12 @@ public abstract class Simulation {
     private int numCellsPerColumn;
     private String type;
     private Collection<Cell> theCells;
-    private LineChart<Number, Number> lineChart;
     private boolean isPlaying = false;
-
+    private Config myConfig;
+    private int frame = 0;
 
     Simulation() {
         myResources = ResourceBundle.getBundle(GUI_PROPERTY_PATH);
-        createGraph();
         simulationLoop = buildLoop();
         rn = new Random();
     }
@@ -56,14 +50,10 @@ public abstract class Simulation {
         return myResources;
     }
 
-    public void setProperties(Element simElem) throws XMLException {
+    public final void setProperties(Element simElem) {
         xmlProperties = new XMLParser(simElem);
         setGenericProperties();
         setSpecificProperties();
-        if (xmlProperties.tagExists(type + "Cells")) {
-            saveValues();
-            theCells = xmlProperties.getCells((type + "Cells"));
-        }
     }
 
     public Map<String, Object> getSavedValues() {
@@ -78,7 +68,6 @@ public abstract class Simulation {
         savedValues.put("numCellsPerRow", numCellsPerRow);
         savedValues.put("numCellsPerColumn", numCellsPerColumn);
         saveSpecificValues();
-        saveCellStates();
     }
 
     abstract void saveSpecificValues();
@@ -96,21 +85,14 @@ public abstract class Simulation {
         changeStates();
     }
 
-    public void initLoad() {
-        setSpecificProperties();
-        getTheCells().stream().forEach(this::assignLoadState);
-        changeStates();
-    }
-
     abstract void assignInitialState(Cell c);
 
-    abstract void assignLoadState(Cell c);
-
     public void step() {
+        frame++;
         getTheCells().stream().forEach(Cell::handleUpdate);
     }
 
-    public final void changeStates() {
+    final void changeStates() {
         getTheCells().stream().forEach(Cell::changeState);
     }
 
@@ -229,11 +211,11 @@ public abstract class Simulation {
         this.type = type;
     }
 
-    final Collection<Cell> getTheCells() {
+    public final Collection<Cell> getTheCells() {
         return theCells;
     }
 
-    public void setTheCells(Collection<Cell> theCells) {
+    public final void setTheCells(Collection<Cell> theCells) {
         this.theCells = theCells;
     }
 
@@ -253,28 +235,23 @@ public abstract class Simulation {
         return numCellsPerRow;
     }
 
-    public void saveCellStates() {
-        for (Cell c : theCells)
-            c.saveCellState();
+    public Object getFrame() {
+        return frame;
+    }
+
+    public Config getConfig() {
+        return myConfig;
     }
 
 
-    private void createGraph() {
-        xAxis.setLabel(myResources.getString("Frame"));
-        yAxis.setLabel(myResources.getString("NumberOfCells"));
-        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+    public void setConfig(Config config) {
+        myConfig = config;
     }
 
-    public LineChart<Number, Number> getGraph() {
-        return lineChart;
+    public Object getNumOfState(String string) {
+        return null;
     }
 
-    abstract boolean hasGraph();
-
-    public boolean setGraph(GridPane graph) {
-        graph.getChildren().add(lineChart);
-        return hasGraph();
-    }
 
 }
 

@@ -3,6 +3,7 @@ package XML;
 import Cell.Cell;
 import Simulation.Simulation;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -17,16 +18,18 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.beans.XMLEncoder;
 import java.io.File;
 import java.util.Collection;
 
 public class XMLOutput {
 
     private static Document doc;
+    private final String WRITE_DIR = "resources";
     private final Element rootElement;
+    public Collection<Cell> theCells;
     private DocumentBuilder docBuild;
-    private Element cellsElement;
-
+    private XMLEncoder encoder;
 
     public XMLOutput(Simulation sim) {
         init();
@@ -34,55 +37,51 @@ public class XMLOutput {
         rootElement.setAttribute("SimulationType", sim.getType());
         doc.appendChild(rootElement);
         for (String tag : sim.getSavedValues().keySet()) {
-            addObjectElement(rootElement, tag, sim.getSavedValues().get(tag));
+            Object value = sim.getSavedValues().get(tag);
+
+            if (value instanceof Integer) {
+                addElement(makeIntElement(tag, (int) value));
+            }
+            if (value instanceof String) {
+                addElement(makeTextElement(tag, (String) value));
+            }
+            if (value instanceof Paint) {
+                addElement(makePaintElement(tag, (Paint) value));
+            }
         }
+        /*
+         try {
+			Class simClass = Class.forName("Simulation."+sim.getType()+"Simulation");
+			Field[] fields = simClass.getDeclaredFields(); //includes fields declared in the Shape abstract class
+			System.out.println("Fields: ");
+			for (int i=fields.length/2; i<fields.length; i++) {
+	            System.out.println("field name = " + fields[i].getName()); //prints 'numberOfSides' and 'radius'
+	        }
+		 }
+		 catch (Exception e) {
+		        System.out.println("Exception: " + e);
+		     }
+		     */
+
+		/*
+        makeIntElement("gridWidth",sim.getGridWidth());
+		makeIntElement("gridHeight",sim.getGridHeight());
+		makeIntElement("cellsPerRow",sim.getCellsPerRow());
+		makeIntElement("cellsPerColumn",sim.getCellsPerColumn());
+		*/
     }
 
-    private Element addObjectElement(Element parent, String tag, Object value) {
-        parent.appendChild(objectElement(tag, value));
-        return parent;
-    }
-
-    private Element objectElement(String tag, Object value) {
-        Element elem = null;
-        if (value instanceof Integer) {
-            elem = makeIntElement(tag, (Integer) value);
+    /*
+        public void initSimXML(String simType){
+            Element simElem = makeTextElement("String", simType);
+            init(simElem);
         }
-        if (value instanceof Double) {
-            elem = makeDoubleElement(tag, (Double) value);
-        }
-        if (value instanceof String) {
-            elem = makeTextElement(tag, (String) value);
-        }
-        if (value instanceof Paint) {
-            elem = makePaintElement(tag, (Paint) value);
-        }
-        return elem;
-    }
-
-    public void addCells(String cellType, Collection<Cell> cells) {
-        cellsElement = doc.createElement("Cells");
-        cellsElement.appendChild(makeIntElement("cellCount", cells.size()));
-        int cellCount = 0;
-        for (Cell c : cells) {
-            c.saveCellState();
-            String tag = "cell" + Integer.toString(cellCount);
-            cellsElement.appendChild(makeCellElement(tag, c));
-            cellCount++;
-        }
-        rootElement.appendChild(cellsElement);
-    }
-
-
-    public Element makeCellElement(String tag, Cell c) {
-        Element elem = doc.createElement(tag);
-        for (String t : c.getCellState().keySet()) {
-            addObjectElement(elem, t, c.getCellState().get(t));
-        }
-        return elem;
-
-    }
-
+        */
+/*
+    public XMLOutput(Element rootElement) {
+		init(rootElement);
+	}
+	*/
     private void init() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
@@ -91,13 +90,38 @@ public class XMLOutput {
             e.printStackTrace();
         }
         doc = docBuild.newDocument();
+        //this.rootElement=rootElement;
+        //doc.appendChild(rootElement);
     }
 
     private void addElement(Element child) {
         rootElement.appendChild(child);
     }
 
-    public void writeXML(File file) throws XMLException {
+
+    public void writeCell(Rectangle c, File file) throws Exception {
+
+        encoder.writeObject(c);
+        encoder.close();
+    }
+
+    public void addCell(XMLEncoder encoder, Cell c) {
+        encoder.writeObject(c);
+    }
+/*
+        public void writeXML(File file){
+	    	try {
+				encoder = new XMLEncoder(new BufferedOutputStream (new FileOutputStream(file))) ;
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace(); //Bad
+			}
+	    	encoder.close();
+	    }
+	    */
+
+    public void writeXML(File file) {
+        //File file = new File(WRITE_DIR,filename);
         Transformer transformer;
         try {
             transformer = TransformerFactory.newInstance().newTransformer();
@@ -107,10 +131,12 @@ public class XMLOutput {
             try {
                 transformer.transform(source, output);
             } catch (TransformerException e) {
-                throw new XMLException();
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-        } catch (NullPointerException | TransformerConfigurationException | TransformerFactoryConfigurationError e) {
-            throw new XMLException();
+        } catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
 
@@ -120,11 +146,7 @@ public class XMLOutput {
         return makeTextElement(name, Integer.toString(value));
     }
 
-    private Element makeDoubleElement(String name, Double value) {
-        return makeTextElement(name, Double.toString(value));
-    }
-
-
+    // utility method to create text node
     private Element makeTextElement(String tag, String value) {
         Element elem = doc.createElement(tag);
         elem.appendChild(doc.createTextNode(value));

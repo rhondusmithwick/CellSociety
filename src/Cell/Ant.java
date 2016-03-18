@@ -16,13 +16,13 @@ import java.util.List;
  */
 class Ant {
     private final double myLifeTime;
+    private final AntAlgorithms antAlgorithms;
     private int deathTicker = 0;
     private ForagingAntsCell myCell;
     private ForagingAntsCell prevCell = null;
     private boolean hasFoodItem = false;
     private boolean isDead = false;
     private boolean needsToMove = false;
-    private final AntAlgorithms antAlgorithms;
 
     Ant(ForagingAntsCell myCell, double myLifeTime) {
         antAlgorithms = new AntAlgorithms();

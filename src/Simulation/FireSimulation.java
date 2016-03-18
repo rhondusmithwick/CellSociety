@@ -9,6 +9,9 @@ import XML.XMLParser;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Created by rhondusmithwick on 2/4/16.
@@ -28,6 +31,8 @@ public class FireSimulation extends Simulation {
     private Paint emptyVisual;
     private Paint burningVisual;
     private Paint treeVisual;
+
+    private Map<String, Integer> graphMap = new HashMap<String, Integer>();
 
     public FireSimulation() throws XMLException {
         super();
@@ -51,19 +56,13 @@ public class FireSimulation extends Simulation {
     }
 
     @Override
-    void assignLoadState(Cell c) {
-        FireCell fc = (FireCell) c;
-        fc.removeDiagonals();
-        fc.setVisuals(emptyVisual, burningVisual, treeVisual);
-        fc.setBurnTimer(burnTime);
-        setLoadState(fc);
-    }
-
-    @Override
     public void step() {
         super.step();
         getAllUpdates();
         changeStates();
+        updateMap();
+        getConfig().updateGraph();
+        clearMap();
     }
 
 
@@ -77,21 +76,6 @@ public class FireSimulation extends Simulation {
         } else if (treeDoneBurning(fc)) {
             fc.setMark(Mark.EMPTY);
         }
-        setLoadState(fc);
-
-    }
-
-    private void setLoadState(FireCell fc) {
-        if (fc.getState() == State.BURNING) {
-            fc.setFill(burningVisual);
-        }
-        if (fc.getState() == State.TREE) {
-            fc.setFill(treeVisual);
-        }
-        if (fc.getState() == State.EMPTY) {
-            fc.setFill(emptyVisual);
-        }
-
     }
 
     @Override
@@ -161,9 +145,30 @@ public class FireSimulation extends Simulation {
         probCatch = newProb;
     }
 
+    private void updateMap() {
+        for (Cell cell : this.getTheCells()) {
+            addToMap((FireCell) cell);
+        }
+    }
+
+    private void addToMap(FireCell cell) {
+        String state = cell.getState().toString();
+        if (graphMap.containsKey(state)) {
+            graphMap.put(state, graphMap.get(state) + 1);
+        } else {
+            graphMap.put(state, 1);
+        }
+    }
+
+    private void clearMap() {
+        for (Map.Entry entry : graphMap.entrySet()) {
+            graphMap.put((String) entry.getKey(), 0);
+        }
+    }
 
     @Override
-    boolean hasGraph() {
-        return false;
+    public Object getNumOfState(String string) {
+        return graphMap.get(getResources().getString(string));
     }
+
 }

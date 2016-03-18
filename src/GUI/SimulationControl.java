@@ -49,7 +49,6 @@ public class SimulationControl {
     private Group gridGroup;
     private int newSize = 0;
     private File myXMLFile = null;
-    private XMLParser parser;
     private boolean hasSecondaryStage = false;
     private Stage secondaryStage;
 
@@ -83,6 +82,22 @@ public class SimulationControl {
         setConfigControls();
     }
 
+    /**
+     * Switches between simulations when the new simulation is a loaded XML
+     * files.
+     *
+     * @param simElem Simulation element from the XML file parser.
+     */
+    private void switchSimulation(Element simElem) {
+        stageCheck();
+        simType = XMLParser.getSimType(simElem);
+        sim = getSimulation();
+        assert sim != null;
+        sim.setType(simType);
+        sim.setProperties(simElem);
+        config = getConfig();
+        setConfigControls();
+    }
 
     private Config getConfig() {
         removeConfigControls();
@@ -93,38 +108,13 @@ public class SimulationControl {
         } catch (InstantiationException
                 | IllegalAccessException
                 | ClassNotFoundException e) {
-            //System.out.println("in catch");
+            System.out.println("in catch");
             config = new FireConfig();
         }
         config.setSim(this, sim);
         config.init();
+        sim.setConfig(config);
         return config;
-    }
-
-
-    /**
-     * Switches between simulations when the new simulation is a loaded XML
-     * files.
-     *
-     * @param simElem Simulation element from the XML file parser.
-     */
-    private void switchSimulation(Element simElem) {
-        //display.getChildren().remove(sim.getGraph());
-        simType = parser.getSimType();
-        stageCheck();
-        simType = XMLParser.getSimType(simElem);
-        sim = getSimulation();
-
-        assert sim != null;
-        sim.setType(simType);
-        try {
-            sim.setProperties(simElem);
-        } catch (XMLException e) {
-            showError(myResources.getString("XMLReadError"));
-        }
-
-        config = getConfig();
-        setConfigControls();
     }
 
     /**
@@ -137,24 +127,11 @@ public class SimulationControl {
         sim.init();
     }
 
-    private void setCellSimulation() {
-        setSimLabel();
-        displayLoadedCells();
-        sim.setTheCells(grid.getCells());
-        sim.initLoad();
-    }
-
     public void saveSimulation(File file) {
         sim.saveValues();
         XMLOutput simSave = new XMLOutput(sim);
-        if (sim instanceof FireSimulation) {
-            simSave.addCells(sim.getType(), grid.getCells());
-        }
-        try {
-            simSave.writeXML(file);
-        } catch (XMLException e) {
-            showError(myResources.getString("XMLSaveError"));
-        }
+        simSave.theCells = grid.getCells();
+        simSave.writeXML(file);
     }
 
     /**
@@ -163,23 +140,6 @@ public class SimulationControl {
     private void displayNewCells() {
         if (gridGroup != null) display.getChildren().remove(gridGroup);
         grid = createGrid(simType);
-        grid.init(simType);
-        setGroup();
-    }
-
-
-    private void displayLoadedCells() {
-        if (gridGroup != null) display.getChildren().remove(gridGroup);
-        grid = createGrid(simType);
-        try {
-            grid.init(parser.getCells(simType));
-        } catch (XMLException e) {
-            showError(myResources.getString("XMLReadError"));
-        }
-        setGroup();
-    }
-
-    private void setGroup() {
         gridGroup = grid.getGroup();
         GridPane.setConstraints(gridGroup, 0, 1);
         GridPane.setRowSpan(gridGroup, 11);
@@ -201,7 +161,7 @@ public class SimulationControl {
             try {
                 sim = new FireSimulation();
             } catch (XMLException e1) {
-                showError(myResources.getString("XMLReadError"));
+                showError("XML read error");
                 return null;
             }
         }
@@ -292,6 +252,8 @@ public class SimulationControl {
             switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
         } catch (Exception e) {
             sim = getSimulation();
+            config = getConfig();
+            setConfigControls();
         }
         assert sim != null;
         sim.resetCellSize(newSize);
@@ -316,9 +278,9 @@ public class SimulationControl {
         grid.setGrid(sim.getGridWidth(), sim.getGridHeight(),
                 sim.getCellsPerRow(),
                 sim.getCellsPerColumn(), sim.getEdgeType());
+        grid.init(simType);
         return grid;
     }
-
 
     /**
      * Changes number of rows and columns per line on the grid based on user
@@ -347,20 +309,12 @@ public class SimulationControl {
     public void openFile(File file) {
         newSize = 0;
         myXMLFile = file;
-
         try {
-            parser = new XMLParser(XMLParser.getXmlElement(myXMLFile.getPath()));
-            switchSimulation(parser.getRootElement());
-
+            switchSimulation(XMLParser.getXmlElement(myXMLFile.getPath()));
         } catch (XMLException e) {
             showError(myResources.getString("XMLReadError"));
         }
-        if (parser.tagExists("Cells")) {
-            setCellSimulation();
-        } else {
-            setSimulation();
-        }
-
+        setSimulation();
     }
 
     public void changeEdgeType(Object o) {
@@ -426,7 +380,7 @@ public class SimulationControl {
         Scene graphScene = new Scene(graph, 500, 300);
         graphScene.getStylesheets().add("vivid.css");
         secondaryStage.setScene(graphScene);
-        if (sim.setGraph(graph)) {
+        if (config.setGraph(graph)) {
             hasSecondaryStage = true;
             secondaryStage.setTitle(simLabel.getText().toString());
             secondaryStage.show();

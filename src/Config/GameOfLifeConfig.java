@@ -19,9 +19,6 @@ public class GameOfLifeConfig extends Config {
     @Override
     public void init() {
         GameOfLifeSimulation lifeSim = (GameOfLifeSimulation) this.getSimulation();
-        createMainSliders();
-        createMainLabels();
-        setAndAddMain();
     }
 
     @Override
@@ -37,10 +34,13 @@ public class GameOfLifeConfig extends Config {
     }
 
     @Override
-    public void setAndAddAll() {
-        // TODO Auto-generated method stub
-
+    boolean hasGraph() {
+        return false;
     }
 
+    @Override
+    public void updateGraph() {
+
+    }
 
 }
